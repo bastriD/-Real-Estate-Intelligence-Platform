@@ -1,435 +1,497 @@
 # BC05 — C3 — OLAP & Alimentation
 
 **Bloc de compétences :** BC05  
-**Compétence :** C3 — Concevoir et alimenter une architecture décisionnelle OLAP  
+**Compétence :** Concevoir et alimenter une architecture décisionnelle adaptée aux traitements analytiques  
 **Projet :** Real Estate Intelligence Platform  
-**Plateforme :** Enterprise AI Platform  
-**Source OLTP :** PostgreSQL  
+**Version :** 2.0  
+**Statut :** Baseline documentaire corrigée — implémentation runtime à produire  
+**Source OLTP :** PostgreSQL / `real_estate`  
 **Orchestration cible :** Apache Airflow  
-**Transformation cible :** SQL / Python / dbt selon le besoin  
-**Version :** 1.0  
-**Statut :** Baseline documentaire — preuves d'exécution à produire
+**Transformation :** SQL / Python / dbt lorsque justifié  
+**Metadata & lineage :** OpenMetadata  
 
 ---
 
 # 1. Objectif
 
-Ce dossier décrit l'architecture analytique du projet et la stratégie permettant de transformer les données opérationnelles issues de l'OLTP en données exploitables pour :
+Cette partie décrit la transformation des données opérationnelles du projet vers une architecture analytique.
 
-- reporting ;
-- analyse métier ;
-- pilotage ;
-- indicateurs ;
-- analyse des recherches immobilières ;
-- analyse des biens ;
-- analyse du matching ;
-- analyse des performances du service.
-
-La chaîne cible est :
+Le système doit permettre :
 
 ```text
-Operational Data
-      |
-      v
-PostgreSQL OLTP
-      |
-      v
-Extraction
-      |
-      v
+Operational Transactions
+        |
+        v
+Structured OLTP
+        |
+        v
+Extraction / Load
+        |
+        v
 Staging
-      |
-      v
+        |
+        v
 Transformation
-      |
-      v
-Data Warehouse
-      |
-      v
-Data Marts / Analytics
-      |
-      v
-KPI / Dashboards / AI
+        |
+        v
+Dimensional Warehouse
+        |
+        v
+Analytics / KPI
+```
+
+L'objectif est de séparer :
+
+```text
+le fonctionnement opérationnel
+```
+
+de :
+
+```text
+l'analyse et le pilotage
 ```
 
 ---
 
-# 2. OLTP et OLAP
+# 2. Contexte métier
 
-L'architecture distingue explicitement :
-
-```text
-OLTP
-```
-
-et :
+Le StarterPack prévoit une croissance importante de l'activité :
 
 ```text
-OLAP
+plusieurs milliers de mandats par semaine
 ```
 
-Ils répondent à des besoins différents.
+et potentiellement :
+
+```text
+plusieurs centaines
+voire milliers de biens
+par recherche
+```
+
+avec extension progressive à plusieurs pays européens. 
+
+Le système analytique doit donc être conçu pour évoluer sans transformer la base transactionnelle en moteur de reporting généraliste.
 
 ---
 
-# 3. OLTP
+# 3. Modèle OLTP source V2
 
-L'OLTP est optimisé pour les transactions opérationnelles.
-
-Exemples :
+Le modèle transactionnel cible comprend notamment :
 
 ```text
-Create client
-Create mandate
-Update property
-Create request version
-Create presentation
-Record feedback
+CLIENT
+CHASSEUR
+SECTEUR
+MANDAT
+MANDAT_SECTEUR
+DEMANDE
+DEMANDE_VERSION
+SOURCE
+BIEN
+PRESENTATION
+COMMENTAIRE
+DOCUMENT
+BAREME_COMMISSION
+PAIEMENT
 ```
 
-Caractéristiques :
+Schéma PostgreSQL :
 
 ```text
-Normalized
-Transactional
-Current operational state
-Short queries
-Strong constraints
-Frequent writes
+real_estate
 ```
 
 ---
 
-# 4. OLAP
+# 4. Pourquoi séparer OLTP et OLAP
+
+L'OLTP est optimisé pour :
+
+```text
+INSERT
+UPDATE
+DELETE
+targeted SELECT
+short transactions
+referential integrity
+```
 
 L'OLAP est optimisé pour :
 
 ```text
-Analysis
-Aggregations
-Historical reporting
-Business intelligence
-Decision support
-```
-
-Exemples :
-
-```text
-Number of mandates per month
-
-Average property price by city
-
-Matching success rate
-
-Average matching score
-
-Properties collected per source
-
-Client rejection rate
-
-Average number of properties presented per mandate
-```
-
----
-
-# 5. Pourquoi séparer OLTP et OLAP
-
-Une requête analytique peut nécessiter :
-
-```text
-JOIN
+aggregation
+historical analysis
 GROUP BY
-SUM
-AVG
-COUNT
-historical scans
-```
-
-sur de nombreux enregistrements.
-
-Exécuter systématiquement ces traitements sur le système transactionnel peut :
-
-- augmenter la charge ;
-- perturber les opérations métier ;
-- augmenter la latence ;
-- compliquer l'optimisation ;
-- coupler analytics et application.
-
-L'architecture cible sépare donc les responsabilités.
-
----
-
-# 6. Architecture logique
-
-```text
-                     +----------------------+
-                     |   FastAPI / Services |
-                     +----------+-----------+
-                                |
-                                v
-                     +----------------------+
-                     |   PostgreSQL OLTP    |
-                     |    real_estate       |
-                     +----------+-----------+
-                                |
-                                |
-                         Extract / Load
-                                |
-                                v
-                     +----------------------+
-                     |       Staging        |
-                     +----------+-----------+
-                                |
-                          Transform
-                                |
-                                v
-                     +----------------------+
-                     |    Data Warehouse    |
-                     +----------+-----------+
-                                |
-                +---------------+---------------+
-                |                               |
-                v                               v
-        +---------------+               +---------------+
-        | Analytics     |               | Data Marts    |
-        +-------+-------+               +-------+-------+
-                |                               |
-                +---------------+---------------+
-                                |
-                                v
-                         KPI / Dashboard
+large scans
+business KPI
+reporting
 ```
 
 ---
 
-# 7. Architecture physique cible
+# 5. Exemple
 
-Le MVP peut utiliser une même instance PostgreSQL tout en séparant les responsabilités par schémas.
-
-Exemple :
+Une requête opérationnelle :
 
 ```text
-PostgreSQL
-│
-├── real_estate
-│      OLTP
-│
-├── staging
-│      ingestion / preparation
-│
-├── warehouse
-│      dimensional model
-│
-└── analytics
-       business views / KPI
+Afficher le mandat n°123
 ```
 
-Cette approche évite de déployer inutilement un second moteur de base de données pour le MVP.
+est très différente d'une requête analytique :
+
+```text
+Calculer le taux moyen de conversion
+par chasseur, par secteur,
+sur les 12 derniers mois
+```
+
+Les deux workloads ne doivent pas être optimisés de la même manière.
 
 ---
 
-# 8. Évolution possible
-
-Si les volumes ou les exigences augmentent :
+# 6. Architecture cible
 
 ```text
-OLTP PostgreSQL
-      |
-      v
-Dedicated Analytical Platform
-```
-
-pourrait devenir pertinent.
-
-Cette évolution n'est pas nécessaire pour la baseline actuelle.
-
----
-
-# 9. Principe de conception
-
-Le modèle analytique ne doit pas être une simple copie du modèle transactionnel.
-
-Le modèle OLTP répond à :
-
-```text
-How do we operate the business?
-```
-
-Le modèle OLAP répond à :
-
-```text
-How do we analyze the business?
+                    PostgreSQL
+              +---------------------+
+              |     real_estate     |
+              |       OLTP          |
+              +----------+----------+
+                         |
+                         v
+              +---------------------+
+              |       staging       |
+              +----------+----------+
+                         |
+                         v
+              +---------------------+
+              |      warehouse      |
+              +----------+----------+
+                         |
+                         v
+              +---------------------+
+              |      analytics      |
+              +----------+----------+
+                         |
+          +--------------+--------------+
+          |                             |
+          v                             v
+      Dashboard                     AI / ML
 ```
 
 ---
 
-# 10. Approche dimensionnelle
+# 7. Schémas PostgreSQL
 
-Le Data Warehouse utilisera une approche dimensionnelle.
+La première architecture analytique utilise la même instance PostgreSQL avec séparation logique :
 
-Concepts principaux :
+```text
+real_estate
+staging
+warehouse
+analytics
+```
+
+Cela limite la complexité du MVP.
+
+---
+
+# 8. Pourquoi PostgreSQL reste suffisant
+
+Le projet n'a pas besoin immédiatement :
+
+```text
+Snowflake
+BigQuery
+Spark
+ClickHouse
+Kafka
+```
+
+simplement parce que des volumes futurs sont annoncés.
+
+La décision doit être prise à partir :
+
+```text
+des volumes réellement mesurés
+de la latence
+du temps de traitement
+de la concurrence
+des SLO
+```
+
+---
+
+# 9. ELT privilégié
+
+L'architecture privilégie :
+
+```text
+Extract
+Load
+Transform
+```
+
+Flux :
+
+```text
+real_estate
+     |
+     v
+staging
+     |
+     v
+SQL / dbt
+     |
+     v
+warehouse
+```
+
+---
+
+# 10. Pourquoi ELT
+
+Avantages :
+
+```text
+rejouabilité
+auditabilité
+SQL versionné
+lineage
+séparation ingestion/transformation
+data quality
+```
+
+---
+
+# 11. Staging
+
+Le schéma :
+
+```text
+staging
+```
+
+est une zone technique.
+
+Il permet notamment :
+
+```text
+type normalization
+deduplication
+preparation
+business validation
+```
+
+---
+
+# 12. Tables staging candidates
+
+```text
+staging.client
+staging.chasseur
+staging.secteur
+staging.mandat
+staging.demande
+staging.demande_version
+staging.source
+staging.bien
+staging.presentation
+staging.commentaire
+staging.bareme_commission
+staging.paiement
+```
+
+Toutes les tables OLTP ne doivent pas obligatoirement être recopiées si aucune analyse ne les utilise.
+
+---
+
+# 13. Minimisation
+
+Le staging analytique ne doit pas devenir une copie intégrale incontrôlée de toutes les données.
+
+Principe :
+
+```text
+Extract only what is needed
+for defined analytical purposes
+```
+
+---
+
+# 14. Modèle dimensionnel
+
+Le warehouse adopte une approche dimensionnelle.
+
+Concepts :
 
 ```text
 FACT
 DIMENSION
-MEASURE
 GRAIN
+MEASURE
 ```
 
 ---
 
-# 11. Table de faits
+# 15. Faits principaux candidats
 
-Une table de faits représente un événement ou une mesure métier.
+Le modèle V2 fait apparaître plusieurs événements analytiques pertinents.
 
-Exemples candidats :
+Tables de faits candidates :
 
 ```text
 fact_presentation
-fact_property_collection
 fact_mandate
+fact_payment
 ```
 
-Pour le MVP, la table de faits principale sera :
+et éventuellement plus tard :
+
+```text
+fact_visit
+fact_offer
+```
+
+si les entités correspondantes sont implémentées.
+
+---
+
+# 16. Fact principale — fact_presentation
+
+Pour la première version analytique, la table principale est :
 
 ```text
 fact_presentation
+```
+
+Elle permet d'analyser :
+
+```text
+matching
+sélections
+présentations
+rejets
+visites
+rétentions
 ```
 
 ---
 
-# 12. Grain
+# 17. Grain de fact_presentation
 
-Le grain doit être défini avant la création de la table de faits.
+Le grain est :
 
-Pour :
-
-```text
-fact_presentation
-```
-
-le grain est :
-
-> Une ligne représente la présentation ou sélection d'un bien pour une version déterminée d'une demande client.
+> Une ligne représente un bien associé à une version précise d'une demande.
 
 Donc :
 
 ```text
 1 row
 =
-1 request version
+1 DEMANDE_VERSION
 +
-1 property
+1 BIEN
 ```
 
 ---
 
-# 13. Pourquoi le grain est important
-
-Sans grain explicite, une mesure telle que :
-
-```text
-COUNT(*)
-```
-
-peut devenir ambiguë.
-
-Le grain permet de comprendre précisément ce qu'une ligne représente.
-
----
-
-# 14. Fact Presentation
-
-Structure logique candidate :
+# 18. Structure candidate
 
 ```text
 fact_presentation
 │
 ├── presentation_key
-├── date_key
-├── property_key
+├── date_selection_key
+├── date_presentation_key
+│
+├── demande_key
+├── demande_version_key
+├── mandate_key
 ├── client_key
 ├── chasseur_key
+├── property_key
 ├── source_key
-├── mandate_key
-├── request_version_key
+├── sector_key
 │
 ├── matching_score
-├── budget_score
-├── location_score
-├── surface_score
-├── criteria_score
-│
 ├── property_price
 ├── property_surface
 │
 ├── presented_count
 ├── rejected_count
-├── visited_count
-└── retained_count
+├── retained_count
+└── visited_count
 ```
-
-La structure exacte sera validée pendant l'implémentation.
 
 ---
 
-# 15. Dimensions candidates
+# 19. fact_mandate
 
-Le modèle analytique peut contenir :
+Une seconde table de faits peut représenter le cycle de vie des mandats.
+
+Grain :
+
+```text
+1 row
+=
+1 mandate
+```
+
+Mesures possibles :
+
+```text
+mandate_duration_days
+number_of_request_versions
+number_of_presentations
+successful_purchase
+```
+
+---
+
+# 20. fact_payment
+
+La nouvelle entité `PAIEMENT` permet une analyse financière réelle.
+
+Grain :
+
+```text
+1 row
+=
+1 payment event
+```
+
+Mesures :
+
+```text
+purchase_amount
+company_fee
+hunter_payment
+payment_delay
+```
+
+---
+
+# 21. Dimensions principales
+
+Dimensions candidates :
 
 ```text
 dim_date
 dim_client
 dim_chasseur
+dim_sector
 dim_property
 dim_source
 dim_mandate
-dim_location
+dim_request
 ```
 
 ---
 
-# 16. Schéma en étoile
-
-Architecture cible simplifiée :
-
-```text
-                    dim_date
-                       |
-                       |
-dim_client ---- fact_presentation ---- dim_property
-                       |
-                       |
-                 dim_chasseur
-                       |
-                       |
-                  dim_source
-                       |
-                       |
-                 dim_mandate
-```
-
-Il s'agit d'un :
-
-```text
-Star Schema
-```
-
----
-
-# 17. dim_date
-
-La dimension date permet des analyses par :
-
-```text
-day
-week
-month
-quarter
-year
-```
-
-Structure candidate :
+# 22. dim_date
 
 ```text
 dim_date
@@ -447,518 +509,229 @@ dim_date
 
 ---
 
-# 18. date_key
+# 23. dim_client
 
-Une représentation possible est :
+La dimension client doit être minimisée.
 
-```text
-YYYYMMDD
-```
-
-Exemple :
-
-```text
-20260821
-```
-
-Cette décision sera matérialisée pendant l'implémentation.
-
----
-
-# 19. dim_client
-
-Structure candidate :
-
-```text
-dim_client
-│
-├── client_key
-├── client_id
-├── statut
-└── ...
-```
-
-Attention :
-
-les données personnelles ne doivent pas être copiées dans le Data Warehouse sans nécessité.
-
----
-
-# 20. Minimisation RGPD
-
-Le Data Warehouse doit appliquer :
-
-```text
-Data Minimization
-```
-
-Si une analyse nécessite uniquement :
+Elle peut contenir :
 
 ```text
 client_key
-client_status
+source_client_id
+status
+city
 ```
 
-il n'est pas nécessaire de recopier :
+mais ne nécessite pas automatiquement :
 
 ```text
 email
 telephone
-full name
+full identity
 ```
 
 ---
 
-# 21. dim_chasseur
-
-Structure candidate :
+# 24. dim_chasseur
 
 ```text
 dim_chasseur
 │
 ├── chasseur_key
-├── chasseur_id
-└── statut
+├── source_chasseur_id
+├── status
+└── seniority_band
 ```
 
-Elle permet notamment d'analyser :
-
-```text
-number of mandates
-number of presentations
-retention rate
-matching results
-```
-
-par chasseur.
+Les indicateurs de performance ne doivent pas être stockés comme vérités statiques si leur calcul dépend d'événements.
 
 ---
 
-# 22. dim_property
+# 25. dim_sector
 
-Structure candidate :
+```text
+dim_sector
+│
+├── sector_key
+├── country
+├── city
+├── district
+└── postal_code
+```
+
+Cette dimension devient particulièrement importante avec l'expansion internationale.
+
+---
+
+# 26. dim_property
 
 ```text
 dim_property
 │
 ├── property_key
-├── property_id
-├── external_reference
+├── source_property_id
 ├── property_type
 ├── city
 ├── postal_code
+├── dpe
 ├── price_band
-├── surface_band
-└── status
+└── surface_band
 ```
 
 ---
 
-# 23. dim_source
-
-Structure candidate :
+# 27. dim_source
 
 ```text
 dim_source
 │
 ├── source_key
-├── source_id
 ├── source_name
 ├── source_type
 └── confidence_level
 ```
 
-Elle permet d'analyser la performance des différentes sources immobilières.
+Elle permet d'analyser les performances des différentes sources d'annonces.
 
 ---
 
-# 24. dim_mandate
-
-Structure candidate :
+# 28. dim_mandate
 
 ```text
 dim_mandate
 │
 ├── mandate_key
-├── mandate_id
 ├── mandate_reference
-└── status
+├── mandate_type
+├── status
+└── signature_mode
 ```
-
-Les informations personnelles directes doivent rester limitées.
 
 ---
 
-# 25. Dimension localisation
+# 29. dim_request
 
-Selon les besoins, la localisation peut rester dans :
-
-```text
-dim_property
-```
-
-ou devenir :
+La demande et sa version peuvent être représentées selon deux stratégies :
 
 ```text
-dim_location
+dimension unique
 ```
 
-si les analyses géographiques deviennent suffisamment importantes.
+ou :
 
-Le MVP privilégiera la simplicité tant qu'une dimension dédiée n'apporte pas de valeur démontrée.
+```text
+dim_request
++
+request version fields in fact
+```
+
+La stratégie finale sera choisie lors de l'implémentation du warehouse.
 
 ---
 
-# 26. Surrogate Keys
+# 30. Slowly Changing Dimensions
 
-Les dimensions analytiques peuvent utiliser des :
-
-```text
-Surrogate Keys
-```
-
-différentes des identifiants OLTP.
+Certaines dimensions évoluent dans le temps.
 
 Exemple :
 
 ```text
-client_id
-```
+CHASSEUR
+status changes
 
-identifiant source.
+CLIENT
+status changes
 
-```text
-client_key
-```
-
-identifiant dimensionnel.
-
----
-
-# 27. Pourquoi des surrogate keys
-
-Elles facilitent notamment :
-
-- historisation ;
-- indépendance du système source ;
-- Slowly Changing Dimensions ;
-- intégration future de plusieurs sources.
-
----
-
-# 28. Slowly Changing Dimensions
-
-Les dimensions peuvent évoluer.
-
-Exemple :
-
-```text
-Client status:
-ACTIVE
-   |
-   v
-ARCHIVED
-```
-
-Plusieurs stratégies existent.
-
----
-
-# 29. SCD Type 1
-
-Le Type 1 remplace l'ancienne valeur.
-
-```text
-OLD
- |
- v
-NEW
-```
-
-Pas d'historique.
-
----
-
-# 30. SCD Type 2
-
-Le Type 2 conserve plusieurs versions.
-
-Exemple :
-
-```text
-client_key | client_id | status   | valid_from | valid_to
------------------------------------------------------------
-101        | 42        | ACTIVE   | ...        | ...
-205        | 42        | ARCHIVED | ...        | NULL
+SECTOR
+active/inactive
 ```
 
 ---
 
-# 31. Choix MVP
+# 31. SCD Type 1
 
-Toutes les dimensions ne nécessitent pas immédiatement SCD Type 2.
-
-La stratégie sera appliquée uniquement lorsqu'une exigence analytique justifie l'historisation.
-
-Il faut éviter :
+Type 1 :
 
 ```text
-SCD Type 2 everywhere
-```
-
-sans besoin métier.
-
----
-
-# 32. ETL
-
-ETL signifie :
-
-```text
-Extract
-Transform
-Load
-```
-
-Flux :
-
-```text
-Source
- |
- v
-Extract
- |
- v
-Transform
- |
- v
-Load
- |
- v
-Warehouse
-```
-
----
-
-# 33. ELT
-
-ELT signifie :
-
-```text
-Extract
-Load
-Transform
-```
-
-Flux :
-
-```text
-Source
- |
- v
-Extract
- |
- v
-Load to Staging
- |
- v
-Transform inside platform
- |
- v
-Warehouse
-```
-
----
-
-# 34. Approche du projet
-
-Le projet privilégie une approche proche de :
-
-```text
-ELT
-```
-
-pour les données relationnelles.
-
-Architecture :
-
-```text
-PostgreSQL OLTP
-      |
-      v
-staging
-      |
-      v
-SQL/dbt transformations
-      |
-      v
-warehouse
-      |
-      v
-analytics
-```
-
----
-
-# 35. Pourquoi ELT
-
-Avantages :
-
-- conservation d'une zone intermédiaire ;
-- transformations SQL auditables ;
-- possibilité de rejouer ;
-- meilleure traçabilité ;
-- séparation ingestion / transformation ;
-- intégration avec dbt ;
-- intégration avec Airflow.
-
----
-
-# 36. Staging
-
-Le schéma :
-
-```text
-staging
-```
-
-reçoit les données nécessaires provenant de l'OLTP.
-
-Il constitue une zone technique.
-
-Il ne doit pas être présenté directement aux utilisateurs métier comme modèle analytique final.
-
----
-
-# 37. Exemple staging
-
-Tables candidates :
-
-```text
-staging.client
-staging.chasseur
-staging.mandat
-staging.demande_version
-staging.source
-staging.bien
-staging.presentation
-```
-
-`document` ne doit être chargé que si son contenu analytique est réellement nécessaire.
-
----
-
-# 38. Transformation
-
-La transformation construit :
-
-```text
-dimensions
-facts
-business metrics
-```
-
-à partir du staging.
-
----
-
-# 39. Data Warehouse
-
-Schéma :
-
-```text
-warehouse
-```
-
-Exemple :
-
-```text
-warehouse.dim_date
-warehouse.dim_client
-warehouse.dim_chasseur
-warehouse.dim_property
-warehouse.dim_source
-warehouse.dim_mandate
-warehouse.fact_presentation
-```
-
----
-
-# 40. Analytics
-
-Le schéma :
-
-```text
-analytics
-```
-
-peut fournir des vues orientées métier.
-
-Exemples :
-
-```text
-analytics.presentation_kpis
-analytics.source_performance
-analytics.property_market_summary
-analytics.matching_performance
-analytics.mandate_summary
-```
-
----
-
-# 41. Pourquoi utiliser des vues analytics
-
-Cela permet de masquer la complexité du warehouse aux consommateurs.
-
-Architecture :
-
-```text
-Warehouse
+old value
     |
     v
-Analytics Views
-    |
-    +--> Dashboard
-    +--> BI
-    +--> API
-    +--> Analysis
+new value
 ```
+
+L'historique est perdu.
 
 ---
 
-# 42. Airflow
+# 32. SCD Type 2
 
-Apache Airflow est responsable de l'orchestration des workflows de données.
-
-Airflow détermine :
+Type 2 conserve les versions :
 
 ```text
-when
-what order
-dependency
-retry
-failure handling
+key
+business_id
+valid_from
+valid_to
+is_current
 ```
-
-Il ne remplace pas PostgreSQL ni le moteur SQL.
 
 ---
 
-# 43. DAG cible
+# 33. Usage SCD
 
-Un DAG candidat :
+Le projet ne doit pas appliquer SCD2 partout.
+
+SCD2 doit être utilisé uniquement lorsque l'historique de la dimension est nécessaire au besoin analytique.
+
+---
+
+# 34. Historique des demandes
+
+`DEMANDE_VERSION` est déjà historisée dans l'OLTP.
+
+Il n'est donc pas nécessaire de recréer artificiellement cet historique avec une autre technique si la source contient déjà toutes les versions.
+
+---
+
+# 35. Historique des commissions
+
+Même principe pour :
+
+```text
+BAREME_COMMISSION
+```
+
+Le modèle opérationnel contient déjà :
+
+```text
+date_debut_validite
+date_fin_validite
+```
+
+---
+
+# 36. Airflow
+
+Airflow orchestre l'alimentation du warehouse.
+
+Nom de DAG candidat :
 
 ```text
 real_estate_warehouse_etl
 ```
 
-Flux :
+---
+
+# 37. DAG cible
 
 ```text
 start
   |
   v
-extract_oltp
+extract_operational_data
+  |
+  v
+load_staging
   |
   v
 validate_staging
@@ -967,7 +740,13 @@ validate_staging
 load_dimensions
   |
   v
+load_fact_mandate
+  |
+  v
 load_fact_presentation
+  |
+  v
+load_fact_payment
   |
   v
 run_data_quality
@@ -984,260 +763,191 @@ end
 
 ---
 
-# 44. Dépendances du DAG
-
-Exemple :
+# 38. Dépendances
 
 ```text
-extract_oltp
+load_staging
       |
       v
 validate_staging
       |
-      +----------------+
-      |                |
-      v                v
-load_dimensions   validation failure
-      |
       v
-load_fact
+load_dimensions
       |
-      v
-data_quality
-      |
-      v
-analytics
+      +--------------------+
+      |         |          |
+      v         v          v
+ mandate    presentation payment
+      |         |          |
+      +---------+----------+
+                |
+                v
+         data_quality
+                |
+                v
+            analytics
 ```
 
 ---
 
-# 45. Idempotence
+# 39. dbt
 
-Un DAG doit pouvoir être rejoué sans produire de duplication incontrôlée.
+dbt peut assurer :
+
+```text
+dimension models
+fact models
+business views
+tests
+documentation
+lineage
+```
+
+Airflow reste responsable de l'orchestration globale.
+
+---
+
+# 40. Idempotence
+
+Un pipeline rejoué ne doit pas dupliquer les données.
 
 Principe :
 
 ```text
-Same logical input
+same source state
 +
-Same execution period
+same transformation
 =
-Consistent warehouse state
+consistent warehouse state
 ```
 
 ---
 
-# 46. Incremental Loading
+# 41. Incremental Loads
 
-Il n'est pas nécessaire de recharger systématiquement toutes les données.
-
-Une stratégie incrémentale peut exploiter :
+Les chargements pourront utiliser :
 
 ```text
 date_creation
 date_version
 date_collecte
 date_selection
-date_ajout
+date_commentaire
+date_debut_validite
+date_reception_honoraires
 ```
 
-selon les entités.
+comme points de repère.
 
 ---
 
-# 47. Watermark
+# 42. updated_at
 
-Une stratégie possible utilise :
-
-```text
-last_successful_timestamp
-```
-
-comme watermark.
-
-Exemple :
-
-```text
-Previous successful run:
-2026-08-20 02:00
-
-Current run:
-2026-08-21 02:00
-```
-
-Le pipeline traite la fenêtre pertinente.
-
----
-
-# 48. Attention aux mises à jour
-
-Une stratégie basée uniquement sur :
-
-```text
-created_at
-```
-
-ne détecte pas nécessairement les modifications de lignes existantes.
-
-Une future évolution peut nécessiter :
+Une amélioration future du modèle opérationnel peut introduire :
 
 ```text
 updated_at
-CDC
 ```
 
-ou une stratégie de comparaison.
+sur certaines entités afin de faciliter les chargements incrémentaux.
 
 ---
 
-# 49. CDC
+# 43. CDC
 
-CDC signifie :
+Change Data Capture n'est pas nécessaire pour le MVP.
+
+Il pourrait devenir pertinent si la fraîcheur attendue devient :
 
 ```text
-Change Data Capture
+near-real-time
 ```
 
-Il peut devenir utile pour des volumes ou besoins temps réel plus importants.
-
-Le MVP n'impose pas encore CDC.
+et que le batch n'est plus suffisant.
 
 ---
 
-# 50. Kafka
+# 44. Data Quality — staging
 
-Kafka n'est pas une dépendance obligatoire de cette architecture analytique.
-
-Le pipeline MVP peut fonctionner :
+Exemples :
 
 ```text
-PostgreSQL
-   |
-   v
-Airflow
-   |
-   v
-Warehouse
-```
-
-Kafka ne doit être introduit que si un besoin réel de streaming ou d'event-driven data integration le justifie.
-
----
-
-# 51. dbt
-
-dbt peut être utilisé pour :
-
-```text
-SQL transformations
-models
-tests
-documentation
-lineage
-```
-
-Il complète Airflow.
-
----
-
-# 52. Airflow vs dbt
-
-Responsabilités :
-
-```text
-Airflow
-   |
-   +--> orchestration
-   +--> scheduling
-   +--> dependencies
-   +--> retries
-```
-
-```text
-dbt
-   |
-   +--> SQL transformation
-   +--> model dependencies
-   +--> SQL tests
-   +--> transformation documentation
-```
-
-Ils ne remplissent pas exactement le même rôle.
-
----
-
-# 53. Architecture Airflow + dbt
-
-```text
-Airflow DAG
-    |
-    +--> Extract
-    |
-    +--> dbt run
-    |
-    +--> dbt test
-    |
-    +--> publish metrics
+valid data types
+required business columns
+non-negative amounts
+valid dates
+known statuses
 ```
 
 ---
 
-# 54. Data Quality
+# 45. Data Quality — warehouse
 
-Le pipeline analytique doit vérifier la qualité avant publication.
-
-Contrôles candidats :
+Exemples :
 
 ```text
-not_null
-unique
-relationships
-accepted_values
-row_count
-range checks
-freshness
+fact primary key unique
+dimension keys not null
+foreign dimension references valid
+scores within expected range
+financial values non-negative
 ```
 
 ---
 
-# 55. Exemple fact_presentation
-
-Contrôles :
+# 46. Data Quality — fact_presentation
 
 ```text
 presentation_key NOT NULL
 presentation_key UNIQUE
 property_key NOT NULL
-date_key NOT NULL
+request_version_key NOT NULL
 matching_score BETWEEN 0 AND 100
 ```
 
----
-
-# 56. Referential Quality
-
-Chaque :
-
-```text
-property_key
-```
-
-de la fact doit correspondre à une dimension valide.
-
-Même principe pour :
-
-```text
-client_key
-chasseur_key
-source_key
-date_key
-```
+lorsque `matching_score` est renseigné.
 
 ---
 
-# 57. Row Count
+# 47. Data Quality — fact_payment
 
-Le pipeline peut comparer :
+```text
+purchase_amount >= 0
+company_fee >= 0
+hunter_payment >= 0
+```
+
+et :
+
+```text
+hunter_payment <= company_fee
+```
+
+si cette règle correspond au modèle métier final.
+
+---
+
+# 48. Referential Quality
+
+Une fact ne doit pas référencer une dimension inexistante.
+
+Exemple :
+
+```text
+fact_presentation.property_key
+```
+
+doit correspondre à :
+
+```text
+dim_property.property_key
+```
+
+---
+
+# 49. Row Count Controls
+
+Contrôles possibles :
 
 ```text
 source rows
@@ -1245,105 +955,399 @@ staging rows
 warehouse rows
 ```
 
-selon les règles de transformation.
-
-Une différence doit être explicable.
+Les écarts doivent être explicables.
 
 ---
 
-# 58. Freshness
+# 50. Freshness
 
-Une donnée analytique peut être correcte mais obsolète.
-
-Un contrôle de fraîcheur doit pouvoir vérifier :
+Mesure :
 
 ```text
-last successful load
+last_successful_load
 ```
+
+Le warehouse doit permettre de savoir quand les données ont été actualisées.
 
 ---
 
-# 59. Lineage
+# 51. OpenMetadata
 
-La traçabilité doit permettre :
+OpenMetadata doit permettre de visualiser :
 
 ```text
-OLTP column
-     |
-     v
-Staging column
-     |
-     v
-Warehouse column
-     |
-     v
-Analytics KPI
+OLTP
+ |
+ v
+STAGING
+ |
+ v
+WAREHOUSE
+ |
+ v
+ANALYTICS
 ```
+
+avec lineage lorsque l'intégration est disponible.
 
 ---
 
-# 60. Exemple lineage
+# 52. Lineage exemple matching
 
 ```text
 real_estate.presentation.score_matching
-              |
-              v
+           |
+           v
 staging.presentation.score_matching
-              |
-              v
+           |
+           v
 warehouse.fact_presentation.matching_score
-              |
-              v
+           |
+           v
 analytics.matching_performance
-              |
-              v
-Average Matching Score KPI
 ```
 
 ---
 
-# 61. OpenMetadata
+# 53. Lineage financier
 
-OpenMetadata peut documenter :
-
-- tables ;
-- colonnes ;
-- propriétaires ;
-- descriptions ;
-- classification ;
-- lineage ;
-- qualité ;
-- domaines.
-
-L'objectif est de rendre le patrimoine Data compréhensible et gouvernable.
+```text
+real_estate.paiement.montant_honoraires
+           |
+           v
+staging.paiement
+           |
+           v
+warehouse.fact_payment.company_fee
+           |
+           v
+analytics.revenue_summary
+```
 
 ---
 
-# 62. Catalogue
+# 54. KPI Matching
+
+Exemples :
+
+```text
+average matching score
+number of properties presented
+rejection rate
+retention rate
+visit rate
+```
+
+---
+
+# 55. KPI Demand
+
+Exemples :
+
+```text
+average number of versions per demand
+requalification frequency
+average candidate properties per demand
+```
+
+---
+
+# 56. KPI Mandat
+
+Exemples :
+
+```text
+active mandates
+completed mandates
+expired mandates
+average mandate duration
+exclusive vs non-exclusive distribution
+```
+
+---
+
+# 57. KPI Chasseur
+
+Exemples :
+
+```text
+mandates managed
+successful transactions
+average completion time
+presentations per mandate
+revenue generated
+```
+
+---
+
+# 58. KPI Source
+
+Exemples :
+
+```text
+properties collected
+properties qualified
+properties presented
+properties retained
+average matching score
+```
+
+---
+
+# 59. KPI Financial
+
+Grâce au modèle V2 :
+
+```text
+total purchase value
+total company fees
+total hunter payments
+average fee per transaction
+payment delays
+```
+
+peuvent maintenant être calculés.
+
+---
+
+# 60. KPI Sector
+
+Avec `SECTEUR` :
+
+```text
+mandates per sector
+properties per sector
+success rate per sector
+average property price
+```
+
+---
+
+# 61. International Analytics
+
+Le modèle doit pouvoir grouper par :
+
+```text
+country
+city
+sector
+```
+
+sans dépendre uniquement d'un code postal français.
+
+---
+
+# 62. Business KPI Definition
+
+Chaque KPI important doit être documenté avec :
+
+```text
+Name
+Business definition
+Formula
+Source
+Refresh frequency
+Owner
+Quality rule
+```
+
+---
+
+# 63. Exemple KPI
+
+```text
+Name:
+Retention Rate
+
+Definition:
+Percentage of presented properties
+that reach RETENU status.
+
+Numerator:
+retained presentations
+
+Denominator:
+presented properties
+
+Source:
+fact_presentation
+```
+
+---
+
+# 64. Attention aux définitions
+
+Un taux n'est utile que si le dénominateur est clairement défini.
 
 Exemple :
 
 ```text
-PostgreSQL Service
-   |
-   +--> real_estate
-   |
-   +--> staging
-   |
-   +--> warehouse
-   |
-   +--> analytics
+RETENU / IDENTIFIE
+```
+
+n'est pas nécessairement équivalent à :
+
+```text
+RETENU / PRESENTE
 ```
 
 ---
 
-# 63. KPI candidat — nombre de présentations
+# 65. Performance
 
-```sql
-COUNT(*)
+Le warehouse peut nécessiter :
+
+```text
+indexes
+materialized views
+partitioning
+pre-aggregation
 ```
 
-sur le grain de :
+mais uniquement après mesure.
+
+---
+
+# 66. Materialized Views
+
+Une vue matérialisée peut être utile pour :
+
+```text
+monthly_matching_summary
+```
+
+ou :
+
+```text
+monthly_revenue_summary
+```
+
+si les agrégations deviennent coûteuses.
+
+---
+
+# 67. Partitioning
+
+Avec la croissance officielle du projet, les facts historiques peuvent devenir candidates au partitionnement.
+
+Exemples :
+
+```text
+fact_presentation
+fact_payment
+```
+
+partitionnées par date.
+
+Cela reste une évolution mesurée.
+
+---
+
+# 68. Growth Scenario
+
+La capacité doit être testée à partir du contexte officiel :
+
+```text
+thousands of mandates / week
+```
+
+multiplié par :
+
+```text
+hundreds / thousands
+of properties / search
+```
+
+Le nombre potentiel de relations de matching peut devenir très supérieur au nombre de mandats.
+
+---
+
+# 69. Exemple conceptuel
+
+Si :
+
+```text
+5,000 mandates / week
+```
+
+et :
+
+```text
+500 candidate properties / mandate
+```
+
+alors :
+
+```text
+2,500,000
+candidate relations / week
+```
+
+peuvent être considérées.
+
+Cette valeur est un scénario de calcul, pas une mesure du système réel.
+
+---
+
+# 70. Pourquoi fact_presentation peut croître vite
+
+La table de faits liée au matching peut devenir beaucoup plus volumineuse que :
+
+```text
+CLIENT
+MANDAT
+DEMANDE
+```
+
+car elle représente les relations :
+
+```text
+search x property
+```
+
+---
+
+# 71. Data Retention
+
+Toutes les relations candidates de matching ne doivent pas nécessairement être conservées indéfiniment.
+
+Une politique pourra distinguer :
+
+```text
+candidate
+qualified
+presented
+retained
+```
+
+selon la valeur analytique et les besoins d'audit.
+
+---
+
+# 72. Eco-conception
+
+Le stockage analytique doit appliquer :
+
+```text
+store useful data
+avoid unnecessary duplication
+control retention
+aggregate where justified
+```
+
+---
+
+# 73. RGPD
+
+Les données personnelles doivent être minimisées.
+
+Exemple :
+
+```text
+CLIENT.email
+```
+
+n'est normalement pas nécessaire dans :
 
 ```text
 fact_presentation
@@ -1351,667 +1355,275 @@ fact_presentation
 
 ---
 
-# 64. KPI candidat — score moyen
+# 74. Pseudonymisation analytique
 
-```sql
-AVG(matching_score)
-```
-
----
-
-# 65. KPI candidat — taux de rejet
-
-Conceptuellement :
+Le warehouse peut utiliser :
 
 ```text
-Rejected Presentations
-----------------------
-Total Presentations
+surrogate keys
 ```
+
+sans propager l'identité directe.
 
 ---
 
-# 66. KPI candidat — taux de visite
+# 75. Documents
+
+Les fichiers binaires ne doivent pas être chargés dans le warehouse.
+
+Seules les métadonnées analytiquement utiles peuvent être intégrées.
+
+---
+
+# 76. AI and Warehouse
+
+Le warehouse peut fournir :
 
 ```text
-Visited
--------
-Presented
+historical outcomes
+aggregated behavior
+matching statistics
 ```
 
-La définition exacte du dénominateur doit être documentée pour éviter des KPI ambigus.
+aux workflows IA.
 
 ---
 
-# 67. KPI candidat — taux de rétention
+# 77. Attention ML
+
+Le StarterPack demande principalement de concevoir les données et features nécessaires au modèle de matching ; l'entraînement n'est pas une exigence obligatoire. 
+
+Le warehouse doit donc être utile même sans modèle ML entraîné.
+
+---
+
+# 78. Matching Features
+
+Données possibles :
 
 ```text
-Retained
---------
-Presented
+budget difference
+surface difference
+city match
+property type match
+room difference
+DPE match
+preference matches
+historical feedback
 ```
 
 ---
 
-# 68. KPI candidat — performance source
+# 79. Streaming
 
-Analyse par :
+Kafka n'est pas nécessaire à cette architecture.
+
+Le besoin officiel décrit surtout :
 
 ```text
-source
+large volume
+repeated matching
+daily / multiple daily selection
 ```
 
-de :
-
-- nombre de biens ;
-- biens qualifiés ;
-- biens présentés ;
-- score moyen ;
-- taux de rétention.
+mais pas une obligation de traitement événementiel sub-seconde. 
 
 ---
 
-# 69. KPI candidat — prix moyen
+# 80. Batch Architecture
 
-```sql
-AVG(property_price)
-```
-
-par :
+La baseline reste :
 
 ```text
-city
-property_type
-month
-```
-
----
-
-# 70. KPI candidat — surface moyenne
-
-```sql
-AVG(property_surface)
-```
-
-par segment.
-
----
-
-# 71. KPI candidat — activité mandat
-
-Exemples :
-
-```text
-number of active mandates
-presentations per mandate
-average request versions per mandate
-```
-
----
-
-# 72. KPI et gouvernance
-
-Chaque KPI important doit avoir :
-
-```text
-Name
-Definition
-Formula
-Source
-Owner
-Refresh frequency
-Quality rule
-```
-
----
-
-# 73. Exemple de définition KPI
-
-```text
-KPI:
-Average Matching Score
-
-Definition:
-Average score_matching for presentations
-where matching_score is not null.
-
-Source:
-warehouse.fact_presentation
-
-Refresh:
-After successful warehouse pipeline
-```
-
----
-
-# 74. Agrégations
-
-Les agrégations doivent être calculées dans le système analytique plutôt que dans le frontend lorsque cela est pertinent.
-
-À éviter :
-
-```text
-Download 1,000,000 rows
-        |
-        v
-Browser
-        |
-        v
-SUM()
-```
-
-Préférer :
-
-```text
-Database aggregation
-        |
-        v
-Small result
-        |
-        v
-Dashboard
-```
-
----
-
-# 75. Performance OLAP
-
-Les optimisations OLAP peuvent être différentes des optimisations OLTP.
-
-Exemples :
-
-```text
-indexes
-partitioning
-materialized views
-pre-aggregation
-columnar systems
-```
-
-Elles doivent être introduites selon les besoins mesurés.
-
----
-
-# 76. Materialized Views
-
-Une vue matérialisée peut devenir pertinente pour des calculs coûteux et fréquemment consultés.
-
-Exemple futur :
-
-```text
-monthly_market_summary
-```
-
-Mais elle introduit un problème de fraîcheur et de rafraîchissement.
-
-Elle n'est pas automatiquement nécessaire au MVP.
-
----
-
-# 77. Partitioning
-
-Une table de faits importante peut éventuellement être partitionnée par :
-
-```text
-date
-```
-
-Mais le partitionnement ne doit pas être introduit uniquement pour afficher une architecture complexe.
-
-Il doit répondre à un volume ou workload réel.
-
----
-
-# 78. Volume initial
-
-Le MVP peut fonctionner avec PostgreSQL standard.
-
-L'architecture doit néanmoins permettre de démontrer les concepts OLAP sur un dataset suffisamment représentatif.
-
----
-
-# 79. Données synthétiques
-
-Comme pour les benchmarks OLTP, des données synthétiques peuvent être générées pour démontrer :
-
-- agrégations ;
-- alimentation ;
-- qualité ;
-- historique ;
-- performance.
-
-Elles doivent être clairement identifiées comme synthétiques.
-
----
-
-# 80. Reproductibilité
-
-La construction du warehouse devra être automatisable.
-
-Exemple :
-
-```text
-Create schemas
-   |
-   v
-Load source data
-   |
-   v
-Run Airflow
-   |
-   v
-Build warehouse
-   |
-   v
-Run quality tests
-   |
-   v
-Query KPIs
-```
-
----
-
-# 81. GitOps
-
-Les définitions de déploiement Airflow doivent être versionnées.
-
-Exemples :
-
-```text
-Helm values
-Kubernetes manifests
-DAG repository configuration
-```
-
----
-
-# 82. DAG as Code
-
-Les DAG Airflow sont stockés dans Git.
-
-Cela permet :
-
-```text
-Versioning
-Review
-Rollback
-Audit
-```
-
----
-
-# 83. SQL as Code
-
-Les transformations SQL sont également versionnées.
-
-Le Data Warehouse ne doit pas dépendre uniquement de modifications manuelles exécutées directement dans PostgreSQL.
-
----
-
-# 84. Secrets
-
-Les credentials PostgreSQL ne doivent pas être codés dans :
-
-```text
-DAG
-SQL
-Git repository
-```
-
-Ils doivent être injectés via la stratégie de secrets de la plateforme.
-
----
-
-# 85. Airflow Connection
-
-La connexion Airflow vers PostgreSQL devra être fournie par un mécanisme sécurisé.
-
-Architecture logique :
-
-```text
-Airflow
-   |
-   | credential reference
-   v
-Secret Management
-   |
-   v
 PostgreSQL
++
+Airflow
++
+dbt/SQL
 ```
+
+pour l'analytique.
 
 ---
 
-# 86. Failure Handling
+# 81. Future Architecture
 
-Un pipeline peut échouer.
-
-Exemples :
+Si les mesures montrent que PostgreSQL ne satisfait plus les objectifs :
 
 ```text
-database unavailable
-invalid data
-constraint failure
-transformation error
-network failure
+Dedicated OLAP engine
+Data Lake
+distributed processing
+streaming platform
 ```
 
-Le DAG doit rendre l'échec visible.
+pourront être évalués via une nouvelle décision d'architecture.
 
 ---
 
-# 87. Retry
+# 82. Evidence Runtime
 
-Certaines erreurs temporaires peuvent être retentées.
-
-Exemple :
+Les preuves finales devront inclure :
 
 ```text
-temporary database connection failure
-```
-
-Mais une erreur de données ne doit pas être retentée indéfiniment sans diagnostic.
-
----
-
-# 88. Alerting
-
-Un échec critique du pipeline doit pouvoir produire :
-
-```text
-Airflow task failure
-        |
-        v
-Metric / Event
-        |
-        v
-Alerting
-```
-
----
-
-# 89. Observabilité
-
-Le pipeline doit être observable via :
-
-```text
-Airflow UI
-logs
-metrics
-Prometheus
-Grafana
-```
-
-selon l'intégration disponible.
-
----
-
-# 90. Métriques candidates
-
-```text
-pipeline_success
-pipeline_failure
-pipeline_duration
-rows_extracted
-rows_loaded
-quality_checks_failed
-warehouse_freshness
-```
-
----
-
-# 91. Audit
-
-Une exécution doit permettre de répondre :
-
-```text
-When did the pipeline run?
-Did it succeed?
-How many rows were processed?
-Which version of the code was used?
-Were quality checks successful?
-```
-
----
-
-# 92. Rejeu
-
-Le pipeline doit permettre un rejeu contrôlé.
-
-Cela est particulièrement important après :
-
-- correction d'un bug ;
-- restauration ;
-- changement de transformation ;
-- incident.
-
----
-
-# 93. Backfill
-
-Airflow peut permettre de recalculer des périodes historiques.
-
-Exemple :
-
-```text
-2026-07-01
-...
-2026-07-31
-```
-
-Le pipeline doit être conçu pour éviter les doublons lors de ces opérations.
-
----
-
-# 94. OLAP et IA
-
-Le Data Warehouse peut également fournir des features ou indicateurs utiles à l'IA.
-
-Architecture :
-
-```text
-Operational Data
-      |
-      v
-Warehouse
-      |
-      +--> BI
-      |
-      +--> Analytics
-      |
-      +--> ML / AI
-```
-
----
-
-# 95. Séparation analytique / RAG
-
-Le Data Warehouse n'est pas la même chose qu'une base vectorielle.
-
-```text
-Warehouse
-   |
-   +--> structured analytics
-```
-
-```text
-Vector store
-   |
-   +--> semantic retrieval
-```
-
-Ces responsabilités ne doivent pas être confondues.
-
----
-
-# 96. Preuves runtime attendues
-
-La compétence devra être démontrée avec des preuves réelles.
-
-Exemples :
-
-```text
-PostgreSQL schemas
+warehouse DDL
 Airflow DAG
 successful DAG run
-staging tables
-warehouse tables
-fact table
-dimension tables
-analytics views
-data quality tests
-KPI query results
-lineage
+dimension rows
+fact rows
+quality tests
+analytics queries
+lineage evidence
 ```
 
 ---
 
-# 97. Structure future des preuves
+# 83. Structure d'implémentation
 
-Le dossier pourra devenir :
+Les artifacts réels seront stockés hors documentation :
 
 ```text
-C3-OLAP-Alimentation/
-│
-├── README.md
-├── sql/
-│   ├── create-staging.sql
-│   ├── create-warehouse.sql
-│   └── create-analytics.sql
-│
-├── airflow/
-│   └── real_estate_warehouse_etl.py
-│
-├── dbt/
-│   └── ...
-│
-├── tests/
-│   └── ...
-│
-├── evidence/
-│   ├── airflow-success.png
-│   ├── warehouse-tables.txt
-│   ├── quality-results.txt
-│   └── kpi-results.txt
-│
-└── EXECUTION-REPORT.md
+database/olap/
+pipelines/airflow/
+pipelines/dbt/
+database/tests/
 ```
 
-Ces fichiers seront produits pendant l'implémentation.
-
----
-
-# 98. Ce qui constitue une preuve forte
+Ce dossier :
 
 ```text
-Source OLTP populated
-        |
-        v
-Airflow DAG executed
-        |
-        v
-Staging populated
-        |
-        v
-Dimensions populated
-        |
-        v
-Fact populated
-        |
-        v
-Quality tests PASS
-        |
-        v
-KPI query returns expected results
+docs/evidence/05-BC05/C3-OLAP-Alimentation/
 ```
+
+reste un dossier documentaire et d'index des preuves.
 
 ---
 
-# 99. Ce qui ne suffit pas
-
-Les affirmations suivantes ne constituent pas seules une preuve :
+# 84. Structure cible implementation
 
 ```text
-"We use a Data Warehouse."
-
-"We use Airflow."
-
-"We use OLAP."
-
-"We have fact and dimension tables."
+database/olap/
+│
+├── 001_create_staging.sql
+├── 002_create_dimensions.sql
+├── 003_create_facts.sql
+└── 004_create_analytics.sql
 ```
 
-Il faut montrer leur existence et leur exécution.
+et :
+
+```text
+pipelines/airflow/
+└── real_estate_warehouse_etl.py
+```
 
 ---
 
-# 100. Matrice de preuve
+# 85. Evidence References
 
-| Élément | Baseline documentaire | Preuve future |
+Les preuves pourront être référencées depuis ce README sous forme :
+
+```text
+Implementation:
+../../../../../database/olap/
+
+Pipeline:
+../../../../../pipelines/airflow/
+
+Tests:
+../../../../../database/tests/
+```
+
+Les liens exacts seront ajoutés lorsque les fichiers existeront réellement.
+
+---
+
+# 86. Minimum Runtime Demonstration
+
+```text
+1. Populate real_estate
+2. Execute staging load
+3. Populate dimensions
+4. Populate facts
+5. Execute Data Quality
+6. Query analytics
+7. Show successful Airflow run
+```
+
+---
+
+# 87. Ce qui ne suffit pas
+
+Ne constituent pas seules une preuve :
+
+```text
+"We use OLAP"
+
+"We have Airflow"
+
+"We designed a star schema"
+
+"We use PostgreSQL"
+```
+
+Il faut montrer l'alimentation réelle.
+
+---
+
+# 88. Matrice de preuve
+
+| Élément | Documentation | Runtime |
 |---|---|---|
-| Séparation OLTP/OLAP | README | Schemas PostgreSQL |
-| Staging | Défini | Tables |
-| Star schema | Défini | DDL |
-| Dimensions | Définies | Tables + rows |
-| Fact | Définie | Table + rows |
-| ETL/ELT | Défini | DAG |
-| Orchestration | Airflow | Successful run |
-| Data Quality | Règles définies | Test results |
-| KPI | Candidats définis | SQL results |
-| Lineage | Défini | OpenMetadata / evidence |
-| Observabilité | Définie | Metrics / logs |
+| OLTP/OLAP separation | COMPLETE | PostgreSQL schemas |
+| Staging | DEFINED | SQL tables |
+| Dimensions | DEFINED | populated dimensions |
+| fact_presentation | DEFINED | populated fact |
+| fact_mandate | DEFINED | populated fact |
+| fact_payment | DEFINED | populated fact |
+| Airflow | DEFINED | successful DAG |
+| dbt/SQL transformations | DEFINED | executed transformations |
+| Data Quality | DEFINED | test report |
+| KPI | DEFINED | query results |
+| Lineage | DEFINED | OpenMetadata evidence |
+| Growth strategy | DEFINED | benchmark |
 
 ---
 
-# 101. Relation avec C1
+# 89. Relations avec C1
 
 ```text
-C1
-MCD
- |
- v
-MLD
- |
- v
-MPD
- |
- v
-OLTP
-```
-
-alimente :
-
-```text
-C3
-Staging
- |
- v
-Warehouse
- |
- v
-Analytics
+MCD / MLD / MPD
+       |
+       v
+real_estate OLTP
+       |
+       v
+C3 OLAP
 ```
 
 ---
 
-# 102. Relation avec C2
+# 90. Relation avec C2
 
-C2 optimise les transactions opérationnelles.
-
-C3 évite notamment de transformer l'OLTP en moteur analytique général.
+C2 optimise :
 
 ```text
-OLTP
-transaction workload
-
-OLAP
-analytical workload
+transactional queries
 ```
+
+C3 isole :
+
+```text
+analytical workloads
+```
+
+pour éviter que les analyses perturbent l'OLTP.
 
 ---
 
-# 103. Relation avec C4
+# 91. Relation avec C4
 
-C4 analysera :
+C4 mesure :
 
 ```text
 Volume
@@ -2019,201 +1631,97 @@ Velocity
 Variety
 ```
 
-afin de déterminer si l'architecture actuelle reste adaptée lorsque les caractéristiques des données évoluent.
+et permet de déterminer quand cette architecture doit évoluer.
 
 ---
 
-# 104. Relation avec C5/C6
+# 92. Relation avec C5
 
-Les données préparées peuvent contribuer aux traitements :
+Les résultats analytiques peuvent alimenter la conception des features et l'évaluation du matching.
+
+---
+
+# 93. Relation avec C7
+
+Le warehouse applique :
 
 ```text
-Matching
-Machine Learning
-AI
+data minimization
+retention
+controlled access
 ```
 
-mais la logique analytique ne doit pas être confondue avec le modèle IA lui-même.
+aux données personnelles.
 
 ---
 
-# 105. Relation avec C7
-
-La duplication de données depuis OLTP vers OLAP augmente les responsabilités RGPD.
-
-Il faut donc contrôler :
-
-```text
-What is copied?
-Why?
-How long?
-Who can access it?
-```
-
----
-
-# 106. Relation avec C8
-
-Les données utilisées par l'IA et l'analytics doivent respecter les exigences de :
-
-```text
-sovereignty
-security
-confidentiality
-governance
-```
-
----
-
-# 107. Décisions retenues
-
-Pour le MVP :
-
-```text
-OLTP:
-PostgreSQL / real_estate
-
-Staging:
-PostgreSQL / staging
-
-Warehouse:
-PostgreSQL / warehouse
-
-Analytics:
-PostgreSQL / analytics
-
-Orchestration:
-Airflow
-
-Transformation:
-SQL + Python
-dbt where justified
-
-Metadata:
-OpenMetadata
-```
-
----
-
-# 108. Technologies non obligatoires
-
-Le MVP n'impose pas :
-
-```text
-Kafka
-Spark
-Flink
-Dedicated cloud warehouse
-Dedicated columnar database
-```
-
-Ces technologies doivent être introduites uniquement si le besoin les justifie.
-
----
-
-# 109. Principe architectural
-
-La plateforme suit :
-
-```text
-Use the simplest architecture
-that satisfies the requirement
-and remains evolvable.
-```
-
----
-
-# 110. Critères de réussite
-
-C3 sera considérée démontrée lorsque nous disposerons de :
-
-```text
-Working OLTP source
-+
-Working staging
-+
-Working dimensional warehouse
-+
-Working fact/dimensions
-+
-Automated alimentation
-+
-Successful Airflow execution
-+
-Data quality validation
-+
-Business KPI result
-+
-Traceability
-```
-
----
-
-# 111. Statut actuel
+# 94. Statut actuel
 
 | Élément | Statut |
 |---|---|
-| OLTP/OLAP separation | DOCUMENTÉE |
-| OLAP architecture | DOCUMENTÉE |
-| Staging strategy | DÉFINIE |
-| Warehouse strategy | DÉFINIE |
-| Star schema | BASELINE DÉFINIE |
-| Fact grain | DÉFINI |
-| Dimensions | IDENTIFIÉES |
-| ETL/ELT strategy | DÉFINIE |
-| Airflow orchestration | DÉFINIE |
-| dbt integration | CANDIDATE / SELON BESOIN |
-| Data Quality strategy | DÉFINIE |
-| KPI candidates | DÉFINIS |
-| Lineage strategy | DÉFINIE |
-| Runtime warehouse | À IMPLÉMENTER |
-| DAG execution | À PRODUIRE |
-| Quality evidence | À PRODUIRE |
-| KPI evidence | À PRODUIRE |
+| OLTP source model V2 | COMPLETE |
+| OLAP architecture | UPDATED |
+| Staging strategy | UPDATED |
+| Dimensions | UPDATED |
+| fact_presentation | DEFINED |
+| fact_mandate | ADDED |
+| fact_payment | ADDED |
+| Airflow design | COMPLETE |
+| dbt strategy | COMPLETE |
+| Data Quality | COMPLETE |
+| KPI model | UPDATED |
+| Growth assumptions | ALIGNED WITH STARTERPACK |
+| Runtime warehouse | PENDING |
+| Airflow execution | PENDING |
+| Data Quality execution | PENDING |
+| Runtime evidence | PENDING |
 
 ---
 
-# 112. Conclusion
+# 95. Conclusion
 
-L'architecture analytique du Real Estate Intelligence Platform sépare clairement :
+L'architecture OLAP est maintenant alignée avec le modèle métier V2.
 
-```text
-Operational Processing
-```
-
-de :
+Elle permet d'analyser :
 
 ```text
-Analytical Processing
+MANDATS
+DEMANDES
+MATCHING
+SOURCES
+CHASSEURS
+SECTEURS
+PAIEMENTS
 ```
 
-La chaîne cible est :
+sans dégrader la base transactionnelle.
+
+La chaîne cible devient :
 
 ```text
-PostgreSQL OLTP
-      |
-      v
-Staging
-      |
-      v
-Transformation
-      |
-      v
-Dimensional Warehouse
-      |
-      v
-Analytics
-      |
-      +--> KPI
-      +--> Dashboards
-      +--> Data Analysis
-      +--> AI
+real_estate OLTP
+       |
+       v
+staging
+       |
+       v
+warehouse
+       |
+       +--> fact_mandate
+       +--> fact_presentation
+       +--> fact_payment
+       |
+       v
+analytics
+       |
+       +--> KPI
+       +--> dashboards
+       +--> decision support
+       +--> AI features
 ```
 
-Airflow assure l'orchestration, PostgreSQL fournit le stockage relationnel, et OpenMetadata contribue à la gouvernance et à la traçabilité.
-
-Les preuves finales devront provenir de l'exécution réelle du pipeline et non uniquement de cette conception documentaire.
+Les preuves finales devront provenir de l'exécution réelle de cette chaîne.
 
 ---
 
-**BC05 / C3 — OLAP & ALIMENTATION — DOCUMENTATION BASELINE COMPLETE**
+**BC05 / C3 — OLAP & ALIMENTATION V2 — ALIGNED WITH STARTERPACK**

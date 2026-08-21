@@ -1,1236 +1,989 @@
 # BC05 — C5 — Modèle de Matching IA
 
 **Bloc de compétences :** BC05  
-**Compétence :** C5 — Concevoir, entraîner, évaluer et exploiter un modèle de traitement / matching IA  
+**Compétence :** Concevoir les données, variables et mécanismes nécessaires à un modèle de matching IA  
 **Projet :** Real Estate Intelligence Platform  
-**Plateforme :** Enterprise AI Platform  
-**Version :** 1.0  
-**Statut :** Baseline documentaire — modèle et preuves expérimentales à produire
+**Version :** 2.0  
+**Statut :** Baseline documentaire — implémentation ML prévue  
+**Extension projet :** Entraînement, évaluation, versionnement et serving de modèles ML  
 
 ---
 
 # 1. Objectif
 
-Ce dossier décrit la stratégie de matching entre :
-
-```text
-Demande immobilière client
-            |
-            v
-      Matching Engine
-            |
-            v
-        Biens candidats
-            |
-            v
-      Score / Ranking
-            |
-            v
-       Présentation
-```
-
-L'objectif n'est pas d'utiliser de l'IA simplement parce que le projet possède une plateforme IA.
-
-Le système doit utiliser le mécanisme le plus simple, explicable et mesurable permettant de satisfaire le besoin métier.
-
----
-
-# 2. Problème métier
-
-Un chasseur immobilier doit identifier les biens correspondant le mieux à une demande.
-
-Une demande peut contenir :
-
-```text
-Localisation
-Budget
-Surface
-Nombre de pièces
-Type de bien
-Critères obligatoires
-Critères souhaités
-Description libre
-Préférences
-Contraintes
-```
-
-Les sources immobilières peuvent fournir :
-
-```text
-Prix
-Surface
-Localisation
-Nombre de pièces
-Type
-Description
-Équipements
-Caractéristiques
-```
-
-Le système doit rapprocher ces deux ensembles.
-
----
-
-# 3. Objectif fonctionnel
-
-À partir d'une demande :
-
-```text
-D
-```
-
-et d'un ensemble de biens :
-
-```text
-B1 ... Bn
-```
-
-le système produit :
-
-```text
-score(D, Bi)
-```
-
-puis classe les biens :
-
-```text
-B7     94
-B23    89
-B12    84
-B4     72
-...
-```
-
----
-
-# 4. Architecture de matching
-
-L'architecture cible est hybride.
-
-```text
-All Properties
-      |
-      v
-Hard SQL Filters
-      |
-      v
-Candidate Properties
-      |
-      v
-Deterministic Scoring
-      |
-      v
-Candidate Ranking
-      |
-      v
-Optional ML / Semantic Analysis
-      |
-      v
-Final Ranking
-      |
-      v
-Human Validation
-```
-
----
-
-# 5. Pourquoi une approche hybride
-
-Toutes les règles ne nécessitent pas du Machine Learning.
-
-Exemple :
-
-```text
-budget_max = 350000
-```
-
-peut être évalué directement en SQL.
-
-Il serait inutile d'utiliser un LLM pour déterminer si :
-
-```text
-420000 > 350000
-```
-
----
-
-# 6. Principe
-
-Le système applique :
-
-```text
-Deterministic where possible
-AI where useful
-Human validation where necessary
-```
-
----
-
-# 7. Hard Constraints
-
-Les contraintes obligatoires peuvent éliminer directement un bien.
-
-Exemples :
-
-```text
-maximum budget
-minimum surface
-mandatory city
-mandatory property type
-```
-
-Architecture :
-
-```text
-100,000 properties
-        |
-        v
-Hard Filters
-        |
-        v
-2,500 candidates
-```
-
-Le nombre exact dépendra des données réelles.
-
----
-
-# 8. Soft Constraints
-
-Les préférences non obligatoires peuvent contribuer au score.
-
-Exemples :
-
-```text
-balcony preferred
-quiet area preferred
-near public transport
-south-facing
-parking preferred
-```
-
-Un bien peut ne pas satisfaire une préférence tout en restant pertinent.
-
----
-
-# 9. Critères structurés
-
-Les critères structurés peuvent être comparés directement.
-
-Exemple :
-
-```text
-Request:
-budget_max = 350000
-
-Property:
-price = 320000
-```
-
-Résultat :
-
-```text
-Budget criterion satisfied
-```
-
----
-
-# 10. Critères non structurés
-
-Une demande peut contenir :
-
-```text
-"Je recherche un appartement lumineux,
-calme, proche du tram et adapté au télétravail."
-```
-
-Ces critères sont plus difficiles à traiter avec uniquement :
-
-```text
-SQL equality
-```
-
-Ils constituent un candidat pour une analyse sémantique.
-
----
-
-# 11. Sources du matching
-
-Le matching exploite principalement :
+Cette partie définit le système de matching entre :
 
 ```text
 DEMANDE_VERSION
+        |
+        v
+   Matching Engine
+        ^
+        |
+       BIEN
 ```
 
-et :
+Le système doit identifier les biens les plus pertinents pour une version donnée d'une recherche immobilière.
+
+L'objectif minimum est de concevoir :
 
 ```text
-BIEN
+data
+features
+matching logic
+evaluation strategy
 ```
 
-Le résultat peut être matérialisé dans :
+Le projet va volontairement plus loin avec :
 
 ```text
+baseline algorithm
++
+ML training
++
+model comparison
++
+MLflow tracking
++
+model versioning
++
+API inference
++
+monitoring
+```
+
+---
+
+# 2. Positionnement du projet
+
+Nous distinguons deux niveaux.
+
+## Certification Core
+
+```text
+Matching problem definition
+Feature design
+Input/output definition
+Evaluation strategy
+Data preparation
+```
+
+## Project Extension
+
+```text
+Actual training
+Model evaluation
+Experiment tracking
+Model Registry
+Model serving
+MLOps
+```
+
+L'entraînement ML constitue donc une extension technique du projet.
+
+---
+
+# 3. Pourquoi aller plus loin
+
+Un modèle uniquement décrit sur papier démontre la conception.
+
+Un modèle réellement entraîné permet également de démontrer :
+
+```text
+implementation
+reproducibility
+experimentation
+evaluation
+deployment
+observability
+MLOps
+```
+
+Cette extension exploite directement l'architecture Enterprise AI Platform du projet.
+
+---
+
+# 4. Problème métier
+
+Pour une demande immobilière donnée :
+
+```text
+Budget
+Location
+Property Type
+Surface
+Rooms
+Bedrooms
+DPE
+Preferences
+```
+
+le système doit identifier les biens les plus pertinents.
+
+---
+
+# 5. Exemple
+
+Demande :
+
+```text
+Ville:
+Montpellier
+
+Type:
+Appartement
+
+Budget max:
+350000 €
+
+Surface min:
+70 m²
+
+Rooms min:
+3
+
+Bedrooms min:
+2
+
+DPE max:
+D
+
+Preferences:
+balcony
+parking
+quiet
+```
+
+Biens candidats :
+
+```text
+Property A
+Property B
+Property C
+...
+```
+
+Le système produit :
+
+```text
+Property A -> 92
+Property C -> 84
+Property B -> 61
+```
+
+---
+
+# 6. Architecture de Matching
+
+```text
+DEMANDE_VERSION
+        |
+        v
+Feature Extraction
+        |
+        v
+Hard Filtering
+        |
+        v
+Candidate Set
+        |
+        v
+Deterministic Scoring
+        |
+        v
+ML Scoring
+        |
+        v
+Optional Semantic Enrichment
+        |
+        v
+Final Ranking
+        |
+        v
+Top-K Properties
+        |
+        v
 PRESENTATION
 ```
 
 ---
 
-# 12. Version de demande
+# 7. Principe fondamental
 
-Le matching doit utiliser une version déterminée de la demande.
+Le système ne doit pas commencer par un LLM.
+
+Des contraintes telles que :
 
 ```text
-MANDAT
-   |
-   +--> DEMANDE_VERSION 1
-   |
-   +--> DEMANDE_VERSION 2
+budget
+surface
+city
+property type
+number of rooms
 ```
 
-Un score calculé pour la version 1 ne doit pas être présenté comme ayant été calculé pour la version 2.
+sont structurées.
+
+Elles doivent être traitées par :
+
+```text
+SQL
+Python
+deterministic rules
+```
+
+avant toute couche IA plus coûteuse.
 
 ---
 
-# 13. Reproductibilité
+# 8. Hard Filters
 
-Un résultat de matching doit idéalement permettre d'identifier :
+Les contraintes incompatibles peuvent éliminer un bien.
 
-```text
-Request Version
-Property Version / State
-Algorithm Version
-Model Version
-Configuration
-Timestamp
-```
-
----
-
-# 14. Pipeline logique
+Exemples :
 
 ```text
-Request
-   |
-   v
-Validation
-   |
-   v
-Structured Filtering
-   |
-   v
-Feature Computation
-   |
-   v
-Scoring
-   |
-   v
-Ranking
-   |
-   v
-Optional AI Enrichment
-   |
-   v
-Business Validation
+wrong city
+price far above hard budget
+wrong property type
+surface below mandatory minimum
 ```
 
 ---
 
-# 15. Étape 1 — Validation
-
-Avant matching, vérifier :
-
-```text
-budget_min <= budget_max
-surface_min >= 0
-valid property type
-valid location
-mandatory fields present
-```
-
-Une entrée invalide ne doit pas être transmise silencieusement au modèle.
-
----
-
-# 16. Étape 2 — SQL Filtering
-
-Exemple :
+# 9. Exemple SQL
 
 ```sql
-SELECT
-    id_bien,
-    prix,
-    surface,
-    nb_pieces,
-    ville,
-    type_bien
+SELECT *
 FROM real_estate.bien
-WHERE statut = 'ACTIF'
-  AND ville = :ville
+WHERE ville = :ville
+  AND type_bien = :type_bien
   AND prix <= :budget_max
   AND surface >= :surface_min;
 ```
 
-Cette étape réduit l'espace de recherche.
+Le filtrage réduit le nombre de candidats avant scoring.
 
 ---
 
-# 17. Étape 3 — Feature Engineering
+# 10. Pourquoi filtrer tôt
 
-Les données métier doivent être transformées en variables utilisables.
-
-Exemples :
+Supposons :
 
 ```text
-price_difference
-surface_difference
-room_difference
-location_match
-property_type_match
+1000 properties
+```
+
+Après filtres :
+
+```text
+100 properties
+```
+
+Le moteur de scoring ne traite plus que :
+
+```text
+10 %
+```
+
+du dataset initial.
+
+Cela réduit :
+
+```text
+CPU
+memory
+latency
+AI inference
+GPU workload
+```
+
+---
+
+# 11. Feature Engineering
+
+Les features doivent représenter la compatibilité :
+
+```text
+DEMANDE_VERSION
+vs
+BIEN
+```
+
+---
+
+# 12. Budget Feature
+
+Exemple :
+
+```text
 budget_ratio
-surface_ratio
+=
+property_price / budget_max
 ```
 
 ---
 
-# 18. Exemple price_difference
+# 13. Budget Difference
 
 ```text
-budget_target = 300000
-property_price = 285000
-
-price_difference = 15000
+budget_difference
+=
+budget_max - property_price
 ```
 
-Une version normalisée peut être utilisée.
-
----
-
-# 19. Budget Score
-
-Exemple conceptuel :
+Une valeur positive signifie :
 
 ```text
-property <= target budget
-        |
-        v
-high score
+within budget
 ```
-
-Plus l'écart devient défavorable, plus le score peut diminuer.
-
-La formule exacte devra être testée.
 
 ---
 
-# 20. Surface Score
+# 14. Surface Feature
+
+```text
+surface_difference
+=
+property_surface - requested_surface_min
+```
+
+---
+
+# 15. Room Feature
+
+```text
+room_difference
+=
+property_rooms - requested_rooms_min
+```
+
+---
+
+# 16. Bedroom Feature
+
+```text
+bedroom_difference
+=
+property_bedrooms - requested_bedrooms_min
+```
+
+---
+
+# 17. Location Feature
+
+Version simple :
+
+```text
+city_match
+=
+0 / 1
+```
+
+Évolution possible :
+
+```text
+distance_km
+```
+
+si les coordonnées sont disponibles.
+
+---
+
+# 18. Property Type Feature
+
+```text
+property_type_match
+=
+0 / 1
+```
+
+---
+
+# 19. DPE Feature
+
+Le DPE peut être converti en ordre :
+
+```text
+A = 1
+B = 2
+C = 3
+D = 4
+E = 5
+F = 6
+G = 7
+```
+
+pour comparer :
+
+```text
+requested_dpe_max
+```
+
+et :
+
+```text
+property_dpe
+```
+
+---
+
+# 20. Preference Features
+
+Les critères souhaités peuvent produire des variables :
+
+```text
+has_balcony
+has_garden
+has_parking
+has_elevator
+has_terrace
+has_cellar
+has_view
+is_quiet
+is_bright
+has_pool
+```
+
+---
+
+# 21. Preference Match Ratio
 
 Exemple :
 
 ```text
-requested = 80 m²
-property = 82 m²
-```
-
-doit généralement produire un meilleur résultat que :
-
-```text
-property = 45 m²
-```
-
-si la surface est importante pour le client.
-
----
-
-# 21. Location Score
-
-La localisation peut être évaluée à plusieurs niveaux :
-
-```text
-Exact city
-Postal code
-Area
-Distance
-Coordinates
-Travel time
-```
-
-Le MVP peut commencer avec une comparaison simple avant d'introduire une logique géospatiale.
-
----
-
-# 22. PostgreSQL / PostGIS
-
-Si les besoins géographiques deviennent plus avancés, PostGIS pourra être évalué pour :
-
-```text
-distance
-radius
-geospatial filtering
-```
-
-Il ne doit être introduit que si le besoin le justifie.
-
----
-
-# 23. Criteria Score
-
-Les critères supplémentaires peuvent produire un score :
-
-```text
-criteria_matched
-----------------
-criteria_requested
-```
-
-avec pondération éventuelle.
-
----
-
-# 24. Score global
-
-Un score déterministe peut suivre une formule de type :
-
-```text
-Score =
-    w1 * budget_score
-  + w2 * location_score
-  + w3 * surface_score
-  + w4 * type_score
-  + w5 * criteria_score
-```
-
-avec :
-
-```text
-w1 + w2 + w3 + w4 + w5 = 1
+preference_match_ratio
+=
+matched_preferences
+/
+requested_preferences
 ```
 
 ---
 
-# 25. Exemple
+# 22. Missing Data
 
-Exemple uniquement illustratif :
+Les annonces peuvent avoir des informations absentes.
 
-```text
-Budget      90
-Location   100
-Surface     80
-Type       100
-Criteria    70
-```
-
-avec pondérations :
+Le système doit distinguer :
 
 ```text
-Budget      0.30
-Location    0.25
-Surface     0.20
-Type        0.10
-Criteria    0.15
-```
-
-Le score final est calculable et explicable.
-
-Les valeurs définitives ne sont pas encore adoptées.
-
----
-
-# 26. Pondération
-
-Les poids peuvent être :
-
-```text
-global defaults
-```
-
-ou éventuellement adaptés selon les priorités client.
-
-Exemple :
-
-```text
-Budget:
-MANDATORY
-
-Balcony:
-PREFERRED
-```
-
-ne doivent pas nécessairement avoir la même influence.
-
----
-
-# 27. Explainability
-
-Le système ne doit pas uniquement retourner :
-
-```text
-87
-```
-
-Il doit pouvoir expliquer :
-
-```text
-Overall score: 87/100
-
-Budget:       95
-Location:    100
-Surface:      80
-Type:        100
-Preferences:  65
-```
-
----
-
-# 28. Pourquoi l'explicabilité est importante
-
-Elle permet :
-
-- validation métier ;
-- compréhension utilisateur ;
-- debugging ;
-- amélioration ;
-- audit ;
-- gouvernance IA.
-
----
-
-# 29. Human-in-the-loop
-
-Le modèle ne remplace pas nécessairement le chasseur immobilier.
-
-Architecture :
-
-```text
-AI / Matching
-      |
-      v
-Recommendation
-      |
-      v
-Real Estate Professional
-      |
-      v
-Validation
-      |
-      v
-Client
-```
-
----
-
-# 30. Feedback
-
-Le retour métier/client constitue une source de données importante.
-
-Exemples :
-
-```text
-Presented
-Rejected
-Visited
-Retained
-Purchased
-```
-
-Ces résultats peuvent servir à évaluer le matching.
-
----
-
-# 31. Feedback Loop
-
-```text
-Matching
-   |
-   v
-Presentation
-   |
-   v
-Client Feedback
-   |
-   v
-Historical Dataset
-   |
-   v
-Model Evaluation / Improvement
-```
-
----
-
-# 32. Baseline
-
-Avant de créer un modèle ML, une baseline déterministe doit être construite.
-
-Exemple :
-
-```text
-Weighted rules-based scoring
-```
-
-Elle fournit un point de comparaison.
-
----
-
-# 33. Pourquoi une baseline
-
-Sans baseline, il est impossible de démontrer qu'un modèle ML apporte réellement une amélioration.
-
-La question doit être :
-
-```text
-Does ML outperform the simpler solution?
-```
-
----
-
-# 34. Dataset ML
-
-Un futur dataset d'apprentissage peut contenir :
-
-```text
-request features
-property features
-matching features
-business feedback
-target
-```
-
----
-
-# 35. Target
-
-Une cible possible pourrait être :
-
-```text
-0 = rejected
-1 = relevant
-```
-
-ou plusieurs classes :
-
-```text
-REJECTED
-INTERESTED
-VISITED
-RETAINED
-```
-
-Le choix dépendra des données disponibles.
-
----
-
-# 36. Limitation initiale
-
-Le projet peut ne pas disposer immédiatement d'un volume suffisant de feedback réel pour entraîner un modèle supervisé fiable.
-
-Cette limitation doit être explicitement documentée.
-
----
-
-# 37. Données synthétiques
-
-Des données synthétiques peuvent être utilisées pour démontrer techniquement :
-
-```text
-training
-tracking
-evaluation
-deployment pipeline
-```
-
-mais elles ne prouvent pas la performance métier réelle du modèle.
-
----
-
-# 38. Séparation importante
-
-Il faut distinguer :
-
-```text
-Technical ML pipeline validation
+FALSE
 ```
 
 de :
 
 ```text
-Business model validation
+UNKNOWN
 ```
 
-Un modèle entraîné sur données synthétiques peut valider la plateforme MLOps sans démontrer une valeur commerciale réelle.
+Exemple :
+
+```text
+balcony = false
+```
+
+n'est pas équivalent à :
+
+```text
+balcony information missing
+```
 
 ---
 
-# 39. Modèles candidats
+# 23. Feature Dataset
 
-Pour des features principalement tabulaires, des modèles candidats simples sont :
+Une ligne du dataset ML représente :
+
+```text
+1 DEMANDE_VERSION
++
+1 BIEN
+```
+
+Exemple :
+
+```text
+request_version_id
+property_id
+
+budget_ratio
+surface_difference
+room_difference
+bedroom_difference
+city_match
+property_type_match
+dpe_difference
+preference_match_ratio
+
+target
+```
+
+---
+
+# 24. Target Variable
+
+Pour un apprentissage supervisé, il faut définir une vérité terrain.
+
+Les événements possibles sont :
+
+```text
+PRESENTE
+REJETE
+VISITE
+RETENU
+```
+
+et les commentaires métier.
+
+---
+
+# 25. Première cible binaire
+
+Une première cible possible :
+
+```text
+relevant = 1
+```
+
+si :
+
+```text
+RETENU
+or
+VISITE
+```
+
+et :
+
+```text
+relevant = 0
+```
+
+si :
+
+```text
+REJETE
+```
+
+Cette définition devra être validée à partir des données réellement disponibles.
+
+---
+
+# 26. Attention au Label Design
+
+La cible ne doit pas être choisie uniquement parce qu'elle est facile à produire.
+
+Exemple :
+
+```text
+PRESENTE
+```
+
+signifie que le système ou le chasseur a sélectionné le bien.
+
+Cela ne signifie pas automatiquement :
+
+```text
+client likes property
+```
+
+---
+
+# 27. Feedback Loop
+
+Architecture future :
+
+```text
+Matching
+    |
+    v
+Presentation
+    |
+    v
+Client / Hunter Feedback
+    |
+    v
+Commentaire
+    |
+    v
+Training Dataset
+    |
+    v
+New Model
+```
+
+---
+
+# 28. Cold Start
+
+Au démarrage, nous n'aurons probablement pas suffisamment de labels réels.
+
+Nous commençons donc avec :
+
+```text
+Rule-Based Baseline
+```
+
+avant de dépendre d'un modèle supervisé.
+
+---
+
+# 29. Baseline déterministe
+
+Exemple de score :
+
+```text
+Location      25 %
+Budget        25 %
+Property Type 15 %
+Surface       15 %
+Rooms         10 %
+DPE            5 %
+Preferences    5 %
+```
+
+Total :
+
+```text
+100 %
+```
+
+Ces pondérations sont initiales et doivent être évaluées.
+
+---
+
+# 30. Pourquoi une baseline
+
+Une baseline permet de comparer les modèles ML à quelque chose de concret.
+
+Un modèle ML n'est intéressant que s'il apporte une amélioration mesurable.
+
+---
+
+# 31. Baseline Score
+
+Exemple :
+
+```text
+score =
+location_score      * 0.25
++
+budget_score        * 0.25
++
+type_score          * 0.15
++
+surface_score       * 0.15
++
+room_score          * 0.10
++
+dpe_score           * 0.05
++
+preference_score    * 0.05
+```
+
+---
+
+# 32. Premier modèle ML
+
+Premier candidat :
 
 ```text
 Logistic Regression
-Decision Tree
+```
+
+Pourquoi :
+
+```text
+simple
+fast
+interpretable
+strong baseline
+easy to debug
+```
+
+---
+
+# 33. Deuxième modèle
+
+Deuxième candidat :
+
+```text
 Random Forest
+```
+
+Pourquoi :
+
+```text
+non-linear relationships
+feature interactions
+robust baseline
+feature importance
+```
+
+---
+
+# 34. Modèles futurs
+
+Selon les résultats :
+
+```text
 Gradient Boosting
+XGBoost
+LightGBM
+Learning-to-Rank
+Neural Ranking
 ```
 
-Un réseau neuronal n'est pas automatiquement nécessaire.
+pourront être évalués.
+
+Ils ne doivent pas être introduits sans justification.
 
 ---
 
-# 40. Baseline ML
+# 35. Pourquoi commencer simple
 
-Une première expérimentation peut comparer :
+La stratégie est :
 
 ```text
-Rules-based
-vs
+Rules
+  |
+  v
 Logistic Regression
-vs
+  |
+  v
 Random Forest
+  |
+  v
+Compare
+  |
+  v
+More complex model only if justified
 ```
 
 ---
 
-# 41. Métriques de classification
+# 36. Train / Validation / Test
 
-Selon la cible :
+Le dataset doit être séparé en :
 
 ```text
-Accuracy
+training
+validation
+test
+```
+
+ou via :
+
+```text
+cross-validation
+```
+
+selon le volume disponible.
+
+---
+
+# 37. Data Leakage
+
+Il faut empêcher qu'une information future soit utilisée pour prédire le passé.
+
+Exemple incorrect :
+
+```text
+final purchase result
+```
+
+utilisé comme feature pour prédire la pertinence avant présentation.
+
+---
+
+# 38. Temporal Split
+
+Lorsque suffisamment d'historique existe, un split temporel peut être préférable :
+
+```text
+past
+   |
+   v
+TRAIN
+
+later period
+   |
+   v
+TEST
+```
+
+---
+
+# 39. Class Imbalance
+
+Le nombre de biens rejetés peut être largement supérieur au nombre de biens retenus.
+
+Exemple :
+
+```text
+95 % rejected
+5 % relevant
+```
+
+L'accuracy seule serait alors trompeuse.
+
+---
+
+# 40. Métriques classification
+
+Nous mesurerons notamment :
+
+```text
 Precision
 Recall
-F1-score
+F1 Score
 ROC-AUC
+PR-AUC
 ```
 
-peuvent être utilisées.
+selon la distribution des classes.
 
 ---
 
-# 42. Accuracy
+# 41. Ranking Metrics
 
-L'accuracy seule peut être trompeuse en cas de classes déséquilibrées.
+Le problème est également un problème de ranking.
 
-Exemple :
-
-```text
-95% rejected
-5% retained
-```
-
-Un modèle retournant toujours :
+Métriques candidates :
 
 ```text
-rejected
-```
-
-aurait 95 % d'accuracy mais aucune utilité.
-
----
-
-# 43. Precision
-
-La precision répond approximativement à :
-
-```text
-Among properties predicted relevant,
-how many actually were relevant?
+Precision@K
+Recall@K
+Hit Rate@K
+NDCG@K
+MAP
 ```
 
 ---
 
-# 44. Recall
+# 42. Pourquoi Precision@K
 
-Le recall répond approximativement à :
+Le client ne consulte pas forcément 500 résultats.
+
+Le système peut présenter :
 
 ```text
-Among actually relevant properties,
-how many did the model find?
+Top 10
+```
+
+Donc :
+
+```text
+Precision@10
+```
+
+peut être plus pertinente qu'une simple accuracy globale.
+
+---
+
+# 43. Business Metrics
+
+Les métriques ML doivent être complétées par :
+
+```text
+visit rate
+retention rate
+time to successful match
+properties reviewed per mandate
 ```
 
 ---
 
-# 45. Trade-off métier
+# 44. Evaluation Matrix
 
-Dans la chasse immobilière, manquer un excellent bien peut être coûteux.
+| Model | Precision@10 | Recall@10 | F1 | Latency | Interpretability |
+|---|---:|---:|---:|---:|---|
+| Rules | TBD | TBD | TBD | TBD | HIGH |
+| Logistic Regression | TBD | TBD | TBD | TBD | HIGH |
+| Random Forest | TBD | TBD | TBD | TBD | MEDIUM |
 
-Le recall peut donc avoir une importance particulière.
+Les valeurs seront remplies uniquement après exécution.
 
-Mais présenter trop de biens inutiles réduit également la valeur du service.
+---
 
-Il faut équilibrer :
+# 45. Pas de résultats inventés
+
+La documentation ne doit jamais annoncer :
 
 ```text
-Precision
-vs
-Recall
+95 % accuracy
+```
+
+ou une autre métrique avant entraînement réel.
+
+Statut actuel :
+
+```text
+TBD
 ```
 
 ---
 
-# 46. Ranking
+# 46. MLflow
 
-Le problème peut également être considéré comme un problème de classement :
+MLflow sera utilisé pour suivre les expérimentations.
 
-```text
-Rank the most relevant properties first.
-```
-
-Des métriques de ranking pourront être étudiées si les données le permettent.
-
----
-
-# 47. Top-K
-
-Une métrique métier simple peut être :
+Chaque run doit enregistrer :
 
 ```text
-Relevant property present in Top 5?
-```
-
-ou :
-
-```text
-Top 10?
-```
-
----
-
-# 48. Semantic Matching
-
-Les descriptions textuelles peuvent bénéficier d'embeddings.
-
-Architecture :
-
-```text
-Request text
-     |
-     v
-Embedding
-     |
-     +----------------+
-                      |
-Property description |
-     |                |
-     v                |
-Embedding             |
-     |                |
-     +-------+--------+
-             |
-             v
-     Similarity Score
-```
-
----
-
-# 49. Embeddings
-
-Un embedding représente du texte sous forme de vecteur numérique.
-
-Il permet de comparer une proximité sémantique plutôt qu'une simple égalité de mots.
-
----
-
-# 50. Exemple
-
-Demande :
-
-```text
-"proche du tram"
-```
-
-Annonce :
-
-```text
-"station de tramway située à 3 minutes à pied"
-```
-
-Une recherche par égalité textuelle peut échouer alors qu'une recherche sémantique peut détecter la proximité de sens.
-
----
-
-# 51. Vector Store
-
-Deux approches sont envisagées :
-
-```text
-PostgreSQL + pgvector
-```
-
-ou éventuellement :
-
-```text
-Qdrant
-```
-
-Qdrant reste actuellement :
-
-```text
-CANDIDATE
-```
-
-et non une dépendance obligatoire.
-
----
-
-# 52. Choix vectoriel
-
-Avant adoption :
-
-```text
-Dataset
-   |
-   +--> pgvector benchmark
-   |
-   +--> Qdrant benchmark
-   |
-   v
-Comparison
-   |
-   v
-ADR
-```
-
----
-
-# 53. Similarity
-
-Une métrique candidate est :
-
-```text
-Cosine Similarity
-```
-
-mais le choix dépend du modèle d'embedding utilisé.
-
----
-
-# 54. Hybrid Search
-
-Une architecture intéressante combine :
-
-```text
-SQL filters
-+
-structured scoring
-+
-semantic similarity
-```
-
-Exemple :
-
-```text
-SQL:
-Montpellier
-<= 350k
->= 70m²
-
-        |
-        v
-
-Semantic:
-quiet
-bright
-near tram
-```
-
----
-
-# 55. Pourquoi Hybrid Search
-
-Cela évite d'utiliser la recherche vectorielle pour des contraintes exactes.
-
-```text
-Structured constraints
-       |
-       v
-SQL
-```
-
-```text
-Semantic preferences
-       |
-       v
-Embeddings
-```
-
----
-
-# 56. LLM
-
-Le LLM local peut être utilisé pour certaines tâches spécifiques.
-
-Exemples :
-
-```text
-extract criteria from free text
-summarize property
-explain match
-normalize user request
-```
-
----
-
-# 57. Ollama
-
-Le projet prévoit :
-
-```text
-Ollama
-```
-
-pour l'inférence LLM locale.
-
-L'objectif est notamment :
-
-- expérimentation ;
-- contrôle local ;
-- souveraineté ;
-- limitation des transferts externes.
-
----
-
-# 58. LLM non utilisé pour tout
-
-À éviter :
-
-```text
-LLM decides everything
-```
-
-Un LLM n'est pas nécessaire pour :
-
-```text
-price comparison
-surface comparison
-exact type
-database joins
-```
-
----
-
-# 59. Structured Output
-
-Lorsqu'un LLM extrait des critères, le résultat doit être structuré.
-
-Exemple :
-
-```json
-{
-  "city": "Montpellier",
-  "budget_max": 350000,
-  "surface_min": 70,
-  "preferences": [
-    "tram",
-    "quiet",
-    "bright"
-  ]
-}
-```
-
----
-
-# 60. Validation après LLM
-
-Une sortie LLM ne doit pas être considérée comme valide simplement parce qu'elle est syntaxiquement correcte.
-
-Flux :
-
-```text
-LLM output
-   |
-   v
-Schema Validation
-   |
-   v
-Business Validation
-   |
-   v
-Accepted Data
-```
-
----
-
-# 61. Pydantic
-
-Pydantic peut valider les structures extraites avant utilisation par l'application.
-
----
-
-# 62. Hallucination
-
-Le LLM peut produire une information non présente dans la source.
-
-Il ne doit donc pas inventer :
-
-```text
-property price
-surface
-address
-diagnostic
-legal information
-```
-
----
-
-# 63. Grounding
-
-Les explications générées doivent être fondées sur les données disponibles.
-
-```text
-Database / Documents
-        |
-        v
-Context
-        |
-        v
-LLM
-        |
-        v
-Grounded Explanation
-```
-
----
-
-# 64. RAG
-
-RAG signifie :
-
-```text
-Retrieval-Augmented Generation
-```
-
-Il peut être utilisé lorsque l'IA doit répondre à partir de documents ou données de référence.
-
----
-
-# 65. RAG et matching
-
-RAG n'est pas automatiquement le moteur principal de matching.
-
-Il peut compléter le système pour :
-
-- documents ;
-- descriptions longues ;
-- contexte métier ;
-- justification.
-
----
-
-# 66. MLflow
-
-MLflow est utilisé pour assurer la traçabilité des expérimentations ML.
-
-Il peut enregistrer :
-
-```text
+model
 parameters
+features
+dataset version
 metrics
 artifacts
-model versions
+code version
 ```
 
 ---
 
-# 67. Exemple d'expérience
+# 47. Architecture MLflow
+
+```text
+Training Pipeline
+      |
+      v
+MLflow Tracking
+      |
+      +--> parameters
+      +--> metrics
+      +--> artifacts
+      +--> models
+```
+
+---
+
+# 48. Experiment
+
+Nom candidat :
+
+```text
+real-estate-matching
+```
+
+---
+
+# 49. Run Logistic Regression
+
+Exemple logique :
+
+```text
+Experiment:
+real-estate-matching
+
+Run:
+logistic-regression-v1
+```
+
+---
+
+# 50. Run Random Forest
 
 ```text
 Experiment:
@@ -1238,240 +991,220 @@ real-estate-matching
 
 Run:
 random-forest-v1
-
-Parameters:
-n_estimators
-max_depth
-random_state
-
-Metrics:
-precision
-recall
-f1
 ```
 
 ---
 
-# 68. Version du modèle
+# 51. Model Comparison
 
-Chaque modèle exploité doit être identifiable.
+Après entraînement :
 
 ```text
-Model
-  |
-  +--> Version 1
-  +--> Version 2
-  +--> Version 3
+Rules
+vs
+Logistic Regression
+vs
+Random Forest
+```
+
+seront comparés sur le même dataset de test.
+
+---
+
+# 52. Model Selection
+
+La sélection ne dépend pas uniquement :
+
+```text
+best metric
+```
+
+mais aussi :
+
+```text
+latency
+resource consumption
+interpretability
+operational complexity
 ```
 
 ---
 
-# 69. Artifact
+# 53. Model Registry
 
-Le modèle entraîné doit être associé à son artifact.
+Le modèle sélectionné pourra être enregistré dans le registre MLflow.
 
-Il faut pouvoir répondre :
-
-```text
-Which artifact corresponds to this model version?
-```
-
----
-
-# 70. Dataset traceability
-
-Une expérience devrait également identifier le dataset utilisé.
+Cycle :
 
 ```text
-Model Version
-      |
-      +--> Code version
-      +--> Dataset version
-      +--> Parameters
-      +--> Metrics
-      +--> Artifact
-```
-
----
-
-# 71. Reproductibilité ML
-
-Idéalement :
-
-```text
-Git commit
-+
-Dataset reference
-+
-Environment
-+
-Parameters
-+
-Random seed
-```
-
-permettent de reproduire l'expérience autant que possible.
-
----
-
-# 72. Airflow
-
-Airflow peut orchestrer :
-
-```text
-prepare dataset
-      |
-      v
-train
-      |
-      v
-evaluate
-      |
-      v
-log to MLflow
-      |
-      v
-quality gate
-```
-
----
-
-# 73. Séparation Airflow / MLflow
-
-```text
-Airflow
-=
-workflow orchestration
-```
-
-```text
-MLflow
-=
-experiment/model lifecycle tracking
-```
-
-Les responsabilités restent distinctes.
-
----
-
-# 74. Quality Gate
-
-Un nouveau modèle ne doit pas être promu uniquement parce que l'entraînement s'est terminé.
-
-Exemple :
-
-```text
-New Model
+Training
+   |
+   v
+Candidate Model
    |
    v
 Evaluation
    |
    v
-Metrics >= threshold?
-   |
-   +--> NO --> Reject
-   |
-   +--> YES --> Candidate
-```
-
----
-
-# 75. Comparaison avec baseline
-
-Le quality gate doit idéalement comparer :
-
-```text
-candidate model
-```
-
-à :
-
-```text
-current baseline / production model
-```
-
----
-
-# 76. Promotion
-
-Une promotion peut suivre :
-
-```text
-Experiment
+Registry
    |
    v
-Candidate
-   |
-   v
-Validation
-   |
-   v
-Approved
-   |
-   v
-Deployment
+Approved Version
 ```
 
 ---
 
-# 77. Human Approval
+# 54. Promotion
 
-Pour le MVP, la promotion d'un modèle peut nécessiter une validation humaine.
+Une version ne devient pas automatiquement production.
 
-Cela réduit le risque d'un déploiement automatique d'un modèle dégradé.
-
----
-
-# 78. Serving
-
-MLflow n'est pas obligatoirement le serveur d'inférence final.
-
-Le modèle peut être chargé dans :
-
-```text
-FastAPI service
-```
-
-pour fournir une API contrôlée.
-
----
-
-# 79. API candidate
+Elle doit satisfaire les critères définis.
 
 Exemple :
 
 ```text
-POST /api/v1/matching
-```
-
-Entrée :
-
-```text
-request_version_id
-```
-
-Sortie :
-
-```text
-ranked properties
-scores
-explanations
-model version
+Precision@10 threshold
+Recall@10 threshold
+latency threshold
+tests passed
 ```
 
 ---
 
-# 80. Exemple de résultat
+# 55. Reproducibilité
+
+Un run doit permettre de retrouver :
+
+```text
+dataset
+features
+parameters
+model
+metrics
+code commit
+```
+
+---
+
+# 56. Dataset Versioning
+
+Au minimum, nous enregistrerons :
+
+```text
+dataset path/version
+row count
+generation timestamp
+feature schema
+```
+
+Une solution spécialisée de versioning pourra être évaluée ultérieurement si nécessaire.
+
+---
+
+# 57. Feature Pipeline
+
+Implémentation cible :
+
+```text
+ml/features/
+```
+
+Responsabilités :
+
+```text
+feature extraction
+feature normalization
+training/inference consistency
+```
+
+---
+
+# 58. Training Pipeline
+
+Implémentation cible :
+
+```text
+ml/training/
+```
+
+Responsabilités :
+
+```text
+dataset loading
+split
+training
+evaluation
+MLflow logging
+model registration
+```
+
+---
+
+# 59. Evaluation
+
+Implémentation cible :
+
+```text
+ml/evaluation/
+```
+
+Responsabilités :
+
+```text
+metrics
+model comparison
+business evaluation
+reports
+```
+
+---
+
+# 60. Models
+
+Artifacts et configuration :
+
+```text
+ml/models/
+```
+
+Les binaires lourds ne doivent pas nécessairement être commités dans Git.
+
+---
+
+# 61. API Serving
+
+Le modèle pourra être exposé via :
+
+```text
+FastAPI
+```
+
+---
+
+# 62. Endpoint candidat
+
+```text
+POST /api/v1/matching/rank
+```
+
+Entrée :
 
 ```json
 {
-  "request_version_id": 42,
-  "model_version": "rules-v1",
+  "request_version_id": 123
+}
+```
+
+Sortie :
+
+```json
+{
+  "request_version_id": 123,
+  "model_version": "1",
   "results": [
     {
-      "property_id": 1004,
-      "score": 91.2,
-      "rank": 1
+      "property_id": 501,
+      "score": 0.93
     }
   ]
 }
@@ -1479,176 +1212,282 @@ model version
 
 ---
 
-# 81. Model Metadata
+# 63. Endpoint Explain
 
-Une réponse peut inclure :
-
-```text
-algorithm_version
-model_version
-generated_at
-```
-
-pour améliorer la traçabilité.
-
----
-
-# 82. Tests unitaires
-
-Les fonctions de scoring déterministe doivent être testables indépendamment.
-
-Exemples :
+Un endpoint ou une fonction interne pourra expliquer :
 
 ```text
-budget score
-surface score
-location score
-weight calculation
+why property was ranked
 ```
-
----
-
-# 83. Test — budget
-
-Exemple conceptuel :
-
-```text
-budget_max = 300000
-property = 250000
-
-expected:
-accepted
-```
-
----
-
-# 84. Test — hard rejection
-
-```text
-mandatory city = Montpellier
-property city = Lyon
-```
-
-si la ville est une contrainte stricte :
-
-```text
-expected:
-filtered out
-```
-
----
-
-# 85. Test — score boundaries
-
-Le score doit respecter :
-
-```text
-0 <= score <= 100
-```
-
-si cette échelle est retenue.
-
----
-
-# 86. Tests d'intégration
-
-Tester :
-
-```text
-PostgreSQL
-      |
-      v
-Matching Service
-      |
-      v
-Result
-```
-
-avec un dataset connu.
-
----
-
-# 87. Golden Dataset
-
-Un petit dataset validé manuellement peut servir de référence.
 
 Exemple :
 
 ```text
-Request A
-Property 1 -> excellent
-Property 2 -> medium
-Property 3 -> reject
-```
-
-Le système doit reproduire un classement cohérent.
-
----
-
-# 88. Pourquoi un Golden Dataset
-
-Il facilite :
-
-- tests de régression ;
-- validation métier ;
-- comparaison d'algorithmes ;
-- démonstration.
-
----
-
-# 89. Evaluation Offline
-
-Avant déploiement :
-
-```text
-historical dataset
-       |
-       v
-candidate model
-       |
-       v
-metrics
+budget match
+location match
+surface match
+parking preference
 ```
 
 ---
 
-# 90. Evaluation Online
+# 64. Explainability
 
-Une évolution future peut comparer le comportement réel après déploiement.
-
-Exemples :
+Pour les modèles simples :
 
 ```text
+coefficients
+feature importance
+```
+
+peuvent fournir une première explication.
+
+---
+
+# 65. LLM Role
+
+Le LLM n'est pas le moteur principal de matching.
+
+Il peut aider pour :
+
+```text
+free-text understanding
+preference extraction
+explanations
+document analysis
+semantic enrichment
+```
+
+---
+
+# 66. Ollama
+
+Les fonctions LLM peuvent utiliser le modèle local servi via :
+
+```text
+Ollama
+```
+
+Cela permet :
+
+```text
+local inference
+controlled data exposure
+cost control
+```
+
+---
+
+# 67. Semantic Matching
+
+Exemple futur :
+
+```text
+"quartier calme proche tram"
+```
+
+peut nécessiter une compréhension plus sémantique que :
+
+```text
+price <= 350000
+```
+
+---
+
+# 68. Embeddings
+
+Des embeddings peuvent représenter :
+
+```text
+property description
+free-text preferences
+documents
+```
+
+---
+
+# 69. Vector Storage
+
+Deux candidats :
+
+```text
+PostgreSQL + pgvector
+```
+
+et :
+
+```text
+Qdrant
+```
+
+---
+
+# 70. Qdrant Status
+
+Qdrant reste :
+
+```text
+CANDIDATE
+```
+
+et non dépendance obligatoire.
+
+---
+
+# 71. pgvector First Evaluation
+
+Comme PostgreSQL existe déjà, une première comparaison doit considérer :
+
+```text
+pgvector
+```
+
+afin d'éviter un composant supplémentaire sans justification.
+
+---
+
+# 72. Vector Decision
+
+Avant adoption :
+
+```text
+Dataset
+   |
+   +--> pgvector
+   |
+   +--> Qdrant
+   |
+   v
+Benchmark
+   |
+   v
+ADR
+```
+
+---
+
+# 73. Hybrid Matching
+
+L'architecture future peut combiner :
+
+```text
+Structured Score
++
+ML Score
++
+Semantic Score
+```
+
+---
+
+# 74. Exemple
+
+```text
+final_score =
+0.40 structured_score
++
+0.40 ml_score
++
+0.20 semantic_score
+```
+
+Ces poids ne sont qu'un exemple.
+
+Ils devront être déterminés expérimentalement.
+
+---
+
+# 75. Feature Store
+
+Un Feature Store n'est pas nécessaire pour la première version.
+
+Il devient pertinent si nous rencontrons :
+
+```text
+many models
+shared features
+online/offline consistency problems
+```
+
+---
+
+# 76. Model Monitoring
+
+Une fois servi, le modèle doit être observé.
+
+Métriques :
+
+```text
+inference_count
+inference_latency
+error_count
+score_distribution
+```
+
+---
+
+# 77. Prometheus
+
+Le service peut exposer :
+
+```text
+matching_requests_total
+matching_errors_total
+matching_duration_seconds
+matching_candidates_total
+matching_results_total
+```
+
+---
+
+# 78. Grafana
+
+Dashboard candidat :
+
+```text
+Matching Service
+```
+
+avec :
+
+```text
+request rate
+latency
+errors
+candidate count
+result count
+```
+
+---
+
+# 79. ML Monitoring
+
+Lorsque les labels futurs deviennent disponibles :
+
+```text
+Precision@K
+Recall@K
 acceptance rate
-visit rate
-retention rate
+```
+
+peuvent être recalculés.
+
+---
+
+# 80. Drift
+
+Types :
+
+```text
+data drift
+feature drift
+prediction drift
+concept drift
 ```
 
 ---
 
-# 91. Model Drift
-
-Avec le temps :
-
-```text
-market changes
-client behavior changes
-sources change
-```
-
-Le modèle peut perdre en pertinence.
-
-C'est le :
-
-```text
-Model Drift
-```
-
----
-
-# 92. Data Drift
-
-La distribution des entrées peut également changer.
+# 81. Data Drift
 
 Exemple :
 
@@ -1656,768 +1495,821 @@ Exemple :
 average property price
 ```
 
-augmente fortement.
+change fortement avec le temps.
 
-Il faut distinguer :
+Cela peut modifier la distribution d'une feature.
+
+---
+
+# 82. Concept Drift
+
+Les préférences utilisateurs peuvent évoluer.
+
+Un modèle entraîné sur un historique ancien peut devenir moins pertinent.
+
+---
+
+# 83. Retraining
+
+Le retraining ne doit pas nécessairement être automatique au début.
+
+Processus :
 
 ```text
-Data Drift
+Drift / Performance Alert
+        |
+        v
+Analysis
+        |
+        v
+Retrain
+        |
+        v
+Evaluate
+        |
+        v
+Promote
+```
+
+---
+
+# 84. Airflow ML Pipeline
+
+DAG candidat :
+
+```text
+matching_model_training
+```
+
+---
+
+# 85. DAG
+
+```text
+extract_training_data
+        |
+        v
+validate_dataset
+        |
+        v
+build_features
+        |
+        v
+split_dataset
+        |
+        +------------------+
+        |                  |
+        v                  v
+train_logistic      train_random_forest
+        |                  |
+        +---------+--------+
+                  |
+                  v
+            evaluate_models
+                  |
+                  v
+             select_model
+                  |
+                  v
+             log_mlflow
+                  |
+                  v
+         register_candidate
+```
+
+---
+
+# 86. CI Validation
+
+Avant merge :
+
+```text
+unit tests
+feature tests
+lint
+security scan
+```
+
+doivent passer.
+
+---
+
+# 87. Model Training in CI
+
+Le pipeline CI ne doit pas forcément effectuer un entraînement complet.
+
+Il peut exécuter :
+
+```text
+small training smoke test
+```
+
+sur un dataset réduit.
+
+---
+
+# 88. Full Training
+
+Le vrai entraînement peut être exécuté via :
+
+```text
+Airflow
+manual controlled pipeline
+scheduled training
+```
+
+selon la stratégie retenue.
+
+---
+
+# 89. Security
+
+Le modèle ne doit pas recevoir automatiquement :
+
+```text
+client email
+telephone
+full identity
+```
+
+pour effectuer le matching.
+
+---
+
+# 90. Data Minimization
+
+Features préférées :
+
+```text
+budget
+location
+property criteria
+preferences
+feedback
+```
+
+plutôt que données personnelles non nécessaires.
+
+---
+
+# 91. Documents
+
+Les documents utilisés pour une éventuelle couche RAG doivent respecter :
+
+```text
+indexable_ia = TRUE
+```
+
+---
+
+# 92. Prompt Injection
+
+Les documents externes doivent être considérés comme :
+
+```text
+untrusted content
+```
+
+Ils ne doivent pas pouvoir modifier les règles système.
+
+---
+
+# 93. Human Oversight
+
+Le modèle :
+
+```text
+recommends
+```
+
+mais ne remplace pas automatiquement :
+
+```text
+client
+hunter
+```
+
+pour les décisions importantes.
+
+---
+
+# 94. Feedback
+
+Le feedback humain doit être conservé afin de :
+
+```text
+explain decisions
+improve matching
+create future labels
+```
+
+---
+
+# 95. Bias
+
+Le modèle doit éviter d'utiliser des variables non pertinentes ou sensibles pour le matching.
+
+Le matching doit être fondé sur :
+
+```text
+property requirements
+business criteria
+explicit preferences
+```
+
+---
+
+# 96. Model Card
+
+Chaque modèle promu doit disposer d'une Model Card.
+
+---
+
+# 97. Model Card Content
+
+```text
+Model Name
+Version
+Purpose
+Algorithm
+Training Dataset
+Features
+Target
+Metrics
+Limitations
+Known Risks
+Owner
+Deployment Status
+```
+
+---
+
+# 98. Limitation Example
+
+```text
+Model trained primarily
+on synthetic / generated data
+```
+
+doit être explicitement documenté si c'est le cas.
+
+---
+
+# 99. Synthetic Data
+
+Le générateur StarterPack permet de construire des datasets techniques.
+
+Mais les données synthétiques ne prouvent pas automatiquement la performance sur des utilisateurs réels.
+
+---
+
+# 100. Validation Strategy
+
+Nous distinguons :
+
+```text
+Technical Validation
 ```
 
 et :
 
 ```text
-Model Performance Drift
+Business Validation
 ```
 
 ---
 
-# 93. Monitoring
-
-Une évolution MLOps doit observer :
+# 101. Technical Validation
 
 ```text
-request count
+pipeline works
+features valid
+model reproducible
+metrics calculated
+API serves predictions
+```
+
+---
+
+# 102. Business Validation
+
+```text
+ranking useful
+recommendations coherent
+hunter accepts results
+client feedback positive
+```
+
+Cette partie nécessite idéalement des données ou retours réels.
+
+---
+
+# 103. Performance Benchmark
+
+Nous mesurerons :
+
+```text
+candidate count
+feature extraction time
+model inference time
+total ranking time
+memory
+CPU
+GPU if used
+```
+
+---
+
+# 104. Rules Benchmark
+
+La baseline rules fournit la référence de performance.
+
+---
+
+# 105. Logistic Regression Benchmark
+
+Mesurer :
+
+```text
+training duration
+inference latency
+metrics
+model size
+```
+
+---
+
+# 106. Random Forest Benchmark
+
+Même méthodologie :
+
+```text
+training duration
+inference latency
+metrics
+model size
+```
+
+---
+
+# 107. LLM Benchmark
+
+Si un enrichissement LLM est utilisé :
+
+```text
+tokens
 latency
-errors
-score distribution
-model version
-prediction distribution
+GPU utilization
+throughput
 ```
 
-et, lorsque les labels sont disponibles :
-
-```text
-business performance
-```
+doivent être mesurés séparément.
 
 ---
 
-# 94. Prometheus
+# 108. Scaling
 
-Le service peut exposer des métriques telles que :
-
-```text
-matching_requests_total
-matching_errors_total
-matching_duration_seconds
-matching_candidates_count
-```
-
----
-
-# 95. Grafana
-
-Grafana peut visualiser :
-
-```text
-Matching request rate
-Latency
-Errors
-Candidate count
-Model version usage
-```
-
----
-
-# 96. Logs
-
-Les logs doivent permettre le diagnostic sans exposer inutilement des données personnelles.
-
-À éviter :
-
-```text
-full client request
-full personal profile
-```
-
-dans des logs généraux.
-
----
-
-# 97. Security
-
-Le service de matching doit respecter :
-
-```text
-authentication
-authorization
-input validation
-rate limiting where needed
-secret management
-```
-
----
-
-# 98. RGPD
-
-Le matching peut constituer un traitement de données personnelles.
-
-Il doit donc respecter :
-
-```text
-Purpose limitation
-Data minimization
-Retention
-Access control
-Traceability
-```
-
----
-
-# 99. Automated Decision Making
-
-Le système doit clairement documenter le niveau d'autonomie.
-
-Pour le MVP :
-
-```text
-Decision Support
-```
-
-plutôt que :
-
-```text
-Fully autonomous consequential decision
-```
-
-Le chasseur conserve une validation métier.
-
----
-
-# 100. Biais
-
-Un modèle peut reproduire ou amplifier des biais présents dans les données.
-
-Les variables utilisées doivent être examinées.
-
-Une feature n'est pas acceptable uniquement parce qu'elle améliore une métrique.
-
----
-
-# 101. Features sensibles
-
-Les données non nécessaires au matching immobilier ne doivent pas être utilisées.
-
-Le principe est :
-
-```text
-Use business-relevant features only.
-```
-
----
-
-# 102. Explainable recommendation
-
-Une recommandation doit pouvoir être formulée comme :
-
-```text
-Strong match because:
-
-+ budget satisfied
-+ requested city
-+ surface above minimum
-+ correct property type
-
-Partial match:
-
-- no parking information
-```
-
-plutôt qu'une justification inventée.
-
----
-
-# 103. Souveraineté IA
-
-Lorsque possible, les traitements sensibles peuvent rester sur l'infrastructure locale.
+Le système ne doit pas exécuter le modèle sur tous les biens de la plateforme sans préfiltrage.
 
 Architecture :
 
 ```text
-Private Data
-    |
-    v
-Local Platform
-    |
-    v
-Ollama / Local Model
+Database Filters
+      |
+      v
+Candidate Reduction
+      |
+      v
+ML Ranking
 ```
-
-Les transferts externes doivent être contrôlés.
 
 ---
 
-# 104. Performance
+# 109. Top-K
 
-Le matching doit être évalué selon deux dimensions :
-
-```text
-Model quality
-```
-
-et :
+Le système retourne principalement :
 
 ```text
-System performance
+Top-K
 ```
 
-Un excellent modèle prenant plusieurs minutes par bien peut être inutilisable.
+résultats.
+
+Exemple :
+
+```text
+Top 10
+Top 20
+```
+
+selon le workflow métier.
 
 ---
 
-# 105. Latency Pipeline
+# 110. Persisted Result
+
+Les résultats retenus peuvent alimenter :
 
 ```text
-SQL filtering
-+
-feature computation
-+
-model inference
-+
-optional LLM
-=
-total latency
+real_estate.presentation
 ```
 
-Chaque partie doit pouvoir être mesurée.
+avec :
+
+```text
+score_matching
+```
 
 ---
 
-# 106. Batch Matching
+# 111. Model Traceability
 
-Le matching peut être exécuté en batch après :
+À terme, `PRESENTATION` pourrait également conserver :
 
 ```text
-new properties imported
+model_name
+model_version
+scoring_timestamp
+```
+
+si la traçabilité réglementaire ou opérationnelle le justifie.
+
+---
+
+# 112. Recommandation V2
+
+Cette extension est intéressante pour le projet.
+
+Exemple futur :
+
+```text
+presentation
+│
+├── score_matching
+├── scoring_method
+├── model_name
+└── model_version
+```
+
+Cette modification doit être intégrée au MCD/MLD/MPD avant implémentation si elle est retenue comme donnée métier persistante.
+
+---
+
+# 113. Scoring Method
+
+Valeurs candidates :
+
+```text
+RULES
+ML
+HYBRID
+```
+
+Cela permet de comparer les performances des différentes générations du moteur.
+
+---
+
+# 114. Champion / Challenger
+
+Une évolution MLOps possible :
+
+```text
+Champion
+vs
+Challenger
+```
+
+Le challenger est évalué avant de remplacer le modèle actif.
+
+---
+
+# 115. Rollback
+
+Le registre doit permettre de revenir à une version précédente si :
+
+```text
+new model performs worse
 ```
 
 ou :
 
 ```text
-request updated
+runtime problems appear
 ```
 
 ---
 
-# 107. Interactive Matching
+# 116. GitOps
 
-Une API peut également déclencher un matching à la demande.
-
-Le choix dépend du besoin fonctionnel.
-
----
-
-# 108. Cache
-
-Certains résultats peuvent éventuellement être mis en cache lorsque :
-
-```text
-request unchanged
-+
-property data unchanged
-+
-algorithm unchanged
-```
-
-Mais l'invalidation doit être maîtrisée.
-
----
-
-# 109. Version de l'algorithme
-
-Même un moteur déterministe doit être versionné.
-
-Exemple :
-
-```text
-rules-v1
-rules-v2
-```
-
-Une modification des pondérations peut modifier les résultats.
-
----
-
-# 110. Auditability
-
-Pour un résultat important, nous devons pouvoir retrouver :
-
-```text
-request version
-property
-algorithm/model version
-score
-score components
-timestamp
-```
-
----
-
-# 111. Data Model Evolution
-
-La table `PRESENTATION` pourra éventuellement stocker ou référencer :
-
-```text
-algorithm_version
-model_version
-```
-
-si la traçabilité métier le nécessite.
-
-La modification exacte du MPD devra être décidée avant implémentation.
-
----
-
-# 112. Evidence Runtime
-
-Les preuves finales pourront inclure :
-
-```text
-dataset
-training script
-matching code
-unit tests
-evaluation report
-MLflow run
-MLflow model version
-API response
-Prometheus metrics
-Airflow execution
-```
-
----
-
-# 113. Structure future
-
-```text
-C5-Modele-Matching-IA/
-│
-├── README.md
-│
-├── baseline/
-│   ├── scoring.py
-│   └── weights.yaml
-│
-├── dataset/
-│   └── ...
-│
-├── training/
-│   └── train.py
-│
-├── evaluation/
-│   └── evaluate.py
-│
-├── tests/
-│   └── test_matching.py
-│
-├── evidence/
-│   ├── mlflow-run.png
-│   ├── model-metrics.txt
-│   ├── api-result.json
-│   └── test-results.txt
-│
-└── EVALUATION-REPORT.md
-```
-
-Ces fichiers seront créés pendant l'implémentation.
-
----
-
-# 114. Expériences prévues
-
-Au minimum :
-
-```text
-Experiment 1
-Rules-based baseline
-
-Experiment 2
-Simple ML model
-
-Experiment 3
-Alternative ML model
-```
-
-si un dataset adapté peut être produit.
-
----
-
-# 115. Comparaison
-
-Le rapport devra présenter :
-
-| Modèle | Precision | Recall | F1 | Latency | Explainability |
-|---|---:|---:|---:|---:|---|
-| Rules baseline | À mesurer | À mesurer | À mesurer | À mesurer | Forte |
-| Logistic Regression | À mesurer | À mesurer | À mesurer | À mesurer | Forte/modérée |
-| Random Forest | À mesurer | À mesurer | À mesurer | À mesurer | Modérée |
-
-Aucune valeur ne doit être inventée.
-
----
-
-# 116. Critères de sélection
-
-Le meilleur modèle n'est pas nécessairement celui avec le score ML maximal.
-
-La décision doit considérer :
-
-```text
-Business relevance
-Precision / Recall
-Latency
-Explainability
-Operational complexity
-Resource consumption
-Maintainability
-```
-
----
-
-# 117. Decision Matrix
-
-Exemple :
-
-```text
-Accuracy improvement: +1%
-Infrastructure complexity: +200%
-```
-
-peut ne pas justifier l'adoption d'un modèle plus complexe.
-
----
-
-# 118. Model Card
-
-Le modèle final devra disposer d'une fiche contenant :
-
-```text
-Purpose
-Version
-Training data
-Features
-Metrics
-Limitations
-Known risks
-Intended use
-Non-intended use
-Owner
-```
-
----
-
-# 119. Limites
-
-Le système devra explicitement documenter :
-
-```text
-insufficient historical labels
-synthetic data limitations
-source quality dependency
-market evolution
-subjective client preferences
-```
-
----
-
-# 120. Gouvernance
-
-Toute évolution majeure du matching doit suivre :
-
-```text
-Experiment
-      |
-      v
-Evaluation
-      |
-      v
-Decision
-      |
-      v
-Versioning
-      |
-      v
-Deployment
-      |
-      v
-Monitoring
-```
-
----
-
-# 121. Critère de réussite C5
-
-La compétence sera démontrée lorsque nous disposerons de :
-
-```text
-Business problem definition
-+
-Dataset
-+
-Baseline
-+
-Feature engineering
-+
-At least one evaluated model
-+
-Metrics
-+
-Comparison
-+
-MLflow traceability
-+
-Model artifact
-+
-API/runtime evidence
-+
-Explanation of limitations
-```
-
----
-
-# 122. Ce qui ne constitue pas une preuve suffisante
-
-Les affirmations suivantes ne suffisent pas :
-
-```text
-"We use AI."
-
-"We use Ollama."
-
-"We use MLflow."
-
-"We have a matching score."
-
-"The model works."
-```
-
-Il faut démontrer :
-
-```text
-input
-algorithm
-dataset
-experiment
-metric
-artifact
-version
-result
-```
-
----
-
-# 123. Matrice de preuve
-
-| Élément | Baseline | Preuve runtime |
-|---|---|---|
-| Problème métier | DOCUMENTÉ | Cas de test |
-| Hard filters | DÉFINIS | SQL/tests |
-| Scoring | DÉFINI | Code |
-| Features | IDENTIFIÉES | Dataset |
-| Baseline | DÉFINIE | Metrics |
-| ML model | CANDIDAT | Training run |
-| Evaluation | MÉTHODE DÉFINIE | Report |
-| Tracking | MLflow | Run |
-| Model version | DÉFINIE | Registry |
-| Artifact | DÉFINI | MLflow/MinIO |
-| API | DÉFINIE | Response |
-| Explainability | DÉFINIE | Match explanation |
-| Monitoring | DÉFINI | Metrics |
-| Governance | DÉFINIE | Model Card |
-
----
-
-# 124. Relation avec C1
-
-```text
-DEMANDE_VERSION
-+
-BIEN
-+
-PRESENTATION
-```
-
-proviennent du modèle Data conçu dans C1.
-
----
-
-# 125. Relation avec C2
-
-C2 optimise la sélection initiale :
-
-```text
-SQL filtering
-```
-
-afin de réduire le nombre de biens envoyés au moteur de matching.
-
----
-
-# 126. Relation avec C3
-
-Les résultats historiques peuvent alimenter :
-
-```text
-warehouse.fact_presentation
-```
-
-pour mesurer les performances du matching.
-
----
-
-# 127. Relation avec C4
-
-C4 détermine si le volume de biens, de documents et de vecteurs nécessite une évolution de l'architecture.
-
----
-
-# 128. Relation avec C6
-
-C6 couvrira le programme IA complet :
-
-```text
-development
-testing
-packaging
-deployment
-orchestration
-observability
-```
-
-C5 se concentre principalement sur le modèle et sa qualité.
-
----
-
-# 129. Relation avec C7
-
-Le dataset et les features doivent respecter les exigences RGPD.
-
----
-
-# 130. Relation avec C8
-
-L'exécution IA doit respecter :
-
-```text
-sovereignty
-security
-model governance
-data confidentiality
-```
-
----
-
-# 131. Décision actuelle
-
-La baseline retenue est :
-
-```text
-SQL hard filtering
-        |
-        v
-Explainable deterministic scoring
-        |
-        v
-Optional ML comparison
-        |
-        v
-Optional semantic enrichment
-        |
-        v
-Human validation
-```
-
----
-
-# 132. Technologies actuelles
-
-```text
-PostgreSQL
-Python
-FastAPI
-Airflow
-MLflow
-MinIO
-Ollama
-Prometheus
-Grafana
-```
-
-Les composants optionnels tels que Qdrant doivent être adoptés uniquement après justification.
-
----
-
-# 133. Statut
-
-| Élément | Statut |
-|---|---|
-| Business problem | DOCUMENTÉ |
-| Matching architecture | DÉFINIE |
-| Hard filtering | DÉFINI |
-| Deterministic scoring | BASELINE DÉFINIE |
-| Explainability | DÉFINIE |
-| Human-in-the-loop | DÉFINI |
-| Feature candidates | IDENTIFIÉES |
-| ML candidates | IDENTIFIÉS |
-| Evaluation strategy | DÉFINIE |
-| MLflow strategy | DÉFINIE |
-| Semantic matching | CANDIDAT |
-| Vector DB | À ÉVALUER |
-| Dataset | À PRODUIRE |
-| Baseline implementation | À PRODUIRE |
-| Training | À EXÉCUTER |
-| Metrics | À PRODUIRE |
-| MLflow evidence | À PRODUIRE |
-| Model Card | À PRODUIRE |
-| API evidence | À PRODUIRE |
-
----
-
-# 134. Conclusion
-
-Le moteur de matching n'est pas conçu comme une boîte noire.
-
-La stratégie est :
-
-```text
-Structured Data
-      |
-      v
-SQL Filtering
-      |
-      v
-Explainable Scoring
-      |
-      v
-ML / Semantic Enhancement
-when justified
-      |
-      v
-Ranked Recommendations
-      |
-      v
-Human Validation
-```
-
-Le Machine Learning devra démontrer une amélioration mesurable par rapport à une baseline plus simple avant de devenir un composant essentiel du matching.
-
-La traçabilité sera assurée par :
+Le déploiement du service de matching suit :
 
 ```text
 Git
-+
-Airflow
-+
-MLflow
-+
-Model Versioning
-+
-Runtime Metrics
+ |
+ v
+GitLab CI
+ |
+ v
+Container Registry
+ |
+ v
+GitOps repository
+ |
+ v
+Argo CD
+ |
+ v
+Kubernetes
 ```
-
-et les résultats finaux devront être fondés sur des expérimentations réellement exécutées.
 
 ---
 
-**BC05 / C5 — MODÈLE DE MATCHING IA — DOCUMENTATION BASELINE COMPLETE**
+# 117. Kubernetes
+
+Le service peut être déployé comme :
+
+```text
+Deployment
+Service
+Ingress
+ConfigMap
+Secret
+```
+
+---
+
+# 118. Health Endpoints
+
+Le service expose :
+
+```text
+/health
+/ready
+```
+
+---
+
+# 119. Model Loading
+
+Le service ne doit pas télécharger arbitrairement un modèle non validé.
+
+Il charge une version explicitement approuvée.
+
+---
+
+# 120. Failure Mode
+
+Si le modèle ML est indisponible, une stratégie possible est :
+
+```text
+fallback to deterministic rules
+```
+
+selon les exigences de disponibilité.
+
+---
+
+# 121. Architecture finale cible
+
+```text
+                  DEMANDE_VERSION
+                         |
+                         v
+                  Structured Filters
+                         |
+                         v
+                       BIEN
+                         |
+                         v
+                  Candidate Dataset
+                         |
+              +----------+----------+
+              |                     |
+              v                     v
+       Rules Baseline          ML Model
+              |                     |
+              +----------+----------+
+                         |
+                         v
+                  Hybrid Ranking
+                         |
+                         v
+                      Top-K
+                         |
+                         v
+                   PRESENTATION
+                         |
+                         v
+                     Feedback
+                         |
+                         v
+                 Training Dataset
+                         |
+                         v
+                     MLflow
+```
+
+---
+
+# 122. Implementation Structure
+
+```text
+ml/
+├── features/
+├── training/
+├── evaluation/
+└── models/
+```
+
+Application code:
+
+```text
+src/
+├── ai/
+├── api/
+├── domain/
+└── services/
+```
+
+---
+
+# 123. Tests
+
+Tests prévus :
+
+```text
+feature calculation
+missing values
+hard filtering
+baseline scoring
+model loading
+model prediction
+ranking order
+API contract
+fallback
+```
+
+---
+
+# 124. Evidence
+
+Les preuves finales devront inclure :
+
+```text
+training code
+feature code
+dataset description
+MLflow experiment
+actual metrics
+model comparison
+Model Card
+registered model
+API prediction
+monitoring
+```
+
+---
+
+# 125. Evidence Location
+
+Implementation :
+
+```text
+ml/
+src/ai/
+src/api/
+```
+
+Tests :
+
+```text
+tests/unit/
+tests/integration/
+```
+
+Documentation :
+
+```text
+docs/evidence/05-BC05/C5-Modele-Matching-IA/
+```
+
+---
+
+# 126. Minimum Certification Evidence
+
+Même sans l'extension ML, les preuves doivent démontrer :
+
+```text
+problem definition
+features
+data structure
+target strategy
+evaluation strategy
+matching architecture
+```
+
+---
+
+# 127. Additional Project Evidence
+
+Notre extension ajoutera :
+
+```text
+trained models
+actual experiment runs
+actual metrics
+MLflow tracking
+model registry
+serving
+monitoring
+```
+
+---
+
+# 128. Important Distinction
+
+La soutenance doit présenter clairement :
+
+```text
+What was required
+```
+
+et :
+
+```text
+What we implemented beyond the minimum
+```
+
+Cela évite de présenter une extension volontaire comme une contrainte imposée.
+
+---
+
+# 129. Current Status
+
+| Élément | Statut |
+|---|---|
+| Matching problem | DEFINED |
+| Input model | V2 ALIGNED |
+| Structured features | DEFINED |
+| Preference features | DEFINED |
+| Hard filtering | DEFINED |
+| Rule baseline | DEFINED |
+| Label strategy | DEFINED |
+| Logistic Regression | PLANNED |
+| Random Forest | PLANNED |
+| Ranking metrics | DEFINED |
+| MLflow | PLANNED |
+| Model Registry | PLANNED |
+| Model Card | DEFINED |
+| FastAPI serving | PLANNED |
+| Monitoring | DEFINED |
+| Semantic enrichment | FUTURE / EXPERIMENTAL |
+| pgvector/Qdrant comparison | FUTURE |
+| Runtime training | PENDING |
+| Runtime metrics | PENDING |
+| Runtime serving evidence | PENDING |
+
+---
+
+# 130. Conclusion
+
+Le moteur de matching adopte une architecture progressive :
+
+```text
+STRUCTURED FILTERING
+        |
+        v
+RULE-BASED BASELINE
+        |
+        v
+MACHINE LEARNING
+        |
+        v
+OPTIONAL SEMANTIC ENRICHMENT
+```
+
+Cette stratégie évite de transformer inutilement chaque problème métier en problème LLM.
+
+Le projet va volontairement au-delà de la conception minimale en implémentant :
+
+```text
+Logistic Regression
++
+Random Forest
++
+MLflow
++
+Model Registry
++
+Model Card
++
+FastAPI Serving
++
+Observability
+```
+
+La valeur de cette extension sera démontrée par des résultats réellement mesurés et non par des métriques théoriques.
+
+---
+
+**BC05 / C5 — MODÈLE DE MATCHING IA V2 — WITH ML/MLOPS EXTENSION**

@@ -1,21 +1,18 @@
 # BC05 — C7 — RGPD
 
 **Bloc de compétences :** BC05  
-**Compétence :** C7 — Intégrer les exigences RGPD dans la conception, le traitement et l'exploitation des données  
+**Compétence :** Intégrer les exigences RGPD dans la conception, le traitement et l'exploitation des données  
 **Projet :** Real Estate Intelligence Platform  
-**Plateforme :** Enterprise AI Platform  
-**Version :** 1.0  
-**Statut :** Baseline documentaire — preuves opérationnelles à consolider
+**Version :** 2.0  
+**Statut :** Baseline documentaire alignée avec le Data Model V2 — preuves runtime à produire
 
 ---
 
 # 1. Objectif
 
-Ce dossier démontre que la protection des données personnelles est intégrée à l'architecture Data et AI du projet.
+Ce dossier démontre que la protection des données personnelles est intégrée à l'architecture Data et IA du projet.
 
-Le RGPD n'est pas traité comme un document isolé ajouté après l'implémentation.
-
-Le cycle attendu est :
+Le RGPD est traité selon une logique :
 
 ```text
 Data
@@ -39,10 +36,10 @@ Protection
 Retention
  |
  v
-Deletion
+Deletion / Anonymization
 ```
 
-L'objectif est de pouvoir répondre à :
+Le système doit pouvoir répondre à :
 
 ```text
 What personal data is processed?
@@ -50,275 +47,367 @@ Why?
 Where?
 By whom?
 For how long?
-With what controls?
-Can it be deleted or corrected?
+With which technical controls?
+Can it be corrected, exported or deleted?
 ```
 
 ---
 
-# 2. Source principale
+# 2. Source de vérité RGPD
 
-Le livrable principal existant est :
+Le registre principal reste :
 
 ```text
 REGISTRE-RGPD.md
 ```
 
-Ce document doit rester la source de vérité pour le registre des traitements.
+Ce dossier ne remplace pas le registre.
 
-Le présent dossier sert à relier ce registre aux composants techniques du projet.
-
----
-
-# 3. Documents complémentaires
-
-Références Data :
+Il relie les traitements RGPD :
 
 ```text
-../../../40-DATA/04-Data-Governance.md
-../../../40-DATA/09-Data-Lifecycle.md
-../../../40-DATA/10-Data-Security.md
+business
 ```
 
-Références Security :
+aux composants :
 
 ```text
-../../../60-SECURITY/01-Security-Architecture.md
-../../../60-SECURITY/02-Identity-and-Access-Management.md
-../../../60-SECURITY/04-Secret-Management.md
-../../../60-SECURITY/06-Application-Security.md
-```
-
-Références AI :
-
-```text
-../../../50-AI/07-AI-Governance.md
-../../../50-AI/08-AI-Security.md
-```
-
-Modèle Data :
-
-```text
-../C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md
-../C1-MCD-Migration-SQL/MLD-PROJET.md
-../C1-MCD-Migration-SQL/MPD-POSTGRESQL.md
+database
+analytics
+AI
+logs
+documents
+backups
 ```
 
 ---
 
-# 4. Données personnelles du projet
+# 3. Data Model V2 concerné
 
-Les principales données personnelles peuvent être présentes dans :
+Le modèle métier cible contient :
 
 ```text
 CLIENT
 CHASSEUR
+SECTEUR
 MANDAT
+MANDAT_SECTEUR
+DEMANDE
+DEMANDE_VERSION
+SOURCE
+BIEN
 PRESENTATION
+COMMENTAIRE
 DOCUMENT
+BAREME_COMMISSION
+PAIEMENT
 ```
+
+Toutes les entités ne contiennent pas directement des données personnelles, mais certaines peuvent être rattachées indirectement à une personne.
 
 ---
 
-# 5. CLIENT
+# 4. CLIENT
 
-Données personnelles possibles :
+Données personnelles principales :
 
 ```text
 nom
 prenom
 email
 telephone
+ville
+consentement_contact
 ```
 
-Potentiellement :
-
-```text
-commentaires
-preferences
-feedback
-```
-
-selon l'application réellement implémentée.
+Le client est directement identifiable.
 
 ---
 
-# 6. CHASSEUR
+# 5. CHASSEUR
 
-Données personnelles possibles :
+Données personnelles :
 
 ```text
 nom
 prenom
 email
 telephone
+date_entree
 ```
 
-Ces données sont principalement nécessaires à l'organisation et à l'attribution des mandats.
+Ces informations sont nécessaires à l'organisation interne et à l'exécution des mandats.
 
 ---
 
-# 7. MANDAT
+# 6. MANDAT
 
-Le mandat peut indirectement relier :
+`MANDAT` relie :
 
 ```text
 CLIENT
++
+CHASSEUR
 ```
 
-à :
+à un contrat.
 
-```text
-criteria
-business history
-status
-```
-
-Même si certaines colonnes ne contiennent pas directement de nom, l'ensemble peut rester rattachable à une personne.
+Il contient donc des informations indirectement personnelles même si certaines colonnes sont purement métier.
 
 ---
 
-# 8. PRESENTATION
+# 7. DEMANDE
 
-Les champs tels que :
+`DEMANDE` représente une recherche immobilière.
+
+Elle est rattachée à :
 
 ```text
-feedback_client
-commentaire_chasseur
+MANDAT
 ```
 
-peuvent contenir des données personnelles ou des informations sensibles saisies en texte libre.
-
-Ils doivent donc être traités avec attention.
+et donc indirectement à un client.
 
 ---
 
-# 9. DOCUMENT
+# 8. DEMANDE_VERSION
 
-Les documents peuvent contenir des informations personnelles supplémentaires.
+Les critères peuvent contenir :
+
+```text
+budget
+location
+property type
+surface
+rooms
+preferences
+```
+
+Ces informations ne sont pas nécessairement identifiantes isolément, mais peuvent être rattachées à une personne via le mandat.
+
+---
+
+# 9. COMMENTAIRE
+
+`COMMENTAIRE` est particulièrement sensible car il peut contenir du texte libre.
 
 Exemples :
 
 ```text
-name
-address
-contact information
-contractual information
+client feedback
+hunter notes
+preferences
+reasons for rejection
+```
+
+Le texte libre peut contenir des données personnelles supplémentaires non prévues dans le schéma.
+
+---
+
+# 10. PRESENTATION
+
+`PRESENTATION` relie :
+
+```text
+DEMANDE_VERSION
++
+BIEN
+```
+
+et peut donc faire partie de l'historique comportemental d'un client.
+
+---
+
+# 11. PAIEMENT
+
+`PAIEMENT` contient des données financières liées à un mandat.
+
+Exemples :
+
+```text
+montant_achat
+montant_honoraires
+montant_chasseur
+dates de paiement
+```
+
+Ces données doivent être protégées avec un niveau de confidentialité élevé.
+
+---
+
+# 12. BAREME_COMMISSION
+
+`BAREME_COMMISSION` est lié à :
+
+```text
+CHASSEUR
+```
+
+et contient des données de rémunération.
+
+Il doit être traité comme une information interne sensible.
+
+---
+
+# 13. DOCUMENT
+
+Les documents peuvent contenir :
+
+```text
+contracts
+property diagnostics
+photos
+legal documents
 financial information
-diagnostic or legal documents
+personal information
 ```
 
-La simple présence d'un fichier dans le stockage ne signifie pas qu'il peut être librement exploité par l'IA.
+La présence d'un document dans MinIO ou PostgreSQL ne signifie pas automatiquement qu'il peut être utilisé par l'IA.
 
 ---
 
-# 10. Catégories de données
+# 14. SECTEUR
 
-Le projet doit pouvoir distinguer :
+`SECTEUR` n'est généralement pas une donnée personnelle.
+
+Cependant, lorsqu'un secteur est combiné avec une recherche très spécifique, il peut contribuer à réidentifier indirectement un client.
+
+---
+
+# 15. SOURCE / BIEN
+
+Les données de biens et de sources sont généralement des données métier.
+
+Néanmoins :
 
 ```text
-Identification Data
-Contact Data
-Business Data
-Search Preferences
-Contractual Data
-Documents
-Technical Data
-Logs
-AI Interaction Data
+contact seller
+private owner information
+```
+
+provenant de certaines annonces peuvent devenir des données personnelles.
+
+La normalisation doit donc distinguer :
+
+```text
+property metadata
+```
+
+de :
+
+```text
+personal contact data
 ```
 
 ---
 
-# 11. Finalité
+# 16. Catégories de données
 
-Chaque traitement doit avoir une finalité explicite.
+Le projet distingue :
+
+```text
+Identity Data
+Contact Data
+Contractual Data
+Search Preferences
+Financial Data
+Property Data
+Operational Metadata
+Documents
+AI Inputs / Outputs
+Logs / Traces
+```
+
+---
+
+# 17. Finalité
+
+Chaque traitement doit avoir une finalité claire.
 
 Exemples :
 
 ```text
-Manage real-estate search mandate
-Search matching properties
-Communicate with client
-Generate business analysis
-Improve service quality
-Operate platform
+manage client relationship
+execute mandate
+search properties
+calculate commissions
+manage payments
+provide analytics
+assist property matching
+operate platform
 ```
-
-Une donnée ne doit pas être collectée sans objectif identifié.
 
 ---
 
-# 12. Limitation de finalité
+# 18. Limitation de finalité
 
 Une donnée collectée pour :
 
 ```text
-real-estate search
+property search
 ```
 
 ne doit pas être réutilisée arbitrairement pour :
 
 ```text
 marketing
-AI training
-third-party enrichment
+external AI training
+third-party profiling
 ```
 
-sans analyse appropriée.
+sans analyse spécifique.
 
 ---
 
-# 13. Base légale
-
-Le registre RGPD doit préciser la base légale applicable à chaque traitement.
-
-Exemples possibles selon le traitement :
-
-```text
-Contract
-Legal Obligation
-Legitimate Interest
-Consent
-```
-
-La base légale exacte doit rester celle du registre et du contexte réel.
-
----
-
-# 14. Minimisation
+# 19. Minimisation
 
 Principe :
 
 ```text
-Collect only what is necessary
+Collect only what is necessary.
+Process only what is necessary.
+Expose only what is necessary.
 ```
 
-Exemple :
+---
 
-un modèle de matching n'a généralement pas besoin de :
+# 20. Exemple Matching
+
+Le matching nécessite :
+
+```text
+budget
+location
+surface
+rooms
+preferences
+property features
+```
+
+Il ne nécessite généralement pas :
 
 ```text
 client email
 client phone
-full identity
+full client identity
 ```
-
-pour calculer un score immobilier.
 
 ---
 
-# 15. Matching et minimisation
+# 21. AI Data Flow
 
-Le flux préféré est :
+Préférer :
 
 ```text
 CLIENT
-  |
-  v
-Relevant Search Criteria
-  |
-  v
+   |
+   v
+DEMANDE_VERSION
+   |
+   v
+Relevant Features
+   |
+   v
 Matching Engine
 ```
 
@@ -326,32 +415,239 @@ et non :
 
 ```text
 Entire Client Record
-  |
-  v
+   |
+   v
 AI Model
 ```
 
 ---
 
-# 16. Données d'entraînement
+# 22. Pseudonymisation
 
-Un dataset ML ne doit contenir que les informations nécessaires.
+Les datasets analytiques et ML peuvent utiliser :
 
-Les données directement identifiantes doivent être évitées si elles n'apportent aucune valeur au modèle.
+```text
+technical identifiers
+```
+
+au lieu de :
+
+```text
+names
+emails
+phones
+```
 
 ---
 
-# 17. Pseudonymisation
+# 23. Anonymisation
 
-Pour certains traitements analytiques ou ML, l'identifiant métier peut être remplacé par un identifiant technique.
+Important :
+
+```text
+Pseudonymized
+!=
+Anonymous
+```
+
+La pseudonymisation réduit le risque mais ne sort généralement pas les données du périmètre RGPD.
+
+---
+
+# 24. StarterPack Generated Data
+
+Le générateur StarterPack produit :
+
+```text
+synthetic searches
+synthetic announcements
+```
+
+Ces données sont particulièrement utiles pour :
+
+```text
+development
+benchmark
+ETL testing
+ML technical validation
+```
+
+sans utiliser inutilement de vraies données personnelles.
+
+---
+
+# 25. Données synthétiques
+
+Lorsqu'elles sont réellement synthétiques et non dérivées de personnes identifiables, elles réduisent fortement les risques de confidentialité.
+
+Elles doivent cependant être clairement identifiées comme :
+
+```text
+synthetic test data
+```
+
+---
+
+# 26. Environnements de développement
+
+Les environnements :
+
+```text
+development
+test
+CI
+benchmark
+```
+
+doivent privilégier :
+
+```text
+synthetic
+anonymized
+pseudonymized
+```
+
+datasets.
+
+---
+
+# 27. Production Data
+
+Les données réelles ne doivent pas être copiées vers un environnement de développement sans justification et protection adéquate.
+
+---
+
+# 28. OLTP
+
+Le schéma :
+
+```text
+real_estate
+```
+
+contient les données opérationnelles.
+
+L'accès doit être limité par :
+
+```text
+application role
+database role
+least privilege
+```
+
+---
+
+# 29. RAW
+
+La zone RAW peut contenir des données sources potentiellement sensibles.
+
+Elle doit être considérée comme :
+
+```text
+trusted infrastructure
+but untrusted data content
+```
+
+---
+
+# 30. STAGING
+
+STAGING ne doit pas devenir une zone de duplication permanente.
+
+Les données doivent y être conservées uniquement selon le besoin technique.
+
+---
+
+# 31. OLAP
+
+Lors du passage vers :
+
+```text
+warehouse
+analytics
+```
+
+les colonnes personnelles doivent être minimisées.
+
+---
+
+# 32. Exemple dim_client
+
+Éviter si inutile :
+
+```text
+dim_client
+├── nom
+├── prenom
+├── email
+├── telephone
+```
+
+Préférer :
+
+```text
+dim_client
+├── client_key
+├── status
+└── city / analytical segment
+```
+
+si cela suffit.
+
+---
+
+# 33. PAIEMENT dans OLAP
+
+Les données financières peuvent être agrégées.
 
 Exemple :
 
 ```text
-client_id = 42
+fact_payment
 ```
 
-sans transférer :
+peut contenir :
+
+```text
+purchase_amount
+company_fee
+hunter_payment
+```
+
+sans exposer directement les données d'identité du client.
+
+---
+
+# 34. Analytics
+
+Les dashboards doivent privilégier :
+
+```text
+aggregated information
+```
+
+lorsque le détail individuel n'est pas nécessaire.
+
+---
+
+# 35. ML Training
+
+Notre extension ML utilise des features minimisées.
+
+Le dataset d'entraînement devrait éviter les identifiants directs.
+
+---
+
+# 36. ML Labels
+
+Les labels peuvent provenir de :
+
+```text
+PRESENTATION
+COMMENTAIRE
+```
+
+sans nécessiter de stocker :
 
 ```text
 name
@@ -363,281 +659,162 @@ dans le dataset.
 
 ---
 
-# 18. Anonymisation
+# 37. MLflow
 
-Si les données peuvent être véritablement anonymisées, elles peuvent être utilisées pour certains usages sans conserver la possibilité d'identifier une personne.
-
-Mais :
+MLflow peut contenir :
 
 ```text
-Pseudonymized
-!=
-Anonymous
+parameters
+metrics
+artifacts
+dataset references
 ```
 
-La pseudonymisation reste généralement soumise au RGPD.
+Les artifacts ne doivent pas intégrer involontairement des données personnelles inutiles.
 
 ---
 
-# 19. OLTP
+# 38. Model Artifacts
 
-Le schéma :
+Un modèle entraîné peut parfois mémoriser ou révéler certaines informations selon l'algorithme et les données.
 
-```text
-real_estate
-```
-
-contient les données opérationnelles.
-
-L'accès doit être limité selon le rôle.
+Le dataset doit donc être minimisé avant entraînement.
 
 ---
 
-# 20. OLAP
+# 39. Dataset Card
 
-Lors du chargement vers :
-
-```text
-warehouse
-analytics
-```
-
-les colonnes personnelles doivent être examinées.
-
-Il ne faut pas recopier automatiquement toutes les colonnes OLTP.
-
----
-
-# 21. Exemple minimisation OLAP
-
-Au lieu de :
+Chaque dataset ML important devra documenter :
 
 ```text
-dim_client
-├── name
-├── firstname
-├── email
-├── phone
-├── address
-```
-
-si ces informations ne sont pas nécessaires, préférer :
-
-```text
-dim_client
-├── client_key
-├── source_client_id
-└── status
+source
+purpose
+personal data
+features
+retention
+limitations
 ```
 
 ---
 
-# 22. Analytics
+# 40. Model Card
 
-Un dashboard métier doit utiliser autant que possible des informations :
-
-```text
-aggregated
-minimized
-non-identifying
-```
-
-si l'identification individuelle n'est pas nécessaire.
-
----
-
-# 23. Data Warehouse et duplication
-
-La duplication OLTP → OLAP augmente la surface de traitement.
-
-Chaque duplication doit donc répondre à :
+La Model Card doit inclure :
 
 ```text
-Why is this field copied?
+privacy considerations
 ```
 
----
-
-# 24. AI
-
-Les workflows AI augmentent les risques liés à :
-
-- duplication ;
-- prompts ;
-- embeddings ;
-- caches ;
-- logs ;
-- external APIs ;
-- model training.
-
-Ils nécessitent une analyse spécifique.
+et les limites d'usage.
 
 ---
 
-# 25. IA locale
+# 41. Ollama Local
 
-Le traitement local constitue un mécanisme important de maîtrise.
+Le projet privilégie :
 
 ```text
-Private Data
-    |
-    v
-Local Infrastructure
-    |
-    v
-Ollama / Model
+local inference
 ```
 
-Cela réduit les transferts vers des fournisseurs externes.
+via Ollama pour les traitements internes lorsque pertinent.
+
+Cela permet de limiter les transferts externes.
 
 ---
 
-# 26. IA externe
+# 42. Local Does Not Remove GDPR
 
-Si une API AI externe est utilisée :
-
-```text
-Data
- |
- v
-Classification
- |
- v
-External Transfer Allowed?
- |
- +----+----+
- |         |
-NO        YES
- |         |
- v         v
-Local    Controlled External Use
-```
-
-L'utilisation externe doit être explicitement gouvernée.
-
----
-
-# 27. Prompt Data
-
-Un prompt peut contenir des données personnelles.
-
-Il doit donc être traité comme une donnée soumise aux mêmes exigences de :
+Même en local, il faut gérer :
 
 ```text
 access
-logging
+purpose
 retention
 security
+logging
 ```
 
 ---
 
-# 28. Logs AI
+# 43. External AI
 
-À éviter :
+Une API externe doit être traitée comme :
 
 ```text
-log full prompts
-log full documents
-log full personal records
+external data transfer / processing dependency
 ```
 
-sauf besoin clairement justifié et protégé.
+et non comme un composant transparent.
 
 ---
 
-# 29. Embeddings
+# 44. Prompt Data
 
-Un embedding peut révéler indirectement des informations sur le contenu source.
+Les prompts peuvent contenir des données personnelles.
 
-Il ne doit donc pas être considéré automatiquement comme anonyme.
-
----
-
-# 30. Vector Database
-
-Les vecteurs doivent respecter :
+Ils doivent respecter :
 
 ```text
-authorization
+minimization
+access control
 retention
-deletion
-classification
+logging policy
 ```
-
-comme les documents sources.
 
 ---
 
-# 31. RAG
+# 45. Prompt Logging
 
-Le modèle correct est :
+Éviter par défaut :
+
+```text
+full private prompts
+```
+
+dans les logs standards.
+
+---
+
+# 46. RAG
+
+Architecture cible :
 
 ```text
 Authenticated User
-        |
-        v
+       |
+       v
 Authorization
-        |
-        v
+       |
+       v
 Allowed Documents
-        |
-        v
+       |
+       v
 Retrieval
-        |
-        v
+       |
+       v
 LLM
 ```
 
 ---
 
-# 32. RAG interdit
+# 47. Authorization Before Retrieval
 
-À éviter :
+Principe :
 
 ```text
-User
- |
- v
-Search across all embeddings
- |
- v
-LLM
+AUTHORIZATION
+BEFORE
+RETRIEVAL
 ```
 
-puis demander au LLM de ne pas révéler les documents interdits.
-
-Le contrôle doit être appliqué avant le contenu génératif.
+Le LLM ne doit jamais servir de mécanisme de contrôle d'accès.
 
 ---
 
-# 33. indexable_ia
+# 48. Document Classification
 
-Le modèle prévoit :
-
-```text
-document.indexable_ia
-```
-
-Ce champ permet de distinguer :
-
-```text
-stored document
-```
-
-de :
-
-```text
-document eligible for AI indexing
-```
-
-Il ne remplace pas la gestion des permissions.
-
----
-
-# 34. Classification document
-
-Le MPD prévoit :
+Les documents utilisent :
 
 ```text
 PUBLIC
@@ -646,81 +823,114 @@ CONFIDENTIEL
 RESTREINT
 ```
 
-Cette classification peut influencer :
+---
+
+# 49. indexable_ia
+
+Par défaut :
 
 ```text
-AI eligibility
+FALSE
+```
+
+Cela matérialise :
+
+```text
+Privacy by Default
+```
+
+---
+
+# 50. Embeddings
+
+Un embedding ne doit pas être automatiquement considéré comme anonyme.
+
+Il peut conserver une représentation du contenu source.
+
+---
+
+# 51. Vector Database
+
+Les mêmes règles s'appliquent à :
+
+```text
+pgvector
+Qdrant
+```
+
+concernant :
+
+```text
 access
-sharing
 retention
+deletion
+classification
 ```
 
 ---
 
-# 35. Droits des personnes
+# 52. Droit d'accès
 
-Selon le traitement, il faut pouvoir prendre en compte les droits applicables :
+Le système doit permettre d'identifier les données d'une personne dans :
 
 ```text
-Access
-Rectification
-Erasure
-Restriction
-Objection
-Portability
+CLIENT
+MANDAT
+DEMANDE
+PRESENTATION
+COMMENTAIRE
+PAIEMENT
+DOCUMENT
 ```
 
-dans les limites et conditions prévues par le RGPD.
+selon les relations.
 
 ---
 
-# 36. Droit d'accès
-
-Le système doit permettre d'identifier les données détenues concernant une personne lorsque nécessaire.
-
-Le MCD et la traçabilité des relations contribuent à cette capacité.
-
----
-
-# 37. Rectification
-
-Certaines données doivent pouvoir être corrigées.
+# 53. Rectification
 
 Exemples :
 
 ```text
 email
-telephone
+phone
 search criteria
 ```
 
-L'historique métier doit cependant être conservé lorsque cela est légalement ou fonctionnellement nécessaire.
+doivent pouvoir être corrigés selon les règles métier applicables.
 
 ---
 
-# 38. Effacement
+# 54. Historisation vs rectification
 
-Le droit à l'effacement ne signifie pas nécessairement :
+La rectification ne signifie pas que tout historique doit être détruit.
+
+Exemple :
 
 ```text
-DELETE everything immediately
+DEMANDE_VERSION
 ```
 
-dans tous les cas.
-
-Il faut tenir compte :
-
-- obligations légales ;
-- contrats ;
-- historique nécessaire ;
-- sauvegardes ;
-- délais techniques.
+conserve volontairement l'historique des changements.
 
 ---
 
-# 39. Erasure Workflow
+# 55. Effacement
 
-Architecture logique :
+L'effacement doit considérer :
+
+```text
+active database
+warehouse
+documents
+vectors
+logs
+backups
+```
+
+---
+
+# 56. Erasure Workflow
 
 ```text
 Request
@@ -729,16 +939,16 @@ Request
 Identity Verification
  |
  v
-Scope Identification
+Data Inventory
  |
  v
-Legal / Retention Check
+Retention / Legal Check
  |
  v
 Delete / Anonymize
  |
  v
-Verify
+Verification
  |
  v
 Evidence
@@ -746,385 +956,332 @@ Evidence
 
 ---
 
-# 40. Data Lineage et effacement
+# 57. Data Lineage
 
-La capacité à supprimer correctement des données nécessite de connaître :
+Une bonne traçabilité permet d'identifier :
+
+```text
+where personal data has propagated
+```
+
+par exemple :
 
 ```text
 OLTP
-Staging
-Warehouse
-Analytics
-Documents
-Vectors
-Logs
-Backups
+ |
+ v
+STAGING
+ |
+ v
+WAREHOUSE
 ```
-
-où elles peuvent avoir été propagées.
 
 ---
 
-# 41. OpenMetadata
+# 58. OpenMetadata
 
-OpenMetadata peut contribuer à identifier :
+OpenMetadata peut aider à documenter :
 
 ```text
-data assets
-owners
+PII classification
+ownership
 lineage
-classifications
+data assets
 ```
-
-Cela facilite l'analyse d'impact.
 
 ---
 
-# 42. Conservation
+# 59. Conservation
 
-Les données ne doivent pas être conservées indéfiniment sans justification.
-
-Les principales catégories à gérer sont :
+Les catégories suivantes nécessitent des règles de rétention :
 
 ```text
-Operational Data
-Analytics
-Documents
-Logs
-Traces
-Metrics
-ML Datasets
-Model Artifacts
-Backups
-AI Inputs / Outputs
+client data
+mandates
+payments
+comments
+documents
+raw files
+warehouse data
+logs
+traces
+ML datasets
+model artifacts
+backups
+AI prompts
+AI outputs
 ```
 
 ---
 
-# 43. Politique de rétention
+# 60. Retention Matrix
 
-Chaque catégorie importante doit avoir :
+Chaque catégorie doit avoir :
 
 ```text
-Purpose
-Retention Duration
-Deletion / Archive Rule
-Owner
+purpose
+retention period
+owner
+deletion method
 ```
 
-La durée exacte doit provenir du registre et des obligations applicables.
+Les durées exactes doivent rester alignées avec le registre RGPD et les obligations métier.
 
 ---
 
-# 44. Logs
+# 61. PAIEMENT Retention
 
-Les logs opérationnels doivent disposer d'une durée de conservation maîtrisée.
+Les données financières peuvent être soumises à des obligations légales de conservation différentes des données de matching.
 
-Loki ne doit pas devenir une archive infinie de données potentiellement personnelles.
+La politique finale doit donc distinguer les catégories.
 
 ---
 
-# 45. Traces
+# 62. Logs
+
+Loki ne doit pas devenir :
+
+```text
+permanent personal-data archive
+```
+
+---
+
+# 63. Metrics
+
+Éviter les labels tels que :
+
+```text
+client_email
+client_phone
+```
+
+dans Prometheus.
+
+---
+
+# 64. Traces
 
 Les traces peuvent contenir :
 
 ```text
-URL
-parameters
-identifiers
-service metadata
+URL parameters
+IDs
+request metadata
 ```
 
-Elles doivent également être analysées sous l'angle RGPD.
+Elles doivent être configurées avec prudence.
 
 ---
 
-# 46. Metrics
+# 65. Backups
 
-Les métriques devraient idéalement éviter les labels à forte cardinalité contenant des identifiants personnels.
-
-À éviter :
+Une donnée supprimée de la base active peut rester temporairement dans :
 
 ```text
-client_email="..."
+backup
 ```
 
-comme label Prometheus.
+La politique doit expliquer cette situation.
 
 ---
 
-# 47. Backups
+# 66. Restore Risk
 
-Une donnée supprimée de la base active peut rester temporairement dans un backup.
+Une restauration peut réintroduire des données supprimées.
 
-La stratégie doit définir comment gérer cette situation selon :
-
-- politique de rétention ;
-- restaurations ;
-- exigences réglementaires.
+La procédure PRA doit prévoir une réconciliation lorsque nécessaire.
 
 ---
 
-# 48. Restore
+# 67. Confidentiality
 
-Une restauration ancienne peut réintroduire une donnée supprimée.
-
-Le PRA doit donc prévoir une procédure de réconciliation lorsque nécessaire.
-
----
-
-# 49. Sécurité
-
-Le RGPD exige des mesures de sécurité adaptées.
-
-Le projet utilise ou prévoit notamment :
+Contrôles principaux :
 
 ```text
 RBAC
-TLS
-Secrets Management
-Network Controls
-Application Authorization
-Monitoring
-Backup
+database roles
+application authorization
+network controls
+secret management
 ```
 
 ---
 
-# 50. Confidentialité
+# 68. Integrity
 
-Les données ne doivent être accessibles qu'aux personnes et services autorisés.
-
----
-
-# 51. Intégrité
-
-Les mécanismes :
+Le modèle V2 utilise :
 
 ```text
 PK
 FK
-CHECK
 UNIQUE
-Data Quality
-Checksums
+CHECK
+NOT NULL
 ```
 
-contribuent à protéger l'intégrité.
+pour protéger l'intégrité.
 
 ---
 
-# 52. Disponibilité
+# 69. Financial Integrity
 
-La disponibilité est également une dimension de la protection des données.
-
-Les mécanismes incluent :
+Les données :
 
 ```text
-Backup
-Restore
+BAREME_COMMISSION
+PAIEMENT
+```
+
+nécessitent une intégrité particulièrement forte.
+
+---
+
+# 70. Availability
+
+La protection des données inclut également :
+
+```text
+backup
+restore
 PRA
-High Availability
-Monitoring
+monitoring
 ```
 
 ---
 
-# 53. Encryption in Transit
+# 71. Encryption in Transit
 
-Les communications sensibles doivent utiliser :
+Les flux sensibles doivent utiliser :
 
 ```text
 TLS
 ```
 
-lorsque applicable.
+lorsque pertinent.
 
 ---
 
-# 54. Encryption at Rest
+# 72. Encryption at Rest
 
-Le besoin de chiffrement au repos doit être évalué pour :
+À évaluer pour :
 
 ```text
-PostgreSQL
+PostgreSQL storage
 MinIO
-Backups
-Host storage
+backups
+host disks
 ```
 
-selon le niveau de sensibilité.
+selon la sensibilité et l'architecture.
 
 ---
 
-# 55. Secrets
+# 73. Secrets
 
-Les credentials ne doivent pas apparaître dans :
+Aucun secret dans :
 
 ```text
 Git
-code
+source code
 documentation
-container images
+container image
 logs
 ```
 
 ---
 
-# 56. Access Control
-
-Le contrôle d'accès doit exister à plusieurs niveaux :
-
-```text
-Application
-Database
-Kubernetes
-Object Storage
-Metadata Platform
-AI Services
-```
-
----
-
-# 57. Least Privilege
-
-Les services doivent utiliser uniquement les permissions nécessaires.
+# 74. Least Privilege
 
 Exemple :
 
 ```text
-analytics service
+Matching Service
 ```
 
-n'a pas nécessairement besoin de modifier :
+doit pouvoir lire :
 
 ```text
-client
+DEMANDE_VERSION
+BIEN
 ```
 
-dans OLTP.
+sans nécessairement pouvoir modifier :
+
+```text
+PAIEMENT
+```
 
 ---
 
-# 58. Audit
+# 75. Financial Access
 
-Les actions sensibles peuvent nécessiter une traçabilité.
-
-Exemples :
+L'accès aux :
 
 ```text
-admin access
-data export
+BAREME_COMMISSION
+PAIEMENT
+```
+
+doit être plus restrictif que l'accès à un catalogue de biens.
+
+---
+
+# 76. Audit
+
+Actions sensibles candidates :
+
+```text
+client export
 data deletion
+financial modification
 permission change
 model promotion
+document indexing
 ```
 
 ---
 
-# 59. Breach Management
+# 77. Privacy by Design
 
-Un incident impliquant des données personnelles doit pouvoir être identifié et analysé.
-
-Processus :
+Exemples déjà intégrés dans le design :
 
 ```text
-Detection
- |
- v
-Containment
- |
- v
-Impact Analysis
- |
- v
-Decision / Notification Process
- |
- v
-Remediation
-```
-
-Les obligations exactes doivent être gérées selon le cadre applicable.
-
----
-
-# 60. Privacy by Design
-
-Le projet applique :
-
-```text
-Privacy
-before
-implementation completion
-```
-
-Exemples :
-
-```text
-data minimization in MCD
+CLIENT separated from matching features
 document classification
-AI local-first
-controlled logging
+indexable_ia default FALSE
 warehouse minimization
+local-first AI
+synthetic test data
 ```
 
 ---
 
-# 61. Privacy by Default
+# 78. Privacy by Default
 
-Les valeurs par défaut doivent éviter l'exposition inutile.
+Le comportement par défaut doit réduire l'exposition.
 
 Exemple :
 
 ```text
-indexable_ia = FALSE
+document AI indexing
+=
+disabled
 ```
 
-est préférable à :
-
-```text
-indexable_ia = TRUE
-```
-
-pour tous les documents par défaut.
+jusqu'à autorisation.
 
 ---
 
-# 62. Exemple MPD
+# 79. Consent
 
-Le MPD prévoit :
-
-```sql
-indexable_ia BOOLEAN NOT NULL DEFAULT FALSE
-```
-
-Cela matérialise un choix Privacy/Security by Default.
-
----
-
-# 63. Consentement
-
-Le MCD contient :
+Le champ :
 
 ```text
 consentement_contact
 ```
 
-Il faut toutefois éviter de traiter un simple booléen comme preuve universelle de tout consentement RGPD.
-
-Un consentement valide dépend notamment :
-
-- finalité ;
-- information ;
-- liberté ;
-- traçabilité ;
-- retrait.
-
----
-
-# 64. Marketing
-
-Un consentement de contact métier ne doit pas être réutilisé automatiquement comme consentement :
+ne doit pas être interprété comme autorisation universelle pour :
 
 ```text
 marketing
@@ -1134,282 +1291,81 @@ external sharing
 
 ---
 
-# 65. Data Processing Inventory
+# 80. Automated Decision Making
 
-Le registre doit identifier chaque traitement important.
-
-Exemples :
-
-```text
-Client management
-Mandate management
-Property matching
-Analytics
-AI-assisted matching
-Document processing
-Monitoring
-Backup
-```
-
----
-
-# 66. Sous-traitants
-
-Si des services externes sont utilisés, ils doivent être identifiés lorsque pertinent.
-
-Exemples possibles :
-
-```text
-cloud provider
-external AI provider
-email provider
-storage provider
-```
-
-Dans la plateforme locale, une grande partie du traitement reste interne.
-
----
-
-# 67. Transferts
-
-Un transfert vers une API externe doit être distingué du traitement local.
-
-```text
-Local:
-Data stays within controlled platform
-
-External:
-Data leaves controlled boundary
-```
-
----
-
-# 68. Souveraineté
-
-La souveraineté n'est pas strictement identique au RGPD, mais les deux se rejoignent sur :
-
-```text
-control
-location
-provider dependency
-data transfer
-```
-
-La souveraineté détaillée est traitée dans :
-
-```text
-../C8-Souverainete-Securite-IA/
-```
-
----
-
-# 69. Données de test
-
-Les environnements de test doivent privilégier :
-
-```text
-synthetic
-anonymized
-pseudonymized
-```
-
-datasets lorsque possible.
-
----
-
-# 70. Synthetic Data
-
-La génération de données synthétiques pour :
-
-```text
-benchmark
-OLAP
-ML training demo
-```
-
-permet de limiter l'utilisation inutile de données personnelles réelles.
-
----
-
-# 71. ML Dataset
-
-Le dataset final doit disposer d'une description.
-
-Exemple :
-
-```text
-dataset name
-purpose
-source
-columns
-personal-data status
-retention
-version
-```
-
----
-
-# 72. Dataset Card
-
-Une fiche dataset peut compléter la Model Card.
-
-Elle permet de documenter :
-
-```text
-origin
-schema
-quality
-bias
-privacy
-limitations
-```
-
----
-
-# 73. AI Training
-
-Avant entraînement :
-
-```text
-Dataset
- |
- v
-Personal Data?
- |
- +----+----+
- |         |
-NO        YES
- |         |
- v         v
-Train   Need Assessment
-```
-
----
-
-# 74. Feature Selection
-
-Une feature ne doit pas être retenue uniquement parce qu'elle améliore la métrique.
-
-Il faut vérifier :
-
-```text
-Is it necessary?
-Is it lawful?
-Can it introduce bias?
-Does it expose identity?
-```
-
----
-
-# 75. Automated Decision
-
-Le programme de matching est conçu principalement comme :
+Le matching reste principalement :
 
 ```text
 Decision Support
 ```
 
-avec validation humaine.
-
-Cela doit être clairement présenté dans la documentation.
-
----
-
-# 76. Profilage
-
-Si une fonctionnalité évolue vers une prise de décision entièrement automatisée produisant des effets significatifs, une analyse supplémentaire sera nécessaire.
-
-Le projet MVP ne doit pas être présenté comme tel si ce n'est pas le cas.
-
----
-
-# 77. Human-in-the-loop
-
-Architecture :
+et non :
 
 ```text
-Model
- |
- v
+fully autonomous consequential decision
+```
+
+---
+
+# 81. Human in the Loop
+
+```text
+Matching
+   |
+   v
 Recommendation
- |
- v
-Chasseur
- |
- v
-Business Decision
+   |
+   v
+Hunter / Client
+   |
+   v
+Decision
 ```
-
-Cette séparation constitue également un mécanisme de gouvernance.
 
 ---
 
-# 78. Data Subject Request Evidence
+# 82. AI Features
 
-Une preuve future peut être un scénario technique démontrant :
+Les features doivent rester :
 
 ```text
-find client
-find mandates
-find request versions
-find presentations
-identify related data
+business relevant
 ```
 
-sans nécessairement utiliser de vraies données personnelles.
+et éviter les variables inutiles ou pouvant introduire des biais injustifiés.
 
 ---
 
-# 79. Example SQL inventory
+# 83. Testing Strategy
 
-Une future procédure peut utiliser des requêtes telles que :
+Les preuves RGPD ne doivent pas être uniquement documentaires.
 
-```sql
-SELECT *
-FROM real_estate.client
-WHERE id_client = :id;
-```
-
-puis suivre les relations.
-
-La procédure finale doit être testée avec des données synthétiques.
+Des tests techniques seront produits.
 
 ---
 
-# 80. Deletion Test
+# 84. Erasure Test
 
-Une preuve intéressante peut être :
+Scénario :
 
 ```text
-Create synthetic person
+Create synthetic client
       |
       v
-Create related data
+Create related records
       |
       v
-Execute deletion/anonymization workflow
+Execute deletion/anonymization procedure
       |
       v
-Verify remaining data
+Verify result
 ```
 
 ---
 
-# 81. Retention Test
+# 85. Logging Test
 
-Un autre scénario peut vérifier qu'une règle de purge sélectionne correctement les données dépassant la rétention.
-
----
-
-# 82. AI Data Leakage Test
-
-Une future preuve sécurité/RGPD peut vérifier qu'une requête AI ne retourne pas des documents appartenant à un utilisateur non autorisé.
-
----
-
-# 83. Logging Test
-
-Vérifier qu'une requête métier ne fait pas apparaître :
+Vérifier que :
 
 ```text
 email
@@ -1418,292 +1374,114 @@ token
 password
 ```
 
-dans les logs lorsque ces informations ne sont pas nécessaires.
+ne sont pas exposés inutilement.
 
 ---
 
-# 84. OpenMetadata Evidence
+# 86. AI Access Test
 
-Une preuve peut montrer :
+Vérifier qu'un utilisateur non autorisé ne peut pas récupérer un document restreint via l'IA.
+
+---
+
+# 87. Financial Access Test
+
+Vérifier qu'un rôle non autorisé ne peut pas accéder aux paiements ou barèmes de commission.
+
+---
+
+# 88. Evidence Runtime
+
+Les futures preuves peuvent inclure :
 
 ```text
-PII classification
-owner
-description
-lineage
+SQL role test
+API authorization test
+erasure test
+log inspection
+OpenMetadata classification
+RAG authorization test
 ```
 
-sur une table contenant des données personnelles.
-
 ---
 
-# 85. Evidence Directory
+# 89. Data Classification Matrix
 
-Le dossier pourra plus tard contenir :
-
-```text
-C7-RGPD/
-│
-├── README.md
-├── processing-map.md
-├── data-classification.md
-├── retention-matrix.md
-├── erasure-procedure.md
-├── tests/
-│   ├── erasure-test.txt
-│   ├── logging-test.txt
-│   └── ai-access-test.txt
-└── evidence/
-    └── ...
-```
-
-Seulement après implémentation réelle.
-
----
-
-# 86. Matrice données
-
-| Entité | Données personnelles | Besoin principal |
+| Entité | Personal Data | Sensitivity |
 |---|---|---|
-| CLIENT | Oui | Gestion client |
-| CHASSEUR | Oui | Organisation |
-| MANDAT | Indirectes | Relation contractuelle |
-| DEMANDE_VERSION | Potentiellement | Recherche immobilière |
-| BIEN | Généralement non | Bien immobilier |
-| PRESENTATION | Potentiellement | Matching / feedback |
-| DOCUMENT | Potentiellement élevé | Information associée |
-| SOURCE | Généralement non | Provenance |
+| CLIENT | Oui | Élevée |
+| CHASSEUR | Oui | Élevée |
+| SECTEUR | Non / indirect | Faible |
+| MANDAT | Indirecte | Élevée |
+| DEMANDE | Indirecte | Élevée |
+| DEMANDE_VERSION | Indirecte | Élevée |
+| BIEN | Généralement non | Faible/modérée |
+| PRESENTATION | Indirecte | Modérée |
+| COMMENTAIRE | Oui possible | Élevée |
+| DOCUMENT | Oui possible | Très élevée |
+| BAREME_COMMISSION | Chasseur | Élevée |
+| PAIEMENT | Oui / financier | Très élevée |
 
 ---
 
-# 87. Matrice traitement
+# 90. Processing Matrix
 
-| Traitement | Données | Finalité |
-|---|---|---|
-| Client management | CLIENT | Gestion relation |
-| Mandate | CLIENT + MANDAT | Exécution mission |
-| Matching | DEMANDE + BIEN | Trouver biens |
-| Analytics | données minimisées | Pilotage |
-| ML | features sélectionnées | Amélioration matching |
-| RAG | documents autorisés | Assistance |
-| Monitoring | données techniques | Exploitation |
-| Backup | données système | Continuité |
-
----
-
-# 88. Matrice localisation
-
-| Donnée | Stockage cible |
+| Traitement | Données |
 |---|---|
-| Client operational data | PostgreSQL |
-| Property data | PostgreSQL |
-| Document metadata | PostgreSQL |
+| Client management | CLIENT |
+| Mandate management | CLIENT + CHASSEUR + MANDAT |
+| Property search | DEMANDE_VERSION + BIEN |
+| Matching | DEMANDE_VERSION + BIEN |
+| Feedback | COMMENTAIRE |
+| Financial management | PAIEMENT + BAREME |
+| Analytics | Minimized operational data |
+| ML | Minimized features |
+| RAG | Authorized documents |
+| Monitoring | Technical metadata |
+
+---
+
+# 91. Storage Matrix
+
+| Data | Target |
+|---|---|
+| Operational data | PostgreSQL |
+| Generated RAW | PostgreSQL / MinIO depending format |
 | Documents | MinIO |
-| Warehouse data | PostgreSQL |
-| ML metadata | MLflow DB |
+| Document metadata | PostgreSQL |
+| Warehouse | PostgreSQL |
+| ML metadata | MLflow |
 | ML artifacts | MinIO |
-| Embeddings future | pgvector/Qdrant |
+| Embeddings | pgvector / Qdrant candidate |
 | Logs | Loki |
 | Metrics | Prometheus |
 | Traces | Tempo |
 
 ---
 
-# 89. Matrice contrôle
-
-| Risque | Contrôle |
-|---|---|
-| Excess data collection | Minimization |
-| Unauthorized access | RBAC |
-| Data interception | TLS |
-| Credential leak | Secret management |
-| AI external leakage | Local-first |
-| RAG leakage | Authorization before retrieval |
-| Infinite retention | Lifecycle rules |
-| Log exposure | Secure logging |
-| Backup exposure | Protected backups |
-
----
-
-# 90. Preuves finales attendues
-
-Pour démontrer cette compétence :
-
-```text
-RGPD register
-+
-Data mapping
-+
-MCD classification
-+
-Security controls
-+
-Retention rules
-+
-AI data-flow analysis
-+
-At least one executed compliance-oriented test
-```
-
----
-
-# 91. Ce qui ne suffit pas
-
-Les affirmations suivantes ne suffisent pas seules :
-
-```text
-"We comply with GDPR."
-
-"We use local AI."
-
-"We have a consent checkbox."
-
-"We encrypt traffic."
-
-"We have a privacy policy."
-```
-
-La conformité doit être reliée aux traitements réellement implémentés.
-
----
-
-# 92. Traceability
-
-Le modèle attendu est :
-
-```text
-Processing
-   |
-   v
-Personal Data
-   |
-   v
-Purpose / Legal Basis
-   |
-   v
-Technical Component
-   |
-   v
-Control
-   |
-   v
-Evidence
-```
-
----
-
-# 93. Exemple
-
-```text
-Property Matching
-      |
-      v
-Client Search Criteria
-      |
-      v
-Contract / appropriate basis
-      |
-      v
-PostgreSQL + Matching Service
-      |
-      v
-Minimized feature set
-      |
-      v
-Access / processing evidence
-```
-
----
-
-# 94. Relation C1
-
-Le MCD identifie les lieux de stockage et les relations entre les données.
-
----
-
-# 95. Relation C3
-
-Le Data Warehouse doit éviter de recopier inutilement des données personnelles.
-
----
-
-# 96. Relation C5
-
-Le matching doit utiliser uniquement les features nécessaires.
-
----
-
-# 97. Relation C6
-
-Le programme IA doit contrôler :
-
-```text
-inputs
-logs
-datasets
-artifacts
-external communications
-```
-
----
-
-# 98. Relation C8
-
-C8 approfondit la protection spécifique des traitements IA et les enjeux de souveraineté.
-
----
-
-# 99. Critère de réussite
-
-La compétence est démontrée si le jury peut suivre :
-
-```text
-Personal Data
-      |
-      v
-Purpose
-      |
-      v
-Storage / Processing
-      |
-      v
-Security & Privacy Controls
-      |
-      v
-Retention / Rights
-      |
-      v
-Technical Evidence
-```
-
----
-
-# 100. Statut actuel
+# 92. Current Status
 
 | Élément | Statut |
 |---|---|
 | RGPD register | EXISTANT |
-| Personal data inventory | BASELINE DÉFINIE |
-| Data minimization | DOCUMENTÉE |
-| OLTP privacy | DOCUMENTÉE |
-| OLAP minimization | DOCUMENTÉE |
-| AI privacy | DOCUMENTÉE |
-| RAG authorization | DOCUMENTÉE |
-| Local AI strategy | DOCUMENTÉE |
-| Retention principles | DOCUMENTÉS |
-| Rights workflow | DOCUMENTÉ |
-| Security controls | DOCUMENTÉS |
-| Runtime classifications | À CONSOLIDER |
-| Retention implementation | À PRODUIRE |
-| Erasure test | À PRODUIRE |
-| AI access test | À PRODUIRE |
-| Compliance evidence | À PRODUIRE |
+| V2 personal-data mapping | UPDATED |
+| Payment/commission privacy | ADDED |
+| Data minimization | UPDATED |
+| Generated synthetic-data strategy | ADDED |
+| OLTP privacy | DEFINED |
+| OLAP privacy | DEFINED |
+| ML privacy | DEFINED |
+| RAG privacy | DEFINED |
+| Local AI | DEFINED |
+| Rights workflow | DEFINED |
+| Retention principles | DEFINED |
+| Runtime tests | PENDING |
 
 ---
 
-# 101. Conclusion
+# 93. Conclusion
 
-Le RGPD est intégré au projet selon une logique :
+L'architecture V2 applique :
 
 ```text
 Privacy by Design
@@ -1712,19 +1490,39 @@ Privacy by Default
 +
 Data Minimization
 +
-Controlled Access
+Synthetic Test Data
++
+Least Privilege
++
+Controlled AI Access
 +
 Lifecycle Management
-+
-Local-first AI
 +
 Traceability
 ```
 
-Le système doit conserver uniquement les données nécessaires, limiter leur propagation et appliquer les mêmes principes aux bases de données, analytics, documents, logs et traitements IA.
+Les nouvelles entités :
 
-Les preuves finales devront être issues de l'implémentation réelle et de tests exécutés.
+```text
+BAREME_COMMISSION
+PAIEMENT
+COMMENTAIRE
+```
+
+augmentent la nécessité de contrôler les accès et la confidentialité.
+
+Le système doit donc protéger non seulement les données d'identité, mais également :
+
+```text
+search behavior
+feedback
+financial information
+documents
+AI context
+```
+
+Les preuves finales devront provenir de tests exécutés sur l'implémentation réelle.
 
 ---
 
-**BC05 / C7 — RGPD — DOCUMENTATION BASELINE COMPLETE**
+**BC05 / C7 — RGPD V2 — ALIGNED WITH TARGET DATA MODEL**

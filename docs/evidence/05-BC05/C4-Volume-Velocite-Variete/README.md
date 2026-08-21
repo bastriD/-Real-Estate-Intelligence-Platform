@@ -1,21 +1,18 @@
 # BC05 — C4 — Volume, Vélocité, Variété
 
 **Bloc de compétences :** BC05  
-**Compétence :** C4 — Analyser les caractéristiques Volume, Vélocité et Variété des données afin d'adapter l'architecture  
+**Compétence :** Analyser les caractéristiques Volume, Vélocité et Variété afin d'adapter l'architecture Data  
 **Projet :** Real Estate Intelligence Platform  
-**Plateforme :** Enterprise AI Platform  
-**Version :** 1.0  
-**Statut :** Baseline documentaire — mesures réelles à consolider
+**Version :** 2.0  
+**Statut :** Baseline documentaire corrigée — mesures runtime à produire  
 
 ---
 
 # 1. Objectif
 
-Ce dossier démontre que l'architecture Data n'est pas dimensionnée arbitrairement.
+Cette partie démontre que l'architecture Data est dimensionnée à partir du besoin métier réel.
 
-Le choix des technologies doit tenir compte des caractéristiques réelles des données.
-
-Le modèle utilisé est celui des :
+L'analyse repose sur les :
 
 ```text
 3V
@@ -32,21 +29,21 @@ Variety
 La démarche est :
 
 ```text
+Business Projections
+        |
+        v
 Data Characteristics
-       |
-       v
-Requirements
-       |
-       v
+        |
+        v
 Current Architecture
-       |
-       v
+        |
+        v
 Capacity Evaluation
-       |
-       v
-Scaling Threshold
-       |
-       v
+        |
+        v
+Measured Threshold
+        |
+        v
 Architecture Evolution
 ```
 
@@ -54,378 +51,527 @@ Architecture Evolution
 
 # 2. Pourquoi analyser les 3V
 
-Toutes les plateformes Data ne nécessitent pas :
-
-```text
-Kafka
-Spark
-Flink
-Distributed Data Lake
-Massively Parallel Warehouse
-```
-
-Le choix dépend des besoins.
+Une architecture Data ne doit pas être choisie uniquement parce qu'une technologie est populaire.
 
 Exemple :
 
 ```text
-10,000 structured records per day
+PostgreSQL
+Kafka
+Spark
+Flink
+ClickHouse
 ```
 
-ne justifie pas forcément la même architecture que :
+ne répondent pas au même problème.
+
+La plateforme doit commencer avec l'architecture la plus simple capable de satisfaire les besoins.
+
+---
+
+# 3. Contexte officiel de croissance
+
+Le StarterPack prévoit une forte augmentation de l'activité.
+
+Les projections parlent de :
 
 ```text
-1,000,000 events per second
+plusieurs milliers de mandats par semaine
 ```
 
-Le principe du projet est :
+avec :
 
 ```text
-Architecture proportional to workload
+plusieurs centaines
+voire milliers de biens
+répertoriés par recherche
+```
+
+et une expansion géographique vers plusieurs pays européens.
+
+Cette croissance concerne à la fois :
+
+```text
+business transactions
+property ingestion
+matching
+analytics
 ```
 
 ---
 
-# 3. Les trois dimensions
+# 4. Expansion géographique
+
+Le futur périmètre peut couvrir :
 
 ```text
-VOLUME
-How much data?
+France
+DROM
+Espagne
+Allemagne
+Royaume-Uni
+Irlande
+BeNeLux
+Italie
+Suisse
 ```
+
+Cela influence notamment :
 
 ```text
-VELOCITY
-How fast does data arrive or change?
+volume
+source diversity
+location formats
+postal codes
+languages
+property formats
 ```
-
-```text
-VARIETY
-How many different structures and formats?
-```
-
-Ces trois dimensions doivent être analysées ensemble.
 
 ---
 
-# 4. Volume
+# 5. Volume
 
-Le Volume correspond à la quantité de données :
-
-- stockées ;
-- ingérées ;
-- transformées ;
-- analysées ;
-- sauvegardées ;
-- répliquées.
-
-Il peut être mesuré en :
+Le Volume représente la quantité de données :
 
 ```text
-Rows
-MB
+stockées
+ingérées
+transformées
+analysées
+historisées
+sauvegardées
+```
+
+Il peut être exprimé en :
+
+```text
+rows
+documents
+objects
+vectors
 GB
 TB
-Objects
-Documents
-Embeddings
 ```
 
 ---
 
-# 5. Volume du projet — données structurées
+# 6. Principales sources de volume
 
-Les principales entités structurées sont :
+Le modèle cible comprend notamment :
 
 ```text
 CLIENT
 CHASSEUR
 MANDAT
+DEMANDE
 DEMANDE_VERSION
-SOURCE
 BIEN
 PRESENTATION
-DOCUMENT metadata
+COMMENTAIRE
+PAIEMENT
+DOCUMENT
 ```
 
-Le MVP est conçu pour un volume initial limité à modéré.
+Toutes ces tables ne croissent pas à la même vitesse.
 
 ---
 
-# 6. Hypothèse de croissance
+# 7. Volume CLIENT
 
-Exemple de scénario de dimensionnement :
+Le nombre de clients croît généralement avec :
 
 ```text
-100 clients
-500 mandates
-2,000 request versions
-100,000 properties
-50,000 presentations
-20,000 documents
+new business activity
 ```
 
-Ces valeurs constituent uniquement un scénario de dimensionnement.
-
-Les volumes réels devront être mesurés.
+mais il ne constitue probablement pas la plus grande table.
 
 ---
 
-# 7. Volume BIEN
+# 8. Volume MANDAT
 
-`BIEN` sera probablement l'une des tables opérationnelles les plus volumineuses.
-
-Pourquoi :
+Le StarterPack prévoit :
 
 ```text
-Multiple sources
+several thousand mandates/week
+```
+
+À titre de scénario :
+
+```text
+5,000 mandates / week
+```
+
+donnerait :
+
+```text
+260,000 mandates / year
+```
+
+si ce rythme restait constant.
+
+Cette valeur est un scénario de dimensionnement, pas une mesure réelle.
+
+---
+
+# 9. Volume DEMANDE_VERSION
+
+Une demande peut être modifiée plusieurs fois.
+
+Exemple :
+
+```text
+1 mandate
+=
+1 demand
 +
-Regular collection
-+
-Historical properties
+3 versions
 ```
 
-Le volume peut croître plus rapidement que les tables :
+Alors :
 
 ```text
-client
-mandat
-chasseur
+260,000 mandates/year
+```
+
+peuvent produire :
+
+```text
+780,000 demand versions/year
+```
+
+dans ce scénario.
+
+---
+
+# 10. Volume BIEN
+
+Les propriétés représentent une source de croissance beaucoup plus importante.
+
+Le StarterPack prévoit :
+
+```text
+hundreds or thousands of properties
+per search
 ```
 
 ---
 
-# 8. Volume PRESENTATION
+# 11. Volume matching
 
-`PRESENTATION` peut également croître rapidement.
-
-Si :
+Le facteur de croissance principal peut devenir :
 
 ```text
-1 request
+DEMANDE × BIEN
 ```
 
-est comparée à :
+Exemple purement dimensionnel :
 
 ```text
-100 candidate properties
+5,000 mandates/week
+x
+500 properties/search
+=
+2,500,000 candidate relations/week
 ```
-
-alors :
-
-```text
-100 presentations/matches
-```
-
-peuvent être générées.
 
 ---
 
-# 9. Croissance analytique
+# 12. Scénario plus élevé
 
-Le Data Warehouse peut augmenter le volume global car une donnée opérationnelle peut être représentée dans plusieurs couches :
+Avec :
 
 ```text
-OLTP
- |
- v
-Staging
- |
- v
-Warehouse
- |
- v
-Analytics
+5,000 mandates/week
+x
+1,000 properties/search
 ```
 
-Le volume physique total peut donc être supérieur au volume source.
+on obtient :
+
+```text
+5,000,000 candidate relations/week
+```
+
+Cela montre pourquoi :
+
+```text
+PRESENTATION
+```
+
+ou une structure de candidats intermédiaire peut croître beaucoup plus vite que :
+
+```text
+MANDAT
+```
 
 ---
 
-# 10. Duplication contrôlée
+# 13. Important — ne pas tout persister
 
-La duplication dans une architecture analytique n'est pas automatiquement mauvaise.
+Toutes les relations candidates n'ont pas nécessairement besoin d'être conservées durablement.
 
-Elle peut être justifiée pour :
+Exemple :
 
-- performance ;
-- historisation ;
-- séparation des workloads ;
-- analytics.
+```text
+1000 candidate properties
+       |
+       v
+hard filtering
+       |
+       v
+100 candidates
+       |
+       v
+ranking
+       |
+       v
+20 qualified
+       |
+       v
+10 presented
+```
 
-Elle doit cependant être maîtrisée.
+Il peut être inutile de stocker durablement les 1000 relations initiales.
 
 ---
 
-# 11. Volume documents
+# 14. Stratégie de réduction
 
-Les documents peuvent représenter un volume beaucoup plus important que les données relationnelles.
+Le moteur doit réduire le volume le plus tôt possible.
+
+```text
+All Properties
+      |
+      v
+SQL Hard Filters
+      |
+      v
+Candidate Set
+      |
+      v
+Scoring
+      |
+      v
+Top-K
+```
+
+Cela améliore :
+
+```text
+CPU
+memory
+storage
+latency
+AI cost
+```
+
+---
+
+# 15. Volume PRESENTATION
+
+`PRESENTATION` devrait principalement représenter les biens réellement :
+
+```text
+identifiés
+qualifiés
+présentés
+rejetés
+visités
+retenus
+```
+
+selon la stratégie d'implémentation.
+
+---
+
+# 16. Volume COMMENTAIRE
+
+Le nombre de commentaires dépend :
+
+```text
+presentations
+x
+client interactions
+x
+hunter interactions
+```
+
+Cette table peut également devenir importante mais devrait rester bien inférieure au nombre brut de relations candidate-search.
+
+---
+
+# 17. Volume PAIEMENT
+
+`PAIEMENT` augmente seulement avec les transactions arrivant aux étapes financières.
+
+Son volume est donc très inférieur à celui :
+
+```text
+BIEN
+PRESENTATION
+```
+
+---
+
+# 18. Volume DOCUMENT
+
+Les fichiers associés aux biens peuvent devenir importants.
 
 Exemples :
 
 ```text
 PDF
-Images
-Plans
-Diagnostics
-Brochures
+photos
+videos
+audio
+diagnostics
 ```
 
-Ils ne doivent pas nécessairement être stockés directement dans PostgreSQL.
+Ils ne doivent pas être stockés directement dans PostgreSQL sauf raison particulière.
 
 ---
 
-# 12. Object Storage
+# 19. Object Storage
 
-Architecture cible :
+Architecture :
 
 ```text
 PostgreSQL
-   |
-   +--> document metadata
+    |
+    +--> metadata
 
 MinIO
-   |
-   +--> document binaries
+    |
+    +--> binary files
 ```
 
-Cette séparation permet de mieux gérer :
-
-- taille ;
-- rétention ;
-- sauvegarde ;
-- accès.
+Cela permet d'éviter que la base relationnelle absorbe inutilement les gros objets binaires.
 
 ---
 
-# 13. Volume RAG
+# 20. Volume AI / RAG
 
-Un système RAG peut multiplier les objets logiques.
+Un document peut produire :
+
+```text
+N chunks
+```
+
+et donc :
+
+```text
+N embeddings
+```
 
 Exemple :
 
 ```text
-1 PDF
+10,000 documents
+x
+40 chunks/document
+=
+400,000 embeddings
 ```
-
-peut devenir :
-
-```text
-50 chunks
-```
-
-puis :
-
-```text
-50 embeddings
-```
-
-Donc :
-
-```text
-1,000 documents
-```
-
-peuvent devenir :
-
-```text
-50,000 vectors
-```
-
-selon le chunking.
 
 ---
 
-# 14. Importance du chunking
+# 21. Volume vectoriel
 
-Le choix du chunk size influence directement :
+Le volume dépend de :
 
 ```text
-Number of chunks
-Storage
-Embedding computation
-Retrieval cost
-LLM context
+number of documents
+chunking strategy
+embedding dimension
+metadata
+index structure
 ```
 
-Un chunking trop fin augmente fortement le volume vectoriel.
+Une architecture vectorielle doit donc être dimensionnée à partir de mesures réelles.
 
 ---
 
-# 15. Volume observabilité
+# 22. Volume observabilité
 
-Les données d'observabilité peuvent également devenir importantes.
-
-Exemples :
+Le projet produit aussi :
 
 ```text
-Prometheus metrics
-Loki logs
-Tempo traces
+metrics
+logs
+traces
 ```
 
-Ces données peuvent croître plus rapidement que les données métier.
+Le volume d'observabilité peut dépasser le volume métier si la rétention et la cardinalité sont mal contrôlées.
 
 ---
 
-# 16. Volume logs
+# 23. Loki
 
-Le volume de logs dépend notamment :
-
-```text
-Request rate
-Log level
-Payload size
-Retention
-Number of services
-```
-
-Un mode :
+Les logs dépendent :
 
 ```text
-DEBUG
+request rate
+log level
+payload size
+retention
 ```
-
-permanent peut multiplier inutilement le stockage.
 
 ---
 
-# 17. Volume metrics
+# 24. Prometheus
 
-Prometheus dépend :
+Les métriques dépendent notamment :
 
 ```text
-number of metrics
-number of labels
-cardinality
+number of series
+label cardinality
 scrape interval
 retention
 ```
 
-Une cardinalité élevée peut fortement augmenter le stockage.
+---
+
+# 25. Tempo
+
+Le tracing dépend :
+
+```text
+request rate
+number of spans
+sampling
+retention
+```
 
 ---
 
-# 18. Volume traces
+# 26. Mesures réelles attendues
 
-Le tracing distribué peut produire une quantité importante de données.
+Les preuves finales devront mesurer :
 
-Une stratégie de sampling peut être envisagée si la charge augmente.
+```text
+row counts
+database size
+table size
+storage growth
+matching relations
+pipeline throughput
+```
 
 ---
 
-# 19. Mesure du volume
+# 27. PostgreSQL row count
 
-Les mesures réelles pourront inclure :
-
-```sql
-SELECT COUNT(*) FROM real_estate.bien;
-```
+Exemple :
 
 ```sql
-SELECT COUNT(*) FROM real_estate.presentation;
+SELECT COUNT(*)
+FROM real_estate.bien;
 ```
 
-et :
+---
+
+# 28. Table size
 
 ```sql
 SELECT
@@ -436,1459 +582,569 @@ SELECT
 
 ---
 
-# 20. Taille d'un schéma
-
-Une requête peut permettre d'estimer la taille :
+# 29. Schema size
 
 ```sql
 SELECT
-    nspname AS schema_name,
+    n.nspname,
     pg_size_pretty(
         SUM(pg_total_relation_size(c.oid))
     ) AS total_size
 FROM pg_class c
 JOIN pg_namespace n
-  ON n.oid = c.relnamespace
-WHERE nspname = 'real_estate'
-GROUP BY nspname;
+    ON n.oid = c.relnamespace
+WHERE n.nspname = 'real_estate'
+GROUP BY n.nspname;
 ```
 
 ---
 
-# 21. Storage Growth
+# 30. Vélocité
 
-Une métrique utile est :
-
-```text
-GB / day
-```
-
-ou :
+La vélocité représente :
 
 ```text
-GB / month
+how fast data arrives
 ```
 
-pour les principales catégories :
+et :
 
 ```text
-PostgreSQL
-MinIO
-Loki
-Prometheus
-Tempo
-ML artifacts
+how quickly it must be processed
 ```
+
+Ces deux notions ne doivent pas être confondues.
 
 ---
 
-# 22. Vélocité
-
-La Vélocité représente la vitesse à laquelle les données :
-
-- arrivent ;
-- changent ;
-- doivent être traitées ;
-- doivent être disponibles.
-
-Elle ne signifie pas automatiquement :
-
-```text
-real-time
-```
-
----
-
-# 23. Questions de vélocité
-
-Il faut distinguer :
-
-```text
-How often does data arrive?
-```
-
-de :
-
-```text
-How quickly must users see it?
-```
-
-Exemple :
-
-une source peut être mise à jour toutes les minutes, mais le métier peut n'avoir besoin d'une actualisation que toutes les heures.
-
----
-
-# 24. Vélocité du projet
-
-Les données immobilières sont généralement moins rapides que :
-
-```text
-financial market ticks
-IoT telemetry
-telecommunications events
-```
-
-Le MVP peut donc fonctionner avec des traitements batch ou micro-batch.
-
----
-
-# 25. Exemple de fréquence
-
-Sources possibles :
-
-```text
-Manual import
-Hourly collection
-Daily batch
-API polling
-Event-driven future source
-```
-
-La fréquence doit correspondre au besoin métier réel.
-
----
-
-# 26. Airflow
-
-Airflow est adapté aux traitements :
-
-```text
-Batch
-Scheduled
-Dependency-driven
-```
+# 31. Ingestion rate vs business freshness
 
 Exemple :
 
 ```text
-Every hour
+Source changes every minute
 ```
 
-ou :
+ne signifie pas automatiquement :
 
 ```text
-Every day
+User needs sub-second refresh
 ```
-
-selon le besoin.
 
 ---
 
-# 27. Pourquoi Airflow est suffisant actuellement
+# 32. Vélocité métier
 
-Le workload actuel ne nécessite pas nécessairement :
+Le parcours futur prévoit notamment que les chasseurs reçoivent :
 
 ```text
-sub-second event processing
+daily
+or several times per day
 ```
 
-Airflow permet :
+des sélections de biens dans les zones tendues.
 
-- orchestration ;
-- retry ;
-- scheduling ;
-- dependency management ;
-- observability.
+Cela correspond davantage à :
+
+```text
+batch
+micro-batch
+scheduled processing
+```
+
+qu'à un besoin strict de streaming sub-seconde.
 
 ---
 
-# 28. Limite Airflow
+# 33. Airflow fit
 
-Airflow n'est pas conçu comme moteur principal de streaming temps réel.
-
-Si l'exigence devient :
+Airflow est adapté lorsque le besoin est :
 
 ```text
+every few minutes
+hourly
+daily
+event-triggered batch
+```
+
+avec :
+
+```text
+dependency management
+retry
+monitoring
+```
+
+---
+
+# 34. Airflow limitation
+
+Airflow n'est pas un moteur de streaming continu à haute fréquence.
+
+Si le besoin évolue vers :
+
+```text
+continuous high-rate event processing
+```
+
+il faudra évaluer d'autres technologies.
+
+---
+
+# 35. Kafka
+
+Kafka devient candidat lorsque nous avons :
+
+```text
+large event rate
+many independent consumers
+event replay
+durable event log
 continuous event processing
 ```
 
-alors d'autres technologies peuvent devenir pertinentes.
-
 ---
 
-# 29. Kafka
+# 36. Kafka status
 
-Kafka devient potentiellement utile lorsque le projet nécessite :
-
-```text
-High event rate
-Multiple consumers
-Replay
-Decoupling
-Event-driven integration
-Durable event log
-```
-
----
-
-# 30. Kafka n'est pas adopté actuellement
-
-Statut :
+Actuellement :
 
 ```text
 FUTURE
 ```
 
-Le projet ne dispose pas actuellement d'un besoin suffisant pour justifier :
-
-- brokers ;
-- topics ;
-- replication ;
-- retention ;
-- monitoring ;
-- operational complexity.
+Il ne fait pas partie des dépendances obligatoires du projet.
 
 ---
 
-# 31. Condition d'adoption Kafka
+# 37. Pourquoi ne pas déployer Kafka maintenant
 
-Un ADR dédié devra répondre à :
+Kafka implique :
 
 ```text
-What event volume?
-What latency?
-How many consumers?
-Why database/batch is insufficient?
-What replay requirement?
-```
-
-avant adoption.
-
----
-
-# 32. Streaming
-
-Architecture future possible :
-
-```text
-Sources
-   |
-   v
-Kafka
-   |
-   +--> Consumer A
-   +--> Consumer B
-   +--> Stream Processor
-   +--> Data Lake / Warehouse
-```
-
-Cette architecture reste hors MVP.
-
----
-
-# 33. Vélocité AI
-
-L'AI possède également des contraintes de vélocité.
-
-Exemple :
-
-```text
-interactive inference
-```
-
-doit répondre plus rapidement qu'un :
-
-```text
-overnight batch training
-```
-
-Les exigences doivent être séparées.
-
----
-
-# 34. Inference latency
-
-Une interface utilisateur peut nécessiter :
-
-```text
-seconds
-```
-
-de latence acceptable.
-
-Un traitement batch peut accepter :
-
-```text
-minutes
-```
-
-ou davantage.
-
----
-
-# 35. GPU throughput
-
-La GTX 1080 impose une capacité d'inférence limitée.
-
-La vélocité AI dépend :
-
-- modèle ;
-- quantification ;
-- longueur du prompt ;
-- longueur de génération ;
-- concurrence.
-
----
-
-# 36. Queue future
-
-Si plusieurs utilisateurs utilisent simultanément l'AI, un mécanisme de queue pourrait devenir nécessaire.
-
-Mais il ne doit pas être introduit avant observation d'un problème réel.
-
----
-
-# 37. Variété
-
-La Variété représente la diversité des données.
-
-Le projet manipule plusieurs catégories.
-
----
-
-# 38. Données structurées
-
-Exemples :
-
-```text
-PostgreSQL rows
-clients
-mandates
-properties
-matching scores
-```
-
-Ces données ont un schéma clairement défini.
-
----
-
-# 39. Données semi-structurées
-
-Exemples :
-
-```text
-JSON API responses
-metadata
-external source payloads
-AI responses
-```
-
-Elles possèdent une structure mais peuvent évoluer.
-
----
-
-# 40. Données non structurées
-
-Exemples :
-
-```text
-PDF
-Images
-Text documents
-Property descriptions
-Reports
-```
-
-Ces données nécessitent des traitements différents.
-
----
-
-# 41. Variété des sources
-
-Le projet peut recevoir des données depuis :
-
-```text
-Manual entry
-CSV
-REST API
-Property portal
-Open Data
-Partner feed
-Document upload
-```
-
-Chaque source peut avoir son propre format.
-
----
-
-# 42. Canonical Model
-
-La plateforme doit normaliser les différentes sources vers un modèle commun.
-
-```text
-Source A
-   |
-Source B
-   |
-Source C
-   |
-   v
-Normalization
-   |
-   v
-Canonical Property Model
-```
-
-Le modèle `BIEN` joue ce rôle pour les propriétés.
-
----
-
-# 43. Raw preservation
-
-Pour certaines intégrations, conserver les données sources dans une zone RAW peut faciliter :
-
-- audit ;
-- reprocessing ;
-- debugging ;
-- schema evolution.
-
----
-
-# 44. JSONB
-
-PostgreSQL fournit :
-
-```text
-JSONB
-```
-
-pour certains cas semi-structurés.
-
-Cela peut être utile lorsque des attributs source évoluent fréquemment.
-
-Mais JSONB ne doit pas remplacer un modèle relationnel clair pour les informations métier stables.
-
----
-
-# 45. Schéma flexible
-
-Exemple approprié :
-
-```text
-source_payload JSONB
-```
-
-pour conserver un payload brut.
-
-Exemple moins approprié :
-
-```text
-all business data in one JSON column
-```
-
-sans raison.
-
----
-
-# 46. Documents
-
-Les documents peuvent nécessiter :
-
-```text
-text extraction
-metadata extraction
-classification
-chunking
-embedding
-```
-
-avant exploitation AI.
-
----
-
-# 47. Images
-
-Les images immobilières constituent une autre variété.
-
-Le MVP ne nécessite pas nécessairement :
-
-```text
-Computer Vision
-```
-
-mais l'architecture peut évoluer si un besoin apparaît.
-
----
-
-# 48. Data contracts
-
-Avec plusieurs sources, des Data Contracts peuvent devenir utiles.
-
-Ils peuvent définir :
-
-```text
-Schema
-Required fields
-Types
-Quality expectations
-Version
-Owner
-```
-
----
-
-# 49. Schema drift
-
-Une source externe peut modifier :
-
-```text
-field name
-type
-structure
-```
-
-Cela constitue un :
-
-```text
-Schema Drift
-```
-
-Les pipelines doivent détecter ce type de changement.
-
----
-
-# 50. Validation à l'ingestion
-
-Le pipeline peut contrôler :
-
-```text
-required fields
-types
-accepted values
-schema version
-```
-
-avant intégration.
-
----
-
-# 51. Gestion de la variété
-
-Architecture :
-
-```text
-Heterogeneous Sources
-        |
-        v
-Ingestion Adapters
-        |
-        v
-Validation
-        |
-        v
-Canonical Model
-        |
-        v
-Data Platform
-```
-
----
-
-# 52. Adapter Pattern
-
-Chaque source peut disposer d'un adaptateur.
-
-Exemple :
-
-```text
-PortalAAdapter
-PortalBAdapter
-CsvAdapter
-ManualAdapter
-```
-
-Ils produisent tous un modèle normalisé.
-
----
-
-# 53. 3V et architecture actuelle
-
-Le profil actuel est approximativement :
-
-```text
-Volume:
-Low / Moderate
-
-Velocity:
-Batch / Moderate
-
-Variety:
-Moderate / Growing
-```
-
-Ce profil justifie actuellement :
-
-```text
-PostgreSQL
-+
-Airflow
-+
-Object Storage
-```
-
-sans architecture Big Data distribuée obligatoire.
-
----
-
-# 54. Pourquoi PostgreSQL est suffisant
-
-PostgreSQL supporte largement :
-
-- millions de lignes ;
-- index ;
-- joins ;
-- transactions ;
-- analytics modérés ;
-- JSONB ;
-- extensions.
-
-Le seuil réel dépend du workload, pas d'un nombre universel de lignes.
-
----
-
-# 55. Mauvaise règle
-
-À éviter :
-
-```text
-More than 1 million rows
-=
-Need Spark
-```
-
-Cette règle est fausse.
-
-Il faut analyser :
-
-```text
-Query complexity
-Latency target
-Concurrent users
-Dataset size
-Growth rate
-Hardware
-```
-
----
-
-# 56. Spark
-
-Apache Spark devient potentiellement pertinent lorsque :
-
-- les datasets dépassent la capacité pratique d'un seul moteur ;
-- les transformations nécessitent un traitement distribué ;
-- les workloads batch deviennent massifs ;
-- plusieurs nœuds doivent partager le calcul.
-
-Il n'est pas nécessaire actuellement.
-
----
-
-# 57. Dedicated analytical engine
-
-Des technologies telles que :
-
-```text
-ClickHouse
-DuckDB
-Trino
-BigQuery
-Snowflake
-Redshift
-```
-
-peuvent devenir pertinentes pour certains workloads.
-
-Le MVP n'en a pas besoin tant que PostgreSQL satisfait les SLO.
-
----
-
-# 58. DuckDB
-
-Pour certaines analyses locales ou fichiers Parquet, DuckDB pourrait être étudié sans déployer une infrastructure distribuée.
-
-Cela représente un exemple d'évolution légère avant de passer à une plateforme plus complexe.
-
----
-
-# 59. Data Lake
-
-Un Data Lake peut devenir utile si le volume de données brutes et non structurées augmente fortement.
-
-Architecture future :
-
-```text
-Sources
- |
- v
-Object Storage
- |
- +--> Raw
- +--> Curated
- +--> ML
-```
-
-Le MVP ne nécessite pas encore une architecture Data Lake complète.
-
----
-
-# 60. MinIO
-
-MinIO peut déjà fournir une base de stockage objet utile pour :
-
-- artifacts ML ;
-- documents ;
-- futurs datasets ;
-- fichiers bruts.
-
-Il facilite donc une évolution progressive.
-
----
-
-# 61. Parquet
-
-Pour des volumes analytiques plus importants, un format colonnaire tel que :
-
-```text
-Parquet
-```
-
-peut réduire :
-
-- stockage ;
-- I/O ;
-- coût de certaines analyses.
-
-Il n'est pas obligatoire dans la baseline relationnelle.
-
----
-
-# 62. Compression
-
-Les formats analytiques peuvent utiliser de la compression pour réduire le volume physique.
-
-Il faut cependant considérer le compromis :
-
-```text
-Storage
-vs
-CPU
-```
-
----
-
-# 63. Vector data
-
-Les embeddings introduisent un nouveau type de donnée :
-
-```text
-high-dimensional vectors
-```
-
-Leur volume dépend :
-
-```text
-Documents
-x
-Chunks
-x
-Embedding dimension
-```
-
----
-
-# 64. pgvector
-
-PostgreSQL + pgvector peut être adapté à un volume modéré de vecteurs et réduit le nombre de composants de la plateforme.
-
----
-
-# 65. Qdrant
-
-Qdrant peut devenir intéressant lorsque :
-
-- le volume vectoriel augmente ;
-- les exigences de latence augmentent ;
-- les recherches vectorielles deviennent critiques ;
-- les capacités spécifiques dépassent pgvector.
-
-Statut actuel :
-
-```text
-CANDIDATE
-```
-
----
-
-# 66. Décision vectorielle
-
-Le cycle sera :
-
-```text
-RAG Requirement
-      |
-      v
-Create benchmark
-      |
-      v
-pgvector
-vs
-Qdrant
-      |
-      v
-Measure
-      |
-      v
-ADR
-```
-
----
-
-# 67. Seuils d'évolution
-
-Les seuils doivent être basés sur des métriques.
-
-Exemples :
-
-```text
-Database size
-Query latency
-Pipeline duration
-Ingestion rate
-Storage growth
-CPU
-RAM
-GPU
-Queue depth
-```
-
----
-
-# 68. Exemple seuil PostgreSQL
-
-Une évolution peut être étudiée lorsque :
-
-```text
-Critical query latency
->
-SLO
-```
-
-malgré :
-
-```text
-appropriate indexing
-query optimization
-schema optimization
-hardware right-sizing
-```
-
----
-
-# 69. Exemple seuil Airflow
-
-Une architecture streaming peut être étudiée lorsque :
-
-```text
-Required freshness
-<
-Practical batch interval
-```
-
-et que la donnée arrive continuellement.
-
----
-
-# 70. Exemple seuil AI
-
-Une évolution matérielle ou de serving peut être étudiée lorsque :
-
-```text
-Queue time
-+
-Inference time
-```
-
-dépasse durablement le besoin métier.
-
----
-
-# 71. Scaling vertical
-
-Première possibilité :
-
-```text
-More CPU
-More RAM
-Faster Storage
-```
-
-Le scaling vertical peut être plus simple qu'un système distribué.
-
----
-
-# 72. Scaling horizontal
-
-Kubernetes permet de scaler certains services horizontalement.
-
-```text
-Replica 1
-Replica 2
-Replica 3
-```
-
-Mais les composants stateful nécessitent une stratégie spécifique.
-
----
-
-# 73. PostgreSQL scaling
-
-Les options peuvent inclure :
-
-```text
-better indexes
-better queries
-more resources
-connection pooling
-read replicas
+brokers
+topics
 partitioning
-separation OLTP/OLAP
+replication
+retention
+monitoring
+operations
 ```
 
-avant de remplacer complètement la technologie.
+Cette complexité doit être justifiée par un besoin mesuré.
 
 ---
 
-# 74. Partitioning
+# 38. Condition d'adoption Kafka
 
-Le partitionnement peut devenir pertinent pour une grande table historique.
-
-Exemple :
+Avant adoption :
 
 ```text
-fact_presentation
-```
-
-partitionnée par date.
-
-Il doit être justifié par les volumes et les requêtes.
-
----
-
-# 75. Retention
-
-La croissance doit également être contrôlée par la rétention.
-
-Exemples :
-
-```text
-logs
-traces
-metrics
-raw files
-obsolete documents
-AI artifacts
-```
-
----
-
-# 76. Archiving
-
-Certaines données peuvent passer de :
-
-```text
-hot
-```
-
-à :
-
-```text
-archive
-```
-
-selon leur fréquence d'accès.
-
----
-
-# 77. Lifecycle
-
-Cycle :
-
-```text
-Create
- |
- v
-Active
- |
- v
-Historical
- |
- v
-Archive
- |
- v
-Delete
-```
-
-selon les règles métier et réglementaires.
-
----
-
-# 78. RGPD
-
-La croissance du volume de données personnelles augmente :
-
-- surface d'exposition ;
-- coût de gestion ;
-- coût de suppression ;
-- responsabilité réglementaire.
-
-La minimisation est donc également une stratégie de gestion du volume.
-
----
-
-# 79. Observabilité des 3V
-
-Les 3V doivent être mesurables.
-
-Exemples :
-
-```text
-rows/day
-GB/month
-events/minute
-pipeline duration
-documents/day
-chunks/document
-vectors
-```
-
----
-
-# 80. Métriques Volume
-
-```text
-row count
-database size
-table size
-object storage size
-log volume
-artifact size
-```
-
----
-
-# 81. Métriques Velocity
-
-```text
-rows ingested/minute
-API requests/sec
-pipeline frequency
-pipeline duration
-data freshness
-AI requests/minute
-```
-
----
-
-# 82. Métriques Variety
-
-La variété peut être suivie par :
-
-```text
-number of source types
-number of schemas
-number of document formats
-number of ingestion adapters
-```
-
----
-
-# 83. Tableau 3V
-
-| Dimension | MVP actuel | Risque futur | Réponse actuelle |
-|---|---|---|---|
-| Volume | Faible/modéré | Croissance biens/docs | PostgreSQL + MinIO |
-| Vélocité | Batch/modérée | Besoin temps réel | Airflow |
-| Variété | Structuré + docs + JSON | Multiplication sources | Adapters + canonical model |
-
----
-
-# 84. Évolution potentielle
-
-| Besoin futur | Technologie à évaluer |
-|---|---|
-| Streaming important | Kafka |
-| Processing distribué | Spark |
-| Analytics très volumineux | Dedicated OLAP engine |
-| Large Data Lake | MinIO + Parquet + query engine |
-| Large vector search | Qdrant |
-| Moderate vectors | pgvector |
-| High concurrency DB | Pooling / replicas |
-
----
-
-# 85. Matrice de décision
-
-Une technologie est introduite lorsque :
-
-```text
-Measured Requirement
-      |
-      v
-Current Architecture insufficient
-      |
-      v
-Alternatives benchmarked
-      |
-      v
-Operational cost understood
-      |
-      v
+Measured Event Rate
+       |
+       v
+Latency Requirement
+       |
+       v
+Current Batch Insufficient?
+       |
+       v
+Kafka Benchmark / Architecture Study
+       |
+       v
 ADR
 ```
 
 ---
 
-# 86. Anti-pattern
+# 39. Vélocité du matching
 
-À éviter :
+La plateforme doit traiter :
 
 ```text
-"We may have big data someday,
-therefore deploy Kafka + Spark now."
+new search
+new property
+updated search criteria
+client feedback
 ```
 
-Cela introduit :
-
-- coût ;
-- maintenance ;
-- consommation ;
-- surface d'attaque ;
-- complexité.
+et potentiellement recalculer un ranking.
 
 ---
 
-# 87. Eco-conception
+# 40. Batch matching
 
-La gestion des 3V rejoint l'éco-conception.
-
-Principe :
+Approche candidate :
 
 ```text
-Store what is necessary
-Process when necessary
-Retain as long as necessary
-```
-
----
-
-# 88. Performance vs complexité
-
-Le projet recherche :
-
-```text
-Sufficient Performance
-+
-Controlled Complexity
-```
-
-et non :
-
-```text
-Maximum Possible Scalability
+New properties imported
+       |
+       v
+Airflow
+       |
+       v
+Matching batch
+       |
+       v
+New presentations
 ```
 
 ---
 
-# 89. Tests futurs — volume
+# 41. Interactive matching
 
-Créer un dataset synthétique.
-
-Exemples :
+Le backend peut aussi déclencher :
 
 ```text
-10,000 properties
-100,000 properties
-1,000,000 properties
+matching on demand
 ```
 
-selon les capacités disponibles.
+pour une demande donnée.
 
-Mesurer :
-
-```text
-storage
-query latency
-load time
-```
+Cela nécessite un temps de réponse différent du batch.
 
 ---
 
-# 90. Tests futurs — vélocité
+# 42. AI latency
 
-Mesurer :
-
-```text
-rows/second
-```
-
-pendant une ingestion.
-
-Puis comparer au besoin métier.
-
----
-
-# 91. Tests futurs — variété
-
-Tester plusieurs formats :
+L'inférence LLM locale peut être beaucoup plus lente que :
 
 ```text
-SQL
-CSV
-JSON
-PDF metadata
-```
-
-et vérifier la normalisation.
-
----
-
-# 92. Benchmark progressif
-
-Le benchmark peut suivre :
-
-```text
-Dataset size
-      |
-      v
-10k
-      |
-      v
-100k
-      |
-      v
-1M
-```
-
-jusqu'à observer un changement significatif.
-
----
-
-# 93. Ne pas inventer des seuils
-
-Les limites réelles dépendent de :
-
-- hardware ;
-- configuration PostgreSQL ;
-- indexes ;
-- queries ;
-- concurrency ;
-- storage.
-
-Les seuils finaux doivent provenir de l'environnement réel.
-
----
-
-# 94. Capacity Planning
-
-Les résultats pourront alimenter :
-
-```text
-../../../30-INFRASTRUCTURE/09-Capacity-Planning.md
-```
-
-ainsi que :
-
-```text
-../../../80-OPERATIONS/05-Capacity-Management.md
-```
-
----
-
-# 95. Data Architecture Roadmap
-
-Les observations 3V peuvent déclencher une évolution architecturale.
-
-Exemple :
-
-```text
-Current:
-PostgreSQL
-
-Observed:
-Analytical workload exceeds SLO
-
-Decision:
-Evaluate dedicated analytics engine
-```
-
----
-
-# 96. Evidence directory
-
-Ce dossier pourra plus tard contenir :
-
-```text
-C4-Volume-Velocite-Variete/
-│
-├── README.md
-├── volume-measurements.txt
-├── velocity-benchmark.txt
-├── variety-inventory.md
-├── scalability-tests.md
-└── architecture-thresholds.md
-```
-
-Ces artifacts seront créés à partir de données réelles.
-
----
-
-# 97. Preuves attendues
-
-Minimum recommandé :
-
-```text
-real table counts
-real database sizes
-real ingestion rate
-source-format inventory
-capacity interpretation
-architecture decision
-```
-
----
-
-# 98. Exemple de preuve Volume
-
-```sql
-SELECT COUNT(*)
-FROM real_estate.bien;
+SQL filters
 ```
 
 et :
 
-```sql
-SELECT pg_size_pretty(
-    pg_total_relation_size('real_estate.bien')
-);
+```text
+deterministic scoring
+```
+
+Le pipeline doit donc éviter d'appeler un LLM sur chaque propriété lorsque ce n'est pas nécessaire.
+
+---
+
+# 43. Example optimization
+
+Incorrect :
+
+```text
+1000 properties
+      |
+      v
+1000 LLM calls
+```
+
+Preferred:
+
+```text
+1000 properties
+      |
+      v
+SQL filters
+      |
+      v
+50 candidates
+      |
+      v
+structured ranking
+      |
+      v
+Top 10
+      |
+      v
+optional AI enrichment
 ```
 
 ---
 
-# 99. Exemple de preuve Velocity
+# 44. GPU throughput
 
-Un script d'ingestion peut enregistrer :
+La plateforme locale possède une capacité GPU limitée.
+
+La vélocité AI dépend :
 
 ```text
-Start time
-Rows loaded
-End time
-Rows/second
+model size
+quantization
+prompt length
+output length
+concurrent requests
 ```
 
 ---
 
-# 100. Exemple de preuve Variety
+# 45. Queueing
 
-Inventaire :
+Si le nombre de requêtes AI dépasse la capacité disponible, une file de traitement pourra être nécessaire.
+
+Cela devra être déclenché par des métriques telles que :
 
 ```text
-PostgreSQL
+queue depth
+waiting time
+GPU utilization
+inference duration
+```
+
+---
+
+# 46. Variété
+
+La variété représente la diversité :
+
+```text
+formats
+schemas
+sources
+languages
+structures
+```
+
+---
+
+# 47. Structured Data
+
+Exemples :
+
+```text
+CLIENT
+MANDAT
+DEMANDE_VERSION
+BIEN
+PAIEMENT
+```
+
+---
+
+# 48. Semi-Structured Data
+
+Exemples :
+
+```text
+JSON announcements
+JSONB preferences
+API responses
+metadata
+```
+
+---
+
+# 49. Unstructured Data
+
+Exemples :
+
+```text
+PDF
+images
+audio
+video
+free text descriptions
+```
+
+---
+
+# 50. StarterPack Generator and Variety
+
+Le générateur simule volontairement plusieurs problèmes :
+
+```text
+fields absent
+fields renamed
+different date representations
+optional coordinates
+nested objects
 CSV
 JSON
-PDF
-Images
-Metrics
-Logs
-Traces
 ```
 
-avec leur stratégie de traitement.
-
----
-
-# 101. Critère de réussite
-
-La compétence est démontrée si le jury peut suivre :
+Cela constitue une vraie justification pour :
 
 ```text
-Data Characteristics
-      |
-      v
-Measured 3V
-      |
-      v
-Architecture Choice
-      |
-      v
-Capacity Limits
-      |
-      v
-Evolution Criteria
+RAW
++
+STAGING
++
+CANONICAL MODEL
 ```
 
 ---
 
-# 102. Ce qui ne suffit pas
+# 51. Source Diversity
 
-Les affirmations suivantes seules sont insuffisantes :
+Les données peuvent provenir de :
 
 ```text
-"We have Big Data."
-
-"We use Kubernetes."
-
-"We may use Kafka."
-
-"We have many different data types."
+agencies
+individual sellers
+platforms
+APIs
+manual import
+open data
 ```
 
-Il faut relier les technologies aux caractéristiques mesurées.
-
 ---
 
-# 103. Statut actuel
+# 52. Canonical Model
 
-| Élément | Statut |
-|---|---|
-| 3V methodology | DOCUMENTÉE |
-| Volume sources | IDENTIFIÉES |
-| Velocity profile | IDENTIFIÉ |
-| Variety profile | IDENTIFIÉ |
-| Current architecture fit | JUSTIFIÉ |
-| PostgreSQL rationale | DOCUMENTÉE |
-| Airflow rationale | DOCUMENTÉE |
-| Kafka threshold logic | DOCUMENTÉE |
-| Spark threshold logic | DOCUMENTÉE |
-| Vector DB evolution | DOCUMENTÉE |
-| Real volume measurement | À PRODUIRE |
-| Real ingestion benchmark | À PRODUIRE |
-| Scalability tests | À PRODUIRE |
-| Final architecture thresholds | À MESURER |
-
----
-
-# 104. Conclusion
-
-Le profil actuel du projet est :
+La variété est maîtrisée grâce à :
 
 ```text
-Volume
-=
-Low to Moderate
-
-Velocity
-=
-Batch / Moderate
-
-Variety
-=
-Moderate and Growing
+Source-specific format
+       |
+       v
+Adapter / Parser
+       |
+       v
+STAGING
+       |
+       v
+Canonical BIEN
 ```
 
-Cette situation justifie actuellement une architecture relativement simple :
+---
+
+# 53. Adapter Pattern
+
+Exemple :
+
+```text
+CsvAdapter
+JsonAdapter
+ApiAdapter
+```
+
+Ils convergent vers le même schéma canonique.
+
+---
+
+# 54. Schema Drift
+
+Une source peut modifier :
+
+```text
+field name
+field type
+nested structure
+date format
+```
+
+Le pipeline doit pouvoir détecter ce changement.
+
+---
+
+# 55. Data Contract
+
+Une future source stable peut être associée à un Data Contract.
+
+Il peut définir :
+
+```text
+schema
+required fields
+types
+quality expectations
+version
+owner
+```
+
+---
+
+# 56. Languages
+
+L'expansion internationale augmente également la variété linguistique.
+
+Exemples :
+
+```text
+French
+Spanish
+German
+English
+Italian
+Dutch
+```
+
+Cela affecte :
+
+```text
+descriptions
+criteria
+semantic matching
+LLM prompts
+```
+
+---
+
+# 57. Postal Codes
+
+Les formats postaux varient selon les pays.
+
+Ils doivent rester :
+
+```text
+VARCHAR
+```
+
+et non être traités comme des entiers.
+
+---
+
+# 58. Currency
+
+Une expansion internationale peut également introduire plusieurs devises.
+
+Le modèle actuel suppose implicitement des montants comparables.
+
+Une extension future peut nécessiter :
+
+```text
+currency_code
+exchange rates
+```
+
+si le business dépasse la zone euro.
+
+---
+
+# 59. International Property Types
+
+Les types de biens peuvent également varier.
+
+Une taxonomie canonique pourra être nécessaire.
+
+Exemple :
+
+```text
+source-specific property type
+       |
+       v
+canonical property type
+```
+
+---
+
+# 60. Profil 3V actuel
+
+La baseline peut être résumée ainsi :
+
+```text
+Volume:
+Moderate today
+Potentially large matching volume
+
+Velocity:
+Batch / micro-batch
+with interactive requests
+
+Variety:
+High and increasing
+```
+
+---
+
+# 61. Current Architecture Fit
+
+La baseline actuelle reste :
 
 ```text
 PostgreSQL
@@ -1900,19 +1156,840 @@ MinIO
 OpenMetadata
 ```
 
-Les technologies distribuées telles que :
+avec :
 
 ```text
-Kafka
-Spark
-Dedicated OLAP engine
-Dedicated Vector Database
+RAW
+STAGING
+OLTP
+OLAP
 ```
-
-restent des évolutions conditionnelles.
-
-Elles ne seront adoptées que lorsque des mesures démontreront que l'architecture actuelle ne satisfait plus les besoins.
 
 ---
 
-**BC05 / C4 — VOLUME, VÉLOCITÉ, VARIÉTÉ — DOCUMENTATION BASELINE COMPLETE**
+# 62. PostgreSQL Capacity
+
+PostgreSQL peut supporter des volumes très importants lorsqu'il est correctement conçu.
+
+Il n'existe pas de règle :
+
+```text
+1 million rows
+=
+need Spark
+```
+
+---
+
+# 63. Factors that actually matter
+
+Il faut mesurer :
+
+```text
+query latency
+concurrency
+index size
+working set
+I/O
+pipeline duration
+CPU
+RAM
+storage
+```
+
+---
+
+# 64. Scaling Vertical
+
+Première évolution possible :
+
+```text
+more CPU
+more RAM
+faster storage
+```
+
+---
+
+# 65. Scaling Query Design
+
+Avant de changer de technologie :
+
+```text
+indexes
+query optimization
+filtering
+data model
+partitioning
+```
+
+doivent être évalués.
+
+---
+
+# 66. Connection Pooling
+
+Une forte concurrence applicative peut nécessiter :
+
+```text
+PgBouncer
+```
+
+ou un autre mécanisme de pooling.
+
+Ce besoin doit être mesuré.
+
+---
+
+# 67. Read Replicas
+
+Si les lectures deviennent importantes :
+
+```text
+primary
+   |
+   +--> replica
+```
+
+peut permettre de séparer certains workloads.
+
+---
+
+# 68. Partitioning
+
+Tables candidates :
+
+```text
+bien
+presentation
+commentaire
+fact_presentation
+```
+
+si leur taille et leurs patterns de requêtes le justifient.
+
+---
+
+# 69. Dedicated OLAP Engine
+
+Un moteur spécialisé peut être étudié lorsque :
+
+```text
+analytical latency
+```
+
+ou :
+
+```text
+warehouse size
+```
+
+dépasse ce que PostgreSQL peut fournir raisonnablement dans l'environnement cible.
+
+---
+
+# 70. Technologies candidates
+
+Exemples futurs :
+
+```text
+ClickHouse
+DuckDB
+Trino
+cloud warehouse
+```
+
+selon le besoin réel.
+
+---
+
+# 71. Spark
+
+Spark devient pertinent lorsque :
+
+```text
+distributed processing
+```
+
+est réellement nécessaire.
+
+Ce n'est pas une exigence du projet actuel.
+
+---
+
+# 72. Data Lake
+
+Le stockage objet peut progressivement prendre le rôle d'une zone Data Lake.
+
+Exemple :
+
+```text
+MinIO
+ |
+ +--> raw
+ +--> curated
+ +--> ML
+```
+
+---
+
+# 73. Parquet
+
+Pour de gros datasets analytiques :
+
+```text
+Parquet
+```
+
+peut améliorer :
+
+```text
+compression
+columnar reads
+analytics
+```
+
+mais il n'est pas obligatoire pour le MVP.
+
+---
+
+# 74. Vector Database
+
+La variété AI introduit :
+
+```text
+vector data
+```
+
+Les options incluent :
+
+```text
+pgvector
+```
+
+et :
+
+```text
+Qdrant
+```
+
+---
+
+# 75. pgvector
+
+Avantages possibles :
+
+```text
+fewer platform components
+same PostgreSQL governance
+simpler backup
+```
+
+pour un volume vectoriel modéré.
+
+---
+
+# 76. Qdrant
+
+Qdrant devient candidat si :
+
+```text
+vector volume
+latency
+specialized retrieval
+```
+
+justifient un moteur dédié.
+
+Statut :
+
+```text
+CANDIDATE
+```
+
+---
+
+# 77. Benchmark Before Adoption
+
+```text
+Dataset
+   |
+   +--> pgvector
+   |
+   +--> Qdrant
+   |
+   v
+Performance / Complexity Comparison
+   |
+   v
+ADR
+```
+
+---
+
+# 78. Architecture Evolution Thresholds
+
+Les seuils doivent être liés à des métriques.
+
+Exemples :
+
+```text
+query latency
+pipeline duration
+database size
+ingestion throughput
+GPU latency
+queue depth
+warehouse growth
+```
+
+---
+
+# 79. PostgreSQL Threshold Example
+
+Une évolution est étudiée lorsque :
+
+```text
+critical query latency > SLO
+```
+
+après :
+
+```text
+query tuning
+indexing
+schema optimization
+right-sizing
+```
+
+---
+
+# 80. Airflow Threshold Example
+
+Une architecture streaming est étudiée lorsque :
+
+```text
+required freshness
+<
+achievable batch interval
+```
+
+de manière durable.
+
+---
+
+# 81. AI Threshold Example
+
+Une évolution du serving devient nécessaire lorsque :
+
+```text
+queue wait
++
+inference duration
+>
+business latency target
+```
+
+---
+
+# 82. Data Retention
+
+La croissance doit être contrôlée.
+
+Données concernées :
+
+```text
+raw files
+candidate matches
+logs
+metrics
+traces
+documents
+model artifacts
+```
+
+---
+
+# 83. Candidate Matching Retention
+
+Une question importante est :
+
+```text
+Do we retain all rejected candidates?
+```
+
+Il faut arbitrer entre :
+
+```text
+analytics value
+auditability
+storage
+privacy
+```
+
+---
+
+# 84. Hot vs Historical Data
+
+Le lifecycle peut être :
+
+```text
+HOT
+ |
+ v
+HISTORICAL
+ |
+ v
+ARCHIVE
+ |
+ v
+DELETE
+```
+
+---
+
+# 85. RGPD Impact
+
+Le volume n'est pas uniquement une problématique technique.
+
+Plus de données personnelles signifie également :
+
+```text
+greater exposure
+larger deletion scope
+higher backup impact
+higher governance cost
+```
+
+---
+
+# 86. Eco-conception
+
+Principe :
+
+```text
+Store what creates value.
+Process what is needed.
+Retain only as long as justified.
+```
+
+---
+
+# 87. Observability of 3V
+
+Les métriques doivent rendre les 3V mesurables.
+
+---
+
+# 88. Volume Metrics
+
+```text
+rows_total
+database_bytes
+table_bytes
+object_storage_bytes
+logs_bytes
+vectors_total
+```
+
+---
+
+# 89. Velocity Metrics
+
+```text
+rows_ingested_per_second
+pipeline_duration
+matching_requests_per_second
+matching_duration
+AI_requests
+data_freshness
+```
+
+---
+
+# 90. Variety Metrics
+
+```text
+source_count
+schema_count
+format_count
+adapter_count
+document_type_count
+```
+
+---
+
+# 91. Benchmark Datasets
+
+Le générateur StarterPack peut être utilisé pour produire des tailles progressives.
+
+Exemples :
+
+```text
+100 searches
+100 properties/search
+
+1000 searches
+500 properties/search
+
+5000 searches
+1000 properties/search
+```
+
+selon les capacités disponibles.
+
+---
+
+# 92. Important
+
+Un benchmark ne doit pas saturer inutilement l'environnement.
+
+La taille doit augmenter progressivement.
+
+---
+
+# 93. Progressive Benchmark
+
+```text
+small
+ |
+ v
+medium
+ |
+ v
+large
+ |
+ v
+observe threshold
+```
+
+---
+
+# 94. Volume Test
+
+Mesurer :
+
+```text
+generation duration
+raw file size
+ingestion duration
+database size
+```
+
+---
+
+# 95. Velocity Test
+
+Mesurer :
+
+```text
+rows loaded / second
+properties normalized / second
+matching operations / second
+```
+
+---
+
+# 96. Matching Benchmark
+
+Mesurer au minimum :
+
+```text
+number of properties
+number after SQL filtering
+ranking duration
+number persisted
+```
+
+---
+
+# 97. Variety Test
+
+Vérifier la normalisation de :
+
+```text
+CSV
+JSON
+different dates
+missing coordinates
+renamed fields
+```
+
+---
+
+# 98. Benchmark Report
+
+Chaque benchmark doit indiquer :
+
+```text
+hardware
+dataset size
+configuration
+start time
+end time
+throughput
+errors
+resource usage
+interpretation
+```
+
+---
+
+# 99. Evidence Files
+
+Les preuves runtime seront stockées hors documentation.
+
+Exemples :
+
+```text
+database/tests/
+pipelines/
+scripts/
+```
+
+Ce dossier reste l'index documentaire.
+
+---
+
+# 100. Future Evidence
+
+Exemples :
+
+```text
+volume-measurements.txt
+ingestion-benchmark.json
+matching-benchmark.json
+storage-growth.csv
+3v-analysis-report.md
+```
+
+---
+
+# 101. Decision Matrix
+
+Une technologie supplémentaire n'est adoptée que si :
+
+```text
+Measured Problem
+      |
+      v
+Current Solution Insufficient
+      |
+      v
+Alternatives Compared
+      |
+      v
+Operational Cost Evaluated
+      |
+      v
+Decision
+```
+
+---
+
+# 102. Anti-Pattern
+
+À éviter :
+
+```text
+"Big Data project"
+=
+"deploy everything"
+```
+
+Le projet doit démontrer la capacité à choisir la bonne technologie, y compris lorsqu'il est préférable de ne pas l'ajouter.
+
+---
+
+# 103. Architecture Today
+
+```text
+Generated / External Data
+       |
+       v
+RAW
+       |
+       v
+STAGING
+       |
+       v
+PostgreSQL OLTP
+       |
+       v
+PostgreSQL OLAP
+```
+
+avec :
+
+```text
+Airflow
+MinIO
+OpenMetadata
+```
+
+---
+
+# 104. Potential Future
+
+```text
+PostgreSQL
+   |
+   +--> replicas
+   +--> partitioning
+   +--> pgvector
+```
+
+puis éventuellement :
+
+```text
+Kafka
+Dedicated OLAP
+Spark
+Qdrant
+Data Lake architecture
+```
+
+si les mesures le justifient.
+
+---
+
+# 105. Relation with C2
+
+C2 mesure et optimise :
+
+```text
+OLTP query performance
+```
+
+---
+
+# 106. Relation with C3
+
+C3 sépare :
+
+```text
+analytical workloads
+```
+
+de l'OLTP.
+
+---
+
+# 107. Relation with C5
+
+Le matching crée potentiellement le plus gros multiplicateur de volume :
+
+```text
+DEMANDE
+x
+BIEN
+```
+
+Il doit donc filtrer efficacement.
+
+---
+
+# 108. Relation with C6
+
+Le programme IA doit mesurer :
+
+```text
+latency
+throughput
+resource consumption
+```
+
+---
+
+# 109. Relation with C7
+
+Les politiques de rétention doivent prendre en compte :
+
+```text
+privacy
+```
+
+en plus de la capacité technique.
+
+---
+
+# 110. Current Status
+
+| Élément | Statut |
+|---|---|
+| Official growth scenario | INTEGRATED |
+| Mandate growth model | DEFINED |
+| Demand-version growth | DEFINED |
+| Property growth | DEFINED |
+| Matching multiplication | DEFINED |
+| Volume strategy | UPDATED |
+| Velocity strategy | UPDATED |
+| Variety strategy | UPDATED |
+| Kafka criteria | DEFINED |
+| Spark criteria | DEFINED |
+| Vector strategy | DEFINED |
+| Scaling thresholds | DEFINED |
+| Retention strategy | DEFINED |
+| Real measurements | PENDING |
+| Ingestion benchmark | PENDING |
+| Matching benchmark | PENDING |
+| Final capacity thresholds | PENDING |
+
+---
+
+# 111. Conclusion
+
+Le risque principal de croissance du projet n'est pas uniquement :
+
+```text
+number of clients
+```
+
+ou :
+
+```text
+number of mandates
+```
+
+mais surtout la relation :
+
+```text
+DEMANDE
+    x
+BIEN
+```
+
+qui peut produire des millions de candidats de matching.
+
+La stratégie cible est donc :
+
+```text
+Filter Early
+   |
+   v
+Reduce Candidates
+   |
+   v
+Rank Efficiently
+   |
+   v
+Persist Only Valuable State
+```
+
+tout en conservant :
+
+```text
+PostgreSQL
++
+Airflow
++
+MinIO
+```
+
+comme architecture de base tant que les mesures démontrent qu'elle satisfait les besoins.
+
+Les évolutions vers Kafka, Spark, un moteur OLAP spécialisé ou une base vectorielle dédiée ne seront adoptées qu'à partir de preuves mesurées.
+
+---
+
+**BC05 / C4 — VOLUME, VÉLOCITÉ, VARIÉTÉ V2 — ALIGNED WITH OFFICIAL GROWTH SCENARIO**

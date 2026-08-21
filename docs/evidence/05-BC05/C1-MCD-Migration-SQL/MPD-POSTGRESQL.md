@@ -2,85 +2,144 @@
 
 **Projet :** Real Estate Intelligence Platform  
 **Méthode :** MERISE  
-**Version :** 1.0  
-**Statut :** Baseline physique  
-**Source :**
-- `MCD-MERISE-PROJET.md`
-- `MLD-PROJET.md`
+**Version :** 2.0  
+**Statut :** Baseline physique corrigée  
+**Sources :**
+- `MCD-MERISE-PROJET.md` V2
+- `MLD-PROJET.md` V2
 
 ---
 
 # 1. Objectif
 
-Le Modèle Physique de Données traduit le MLD en structures directement implémentables dans PostgreSQL.
+Le Modèle Physique de Données traduit le MLD V2 en structures PostgreSQL directement implémentables.
 
-Le chemin complet est :
+Chaîne :
 
 ```text
-MCD
- |
- v
-MLD
- |
- v
-MPD PostgreSQL
- |
- v
+Legacy Fixtures
+      |
+      v
+MCD V2
+      |
+      v
+MLD V2
+      |
+      v
+MPD PostgreSQL V2
+      |
+      v
 migration.sql
- |
- v
+      |
+      v
 PostgreSQL
- |
- v
-Validation
 ```
 
 Le MPD définit :
 
-- les noms de tables ;
-- les noms de colonnes ;
-- les types PostgreSQL ;
-- les clés primaires ;
-- les clés étrangères ;
-- les contraintes ;
-- les index ;
-- les valeurs par défaut ;
-- les règles d'intégrité.
+- schémas PostgreSQL ;
+- tables ;
+- colonnes ;
+- types ;
+- clés primaires ;
+- clés étrangères ;
+- contraintes ;
+- index ;
+- règles temporelles ;
+- stratégie d'historisation ;
+- stratégie de migration.
 
 ---
 
-# 2. Convention de nommage
+# 2. Schémas PostgreSQL
 
-Le projet utilise :
+Le modèle cible sera séparé logiquement.
+
+```text
+legacy
+real_estate
+raw
+staging
+warehouse
+analytics
+```
+
+Pour la première migration métier, la priorité est :
+
+```text
+real_estate
+```
+
+Les données héritées restent dans leur schéma d'origine :
+
+```text
+"Fil_Rouge_Depart"
+```
+
+---
+
+# 3. Schéma métier cible
+
+```sql
+CREATE SCHEMA IF NOT EXISTS real_estate;
+```
+
+Les principales tables seront :
+
+```text
+real_estate.client
+real_estate.chasseur
+real_estate.secteur
+real_estate.mandat
+real_estate.mandat_secteur
+real_estate.demande
+real_estate.demande_version
+real_estate.source
+real_estate.bien
+real_estate.presentation
+real_estate.commentaire
+real_estate.document
+real_estate.bareme_commission
+real_estate.paiement
+```
+
+---
+
+# 4. Convention de nommage
+
+Tables :
+
+```text
+snake_case
+singular
+```
+
+Colonnes :
 
 ```text
 snake_case
 ```
 
-pour :
-
-- tables ;
-- colonnes ;
-- contraintes ;
-- index.
-
-Les tables utilisent des noms au singulier.
-
-Exemples :
+Contraintes :
 
 ```text
-client
-mandat
-demande_version
-bien
-presentation
+pk_<table>
+fk_<table>_<reference>
+uq_<table>_<columns>
+ck_<table>_<rule>
+```
+
+Index :
+
+```text
+idx_<table>_<columns>
 ```
 
 ---
 
-# 3. Stratégie d'identifiants
+# 5. Identifiants
 
-Pour le MVP, les identifiants utilisent :
+Les identifiants utilisent :
 
 ```text
 BIGINT GENERATED ALWAYS AS IDENTITY
@@ -92,56 +151,26 @@ Exemple :
 id_client BIGINT GENERATED ALWAYS AS IDENTITY
 ```
 
-Avantages :
-
-- simple ;
-- natif PostgreSQL ;
-- lisible ;
-- performant ;
-- adapté au périmètre actuel.
-
 ---
 
-# 4. Schéma PostgreSQL
-
-Le modèle métier sera isolé dans un schéma dédié :
-
-```text
-real_estate
-```
-
-Création :
-
-```sql
-CREATE SCHEMA IF NOT EXISTS real_estate;
-```
-
-Les tables deviennent :
-
-```text
-real_estate.client
-real_estate.chasseur
-real_estate.mandat
-real_estate.demande_version
-real_estate.source
-real_estate.bien
-real_estate.presentation
-real_estate.document
-```
-
----
-
-# 5. Table client
+# 6. Table client
 
 ```sql
 CREATE TABLE real_estate.client (
     id_client BIGINT GENERATED ALWAYS AS IDENTITY,
+
     nom VARCHAR(120) NOT NULL,
     prenom VARCHAR(120),
+
     email VARCHAR(255) NOT NULL,
     telephone VARCHAR(40),
+
+    ville VARCHAR(120),
+
     date_creation TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     statut VARCHAR(20) NOT NULL DEFAULT 'ACTIF',
+
     consentement_contact BOOLEAN NOT NULL DEFAULT FALSE,
 
     CONSTRAINT pk_client
@@ -151,38 +180,15 @@ CREATE TABLE real_estate.client (
         UNIQUE (email),
 
     CONSTRAINT ck_client_statut
-        CHECK (statut IN ('ACTIF', 'INACTIF', 'ARCHIVE'))
+        CHECK (
+            statut IN (
+                'ACTIF',
+                'INACTIF',
+                'ARCHIVE'
+            )
+        )
 );
 ```
-
----
-
-# 6. Justification client
-
-## email
-
-```text
-VARCHAR(255)
-```
-
-car l'adresse email reste une chaîne de longueur raisonnable.
-
-Elle est unique dans le MVP.
-
-## consentement_contact
-
-```text
-BOOLEAN
-```
-
-permet de distinguer explicitement :
-
-```text
-true
-false
-```
-
-sans utiliser des valeurs textuelles.
 
 ---
 
@@ -191,12 +197,16 @@ sans utiliser des valeurs textuelles.
 ```sql
 CREATE TABLE real_estate.chasseur (
     id_chasseur BIGINT GENERATED ALWAYS AS IDENTITY,
+
     nom VARCHAR(120) NOT NULL,
     prenom VARCHAR(120),
+
     email VARCHAR(255) NOT NULL,
     telephone VARCHAR(40),
-    statut VARCHAR(20) NOT NULL DEFAULT 'ACTIF',
+
     date_entree DATE,
+
+    statut VARCHAR(20) NOT NULL DEFAULT 'ACTIF',
 
     CONSTRAINT pk_chasseur
         PRIMARY KEY (id_chasseur),
@@ -205,61 +215,88 @@ CREATE TABLE real_estate.chasseur (
         UNIQUE (email),
 
     CONSTRAINT ck_chasseur_statut
-        CHECK (statut IN ('ACTIF', 'INACTIF'))
-);
-```
-
----
-
-# 8. Table source
-
-```sql
-CREATE TABLE real_estate.source (
-    id_source BIGINT GENERATED ALWAYS AS IDENTITY,
-    nom VARCHAR(150) NOT NULL,
-    type_source VARCHAR(40) NOT NULL,
-    url_base TEXT,
-    active BOOLEAN NOT NULL DEFAULT TRUE,
-    niveau_confiance VARCHAR(20),
-    date_creation TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT pk_source
-        PRIMARY KEY (id_source),
-
-    CONSTRAINT ck_source_type
         CHECK (
-            type_source IN (
-                'PORTAIL',
-                'AGENCE',
-                'API',
-                'MANUEL',
-                'PARTENAIRE',
-                'OPEN_DATA'
+            statut IN (
+                'ACTIF',
+                'INACTIF'
             )
-        ),
-
-    CONSTRAINT ck_source_confiance
-        CHECK (
-            niveau_confiance IS NULL
-            OR niveau_confiance IN ('FAIBLE', 'MOYEN', 'ELEVE')
         )
 );
 ```
 
 ---
 
-# 9. Table mandat
+# 8. Table secteur
+
+```sql
+CREATE TABLE real_estate.secteur (
+    id_secteur BIGINT GENERATED ALWAYS AS IDENTITY,
+
+    pays VARCHAR(100) NOT NULL DEFAULT 'France',
+
+    ville VARCHAR(120) NOT NULL,
+    quartier VARCHAR(150),
+    code_postal VARCHAR(20),
+
+    actif BOOLEAN NOT NULL DEFAULT TRUE,
+
+    CONSTRAINT pk_secteur
+        PRIMARY KEY (id_secteur),
+
+    CONSTRAINT uq_secteur_localisation
+        UNIQUE (
+            pays,
+            ville,
+            quartier,
+            code_postal
+        )
+);
+```
+
+---
+
+# 9. Internationalisation
+
+Le champ :
+
+```text
+code_postal
+```
+
+reste :
+
+```text
+VARCHAR(20)
+```
+
+et non :
+
+```text
+INTEGER
+```
+
+afin de supporter plusieurs pays.
+
+---
+
+# 10. Table mandat
 
 ```sql
 CREATE TABLE real_estate.mandat (
     id_mandat BIGINT GENERATED ALWAYS AS IDENTITY,
+
     reference_mandat VARCHAR(80) NOT NULL,
-    date_signature DATE,
-    date_debut DATE,
-    date_fin DATE,
-    statut VARCHAR(20) NOT NULL DEFAULT 'BROUILLON',
-    budget_min NUMERIC(12,2),
-    budget_max NUMERIC(12,2),
+
+    type_mandat VARCHAR(20) NOT NULL,
+
+    date_signature DATE NOT NULL,
+    mode_signature VARCHAR(30) NOT NULL,
+
+    date_debut DATE NOT NULL,
+    date_fin DATE NOT NULL,
+
+    statut VARCHAR(20) NOT NULL DEFAULT 'ACTIF',
+
     commentaire TEXT,
 
     id_client BIGINT NOT NULL,
@@ -281,6 +318,23 @@ CREATE TABLE real_estate.mandat (
         REFERENCES real_estate.chasseur(id_chasseur)
         ON DELETE RESTRICT,
 
+    CONSTRAINT ck_mandat_type
+        CHECK (
+            type_mandat IN (
+                'EXCLUSIF',
+                'NON_EXCLUSIF'
+            )
+        ),
+
+    CONSTRAINT ck_mandat_mode_signature
+        CHECK (
+            mode_signature IN (
+                'PAPIER',
+                'ELECTRONIQUE',
+                'AUTRE'
+            )
+        ),
+
     CONSTRAINT ck_mandat_statut
         CHECK (
             statut IN (
@@ -288,75 +342,283 @@ CREATE TABLE real_estate.mandat (
                 'ACTIF',
                 'SUSPENDU',
                 'TERMINE',
+                'EXPIRE',
                 'ANNULE'
             )
         ),
 
-    CONSTRAINT ck_mandat_budget_min
-        CHECK (budget_min IS NULL OR budget_min >= 0),
-
-    CONSTRAINT ck_mandat_budget_max
-        CHECK (budget_max IS NULL OR budget_max >= 0),
-
-    CONSTRAINT ck_mandat_budget_range
-        CHECK (
-            budget_min IS NULL
-            OR budget_max IS NULL
-            OR budget_min <= budget_max
-        ),
-
     CONSTRAINT ck_mandat_dates
         CHECK (
-            date_fin IS NULL
-            OR date_debut IS NULL
-            OR date_fin >= date_debut
+            date_fin >= date_debut
         )
 );
 ```
 
 ---
 
-# 10. Table demande_version
+# 11. Règle six mois
+
+La règle métier impose :
+
+```text
+date_fin = date_signature + 6 mois
+```
+
+Cette règle doit être contrôlée.
+
+En PostgreSQL :
 
 ```sql
-CREATE TABLE real_estate.demande_version (
-    id_demande_version BIGINT GENERATED ALWAYS AS IDENTITY,
-    numero_version INTEGER NOT NULL,
-    date_version TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    type_bien VARCHAR(40),
-    localisation VARCHAR(255),
-    budget_min NUMERIC(12,2),
-    budget_max NUMERIC(12,2),
-    surface_min NUMERIC(10,2),
-    nb_pieces_min INTEGER,
-    nb_chambres_min INTEGER,
-    exterieur_requis BOOLEAN NOT NULL DEFAULT FALSE,
-    parking_requis BOOLEAN NOT NULL DEFAULT FALSE,
-    ascenseur_requis BOOLEAN NOT NULL DEFAULT FALSE,
-    commentaire TEXT,
-    active BOOLEAN NOT NULL DEFAULT TRUE,
+CONSTRAINT ck_mandat_duree
+CHECK (
+    date_fin = (date_signature + INTERVAL '6 months')::date
+)
+```
+
+Cette contrainte peut être adoptée si le processus métier confirme qu'un mandat initial doit toujours avoir exactement six mois.
+
+---
+
+# 12. Renouvellement mandat
+
+Le renouvellement ne doit pas écraser arbitrairement l'historique.
+
+Deux stratégies sont possibles :
+
+```text
+A. nouveau mandat
+```
+
+ou :
+
+```text
+B. table renouvellement_mandat
+```
+
+Pour le MVP, un nouveau mandat référencé peut être utilisé si nécessaire.
+
+---
+
+# 13. Table mandat_secteur
+
+```sql
+CREATE TABLE real_estate.mandat_secteur (
+    id_mandat BIGINT NOT NULL,
+    id_secteur BIGINT NOT NULL,
+
+    CONSTRAINT pk_mandat_secteur
+        PRIMARY KEY (
+            id_mandat,
+            id_secteur
+        ),
+
+    CONSTRAINT fk_mandat_secteur_mandat
+        FOREIGN KEY (id_mandat)
+        REFERENCES real_estate.mandat(id_mandat)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_mandat_secteur_secteur
+        FOREIGN KEY (id_secteur)
+        REFERENCES real_estate.secteur(id_secteur)
+        ON DELETE RESTRICT
+);
+```
+
+---
+
+# 14. Pourquoi table associative
+
+Le système hérité possède :
+
+```text
+1 mandat -> 1 secteur
+```
+
+Le modèle cible autorise :
+
+```text
+1 mandat -> plusieurs secteurs
+```
+
+ce qui est plus cohérent avec les recherches multi-zones.
+
+---
+
+# 15. Table demande
+
+```sql
+CREATE TABLE real_estate.demande (
+    id_demande BIGINT GENERATED ALWAYS AS IDENTITY,
+
+    reference_demande VARCHAR(80),
+
+    date_creation TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    statut VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
 
     id_mandat BIGINT NOT NULL,
 
-    CONSTRAINT pk_demande_version
-        PRIMARY KEY (id_demande_version),
+    CONSTRAINT pk_demande
+        PRIMARY KEY (id_demande),
 
-    CONSTRAINT fk_demande_version_mandat
+    CONSTRAINT uq_demande_reference
+        UNIQUE (reference_demande),
+
+    CONSTRAINT fk_demande_mandat
         FOREIGN KEY (id_mandat)
         REFERENCES real_estate.mandat(id_mandat)
         ON DELETE RESTRICT,
 
+    CONSTRAINT ck_demande_statut
+        CHECK (
+            statut IN (
+                'ACTIVE',
+                'SUSPENDUE',
+                'CLOTUREE',
+                'ANNULEE'
+            )
+        )
+);
+```
+
+---
+
+# 16. Référence demande
+
+`reference_demande` permet notamment de conserver la référence produite par le générateur StarterPack :
+
+```text
+REC-XXXXXXXX
+```
+
+si elle est utilisée comme donnée de test.
+
+---
+
+# 17. Stratégie auteur — décision MPD
+
+Nous évitons une colonne polymorphe :
+
+```text
+auteur_type
+auteur_id
+```
+
+car PostgreSQL ne peut pas garantir une vraie FK vers plusieurs tables.
+
+Nous retenons :
+
+```text
+auteur_client_id
+auteur_chasseur_id
+auteur_systeme
+```
+
+avec contrainte garantissant un seul auteur logique.
+
+---
+
+# 18. Table demande_version
+
+```sql
+CREATE TABLE real_estate.demande_version (
+    id_demande_version BIGINT GENERATED ALWAYS AS IDENTITY,
+
+    numero_version INTEGER NOT NULL,
+
+    date_version TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    motif_modification TEXT NOT NULL,
+
+    ville VARCHAR(120),
+    code_postal VARCHAR(20),
+    type_bien VARCHAR(50),
+
+    budget_min NUMERIC(12,2),
+    budget_max NUMERIC(12,2),
+
+    surface_min NUMERIC(10,2),
+
+    nb_pieces_min INTEGER,
+    nb_chambres_min INTEGER,
+
+    dpe_max CHAR(1),
+
+    criteres_souhaites JSONB NOT NULL DEFAULT '[]'::jsonb,
+
+    active BOOLEAN NOT NULL DEFAULT TRUE,
+
+    id_demande BIGINT NOT NULL,
+
+    auteur_client_id BIGINT,
+    auteur_chasseur_id BIGINT,
+    auteur_systeme BOOLEAN NOT NULL DEFAULT FALSE,
+
+    CONSTRAINT pk_demande_version
+        PRIMARY KEY (id_demande_version),
+
+    CONSTRAINT fk_demande_version_demande
+        FOREIGN KEY (id_demande)
+        REFERENCES real_estate.demande(id_demande)
+        ON DELETE RESTRICT,
+
+    CONSTRAINT fk_demande_version_client
+        FOREIGN KEY (auteur_client_id)
+        REFERENCES real_estate.client(id_client)
+        ON DELETE RESTRICT,
+
+    CONSTRAINT fk_demande_version_chasseur
+        FOREIGN KEY (auteur_chasseur_id)
+        REFERENCES real_estate.chasseur(id_chasseur)
+        ON DELETE RESTRICT,
+
     CONSTRAINT uq_demande_version_numero
-        UNIQUE (id_mandat, numero_version),
+        UNIQUE (
+            id_demande,
+            numero_version
+        ),
 
     CONSTRAINT ck_demande_version_numero
-        CHECK (numero_version > 0),
+        CHECK (
+            numero_version > 0
+        ),
+
+    CONSTRAINT ck_demande_version_auteur
+        CHECK (
+            (
+                CASE
+                    WHEN auteur_client_id IS NOT NULL THEN 1
+                    ELSE 0
+                END
+            )
+            +
+            (
+                CASE
+                    WHEN auteur_chasseur_id IS NOT NULL THEN 1
+                    ELSE 0
+                END
+            )
+            +
+            (
+                CASE
+                    WHEN auteur_systeme THEN 1
+                    ELSE 0
+                END
+            )
+            = 1
+        ),
 
     CONSTRAINT ck_demande_version_budget_min
-        CHECK (budget_min IS NULL OR budget_min >= 0),
+        CHECK (
+            budget_min IS NULL
+            OR budget_min >= 0
+        ),
 
     CONSTRAINT ck_demande_version_budget_max
-        CHECK (budget_max IS NULL OR budget_max >= 0),
+        CHECK (
+            budget_max IS NULL
+            OR budget_max >= 0
+        ),
 
     CONSTRAINT ck_demande_version_budget_range
         CHECK (
@@ -366,69 +628,158 @@ CREATE TABLE real_estate.demande_version (
         ),
 
     CONSTRAINT ck_demande_version_surface
-        CHECK (surface_min IS NULL OR surface_min >= 0),
+        CHECK (
+            surface_min IS NULL
+            OR surface_min >= 0
+        ),
 
     CONSTRAINT ck_demande_version_pieces
-        CHECK (nb_pieces_min IS NULL OR nb_pieces_min >= 0),
+        CHECK (
+            nb_pieces_min IS NULL
+            OR nb_pieces_min >= 0
+        ),
 
     CONSTRAINT ck_demande_version_chambres
-        CHECK (nb_chambres_min IS NULL OR nb_chambres_min >= 0)
+        CHECK (
+            nb_chambres_min IS NULL
+            OR nb_chambres_min >= 0
+        ),
+
+    CONSTRAINT ck_demande_version_dpe
+        CHECK (
+            dpe_max IS NULL
+            OR dpe_max IN (
+                'A','B','C','D','E','F','G'
+            )
+        )
 );
 ```
 
 ---
 
-# 11. Version active unique
+# 19. Pourquoi JSONB pour criteres_souhaites
 
-PostgreSQL permet un index unique partiel.
+Le générateur StarterPack produit une liste variable de critères tels que :
+
+```text
+balcon
+jardin
+parking
+ascenseur
+terrasse
+cave
+vue
+calme
+lumineux
+piscine
+```
+
+Pour la première version, `JSONB` fournit :
+
+- flexibilité ;
+- compatibilité avec les données générées ;
+- conservation de la variété ;
+- interrogation possible.
+
+Une normalisation future vers une table dédiée reste possible.
+
+---
+
+# 20. Une seule version active
 
 ```sql
 CREATE UNIQUE INDEX uq_demande_version_active
-ON real_estate.demande_version(id_mandat)
+ON real_estate.demande_version(id_demande)
 WHERE active = TRUE;
 ```
 
-Cela garantit :
+Cette règle garantit :
 
 ```text
-Maximum one active request version
-per mandate
-```
-
-tout en autorisant plusieurs anciennes versions :
-
-```text
-active = false
+maximum one active version
+per demande
 ```
 
 ---
 
-# 12. Table bien
+# 21. Table source
+
+```sql
+CREATE TABLE real_estate.source (
+    id_source BIGINT GENERATED ALWAYS AS IDENTITY,
+
+    nom VARCHAR(150) NOT NULL,
+    type_source VARCHAR(40) NOT NULL,
+
+    url_base TEXT,
+
+    actif BOOLEAN NOT NULL DEFAULT TRUE,
+
+    niveau_confiance VARCHAR(20),
+
+    date_creation TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT pk_source
+        PRIMARY KEY (id_source),
+
+    CONSTRAINT ck_source_type
+        CHECK (
+            type_source IN (
+                'AGENCE',
+                'PARTICULIER',
+                'PLATEFORME',
+                'API',
+                'OPEN_DATA',
+                'MANUEL',
+                'AUTRE'
+            )
+        ),
+
+    CONSTRAINT ck_source_confiance
+        CHECK (
+            niveau_confiance IS NULL
+            OR niveau_confiance IN (
+                'FAIBLE',
+                'MOYEN',
+                'ELEVE'
+            )
+        )
+);
+```
+
+---
+
+# 22. Table bien
 
 ```sql
 CREATE TABLE real_estate.bien (
     id_bien BIGINT GENERATED ALWAYS AS IDENTITY,
+
     reference_externe VARCHAR(150) NOT NULL,
+
+    type_bien VARCHAR(50) NOT NULL,
     titre VARCHAR(255),
-    type_bien VARCHAR(40) NOT NULL,
+
     adresse TEXT,
     code_postal VARCHAR(20),
     ville VARCHAR(120),
+
     latitude NUMERIC(9,6),
     longitude NUMERIC(9,6),
+
     prix NUMERIC(12,2),
     surface NUMERIC(10,2),
+
     nb_pieces INTEGER,
     nb_chambres INTEGER,
-    etage INTEGER,
-    ascenseur BOOLEAN,
-    parking BOOLEAN,
-    balcon BOOLEAN,
-    terrasse BOOLEAN,
-    jardin BOOLEAN,
+
+    dpe CHAR(1),
+
     description TEXT,
+
     date_publication TIMESTAMPTZ,
     date_collecte TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     statut VARCHAR(20) NOT NULL DEFAULT 'ACTIF',
 
     id_source BIGINT NOT NULL,
@@ -442,19 +793,34 @@ CREATE TABLE real_estate.bien (
         ON DELETE RESTRICT,
 
     CONSTRAINT uq_bien_source_reference
-        UNIQUE (id_source, reference_externe),
+        UNIQUE (
+            id_source,
+            reference_externe
+        ),
 
     CONSTRAINT ck_bien_prix
-        CHECK (prix IS NULL OR prix >= 0),
+        CHECK (
+            prix IS NULL
+            OR prix >= 0
+        ),
 
     CONSTRAINT ck_bien_surface
-        CHECK (surface IS NULL OR surface >= 0),
+        CHECK (
+            surface IS NULL
+            OR surface >= 0
+        ),
 
     CONSTRAINT ck_bien_pieces
-        CHECK (nb_pieces IS NULL OR nb_pieces >= 0),
+        CHECK (
+            nb_pieces IS NULL
+            OR nb_pieces >= 0
+        ),
 
     CONSTRAINT ck_bien_chambres
-        CHECK (nb_chambres IS NULL OR nb_chambres >= 0),
+        CHECK (
+            nb_chambres IS NULL
+            OR nb_chambres >= 0
+        ),
 
     CONSTRAINT ck_bien_latitude
         CHECK (
@@ -466,6 +832,14 @@ CREATE TABLE real_estate.bien (
         CHECK (
             longitude IS NULL
             OR longitude BETWEEN -180 AND 180
+        ),
+
+    CONSTRAINT ck_bien_dpe
+        CHECK (
+            dpe IS NULL
+            OR dpe IN (
+                'A','B','C','D','E','F','G'
+            )
         ),
 
     CONSTRAINT ck_bien_statut
@@ -482,63 +856,40 @@ CREATE TABLE real_estate.bien (
 
 ---
 
-# 13. Pourquoi NUMERIC pour prix
+# 23. RAW vs BIEN
 
-Le prix utilise :
+Les annonces générées ne sont pas nécessairement directement compatibles avec `bien`.
 
-```text
-NUMERIC(12,2)
-```
-
-et non :
+Elles passent par :
 
 ```text
-FLOAT
+raw
+ |
+ v
+staging
+ |
+ v
+normalization
+ |
+ v
+real_estate.bien
 ```
-
-afin d'éviter les problèmes de représentation approximative pour des montants financiers.
 
 ---
 
-# 14. Pourquoi latitude / longitude séparées
-
-Le MVP ne nécessite pas encore PostGIS.
-
-On utilise :
-
-```text
-latitude
-longitude
-```
-
-avec des contraintes de plage.
-
-Si le projet nécessite ensuite :
-
-- distance ;
-- polygones ;
-- recherche géospatiale avancée ;
-
-PostGIS pourra être évalué via ADR.
-
----
-
-# 15. Table presentation
+# 24. Table presentation
 
 ```sql
 CREATE TABLE real_estate.presentation (
     id_presentation BIGINT GENERATED ALWAYS AS IDENTITY,
+
     date_selection TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     date_presentation TIMESTAMPTZ,
+
     score_matching NUMERIC(5,2),
-    score_budget NUMERIC(5,2),
-    score_localisation NUMERIC(5,2),
-    score_surface NUMERIC(5,2),
-    score_criteres NUMERIC(5,2),
+
     statut VARCHAR(20) NOT NULL DEFAULT 'IDENTIFIE',
-    motif_rejet TEXT,
-    commentaire_chasseur TEXT,
-    feedback_client TEXT,
 
     id_demande_version BIGINT NOT NULL,
     id_bien BIGINT NOT NULL,
@@ -557,36 +908,15 @@ CREATE TABLE real_estate.presentation (
         ON DELETE RESTRICT,
 
     CONSTRAINT uq_presentation_demande_bien
-        UNIQUE (id_demande_version, id_bien),
+        UNIQUE (
+            id_demande_version,
+            id_bien
+        ),
 
-    CONSTRAINT ck_presentation_score_matching
+    CONSTRAINT ck_presentation_score
         CHECK (
             score_matching IS NULL
             OR score_matching BETWEEN 0 AND 100
-        ),
-
-    CONSTRAINT ck_presentation_score_budget
-        CHECK (
-            score_budget IS NULL
-            OR score_budget BETWEEN 0 AND 100
-        ),
-
-    CONSTRAINT ck_presentation_score_localisation
-        CHECK (
-            score_localisation IS NULL
-            OR score_localisation BETWEEN 0 AND 100
-        ),
-
-    CONSTRAINT ck_presentation_score_surface
-        CHECK (
-            score_surface IS NULL
-            OR score_surface BETWEEN 0 AND 100
-        ),
-
-    CONSTRAINT ck_presentation_score_criteres
-        CHECK (
-            score_criteres IS NULL
-            OR score_criteres BETWEEN 0 AND 100
         ),
 
     CONSTRAINT ck_presentation_statut
@@ -605,18 +935,121 @@ CREATE TABLE real_estate.presentation (
 
 ---
 
-# 16. Table document
+# 25. Auteur commentaire — même stratégie
+
+Comme pour `demande_version`, nous utilisons :
+
+```text
+auteur_client_id
+auteur_chasseur_id
+```
+
+et une contrainte garantissant un auteur unique.
+
+---
+
+# 26. Table commentaire
+
+```sql
+CREATE TABLE real_estate.commentaire (
+    id_commentaire BIGINT GENERATED ALWAYS AS IDENTITY,
+
+    date_commentaire TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    contenu TEXT NOT NULL,
+
+    priorite SMALLINT,
+
+    decision VARCHAR(20),
+
+    id_demande_version BIGINT NOT NULL,
+    id_bien BIGINT NOT NULL,
+
+    auteur_client_id BIGINT,
+    auteur_chasseur_id BIGINT,
+
+    CONSTRAINT pk_commentaire
+        PRIMARY KEY (id_commentaire),
+
+    CONSTRAINT fk_commentaire_demande_version
+        FOREIGN KEY (id_demande_version)
+        REFERENCES real_estate.demande_version(id_demande_version)
+        ON DELETE RESTRICT,
+
+    CONSTRAINT fk_commentaire_bien
+        FOREIGN KEY (id_bien)
+        REFERENCES real_estate.bien(id_bien)
+        ON DELETE RESTRICT,
+
+    CONSTRAINT fk_commentaire_client
+        FOREIGN KEY (auteur_client_id)
+        REFERENCES real_estate.client(id_client)
+        ON DELETE RESTRICT,
+
+    CONSTRAINT fk_commentaire_chasseur
+        FOREIGN KEY (auteur_chasseur_id)
+        REFERENCES real_estate.chasseur(id_chasseur)
+        ON DELETE RESTRICT,
+
+    CONSTRAINT ck_commentaire_auteur
+        CHECK (
+            (
+                CASE
+                    WHEN auteur_client_id IS NOT NULL THEN 1
+                    ELSE 0
+                END
+            )
+            +
+            (
+                CASE
+                    WHEN auteur_chasseur_id IS NOT NULL THEN 1
+                    ELSE 0
+                END
+            )
+            = 1
+        ),
+
+    CONSTRAINT ck_commentaire_priorite
+        CHECK (
+            priorite IS NULL
+            OR priorite BETWEEN 1 AND 5
+        ),
+
+    CONSTRAINT ck_commentaire_decision
+        CHECK (
+            decision IS NULL
+            OR decision IN (
+                'RETENIR',
+                'ECARTER',
+                'VISITER',
+                'REQUALIFIER',
+                'INFORMATION'
+            )
+        )
+);
+```
+
+---
+
+# 27. Table document
 
 ```sql
 CREATE TABLE real_estate.document (
     id_document BIGINT GENERATED ALWAYS AS IDENTITY,
+
     nom_fichier VARCHAR(255) NOT NULL,
+
     type_document VARCHAR(60),
     mime_type VARCHAR(120),
+
     chemin_stockage TEXT NOT NULL,
+
     checksum VARCHAR(128),
+
     date_ajout TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     classification VARCHAR(20) NOT NULL DEFAULT 'INTERNE',
+
     indexable_ia BOOLEAN NOT NULL DEFAULT FALSE,
 
     id_bien BIGINT NOT NULL,
@@ -643,11 +1076,214 @@ CREATE TABLE real_estate.document (
 
 ---
 
-# 17. Index techniques minimum
+# 28. Table bareme_commission
 
-Les foreign keys ne créent pas automatiquement tous les index utiles côté PostgreSQL.
+```sql
+CREATE TABLE real_estate.bareme_commission (
+    id_bareme BIGINT GENERATED ALWAYS AS IDENTITY,
 
-Les index candidats retenus pour le MVP sont :
+    montant_min NUMERIC(12,2) NOT NULL,
+    montant_max NUMERIC(12,2),
+
+    taux_commission NUMERIC(7,4) NOT NULL,
+
+    montant_fixe NUMERIC(12,2) NOT NULL DEFAULT 0,
+
+    date_debut_validite DATE NOT NULL,
+    date_fin_validite DATE,
+
+    actif BOOLEAN NOT NULL DEFAULT TRUE,
+
+    id_chasseur BIGINT NOT NULL,
+
+    CONSTRAINT pk_bareme_commission
+        PRIMARY KEY (id_bareme),
+
+    CONSTRAINT fk_bareme_commission_chasseur
+        FOREIGN KEY (id_chasseur)
+        REFERENCES real_estate.chasseur(id_chasseur)
+        ON DELETE RESTRICT,
+
+    CONSTRAINT ck_bareme_montant_min
+        CHECK (
+            montant_min >= 0
+        ),
+
+    CONSTRAINT ck_bareme_montant_max
+        CHECK (
+            montant_max IS NULL
+            OR montant_max >= montant_min
+        ),
+
+    CONSTRAINT ck_bareme_taux
+        CHECK (
+            taux_commission >= 0
+            AND taux_commission <= 1
+        ),
+
+    CONSTRAINT ck_bareme_montant_fixe
+        CHECK (
+            montant_fixe >= 0
+        ),
+
+    CONSTRAINT ck_bareme_dates
+        CHECK (
+            date_fin_validite IS NULL
+            OR date_fin_validite >= date_debut_validite
+        )
+);
+```
+
+---
+
+# 29. Stockage taux commission
+
+Le taux sera stocké comme ratio.
+
+Exemple :
+
+```text
+0.1500
+=
+15 %
+```
+
+et non :
+
+```text
+15
+```
+
+Cela évite les ambiguïtés.
+
+---
+
+# 30. Tranches ouvertes
+
+`montant_max = NULL` signifie :
+
+```text
+pas de borne supérieure
+```
+
+Exemple :
+
+```text
+500000 -> NULL
+```
+
+signifie :
+
+```text
+>= 500000
+```
+
+---
+
+# 31. Chevauchement de barèmes
+
+Une simple contrainte `CHECK` ne peut pas facilement empêcher tous les chevauchements temporels + montants.
+
+Cette règle peut nécessiter :
+
+- trigger ;
+- exclusion constraint ;
+- validation applicative.
+
+Pour le MVP, nous documentons la règle et la testerons explicitement.
+
+---
+
+# 32. Table paiement
+
+```sql
+CREATE TABLE real_estate.paiement (
+    id_paiement BIGINT GENERATED ALWAYS AS IDENTITY,
+
+    date_acte_authentique DATE,
+
+    montant_achat NUMERIC(12,2),
+
+    montant_honoraires NUMERIC(12,2),
+
+    montant_chasseur NUMERIC(12,2),
+
+    date_reception_honoraires DATE,
+    date_paiement_chasseur DATE,
+
+    statut VARCHAR(20) NOT NULL DEFAULT 'ATTENDU',
+
+    id_mandat BIGINT NOT NULL,
+
+    id_bareme BIGINT,
+
+    CONSTRAINT pk_paiement
+        PRIMARY KEY (id_paiement),
+
+    CONSTRAINT fk_paiement_mandat
+        FOREIGN KEY (id_mandat)
+        REFERENCES real_estate.mandat(id_mandat)
+        ON DELETE RESTRICT,
+
+    CONSTRAINT fk_paiement_bareme
+        FOREIGN KEY (id_bareme)
+        REFERENCES real_estate.bareme_commission(id_bareme)
+        ON DELETE RESTRICT,
+
+    CONSTRAINT ck_paiement_montant_achat
+        CHECK (
+            montant_achat IS NULL
+            OR montant_achat >= 0
+        ),
+
+    CONSTRAINT ck_paiement_honoraires
+        CHECK (
+            montant_honoraires IS NULL
+            OR montant_honoraires >= 0
+        ),
+
+    CONSTRAINT ck_paiement_chasseur
+        CHECK (
+            montant_chasseur IS NULL
+            OR montant_chasseur >= 0
+        ),
+
+    CONSTRAINT ck_paiement_statut
+        CHECK (
+            statut IN (
+                'ATTENDU',
+                'RECU',
+                'VERIFIE',
+                'PROGRAMME',
+                'PAYE',
+                'ANNULE'
+            )
+        ),
+
+    CONSTRAINT ck_paiement_dates
+        CHECK (
+            date_paiement_chasseur IS NULL
+            OR date_reception_honoraires IS NULL
+            OR date_paiement_chasseur >= date_reception_honoraires
+        )
+);
+```
+
+---
+
+# 33. Pourquoi id_bareme est conservé
+
+Même si le barème peut être retrouvé par date, le paiement conserve explicitement :
+
+```text
+id_bareme
+```
+
+pour assurer la traçabilité du calcul historique.
+
+---
+
+# 34. Index clés étrangères
 
 ```sql
 CREATE INDEX idx_mandat_id_client
@@ -656,8 +1292,14 @@ ON real_estate.mandat(id_client);
 CREATE INDEX idx_mandat_id_chasseur
 ON real_estate.mandat(id_chasseur);
 
-CREATE INDEX idx_demande_version_id_mandat
-ON real_estate.demande_version(id_mandat);
+CREATE INDEX idx_mandat_secteur_id_secteur
+ON real_estate.mandat_secteur(id_secteur);
+
+CREATE INDEX idx_demande_id_mandat
+ON real_estate.demande(id_mandat);
+
+CREATE INDEX idx_demande_version_id_demande
+ON real_estate.demande_version(id_demande);
 
 CREATE INDEX idx_bien_id_source
 ON real_estate.bien(id_source);
@@ -668,575 +1310,696 @@ ON real_estate.presentation(id_demande_version);
 CREATE INDEX idx_presentation_id_bien
 ON real_estate.presentation(id_bien);
 
+CREATE INDEX idx_commentaire_id_demande_version
+ON real_estate.commentaire(id_demande_version);
+
+CREATE INDEX idx_commentaire_id_bien
+ON real_estate.commentaire(id_bien);
+
 CREATE INDEX idx_document_id_bien
 ON real_estate.document(id_bien);
+
+CREATE INDEX idx_bareme_id_chasseur
+ON real_estate.bareme_commission(id_chasseur);
+
+CREATE INDEX idx_paiement_id_mandat
+ON real_estate.paiement(id_mandat);
 ```
 
 ---
 
-# 18. Index métier candidats
+# 35. Index de recherche immobilière
 
-Les recherches immobilières peuvent utiliser :
-
-```text
-ville
-type_bien
-prix
-surface
-```
-
-Candidats :
+Index initiaux :
 
 ```sql
 CREATE INDEX idx_bien_ville
 ON real_estate.bien(ville);
 
-CREATE INDEX idx_bien_type
+CREATE INDEX idx_bien_type_bien
 ON real_estate.bien(type_bien);
 ```
 
-Cependant, les index :
+Les index :
 
 ```text
 prix
 surface
-composite indexes
+composites
 ```
 
-seront ajoutés après mesure avec :
+seront ajoutés uniquement après benchmark `EXPLAIN ANALYZE`.
+
+---
+
+# 36. Index demandes
 
 ```sql
-EXPLAIN ANALYZE
+CREATE INDEX idx_demande_version_ville
+ON real_estate.demande_version(ville);
+
+CREATE INDEX idx_demande_version_type_bien
+ON real_estate.demande_version(type_bien);
 ```
 
-dans BC05 / C2.
+Ils sont candidats utiles pour les workflows de matching.
 
 ---
 
-# 19. Pourquoi ne pas indexer toutes les colonnes
+# 37. JSONB index
 
-Chaque index :
-
-- consomme du disque ;
-- consomme de la mémoire ;
-- ralentit les écritures ;
-- doit être maintenu.
-
-Le projet applique :
-
-```text
-Query
- |
- v
-Measure
- |
- v
-Index
-```
-
-et non :
-
-```text
-Index Everything
-```
-
----
-
-# 20. Index actif de demande
-
-Le partial index :
+Si les critères JSONB sont interrogés régulièrement, un index GIN pourra être évalué :
 
 ```sql
-CREATE UNIQUE INDEX uq_demande_version_active
-ON real_estate.demande_version(id_mandat)
-WHERE active = TRUE;
+CREATE INDEX idx_demande_version_criteres_gin
+ON real_estate.demande_version
+USING GIN (criteres_souhaites);
 ```
 
-a deux rôles :
+Il n'est pas obligatoire dans la migration initiale.
+
+---
+
+# 38. Ordre de création
 
 ```text
-Integrity
-+
-Performance
+1. schema real_estate
+
+2. client
+3. chasseur
+4. secteur
+5. source
+
+6. mandat
+7. mandat_secteur
+
+8. demande
+9. demande_version
+
+10. bien
+
+11. presentation
+12. commentaire
+13. document
+
+14. bareme_commission
+15. paiement
+
+16. indexes
 ```
 
 ---
 
-# 21. Recherche immobilière cible
+# 39. Migration source
 
-Exemple de requête fréquente :
-
-```sql
-SELECT
-    id_bien,
-    titre,
-    ville,
-    prix,
-    surface,
-    nb_pieces
-FROM real_estate.bien
-WHERE statut = 'ACTIF'
-  AND ville = 'Montpellier'
-  AND prix <= 350000
-  AND surface >= 70;
-```
-
-Cette requête sera utilisée plus tard comme candidat pour l'étude d'optimisation.
-
----
-
-# 22. Index composite candidat
-
-Après mesure, un index possible pourrait être :
-
-```sql
-CREATE INDEX idx_bien_search
-ON real_estate.bien(ville, statut, prix, surface);
-```
-
-Mais cet index **n'est pas encore adopté**.
-
-Il doit être justifié par :
+La base héritée reste :
 
 ```text
-EXPLAIN ANALYZE before
-vs
-EXPLAIN ANALYZE after
-```
-
----
-
-# 23. Search normalization
-
-Les valeurs telles que :
-
-```text
-Montpellier
-MONTPELLIER
-montpellier
-```
-
-peuvent poser problème.
-
-Une stratégie future peut utiliser :
-
-```sql
-LOWER(ville)
-```
-
-ou une normalisation à l'ingestion.
-
-Le MPD initial ne crée pas encore d'index fonctionnel.
-
----
-
-# 24. Timestamps
-
-Le projet utilise :
-
-```text
-TIMESTAMPTZ
-```
-
-pour les événements nécessitant un instant précis.
-
-Exemples :
-
-```text
-date_creation
-date_version
-date_collecte
-date_selection
-date_ajout
-```
-
----
-
-# 25. DATE
-
-Les dates purement métier peuvent rester :
-
-```text
-DATE
-```
-
-Exemples :
-
-```text
-date_signature
-date_debut
-date_fin
-date_entree
-```
-
----
-
-# 26. Nullability — scores
-
-Les scores de présentation sont :
-
-```text
-NULL
-```
-
-avant exécution du matching.
-
-Après matching, ils peuvent être renseignés.
-
-Cela distingue :
-
-```text
-not calculated
-```
-
-de :
-
-```text
-score = 0
-```
-
----
-
-# 27. Nullability — données BIEN
-
-Certaines sources peuvent ne pas fournir toutes les informations.
-
-Exemple :
-
-```text
-latitude
-longitude
-surface
-nb_chambres
-```
-
-peuvent être null.
-
-Cela reflète la qualité réelle des sources.
-
----
-
-# 28. Données personnelles
-
-Les colonnes suivantes sont particulièrement sensibles :
-
-```text
-client.nom
-client.prenom
-client.email
-client.telephone
-
-chasseur.nom
-chasseur.prenom
-chasseur.email
-chasseur.telephone
-
-presentation.feedback_client
-presentation.commentaire_chasseur
-```
-
-Ces éléments devront être classifiés dans OpenMetadata.
-
----
-
-# 29. RAG / documents
-
-Le MPD stocke :
-
-```text
-metadata document
-```
-
-mais pas nécessairement :
-
-```text
-file binary
-```
-
-Le fichier peut être stocké dans :
-
-```text
-MinIO / Object Storage
+"Fil_Rouge_Depart"
 ```
 
 avec :
 
 ```text
-chemin_stockage
+secteurs
+utilisateurs
+mandats
 ```
 
-comme référence.
+La migration cible ne doit pas effectuer :
+
+```text
+DROP
+```
+
+sur ce schéma.
 
 ---
 
-# 30. Séparation metadata / binary
+# 40. Migration client
 
-Architecture :
+Concept :
 
-```text
-PostgreSQL
-   |
-   +--> Document metadata
-
-Object Storage
-   |
-   +--> Binary content
+```sql
+INSERT INTO real_estate.client (...)
+SELECT ...
+FROM "Fil_Rouge_Depart".utilisateurs
+WHERE role = 'client';
 ```
-
-Cette séparation évite de transformer PostgreSQL en stockage binaire général sans nécessité.
 
 ---
 
-# 31. Checksum
+# 41. Migration chasseur
 
-Le `checksum` permet éventuellement :
-
-- détection de corruption ;
-- détection de doublons ;
-- validation d'intégrité.
-
-Le format exact dépendra de l'algorithme retenu.
+```sql
+INSERT INTO real_estate.chasseur (...)
+SELECT ...
+FROM "Fil_Rouge_Depart".utilisateurs
+WHERE role = 'chasseur';
+```
 
 ---
 
-# 32. Search Vector future
-
-Une évolution RAG peut nécessiter :
+# 42. Migration secteurs
 
 ```text
-embedding
+legacy secteurs
+      |
+      v
+real_estate.secteur
 ```
 
-Le MPD métier initial ne stocke pas encore les vecteurs.
-
-Les candidats restent :
+avec :
 
 ```text
-pgvector
-Qdrant
+pays = France
 ```
 
-Ils seront ajoutés seulement après décision.
+par défaut pour les données existantes.
 
 ---
 
-# 33. Audit fields
+# 43. Migration mandat
 
-Le MPD initial conserve uniquement les timestamps métier nécessaires.
-
-Une évolution peut ajouter :
+Les mandats hérités sont transformés vers :
 
 ```text
-updated_at
-created_by
-updated_by
+real_estate.mandat
 ```
 
-si les exigences d'audit l'imposent.
+en conservant les relations :
+
+```text
+client
+chasseur
+secteur
+```
 
 ---
 
-# 34. Soft Delete
+# 44. Exclusivité
 
-Le modèle préfère actuellement les statuts métier :
-
-```text
-ACTIF
-INACTIF
-ARCHIVE
-ANNULE
-EXPIRE
-```
-
-plutôt qu'un :
+Le champ hérité :
 
 ```text
-deleted = true
+exclusif BOOLEAN
 ```
 
-générique.
+est converti vers :
+
+```text
+type_mandat
+```
+
+avec :
+
+```text
+TRUE
+ -> EXCLUSIF
+
+FALSE
+ -> NON_EXCLUSIF
+```
 
 ---
 
-# 35. ON DELETE
+# 45. Date signature héritée
 
-Le choix principal est :
+Le schéma hérité ne contient pas forcément toutes les informations nécessaires au nouveau modèle.
+
+Lorsque `date_signature` n'existe pas explicitement, il faudra décider si :
+
+```text
+date_debut
+```
+
+peut être utilisée comme hypothèse de migration.
+
+Cette hypothèse devra être documentée.
+
+---
+
+# 46. mode_signature héritée
+
+Cette donnée n'existe pas forcément dans l'ancien schéma.
+
+Elle ne doit pas être inventée comme une donnée réelle.
+
+Options :
+
+```text
+INCONNU
+```
+
+ou valeur nullable pendant migration.
+
+Le MPD final d'implémentation pourra donc autoriser temporairement :
+
+```text
+mode_signature = 'INCONNU'
+```
+
+---
+
+# 47. Ajustement recommandé
+
+La contrainte `mode_signature` doit accepter :
+
+```text
+INCONNU
+```
+
+pour permettre la migration fidèle de données héritées.
+
+Valeurs :
+
+```text
+PAPIER
+ELECTRONIQUE
+AUTRE
+INCONNU
+```
+
+---
+
+# 48. date_fin héritée
+
+Si la règle métier est :
+
+```text
+6 mois
+```
+
+alors :
+
+```text
+date_fin = date_debut + 6 mois
+```
+
+peut être dérivée lors de la migration si `date_debut` correspond bien au début contractuel.
+
+Cette transformation doit être explicitement documentée.
+
+---
+
+# 49. Migration demande
+
+Chaque mandat hérité produit :
+
+```text
+1 DEMANDE
+```
+
+initiale.
+
+---
+
+# 50. Migration première version
+
+Chaque demande initiale produit :
+
+```text
+DEMANDE_VERSION 1
+```
+
+avec :
+
+```text
+date_version = migration timestamp
+motif_modification = 'Migration depuis le SI hérité'
+auteur_systeme = TRUE
+```
+
+---
+
+# 51. description_recherche
+
+Le champ :
+
+```text
+mandats.description_recherche
+```
+
+ne doit pas être perdu.
+
+Une colonne temporaire ou complémentaire peut être conservée dans la première version.
+
+Option recommandée :
+
+ajouter :
+
+```text
+description_recherche_legacy TEXT
+```
+
+dans `demande_version`.
+
+---
+
+# 52. Ajustement demande_version
+
+Ajouter :
+
+```sql
+description_recherche_legacy TEXT
+```
+
+permet :
+
+- conservation ;
+- audit ;
+- transformation future ;
+- comparaison avec critères structurés.
+
+---
+
+# 53. Extraction structurée
+
+Le texte historique peut ensuite être traité :
+
+```text
+manual extraction
+SQL parsing
+Python
+AI-assisted extraction
+```
+
+mais les valeurs non certaines ne doivent pas être inventées.
+
+---
+
+# 54. Migration taux commission
+
+Pour chaque chasseur :
+
+```text
+utilisateurs.taux_commission
+```
+
+peut créer un barème initial.
+
+Exemple conceptuel :
+
+```text
+montant_min = 0
+montant_max = NULL
+taux_commission = legacy rate
+```
+
+Cette migration ne recrée pas un historique qui n'existe pas.
+
+---
+
+# 55. Données du générateur
+
+Le script `generer_annonces.py` ne modifie pas le modèle legacy.
+
+Il produit des données de test pour :
+
+```text
+recherches
+annonces
+```
+
+qui doivent entrer via les pipelines Data.
+
+---
+
+# 56. Schémas ingestion futurs
+
+```sql
+CREATE SCHEMA IF NOT EXISTS raw;
+CREATE SCHEMA IF NOT EXISTS staging;
+```
+
+Ces schémas seront développés dans la phase Data.
+
+---
+
+# 57. RAW
+
+La zone RAW doit conserver au maximum le format source.
+
+Exemple :
+
+```text
+raw.annonce_json
+raw.annonce_csv
+```
+
+---
+
+# 58. STAGING
+
+La zone STAGING transforme :
+
+```text
+prix variants
+date variants
+field names
+boolean variants
+nested fields
+```
+
+vers une structure cohérente.
+
+---
+
+# 59. BIEN canonique
+
+Seules les données validées et normalisées alimentent :
+
+```text
+real_estate.bien
+```
+
+---
+
+# 60. Matching
+
+Le moteur de matching consomme :
+
+```text
+real_estate.demande_version
+```
+
+et :
+
+```text
+real_estate.bien
+```
+
+et produit principalement :
+
+```text
+real_estate.presentation
+```
+
+---
+
+# 61. Feedback
+
+Les actions client/chasseur sont conservées dans :
+
+```text
+real_estate.commentaire
+```
+
+et peuvent ensuite servir :
+
+```text
+analytics
+requalification
+future ML
+```
+
+---
+
+# 62. RGPD
+
+Les données personnelles principales sont :
+
+```text
+client
+chasseur
+commentaire
+paiement
+document
+```
+
+Le modèle analytique devra éviter de les répliquer sans nécessité.
+
+---
+
+# 63. Privacy by Default
+
+La colonne :
+
+```sql
+indexable_ia BOOLEAN DEFAULT FALSE
+```
+
+reste une décision importante.
+
+Un document n'est pas automatiquement autorisé pour l'IA.
+
+---
+
+# 64. Suppression
+
+Par défaut, les relations historiques utilisent :
 
 ```text
 ON DELETE RESTRICT
 ```
 
-afin d'éviter la destruction accidentelle de l'historique.
+pour empêcher la destruction accidentelle.
 
-La suppression métier normale doit être gérée par :
-
-```text
-status
-```
-
----
-
-# 36. Transactions
-
-Les opérations multi-tables importantes doivent pouvoir utiliser une transaction.
-
-Exemple :
+Exception :
 
 ```text
-Create mandate
-+
-Create first request version
+mandat_secteur
 ```
 
-dans une même unité logique.
-
----
-
-# 37. Exemple transaction métier
-
-```sql
-BEGIN;
-
-INSERT INTO real_estate.mandat (...);
-
-INSERT INTO real_estate.demande_version (...);
-
-COMMIT;
-```
-
-Le code applicatif devra récupérer correctement l'identifiant du mandat.
-
----
-
-# 38. Isolation
-
-PostgreSQL utilise par défaut :
+peut utiliser :
 
 ```text
-READ COMMITTED
+ON DELETE CASCADE
 ```
 
-Cela est suffisant pour le MVP sauf besoin concurrent spécifique.
+sur le mandat car il s'agit uniquement d'une relation associative.
 
 ---
 
-# 39. Database roles — cible
+# 65. Soft lifecycle
 
-Une évolution peut introduire :
+Les suppressions métier normales privilégient :
 
 ```text
-real_estate_app
-real_estate_readonly
-real_estate_etl
-real_estate_admin
+statut
 ```
 
-selon les responsabilités.
-
----
-
-# 40. Least privilege
-
-Exemple :
+plutôt que :
 
 ```text
-Application account
+DELETE
 ```
 
-ne doit pas nécessairement disposer de :
+sur :
 
 ```text
-DROP TABLE
-CREATE ROLE
-SUPERUSER
+client
+mandat
+bien
+demande
 ```
 
 ---
 
-# 41. Search Path
+# 66. Types financiers
 
-L'application peut utiliser explicitement :
+Tous les montants utilisent :
 
 ```text
-real_estate.table
+NUMERIC
 ```
 
-afin d'éviter les ambiguïtés de `search_path`.
-
----
-
-# 42. Migration order
-
-Le futur `migration.sql` doit utiliser l'ordre :
+et jamais :
 
 ```text
-CREATE SCHEMA
-
-CLIENT
-CHASSEUR
-SOURCE
-
-MANDAT
-
-DEMANDE_VERSION
-
-BIEN
-
-PRESENTATION
-
-DOCUMENT
-
-INDEXES
+FLOAT
 ```
+
+pour éviter les erreurs de représentation financière.
 
 ---
 
-# 43. Transaction migration
+# 67. Dates
 
-Le script initial utilisera :
-
-```sql
-BEGIN;
-...
-COMMIT;
-```
-
-afin de garantir une migration atomique si toutes les instructions sont transactionnelles.
-
----
-
-# 44. Comments PostgreSQL
-
-Nous pourrons également ajouter :
-
-```sql
-COMMENT ON TABLE ...
-COMMENT ON COLUMN ...
-```
-
-pour améliorer la documentation technique.
-
-Ce n'est pas obligatoire pour la migration V1.
-
----
-
-# 45. Validation MPD
-
-Le MPD doit être validé à plusieurs niveaux :
+Dates contractuelles :
 
 ```text
-Syntax
-Schema
-Constraints
-Foreign Keys
-Business Rules
-Sample Inserts
-Invalid Inserts
+DATE
+```
+
+Événements techniques :
+
+```text
+TIMESTAMPTZ
 ```
 
 ---
 
-# 46. Validation schema
+# 68. Performance
+
+Le MPD n'ajoute pas tous les index possibles.
+
+Cycle :
+
+```text
+query
+ |
+ v
+EXPLAIN ANALYZE
+ |
+ v
+index candidate
+ |
+ v
+EXPLAIN ANALYZE
+```
+
+---
+
+# 69. Scalabilité
+
+Le modèle doit pouvoir gérer :
+
+```text
+several thousand mandates/week
+```
+
+et :
+
+```text
+hundreds / thousands of properties
+per search
+```
+
+sans supposer qu'une architecture distribuée est immédiatement nécessaire.
+
+---
+
+# 70. Partitionnement futur
+
+Tables candidates si le volume l'exige :
+
+```text
+bien
+presentation
+commentaire
+warehouse facts
+```
+
+Le partitionnement ne fait pas partie de la migration V1.
+
+---
+
+# 71. Système source immuable
+
+Règle :
+
+```text
+"Fil_Rouge_Depart"
+=
+READ / MIGRATION SOURCE
+```
+
+Le nouveau SI doit être construit à côté.
+
+---
+
+# 72. Tests structurels
 
 Après migration :
 
@@ -1247,317 +2010,388 @@ WHERE table_schema = 'real_estate'
 ORDER BY table_name;
 ```
 
-Résultat attendu :
+---
+
+# 73. Tables attendues
 
 ```text
+bareme_commission
 bien
 chasseur
 client
+commentaire
+demande
 demande_version
 document
 mandat
+mandat_secteur
+paiement
 presentation
+secteur
 source
 ```
 
 ---
 
-# 47. Validation PK / FK
+# 74. Test version active
 
-Les contraintes peuvent être vérifiées via :
-
-```sql
-SELECT
-    conname,
-    contype,
-    conrelid::regclass
-FROM pg_constraint
-WHERE connamespace = 'real_estate'::regnamespace
-ORDER BY conrelid::regclass::text, conname;
-```
+Deux versions actives de la même demande doivent échouer.
 
 ---
 
-# 48. Validation indexes
+# 75. Test auteur version
 
-```sql
-SELECT
-    tablename,
-    indexname,
-    indexdef
-FROM pg_indexes
-WHERE schemaname = 'real_estate'
-ORDER BY tablename, indexname;
-```
-
----
-
-# 49. Validation version active
-
-Le test doit montrer que deux versions actives du même mandat sont interdites.
+Une version avec :
 
 ```text
-Version 1 active = true
-Version 2 active = true
+client + chasseur
 ```
 
-Résultat attendu :
+simultanément doit échouer.
+
+Une version sans auteur doit échouer.
+
+---
+
+# 76. Test auteur commentaire
+
+Même logique :
 
 ```text
-UNIQUE violation
+exactly one
+client OR chasseur
 ```
 
 ---
 
-# 50. Validation presentation duplicate
+# 77. Test mandat six mois
 
-Pour un même couple :
+Créer un mandat avec :
+
+```text
+date_signature = 2026-01-01
+date_fin = 2026-05-01
+```
+
+doit échouer si la contrainte exacte de six mois est activée.
+
+---
+
+# 78. Test budget
+
+```text
+budget_min > budget_max
+```
+
+doit échouer.
+
+---
+
+# 79. Test DPE
+
+```text
+dpe = 'Z'
+```
+
+doit échouer.
+
+---
+
+# 80. Test presentation
+
+Deux présentations du même :
 
 ```text
 demande_version + bien
 ```
 
-une seconde présentation doit être rejetée.
+doivent échouer.
 
 ---
 
-# 51. Validation score
-
-Test :
+# 81. Test commission
 
 ```text
-score_matching = 120
+taux_commission > 1
 ```
 
-Résultat attendu :
-
-```text
-CHECK constraint violation
-```
+doit échouer.
 
 ---
 
-# 52. Validation budget
+# 82. Test paiement
 
-Test :
-
-```text
-budget_min = 400000
-budget_max = 300000
-```
-
-Résultat :
-
-```text
-CHECK constraint violation
-```
+Un montant financier négatif doit échouer.
 
 ---
 
-# 53. Validation coordinate
+# 83. Scripts futurs
 
-Test :
-
-```text
-latitude = 190
-```
-
-Résultat :
+L'implémentation sera séparée :
 
 ```text
-CHECK constraint violation
+database/
+│
+├── migrations/
+│   └── 001_initial_schema.sql
+│
+├── seeds/
+│   └── ...
+│
+├── oltp/
+│   └── ...
+│
+├── olap/
+│   └── ...
+│
+└── tests/
+    └── ...
 ```
 
 ---
 
-# 54. Dataset de démonstration
+# 84. migration.sql
 
-La migration initiale ne doit pas mélanger :
+Le script de migration réel devra contenir :
 
 ```text
-schema creation
+schema
+tables
+constraints
+indexes
+legacy migration
+```
+
+mais pas les données synthétiques de benchmark.
+
+---
+
+# 85. Seed data
+
+Les données générées par l'école ne doivent pas être confondues avec le seed métier minimal.
+
+Elles appartiennent à :
+
+```text
+data ingestion / benchmark
+```
+
+---
+
+# 86. Rejouabilité
+
+La stratégie de migration doit être déterministe et testable.
+
+Nous éviterons d'utiliser un script destructif contre la base legacy.
+
+---
+
+# 87. Transaction
+
+La migration initiale peut utiliser :
+
+```sql
+BEGIN;
+
+...
+
+COMMIT;
+```
+
+pour maintenir l'atomicité lorsque possible.
+
+---
+
+# 88. Validation post-migration
+
+Après migration :
+
+```text
+legacy row count
+target row count
+mapping checks
+FK integrity
+constraint validation
+```
+
+devront être vérifiés.
+
+---
+
+# 89. Traceabilité héritage
+
+La migration devra permettre de démontrer :
+
+```text
+legacy utilisateur 7
+        |
+        v
+real_estate.client X
 ```
 
 et :
 
 ```text
-business demo data
-```
-
-La structure recommandée est :
-
-```text
-migration.sql
-seed.sql
-tests.sql
+legacy mandat 3
+        |
+        v
+real_estate.mandat Y
 ```
 
 ---
 
-# 55. migration.sql
+# 90. Mapping IDs
 
-Responsable de :
+Pour une migration contrôlée, il peut être utile de conserver temporairement :
 
 ```text
-Schema
-Tables
-Constraints
-Indexes
+legacy_id
 ```
+
+ou des tables de mapping.
+
+Cette décision sera prise dans le script de migration.
 
 ---
 
-# 56. seed.sql
+# 91. Alternative legacy_id
 
-Responsable de données de démonstration.
-
-Exemple :
+Une option simple :
 
 ```text
-1 client
-1 chasseur
-1 mandat
-2 versions de demande
-1 source
-several properties
-presentations
-documents
+legacy_id BIGINT UNIQUE
 ```
+
+dans les tables migrées.
+
+Mais cela introduit une colonne purement technique persistante.
 
 ---
 
-# 57. tests.sql
+# 92. Option recommandée
 
-Responsable des contrôles SQL démontrables.
-
-Exemples :
+Utiliser des tables temporaires de mapping pendant la migration lorsque possible :
 
 ```text
-schema checks
-row counts
-business queries
+migration_client_map
+migration_chasseur_map
 ```
 
-Les tests invalides provoquant volontairement des erreurs peuvent être exécutés séparément.
+puis les supprimer après validation si elles ne sont plus utiles.
 
 ---
 
-# 58. MPD résumé
+# 93. Architecture finale
 
 ```text
-real_estate
-│
-├── client
-├── chasseur
-├── source
-├── mandat
-├── demande_version
-├── bien
-├── presentation
-└── document
-```
-
----
-
-# 59. Dépendances
-
-```text
-client
-   |
-   v
-mandat
-   ^
-   |
-chasseur
-
-
-mandat
-   |
-   v
-demande_version
-
-
-source
-  |
-  v
-bien
-
-
-demande_version
+"Fil_Rouge_Depart"
       |
       v
-presentation
-      ^
+Migration
       |
-     bien
-
-
-bien
- |
- v
-document
+      v
+real_estate
+      |
+      +--> OLTP application
+      |
+      +--> Data pipelines
+      |
+      +--> Matching
+      |
+      +--> Analytics
 ```
 
 ---
 
-# 60. Critère de réussite
-
-Le MPD est valide si :
-
-```text
-MCD business semantics preserved
-+
-MLD relationships preserved
-+
-PostgreSQL constraints enforce key rules
-+
-schema remains usable by application
-```
-
----
-
-# 61. Statut
+# 94. Statut
 
 | Élément | Statut |
 |---|---|
 | PostgreSQL schema | DEFINED |
-| Tables | DEFINED |
-| PK | DEFINED |
-| FK | DEFINED |
-| CHECK | DEFINED |
-| UNIQUE | DEFINED |
-| Partial unique index | DEFINED |
-| Basic FK indexes | DEFINED |
-| Search index candidates | IDENTIFIED |
-| Data types | DEFINED |
-| RGPD considerations | DOCUMENTED |
-| RAG document support | DOCUMENTED |
+| Client | DEFINED |
+| Chasseur | DEFINED |
+| Secteur | DEFINED |
+| Mandat | DEFINED |
+| Mandat multi-sector | DEFINED |
+| Demande | DEFINED |
+| Demande versioning | DEFINED |
+| Author integrity | RESOLVED |
+| Structured criteria | DEFINED |
+| JSONB preferences | DEFINED |
+| Source | DEFINED |
+| Bien | DEFINED |
+| Presentation | DEFINED |
+| Commentaire | DEFINED |
+| Document | DEFINED |
+| Commission scale | DEFINED |
+| Payment | DEFINED |
+| Legacy mapping | DEFINED |
+| StarterPack generator integration | DEFINED |
+| Index baseline | DEFINED |
+| Performance indexes | TO MEASURE |
 | migration.sql | NEXT |
-| seed.sql | AFTER MIGRATION |
-| SQL validation | AFTER EXECUTION |
 
 ---
 
-# 62. Conclusion
+# 95. Conclusion
 
-Le MPD PostgreSQL traduit le MLD en huit tables métier dans le schéma :
+Le MPD PostgreSQL V2 transforme le modèle métier corrigé en une structure directement implémentable.
 
-```text
-real_estate
-```
-
-avec :
+Le système cible sépare désormais correctement :
 
 ```text
-referential integrity
-business constraints
-history preservation
-matching traceability
-document governance
+CLIENT
+vs
+CHASSEUR
 ```
 
-La structure est maintenant suffisamment détaillée pour produire un `migration.sql` exécutable sans inventer de nouvelles règles métier.
+```text
+MANDAT
+vs
+DEMANDE
+vs
+DEMANDE_VERSION
+```
+
+```text
+MATCHING
+vs
+COMMENTAIRE
+```
+
+et ajoute les concepts indispensables :
+
+```text
+SECTEUR
+BAREME_COMMISSION
+PAIEMENT
+```
+
+tout en conservant les extensions Data/AI utiles :
+
+```text
+SOURCE
+DOCUMENT
+```
+
+Le modèle est maintenant aligné avec :
+
+```text
+StarterPack
++
+Legacy Database
++
+Business Process
++
+Data Growth
++
+OLTP / OLAP
++
+AI Matching
++
+RGPD
+```
 
 ---
 
-**MPD PostgreSQL V1 — READY FOR MIGRATION.SQL**
+**MPD POSTGRESQL V2 — READY FOR IMPLEMENTATION**

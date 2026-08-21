@@ -1,19 +1,19 @@
 # BC05 — C6 — Programme IA
 
 **Bloc de compétences :** BC05  
-**Compétence :** C6 — Concevoir, développer, intégrer et exploiter un programme IA complet  
+**Compétence :** Concevoir, développer, intégrer et exploiter un programme IA complet  
 **Projet :** Real Estate Intelligence Platform  
-**Plateforme :** Enterprise AI Platform  
-**Version :** 1.0  
-**Statut :** Baseline documentaire — programme exécutable et preuves runtime à produire
+**Version :** 2.0  
+**Statut :** Baseline documentaire — implémentation exécutable à produire  
+**Extension projet :** entraînement réel, MLflow, registry, serving et observabilité  
 
 ---
 
 # 1. Objectif
 
-Ce dossier décrit l'architecture du programme IA complet utilisé par la plateforme.
+Cette partie décrit l'architecture du programme IA complet.
 
-L'objectif est de relier :
+Le programme doit relier :
 
 ```text
 Data
@@ -25,78 +25,63 @@ Preprocessing
 Feature Engineering
  |
  v
-Matching / Model
+Matching / ML
  |
  v
 Evaluation
  |
  v
-Model Tracking
+MLflow
+ |
+ v
+Model Selection
  |
  v
 Serving
  |
  v
-Application
+API
  |
  v
-Monitoring
+Kubernetes
  |
  v
-Evidence
+Observability
 ```
 
-La compétence ne doit pas être démontrée uniquement par un notebook ou un modèle entraîné.
-
-Le programme doit être :
-
-- structuré ;
-- versionné ;
-- testable ;
-- exécutable ;
-- observable ;
-- reproductible ;
-- intégrable au SI.
+L'objectif est de démontrer une chaîne exécutable, reproductible et exploitable.
 
 ---
 
-# 2. Sources de référence
+# 2. Positionnement
 
-Le modèle métier est défini dans :
+Le socle attendu couvre :
 
 ```text
-../C5-Modele-Matching-IA/README.md
+data preparation
+features
+matching architecture
+AI program design
 ```
 
-Le modèle de données est défini dans :
+Notre projet va plus loin en ajoutant :
 
 ```text
-../C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md
-../C1-MCD-Migration-SQL/MLD-PROJET.md
-../C1-MCD-Migration-SQL/MPD-POSTGRESQL.md
-```
-
-Architecture AI générale :
-
-```text
-../../../50-AI/01-AI-Platform-Architecture.md
-../../../50-AI/03-MLOps-Architecture.md
-../../../50-AI/05-Model-Lifecycle.md
-../../../50-AI/09-AI-Observability.md
-```
-
-Diagrammes :
-
-```text
-../../../99-DIAGRAMS/08-AI-Architecture.puml
-../../../99-DIAGRAMS/09-MLOps-Architecture.puml
+real training
+model comparison
+MLflow tracking
+model registry
+API inference
+Docker
+Kubernetes
+GitLab CI
+GitOps
+monitoring
 ```
 
 ---
 
-# 3. Architecture générale du programme
-
-Le programme IA cible suit :
+# 3. Architecture générale
 
 ```text
 PostgreSQL
@@ -113,7 +98,7 @@ Feature Engineering
     +------------------+
     |                  |
     v                  v
-Rules Baseline       ML Model
+Rules Baseline       ML Models
     |                  |
     +--------+---------+
              |
@@ -133,92 +118,121 @@ Rules Baseline       ML Model
           FastAPI
              |
              v
-        Application
+        Kubernetes
 ```
 
 ---
 
-# 4. Séparation des responsabilités
+# 4. Sources principales
 
-Le programme doit séparer :
+Le programme consomme principalement :
+
+```text
+real_estate.demande_version
+```
+
+et :
+
+```text
+real_estate.bien
+```
+
+Il peut également exploiter :
+
+```text
+real_estate.presentation
+real_estate.commentaire
+```
+
+pour créer des labels ou du feedback.
+
+---
+
+# 5. Séparation des responsabilités
+
+Le code doit séparer :
 
 ```text
 data loading
 preprocessing
 feature engineering
+baseline scoring
 training
 evaluation
 tracking
+registry
 serving
 API
+observability
 configuration
-tests
 ```
-
-et éviter un unique script contenant toute la logique.
 
 ---
 
-# 5. Structure cible du code
-
-Une structure possible est :
+# 6. Structure cible
 
 ```text
-ai-matching/
-│
-├── README.md
-├── pyproject.toml
-├── Dockerfile
-├── .env.example
-│
-├── src/
-│   └── matching/
-│       ├── __init__.py
-│       ├── config.py
-│       ├── database.py
-│       │
-│       ├── data/
-│       │   ├── loader.py
-│       │   ├── preprocessing.py
-│       │   └── features.py
-│       │
-│       ├── baseline/
-│       │   └── scoring.py
-│       │
-│       ├── models/
-│       │   ├── train.py
-│       │   ├── evaluate.py
-│       │   └── registry.py
-│       │
-│       ├── services/
-│       │   └── matching_service.py
-│       │
-│       ├── api/
-│       │   ├── schemas.py
-│       │   └── routes.py
-│       │
-│       └── observability/
-│           └── metrics.py
-│
-├── tests/
-│   ├── test_scoring.py
-│   ├── test_features.py
-│   ├── test_model.py
-│   └── test_api.py
-│
-└── scripts/
-    ├── train.py
-    ├── evaluate.py
-    └── smoke_test.py
-```
+src/
+├── api/
+├── services/
+├── domain/
+└── ai/
 
-La structure exacte devra correspondre au code réellement produit.
+ml/
+├── features/
+├── training/
+├── evaluation/
+└── models/
+
+tests/
+├── unit/
+├── integration/
+├── security/
+└── e2e/
+```
 
 ---
 
-# 6. Configuration
+# 7. Structure IA détaillée
 
-La configuration doit rester séparée du code.
+Une structure cible possible :
+
+```text
+src/ai/
+├── matching_service.py
+├── model_loader.py
+├── baseline_adapter.py
+├── ml_adapter.py
+├── ollama_client.py
+└── schemas.py
+```
+
+et :
+
+```text
+ml/features/
+├── build_features.py
+└── validators.py
+
+ml/training/
+├── train_logistic.py
+├── train_random_forest.py
+└── train_all.py
+
+ml/evaluation/
+├── metrics.py
+├── compare_models.py
+└── report.py
+
+ml/models/
+└── model_config.yaml
+```
+
+---
+
+# 8. Configuration
+
+La configuration doit être séparée du code.
 
 Exemples :
 
@@ -226,125 +240,91 @@ Exemples :
 DATABASE_URL
 MLFLOW_TRACKING_URI
 MODEL_NAME
-MODEL_VERSION
+MODEL_STAGE
 OLLAMA_URL
 LOG_LEVEL
 ```
 
-Les secrets ne doivent pas être codés en dur.
+---
+
+# 9. Secrets
+
+Les secrets ne doivent pas apparaître dans :
+
+```text
+source code
+README
+Dockerfile
+Git
+logs
+```
+
+Ils doivent être injectés via la stratégie de secrets de la plateforme.
 
 ---
 
-# 7. Configuration example
+# 10. Dataset Builder
 
-```text
-DATABASE_URL=postgresql://...
-MLFLOW_TRACKING_URI=http://mlflow...
-MODEL_NAME=real-estate-matching
-OLLAMA_URL=http://...
-```
-
-Le fichier réel :
-
-```text
-.env
-```
-
-ne doit pas être versionné avec des secrets.
-
----
-
-# 8. Chargement des données
-
-Le programme doit charger les données nécessaires depuis une source contrôlée.
-
-Architecture :
-
-```text
-PostgreSQL
-    |
-    v
-loader.py
-    |
-    v
-DataFrame / internal structures
-```
-
-Le loader ne doit pas contenir la logique métier de scoring.
-
----
-
-# 9. Dataset Builder
-
-Le dataset peut être produit à partir de :
+Le dataset d'entraînement est construit à partir de :
 
 ```text
 DEMANDE_VERSION
++
 BIEN
-PRESENTATION
++
+PRESENTATION / COMMENTAIRE
 ```
 
-et éventuellement :
+selon la cible retenue.
+
+---
+
+# 11. Grain du dataset
+
+Une ligne représente :
 
 ```text
-feedback
-analytics
-historical outcomes
+1 DEMANDE_VERSION
++
+1 BIEN
 ```
 
 ---
 
-# 10. Requête dataset
+# 12. Features principales
 
-Une requête pourra joindre les éléments nécessaires.
-
-Exemple logique :
+Le dataset peut contenir :
 
 ```text
-DEMANDE_VERSION
-       |
-       +--> PRESENTATION
-               |
-               +--> BIEN
-```
-
-Le SQL final devra être écrit à partir du schéma réel.
-
----
-
-# 11. Séparation train / inference
-
-Le dataset utilisé pour l'entraînement ne doit pas être confondu avec l'entrée d'inférence.
-
-```text
-Training
-=
-historical labeled dataset
-```
-
-```text
-Inference
-=
-current request + candidate properties
+budget_ratio
+budget_difference
+surface_difference
+room_difference
+bedroom_difference
+city_match
+property_type_match
+dpe_difference
+preference_match_ratio
 ```
 
 ---
 
-# 12. Preprocessing
+# 13. Preprocessing
 
 Le preprocessing peut inclure :
 
 ```text
-missing-value handling
+missing values
 categorical normalization
 numerical normalization
-text cleanup
 boolean conversion
+DPE encoding
+preference extraction
 ```
 
 ---
 
-# 13. Reproductibilité preprocessing
+# 14. Consistency
 
 Le même preprocessing doit être utilisé pour :
 
@@ -358,7 +338,7 @@ et :
 inference
 ```
 
-afin d'éviter le :
+pour éviter le :
 
 ```text
 training-serving skew
@@ -366,269 +346,202 @@ training-serving skew
 
 ---
 
-# 14. Feature Engineering
+# 15. Validation des features
 
-Les features peuvent inclure :
-
-```text
-price_difference
-budget_ratio
-surface_difference
-surface_ratio
-room_difference
-city_match
-property_type_match
-parking_match
-elevator_match
-outdoor_match
-```
-
----
-
-# 15. Feature schema
-
-Une structure candidate :
+Avant entraînement :
 
 ```text
-budget_score
-surface_score
-location_match
-type_match
-room_match
-parking_match
-elevator_match
-outdoor_match
-semantic_score
+expected columns
+valid ranges
+no invalid target
+controlled null values
+valid types
 ```
 
-La liste finale dépendra du dataset réel.
+doivent être vérifiés.
 
 ---
 
-# 16. Feature validation
+# 16. Baseline rules-based
 
-Les features doivent être vérifiées avant utilisation.
-
-Exemples :
-
-```text
-no invalid range
-no unexpected null
-valid categorical values
-```
-
----
-
-# 17. Baseline rules-based
-
-Le programme doit d'abord fournir une baseline simple.
-
-Exemple :
-
-```python
-def compute_score(features, weights):
-    return sum(
-        features[name] * weight
-        for name, weight in weights.items()
-    )
-```
-
-Le code réel devra notamment contrôler les valeurs et pondérations.
-
----
-
-# 18. Version baseline
-
-La baseline elle-même doit être versionnée.
-
-Exemple :
-
-```text
-rules-v1
-```
-
----
-
-# 19. Configuration des poids
-
-Les poids peuvent être définis séparément.
-
-Exemple :
-
-```yaml
-budget: 0.30
-location: 0.25
-surface: 0.20
-property_type: 0.10
-criteria: 0.15
-```
-
-Le total doit être validé.
-
----
-
-# 20. Validation poids
-
-Règle :
-
-```text
-sum(weights) = 1
-```
-
-ou équivalent selon la formule retenue.
-
-Un test automatique doit vérifier cette propriété.
-
----
-
-# 21. Machine Learning
-
-Après la baseline, le programme peut entraîner des modèles ML.
-
-Candidats :
-
-```text
-Logistic Regression
-Random Forest
-Gradient Boosting
-```
-
-Le choix final doit être comparé à la baseline.
-
----
-
-# 22. train.py
-
-Le module training doit être responsable de :
-
-```text
-load dataset
-split data
-fit model
-calculate metrics
-log experiment
-save artifact
-```
-
----
-
-# 23. Train / Test Split
-
-Une séparation doit éviter d'évaluer sur les mêmes données utilisées pour entraîner.
-
-Exemple :
-
-```text
-Training Set
-Validation Set
-Test Set
-```
-
-ou une stratégie adaptée au dataset.
-
----
-
-# 24. Random State
-
-Pour améliorer la reproductibilité :
-
-```text
-random_state
-```
-
-doit être défini lorsque l'algorithme le permet.
-
----
-
-# 25. Data Leakage
-
-Le dataset ne doit pas contenir une feature révélant directement la cible.
-
-Exemple dangereux :
-
-```text
-target = retained
-feature = final_status_retained
-```
-
-Cela donnerait artificiellement des métriques très élevées.
-
----
-
-# 26. Temporal leakage
-
-Lorsque les données sont temporelles, il faut éviter d'utiliser une information future pour prédire le passé.
-
----
-
-# 27. evaluate.py
-
-Le module d'évaluation doit calculer les métriques retenues.
-
-Exemple :
-
-```python
-metrics = {
-    "precision": ...,
-    "recall": ...,
-    "f1": ...
-}
-```
-
----
-
-# 28. Métriques
-
-Les métriques principales dépendront du problème final.
-
-Candidats :
-
-```text
-precision
-recall
-f1
-roc_auc
-top_k_recall
-latency
-```
-
----
-
-# 29. Métriques métier
-
-Les métriques techniques doivent être complétées par des indicateurs métier lorsque disponibles.
-
-Exemples :
-
-```text
-property presented
-property visited
-property retained
-```
-
----
-
-# 30. MLflow
-
-MLflow doit centraliser les expérimentations.
+La première implémentation sera déterministe.
 
 Architecture :
 
 ```text
-train.py
-   |
-   v
-MLflow Tracking
-   |
-   +--> params
-   +--> metrics
-   +--> artifacts
-   +--> model
+features
+  |
+  v
+weighted scoring
+  |
+  v
+score
+```
+
+Cette baseline fournit le benchmark de référence.
+
+---
+
+# 17. Modèles ML prévus
+
+Premiers modèles :
+
+```text
+Logistic Regression
+Random Forest
+```
+
+Ils seront comparés à la baseline.
+
+---
+
+# 18. Pourquoi ces modèles
+
+Ils offrent :
+
+```text
+low complexity
+fast training
+easy evaluation
+interpretability
+good tabular baselines
 ```
 
 ---
 
-# 31. Experiment
+# 19. Training Pipeline
+
+Le pipeline doit exécuter :
+
+```text
+load dataset
+split data
+build features
+train
+evaluate
+log MLflow
+register candidate
+```
+
+---
+
+# 20. Train / Validation / Test
+
+Le dataset sera séparé pour éviter l'évaluation sur les données d'entraînement.
+
+Selon le volume :
+
+```text
+train
+validation
+test
+```
+
+ou :
+
+```text
+cross-validation
+```
+
+---
+
+# 21. Data Leakage
+
+Le pipeline doit empêcher :
+
+```text
+future outcome
+```
+
+d'être utilisé comme feature pour prédire ce même outcome.
+
+---
+
+# 22. Temporal Leakage
+
+Si les données sont temporelles, les informations futures ne doivent pas être visibles au modèle lors d'une prédiction historique.
+
+---
+
+# 23. Metrics
+
+Métriques principales :
+
+```text
+Precision
+Recall
+F1
+ROC-AUC
+PR-AUC
+```
+
+et pour le ranking :
+
+```text
+Precision@K
+Recall@K
+NDCG@K
+HitRate@K
+```
+
+---
+
+# 24. Business Metrics
+
+À terme :
+
+```text
+visit rate
+retention rate
+conversion rate
+time to successful match
+```
+
+compléteront les métriques techniques.
+
+---
+
+# 25. Comparison
+
+Le rapport comparera :
+
+```text
+Rules
+Logistic Regression
+Random Forest
+```
+
+sur le même jeu de test.
+
+---
+
+# 26. Pas de métriques théoriques
+
+Aucune valeur ne doit être annoncée avant exécution.
+
+Avant entraînement :
+
+```text
+TBD
+```
+
+---
+
+# 27. MLflow
+
+MLflow centralise :
+
+```text
+parameters
+metrics
+artifacts
+model versions
+run metadata
+```
+
+---
+
+# 28. Experiment
 
 Nom candidat :
 
@@ -638,130 +551,293 @@ real-estate-matching
 
 ---
 
-# 32. Run metadata
+# 29. Run Metadata
 
-Chaque run doit idéalement identifier :
+Chaque run doit identifier autant que possible :
 
 ```text
 algorithm
 parameters
+feature version
 dataset reference
-Git commit
+Git SHA
 metrics
 artifact
 ```
 
 ---
 
-# 33. Exemple MLflow
+# 30. Artifacts
 
-```python
-with mlflow.start_run():
-    mlflow.log_params(params)
-    mlflow.log_metrics(metrics)
-    mlflow.sklearn.log_model(model, "model")
+Les modèles et rapports peuvent être stockés via :
+
+```text
+MLflow
++
+MinIO
 ```
-
-Le code final dépendra du modèle retenu.
 
 ---
 
-# 34. Model Registry
+# 31. Model Registry
 
-Après évaluation :
+Le modèle sélectionné peut être enregistré dans :
 
 ```text
-Experiment Run
-     |
-     v
-Model Candidate
-     |
-     v
 MLflow Model Registry
 ```
 
 ---
 
-# 35. Versioning
+# 32. Promotion
 
-Le registry doit permettre :
-
-```text
-version 1
-version 2
-version 3
-```
-
-avec association au run correspondant.
-
----
-
-# 36. Model Selection
-
-La sélection doit comparer :
+Cycle :
 
 ```text
-candidate
-```
-
-et :
-
-```text
-baseline / current model
-```
-
----
-
-# 37. Quality Gate
-
-Exemple logique :
-
-```text
+Experiment
+   |
+   v
 Candidate
    |
    v
-Metrics acceptable?
+Evaluation
    |
-   +--> NO -> reject
+   v
+Approval
    |
-   +--> YES -> register / approve
+   v
+Selected Model
 ```
 
 ---
 
-# 38. Promotion
+# 33. Human Approval
 
-Le MVP peut conserver une étape humaine.
+Pour la première version, la promotion reste contrôlée.
+
+Un modèle ne doit pas être automatiquement remplacé uniquement parce qu'un training a terminé.
+
+---
+
+# 34. Champion / Challenger
+
+Évolution possible :
 
 ```text
-Automated evaluation
-        |
-        v
-Human approval
-        |
-        v
-Selected model
+Champion
+vs
+Challenger
 ```
+
+Le challenger doit démontrer une amélioration avant remplacement.
 
 ---
 
-# 39. registry.py
+# 35. Model Selection Criteria
 
-Le module registry peut gérer :
+La sélection prend en compte :
 
 ```text
-get selected model version
-load model
-retrieve metadata
+metrics
+ranking quality
+latency
+model size
+interpretability
+resource usage
+operational complexity
 ```
 
 ---
 
-# 40. Serving
+# 36. Model Card
 
-Le modèle sélectionné doit être exposé par un service.
+Le modèle final doit disposer d'une fiche contenant :
 
-Architecture :
+```text
+name
+version
+purpose
+algorithm
+features
+dataset
+metrics
+limitations
+risks
+intended use
+```
+
+---
+
+# 37. Dataset Card
+
+Le dataset important doit également documenter :
+
+```text
+origin
+schema
+generation
+personal data status
+quality
+limitations
+```
+
+---
+
+# 38. Synthetic Data
+
+Le générateur StarterPack peut fournir des données techniques.
+
+Ces données peuvent valider :
+
+```text
+pipeline
+training
+evaluation
+tracking
+serving
+```
+
+mais ne prouvent pas automatiquement la performance métier réelle.
+
+---
+
+# 39. Training vs Business Validation
+
+Nous distinguons :
+
+```text
+Technical ML Validation
+```
+
+de :
+
+```text
+Business Validation
+```
+
+---
+
+# 40. Technical Validation
+
+```text
+training succeeds
+metrics calculated
+artifact produced
+model loads
+API predicts
+```
+
+---
+
+# 41. Business Validation
+
+```text
+ranking useful
+hunter accepts recommendations
+client feedback positive
+```
+
+nécessite un feedback métier réaliste.
+
+---
+
+# 42. Airflow
+
+Airflow peut orchestrer le training.
+
+DAG candidat :
+
+```text
+matching_model_training
+```
+
+---
+
+# 43. DAG cible
+
+```text
+extract_training_data
+        |
+        v
+validate_dataset
+        |
+        v
+build_features
+        |
+        v
+split_dataset
+        |
+        +------------------+
+        |                  |
+        v                  v
+train_logistic      train_random_forest
+        |                  |
+        +---------+--------+
+                  |
+                  v
+            evaluate_models
+                  |
+                  v
+             compare_models
+                  |
+                  v
+              log_mlflow
+                  |
+                  v
+         register_candidate
+```
+
+---
+
+# 44. Airflow vs MLflow
+
+```text
+Airflow
+=
+workflow orchestration
+```
+
+```text
+MLflow
+=
+experiment/model lifecycle
+```
+
+Ils ont des responsabilités différentes.
+
+---
+
+# 45. Training in CI
+
+La CI ne doit pas nécessairement exécuter le training complet.
+
+Elle peut exécuter :
+
+```text
+small dataset smoke training
+```
+
+pour vérifier :
+
+```text
+pipeline still works
+```
+
+---
+
+# 46. Full Training
+
+L'entraînement complet pourra être déclenché via :
+
+```text
+Airflow
+```
+
+ou manuellement dans un workflow contrôlé.
+
+---
+
+# 47. Serving Architecture
 
 ```text
 FastAPI
@@ -769,67 +845,121 @@ FastAPI
    v
 MatchingService
    |
-   v
-Model / Baseline
+   +--> RulesAdapter
+   |
+   +--> MLAdapter
+   |
+   +--> OllamaAdapter
 ```
 
 ---
 
-# 41. MatchingService
+# 48. MatchingService
 
 Responsabilités :
 
 ```text
 validate request
-load candidates
+load demand version
+load candidate properties
 compute features
-execute matching
-rank results
-return explanations
-```
-
-Il ne doit pas contenir directement toute la logique HTTP.
-
----
-
-# 42. API Schema
-
-Exemple conceptuel :
-
-```python
-class MatchRequest(BaseModel):
-    request_version_id: int
-    limit: int = 20
+filter
+score
+rank
+return Top-K
 ```
 
 ---
 
-# 43. API Response
-
-```python
-class MatchResult(BaseModel):
-    property_id: int
-    rank: int
-    score: float
-```
-
-La réponse finale pourra inclure les sous-scores et explications.
-
----
-
-# 44. Endpoint
+# 49. API Endpoint
 
 Candidat :
 
 ```text
-POST /api/v1/matching
+POST /api/v1/matching/rank
 ```
 
 ---
 
-# 45. Health endpoint
+# 50. Input
 
-Le programme doit fournir :
+Exemple :
+
+```json
+{
+  "request_version_id": 123,
+  "limit": 10
+}
+```
+
+---
+
+# 51. Output
+
+Exemple :
+
+```json
+{
+  "request_version_id": 123,
+  "results": [
+    {
+      "property_id": 501,
+      "score": 0.93,
+      "rank": 1
+    }
+  ]
+}
+```
+
+---
+
+# 52. Runtime Model Metadata
+
+La réponse peut contenir :
+
+```text
+scoring_method
+model_version
+```
+
+sans nécessairement persister immédiatement ces informations dans `PRESENTATION`.
+
+---
+
+# 53. Pourquoi ne pas modifier encore le modèle Data
+
+La traçabilité ML peut d'abord être assurée par :
+
+```text
+API response
+logs
+MLflow
+request_id
+```
+
+avant de décider si elle doit devenir une donnée métier persistante.
+
+---
+
+# 54. Future Scoring Audit
+
+Si nécessaire, une future entité dédiée pourra représenter :
+
+```text
+SCORING_RUN
+```
+
+ou :
+
+```text
+MATCHING_EXECUTION
+```
+
+au lieu de surcharger `PRESENTATION`.
+
+---
+
+# 55. Health Endpoint
 
 ```text
 GET /health
@@ -837,99 +967,102 @@ GET /health
 
 ---
 
-# 46. Readiness
-
-Une readiness probe peut vérifier :
+# 56. Readiness
 
 ```text
-application started
-model loaded
-critical dependencies reachable
+GET /ready
 ```
 
-selon le design retenu.
+peut vérifier :
+
+```text
+service started
+model loaded
+critical dependencies available
+```
 
 ---
 
-# 47. Error Handling
+# 57. Error Handling
 
-Les erreurs doivent distinguer :
+Le service doit distinguer :
 
 ```text
 invalid request
+request version not found
 database unavailable
 model unavailable
+AI dependency unavailable
 internal error
 ```
 
 ---
 
-# 48. Timeout
+# 58. Timeout
 
-Les appels aux dépendances doivent utiliser des timeouts adaptés.
-
-En particulier :
+Les dépendances doivent utiliser des timeouts :
 
 ```text
-database
+PostgreSQL
 Ollama
-external AI if any
+external service
 ```
 
 ---
 
-# 49. Ollama
+# 59. Ollama
 
-Le programme peut utiliser Ollama pour des tâches complémentaires.
+Ollama est réservé aux tâches où un LLM apporte réellement de la valeur.
 
 Exemples :
 
 ```text
 criteria extraction
+semantic preferences
 match explanation
-document summary
-semantic assistance
+document summarization
 ```
-
-Ollama ne remplace pas nécessairement le modèle de matching.
 
 ---
 
-# 50. Client Ollama
+# 60. LLM Isolation
 
-Une couche dédiée doit isoler l'intégration.
+Le code métier ne doit pas appeler directement Ollama partout.
+
+Utiliser :
 
 ```text
-MatchingService
-      |
-      v
 OllamaClient
-      |
-      v
-Ollama API
+```
+
+ou :
+
+```text
+AIAdapter
 ```
 
 ---
 
-# 51. Pourquoi isoler Ollama
+# 61. Pourquoi Adapter
 
-Cela permet :
+Cela facilite :
 
-- mock dans les tests ;
-- changement d'endpoint ;
-- changement de modèle ;
-- gestion timeout/retry ;
-- observabilité.
-
----
-
-# 52. Structured AI Output
-
-Les sorties destinées à être consommées par le programme doivent être structurées et validées.
+```text
+tests
+mock
+provider replacement
+timeouts
+monitoring
+fallback
+```
 
 ---
 
-# 53. Example
+# 62. Structured Output
+
+Les sorties LLM utilisées par l'application doivent être structurées et validées.
+
+Exemple :
 
 ```json
 {
@@ -941,130 +1074,115 @@ Les sorties destinées à être consommées par le programme doivent être struc
 }
 ```
 
-doit être validé avant utilisation.
-
 ---
 
-# 54. RAG future
+# 63. Hallucination
 
-Une capacité RAG peut être intégrée comme un service distinct.
+Le LLM ne doit pas être considéré comme source de vérité pour :
 
 ```text
-Matching API
-    |
-    +--> Structured Matching
-    |
-    +--> RAG Service
+price
+surface
+address
+legal fact
+client identity
 ```
 
-Elle ne doit pas être obligatoire pour le fonctionnement de base si le besoin peut être satisfait sans elle.
+---
+
+# 64. Grounding
+
+Les réponses factuelles doivent provenir :
+
+```text
+PostgreSQL
+authorized documents
+```
+
+avant génération.
 
 ---
 
-# 55. Tests unitaires
+# 65. Semantic Matching
 
-Tests principaux :
+Une couche future peut ajouter :
 
 ```text
-scoring functions
-feature functions
-validation
-model wrapper
+embedding similarity
+```
+
+pour les critères textuels.
+
+---
+
+# 66. Vector Candidates
+
+```text
+pgvector
+Qdrant
+```
+
+restent les deux options principales à évaluer.
+
+---
+
+# 67. Vector Decision
+
+```text
+benchmark
+   |
+   v
+complexity comparison
+   |
+   v
+ADR
+```
+
+avant adoption.
+
+---
+
+# 68. Unit Tests
+
+Tests prévus :
+
+```text
+feature calculation
+budget calculation
+surface calculation
+DPE encoding
+preference ratio
+baseline score
 ranking
 ```
 
 ---
 
-# 56. Exemple scoring test
-
-```python
-def test_score_is_between_zero_and_hundred():
-    ...
-```
-
----
-
-# 57. Test poids
-
-```python
-def test_weights_sum_to_one():
-    ...
-```
-
----
-
-# 58. Test ranking
-
-Avec des scores :
-
-```text
-80
-95
-70
-```
-
-le résultat doit être classé :
-
-```text
-95
-80
-70
-```
-
----
-
-# 59. Test filter
-
-Si une propriété ne respecte pas une contrainte obligatoire, elle ne doit pas atteindre l'étape de ranking avancé.
-
----
-
-# 60. Tests dataset
-
-Tester :
-
-```text
-expected columns
-no invalid target
-valid data types
-```
-
----
-
-# 61. Tests model
-
-Tester notamment :
+# 69. Model Tests
 
 ```text
 model loads
-model predicts
-output shape
-valid score domain
+prediction shape correct
+valid score
+same preprocessing
 ```
 
 ---
 
-# 62. Tests API
-
-Exemples :
+# 70. API Tests
 
 ```text
 GET /health -> 200
-```
-
-```text
-POST matching valid -> 200
-```
-
-```text
-invalid request -> 422
+POST valid matching -> 200
+invalid payload -> 422
+unknown demand -> expected error
 ```
 
 ---
 
-# 63. Tests d'intégration
+# 71. Integration Tests
 
-Tester :
+Chaîne :
 
 ```text
 PostgreSQL
@@ -1078,11 +1196,9 @@ FastAPI
 
 ---
 
-# 64. Test MLflow
+# 72. MLflow Test
 
-Une campagne de test doit démontrer qu'un run est réellement créé.
-
-Preuves :
+La preuve doit montrer :
 
 ```text
 experiment
@@ -1094,9 +1210,9 @@ artifact
 
 ---
 
-# 65. Test Model Registry
+# 73. Registry Test
 
-Vérifier :
+La preuve doit montrer :
 
 ```text
 model name
@@ -1106,61 +1222,110 @@ source run
 
 ---
 
-# 66. Test Ollama
+# 74. Reproducibility Test
 
-Le projet dispose déjà d'un exemple de connectivité Ollama distante.
-
-Une preuve future pourra être centralisée dans le dossier evidence.
-
----
-
-# 67. Packaging Python
-
-Les dépendances doivent être versionnées via :
+Un run doit permettre de retrouver :
 
 ```text
-pyproject.toml
-```
-
-ou :
-
-```text
-requirements.txt
+dataset
+code
+params
+features
 ```
 
 ---
 
-# 68. Python Version
+# 75. Docker
 
-Une version explicite doit être utilisée.
-
-Exemple candidat :
+Le service sera conteneurisé.
 
 ```text
-Python 3.12
-```
-
-selon la compatibilité des bibliothèques retenues.
-
----
-
-# 69. Docker
-
-Le programme sera conteneurisé.
-
-Architecture :
-
-```text
-Source Code
-    |
-    v
+source
+ |
+ v
 Docker Build
-    |
-    v
+ |
+ v
 Image
+ |
+ v
+Registry
+```
+
+---
+
+# 76. Dockerfile Principles
+
+```text
+minimal image
+explicit dependencies
+non-root where possible
+no secrets
+health-aware
+```
+
+---
+
+# 77. Image Tagging
+
+Tags :
+
+```text
+matching-api:<git-sha>
+```
+
+et éventuellement :
+
+```text
+matching-api:v1.0.0
+```
+
+---
+
+# 78. GitLab CI
+
+La CI peut couvrir :
+
+```text
+lint
+unit tests
+integration tests
+security scan
+Docker build
+image scan
+publish
+```
+
+---
+
+# 79. CI Separation
+
+Pipeline modularisé :
+
+```text
+.gitlab/ci/application.yml
+.gitlab/ci/ml.yml
+.gitlab/ci/security.yml
+.gitlab/ci/docker.yml
+```
+
+---
+
+# 80. GitOps
+
+Le déploiement suit :
+
+```text
+GitLab CI
     |
     v
-Registry
+Container Registry
+    |
+    v
+GitOps desired state
+    |
+    v
+Argo CD
     |
     v
 Kubernetes
@@ -1168,61 +1333,9 @@ Kubernetes
 
 ---
 
-# 70. Dockerfile
+# 81. Kubernetes Deployment
 
-Le Dockerfile doit :
-
-- utiliser une image adaptée ;
-- installer uniquement les dépendances nécessaires ;
-- ne contenir aucun secret ;
-- utiliser un utilisateur non-root lorsque possible ;
-- fournir une commande claire.
-
----
-
-# 71. Exemple logique
-
-```dockerfile
-FROM python:3.12-slim
-
-WORKDIR /app
-
-COPY pyproject.toml .
-RUN pip install ...
-
-COPY src ./src
-
-CMD ["uvicorn", "..."]
-```
-
-Le Dockerfile final sera produit lors de l'implémentation.
-
----
-
-# 72. Image Tagging
-
-Les images doivent être traçables.
-
-Exemples :
-
-```text
-matching-api:<git-sha>
-matching-api:v1.0.0
-```
-
----
-
-# 73. Container Registry
-
-GitLab Container Registry peut stocker les images si utilisé dans le repository final.
-
----
-
-# 74. Kubernetes
-
-Le service doit pouvoir être déployé sur Kubernetes.
-
-Composants possibles :
+Le service pourra utiliser :
 
 ```text
 Deployment
@@ -1234,202 +1347,54 @@ Secret
 
 ---
 
-# 75. Deployment
+# 82. Resource Requests
 
-Le Deployment doit notamment définir :
+À mesurer :
 
 ```text
-image
-replicas
-resources
-health probes
-configuration
+CPU
+RAM
+```
+
+et éventuellement GPU si le service exécute lui-même un modèle nécessitant une accélération.
+
+---
+
+# 83. Ollama GPU Separation
+
+Le service FastAPI peut rester sur Kubernetes alors que :
+
+```text
+Ollama
+```
+
+reste sur l'hôte GPU dédié.
+
+---
+
+# 84. Liveness
+
+Une liveness probe vérifie :
+
+```text
+process alive
 ```
 
 ---
 
-# 76. Resource Requests
+# 85. Readiness
 
-Le service doit définir des requests réalistes.
-
-Exemple à mesurer :
+Une readiness probe vérifie :
 
 ```text
-cpu
-memory
+ready to serve traffic
 ```
 
 ---
 
-# 77. Resource Limits
+# 86. Observability
 
-Les limites doivent éviter une consommation incontrôlée tout en restant adaptées au workload.
-
----
-
-# 78. Liveness
-
-Une liveness probe vérifie si le processus doit être redémarré.
-
----
-
-# 79. Readiness
-
-Une readiness probe vérifie si le pod est prêt à recevoir du trafic.
-
----
-
-# 80. Ingress
-
-L'API peut être exposée via :
-
-```text
-NGINX Ingress
-```
-
-avec TLS selon le besoin.
-
----
-
-# 81. GitOps
-
-Le déploiement doit être géré via GitOps.
-
-```text
-GitLab
-  |
-  v
-GitOps Repository
-  |
-  v
-Argo CD
-  |
-  v
-Kubernetes
-```
-
----
-
-# 82. CI
-
-La CI du programme peut exécuter :
-
-```text
-lint
-unit tests
-integration tests
-security checks
-Docker build
-publish
-```
-
----
-
-# 83. Pipeline cible
-
-```text
-validate
-  |
-  v
-test
-  |
-  v
-security
-  |
-  v
-build
-  |
-  v
-publish
-```
-
-Le déploiement reste réalisé par Argo CD.
-
----
-
-# 84. ML Training Pipeline
-
-Le training ne doit pas nécessairement être exécuté dans chaque CI applicative.
-
-Il peut être orchestré séparément par Airflow.
-
----
-
-# 85. Airflow Training DAG
-
-Architecture :
-
-```text
-prepare_data
-    |
-    v
-validate_data
-    |
-    v
-train_model
-    |
-    v
-evaluate_model
-    |
-    v
-log_mlflow
-    |
-    v
-quality_gate
-```
-
----
-
-# 86. Training vs Deployment
-
-La plateforme sépare :
-
-```text
-Model Training
-```
-
-de :
-
-```text
-Application Deployment
-```
-
-Un nouveau training ne doit pas automatiquement remplacer le modèle actif sans validation.
-
----
-
-# 87. Model Artifact
-
-Les artifacts peuvent être stockés dans :
-
-```text
-MinIO
-```
-
-via MLflow.
-
----
-
-# 88. Dependency chain
-
-```text
-Airflow
-   |
-   v
-Training code
-   |
-   v
-MLflow
-   |
-   v
-MinIO
-```
-
----
-
-# 89. Observability
-
-Le service doit fournir :
+Le programme expose :
 
 ```text
 metrics
@@ -1440,7 +1405,7 @@ health
 
 ---
 
-# 90. Metrics
+# 87. Prometheus Metrics
 
 Exemples :
 
@@ -1449,536 +1414,424 @@ matching_requests_total
 matching_errors_total
 matching_duration_seconds
 matching_candidates_total
-model_version_info
+matching_results_total
 ```
 
 ---
 
-# 91. Histogram
+# 88. Model Metrics
 
-La latence peut être exposée via un histogramme Prometheus.
+Métriques runtime possibles :
+
+```text
+model_load_status
+model_version_info
+inference_duration
+```
 
 ---
 
-# 92. Logs
+# 89. Logs
 
-Les logs doivent contenir des informations opérationnelles utiles.
-
-Exemple :
+Champs utiles :
 
 ```text
 request_id
 duration
 candidate_count
+result_count
+scoring_method
 model_version
 status
 ```
 
 ---
 
-# 93. Données à ne pas logger
+# 90. Logs interdits
 
 Éviter :
 
 ```text
-full client name
 email
 phone
-full free-text requirement
+password
+API key
+full private prompt
 full confidential document
 ```
 
-dans les logs standards.
-
 ---
 
-# 94. Tracing
+# 91. Tracing
 
-OpenTelemetry peut instrumenter :
-
-```text
-FastAPI
-PostgreSQL
-AI call
-```
-
-selon l'intégration.
-
----
-
-# 95. Trace example
+OpenTelemetry peut tracer :
 
 ```text
 HTTP request
-    |
-    v
-matching
-    |
-    v
+   |
+   v
 database query
-    |
-    v
-model inference
+   |
+   v
+feature generation
+   |
+   v
+ML inference
+   |
+   v
+optional Ollama call
 ```
 
 ---
 
-# 96. Grafana
+# 92. Grafana
 
 Dashboard candidat :
 
 ```text
-Request rate
-Latency
-Errors
-Candidate count
-Model versions
+Matching API
+```
+
+avec :
+
+```text
+request rate
+latency
+errors
+candidate volume
+model version
 ```
 
 ---
 
-# 97. Alerting
+# 93. Security
 
-Alertes possibles :
-
-```text
-high error rate
-API unavailable
-high latency
-model load failure
-database unavailable
-```
-
----
-
-# 98. AI Host Observability
-
-Pour Ollama :
+Le service applique :
 
 ```text
-GPU utilization
-VRAM
-temperature
-inference duration
-```
-
-peuvent être observés.
-
----
-
-# 99. Security
-
-Le programme doit respecter :
-
-```text
-input validation
 authentication
 authorization
+input validation
+least privilege
 secret management
 TLS
-least privilege
-dependency security
 ```
 
 ---
 
-# 100. AI Security
+# 94. AI Security
 
-Les traitements AI doivent également prendre en compte :
+Les risques spécifiques incluent :
 
 ```text
 prompt injection
 data leakage
-unsafe input
-unsafe output
-unauthorized document access
+unsafe retrieved content
+model misuse
 ```
 
 ---
 
-# 101. RGPD
+# 95. RGPD
 
-Le programme doit minimiser les données transmises aux modèles.
+Les features doivent être minimisées.
 
-Exemple :
-
-pour calculer un matching immobilier, le modèle n'a généralement pas besoin de connaître :
+Le matching ne nécessite généralement pas :
 
 ```text
 client email
-client phone
+phone
 full identity
 ```
 
 ---
 
-# 102. Data Minimization
+# 96. Local-first AI
 
-Architecture préférée :
+Les données sensibles privilégient :
 
 ```text
-Client Data
-    |
-    v
-Relevant Criteria Only
-    |
-    v
-Matching
+local infrastructure
+```
+
+et :
+
+```text
+local Ollama
 ```
 
 ---
 
-# 103. Souveraineté
+# 97. External AI
 
-Le traitement local est privilégié pour les données internes et sensibles.
+Une API externe éventuelle doit rester :
 
 ```text
-Private Data
-    |
-    v
-Local Infrastructure
-    |
-    v
-Local AI
+governed exception
 ```
 
 ---
 
-# 104. External AI
+# 98. Graceful Degradation
 
-Une API AI externe, si elle est utilisée, doit être une exception gouvernée.
-
-Les données envoyées doivent être analysées avant transmission.
-
----
-
-# 105. Model Card
-
-Le modèle final doit être accompagné d'une fiche décrivant :
+Exemple :
 
 ```text
-purpose
-version
-features
-training dataset
-metrics
-limitations
-security considerations
-intended use
+ML model unavailable
+       |
+       v
+fallback rules
 ```
 
+si cela reste fonctionnellement acceptable.
+
 ---
 
-# 106. Runbook
-
-Le service final devrait disposer d'un runbook minimum.
-
-Exemples :
+# 99. Ollama Failure
 
 ```text
-API unavailable
-model cannot load
-MLflow unavailable
-database unavailable
 Ollama unavailable
 ```
 
+ne doit pas forcément rendre le matching structuré indisponible.
+
 ---
 
-# 107. Graceful Degradation
+# 100. Model Rollback
 
-Si le modèle ML n'est pas disponible, une stratégie possible peut être :
+Si un modèle dégrade le service :
 
 ```text
-ML unavailable
-      |
-      v
-Rules baseline
+V3
+ |
+ v
+problem
+ |
+ v
+V2
 ```
 
-si cela est techniquement et fonctionnellement acceptable.
+doit pouvoir être restauré.
 
 ---
 
-# 108. LLM degradation
+# 101. Runtime Traceability
 
-Si Ollama est indisponible :
-
-```text
-semantic explanation unavailable
-```
-
-mais le matching structuré peut continuer si son architecture est indépendante.
-
----
-
-# 109. Reproductibilité
-
-Le programme final doit pouvoir identifier :
+Chaîne idéale :
 
 ```text
 Git SHA
-Container image
-Model version
-Dataset version/reference
-Configuration
-```
-
----
-
-# 110. Evidence chain
-
-La preuve idéale est :
-
-```text
-Git Commit
-    |
-    v
+   |
+   v
 CI Pipeline
-    |
-    v
+   |
+   v
 Container Image
-    |
-    v
-Argo CD
-    |
-    v
-Kubernetes
-    |
-    v
-FastAPI
-    |
-    v
+   |
+   v
+Kubernetes Revision
+   |
+   v
 Model Version
-    |
-    v
-Matching Result
-    |
-    v
+   |
+   v
+API Request
+   |
+   v
 Metrics / Logs / Trace
 ```
 
 ---
 
-# 111. Preuves attendues
+# 102. Implementation Locations
 
-Les preuves futures comprennent :
+Application :
 
 ```text
-source tree
-training script
-evaluation script
-unit tests
+src/
+```
+
+ML :
+
+```text
+ml/
+```
+
+Airflow :
+
+```text
+pipelines/airflow/
+```
+
+Tests :
+
+```text
+tests/
+```
+
+Deployment :
+
+```text
+deploy/
+```
+
+CI :
+
+```text
+.gitlab/ci/
+```
+
+---
+
+# 103. Documentation Location
+
+Ce dossier reste uniquement :
+
+```text
+docs/evidence/05-BC05/C6-Programme-IA/
+```
+
+pour documentation et index de preuves.
+
+---
+
+# 104. Evidence Runtime
+
+Preuves prévues :
+
+```text
+training execution
 MLflow run
-model version
-model artifact
+model comparison
+model registry
+API response
 Docker image
 CI pipeline
 Kubernetes deployment
-API response
-Prometheus metric
+Prometheus metrics
 Grafana dashboard
 Airflow DAG
 ```
 
 ---
 
-# 112. Structure future evidence
+# 105. Minimum Demonstration
 
 ```text
-C6-Programme-IA/
-│
-├── README.md
-│
-├── source/
-├── tests/
-├── docker/
-├── kubernetes/
-├── airflow/
-├── ci/
-├── evidence/
-└── EXECUTION-REPORT.md
-```
-
-Ces dossiers ne devront être créés que lorsqu'ils contiennent des artifacts réels.
-
----
-
-# 113. Execution Report
-
-Le rapport final devra contenir :
-
-```text
-Version
-Environment
-Dataset
-Model
-Model version
-Container image
-Deployment
-Tests
-Observed result
-Metrics
-Known limitations
+1. Dataset generated/prepared
+2. Features generated
+3. Rules baseline executed
+4. Logistic Regression trained
+5. Random Forest trained
+6. Models compared
+7. MLflow run created
+8. Model version registered
+9. FastAPI serves ranking
+10. Docker image runs
+11. Tests pass
+12. Kubernetes deploy succeeds
+13. Metrics visible
 ```
 
 ---
 
-# 114. Minimum Demonstration
+# 106. Extension Value
 
-Pour une démonstration convaincante :
+Cette implémentation va volontairement au-delà du strict besoin documentaire.
 
-```text
-1. Dataset prepared
-2. Model/baseline executed
-3. Evaluation produced
-4. MLflow run created
-5. Model version identifiable
-6. API starts
-7. Matching request succeeds
-8. Container runs
-9. Kubernetes deployment works
-10. Test suite passes
-11. Metrics visible
-```
-
----
-
-# 115. Ce qui ne suffit pas
-
-Les éléments suivants ne suffisent pas seuls :
+Elle démontre une chaîne :
 
 ```text
-Python file exists
-Notebook executes
-MLflow is installed
-Ollama answers
-Dockerfile exists
-Kubernetes exists
-```
-
-La compétence demande une chaîne intégrée.
-
----
-
-# 116. Relation avec C5
-
-C5 définit :
-
-```text
-what the model/matching does
-```
-
-C6 définit :
-
-```text
-how the complete AI program is engineered and operated
-```
-
----
-
-# 117. Relation avec C3
-
-Le Data Warehouse peut fournir des datasets analytiques ou features historiques pour le programme IA.
-
----
-
-# 118. Relation avec C4
-
-La taille du dataset et le nombre de requêtes déterminent les limites de l'architecture IA.
-
----
-
-# 119. Relation avec C7
-
-Les données d'entraînement et d'inférence doivent respecter le RGPD.
-
----
-
-# 120. Relation avec C8
-
-Le programme IA doit intégrer les exigences de :
-
-```text
-sovereignty
-security
-confidentiality
-model governance
-```
-
----
-
-# 121. Statut actuel
-
-| Élément | Statut |
-|---|---|
-| Programme architecture | DOCUMENTÉE |
-| Code structure | DÉFINIE |
-| Data loading | DÉFINI |
-| Preprocessing | DÉFINI |
-| Features | DÉFINIES |
-| Baseline | DÉFINIE |
-| Training architecture | DÉFINIE |
-| Evaluation | DÉFINIE |
-| MLflow integration | DÉFINIE |
-| Registry | DÉFINI |
-| FastAPI serving | DÉFINI |
-| Docker | DÉFINI |
-| Kubernetes | DÉFINI |
-| GitOps | DÉFINI |
-| CI | DÉFINIE |
-| Airflow training | DÉFINI |
-| Observability | DÉFINIE |
-| Security | DÉFINIE |
-| Source code | À PRODUIRE |
-| Tests | À PRODUIRE |
-| Container | À PRODUIRE |
-| CI execution | À PRODUIRE |
-| Runtime deployment | À PRODUIRE |
-| MLflow evidence | À PRODUIRE |
-| API evidence | À PRODUIRE |
-
----
-
-# 122. Conclusion
-
-Le programme IA du projet doit fonctionner comme une chaîne industrielle et traçable :
-
-```text
-Data
- |
- v
-Processing
- |
- v
-Matching / Model
- |
- v
-Evaluation
- |
- v
-MLflow
- |
- v
-Model Version
- |
- v
-API
- |
- v
-Container
- |
- v
-Kubernetes
- |
- v
+Data Engineering
++
+Machine Learning
++
+MLOps
++
+API Engineering
++
+DevOps
++
 Observability
 ```
 
-L'objectif est de dépasser le simple prototype et de démontrer une capacité réelle à intégrer l'IA dans une architecture Data/DevOps exploitable.
-
-Les preuves finales seront basées sur le programme réellement exécuté et non uniquement sur cette architecture documentaire.
+dans le même projet.
 
 ---
 
-**BC05 / C6 — PROGRAMME IA — DOCUMENTATION BASELINE COMPLETE**
+# 107. Current Status
+
+| Élément | Statut |
+|---|---|
+| AI program architecture | V2 COMPLETE |
+| Dataset strategy | DEFINED |
+| Feature pipeline | DEFINED |
+| Rules baseline | DEFINED |
+| Logistic Regression | PLANNED |
+| Random Forest | PLANNED |
+| Evaluation | DEFINED |
+| MLflow | PLANNED |
+| Model Registry | PLANNED |
+| Model Card | DEFINED |
+| FastAPI serving | DEFINED |
+| Ollama integration | DEFINED |
+| Docker | DEFINED |
+| GitLab CI | DEFINED |
+| GitOps | DEFINED |
+| Kubernetes | DEFINED |
+| Observability | DEFINED |
+| Security | DEFINED |
+| Runtime code | PENDING |
+| Runtime training | PENDING |
+| Runtime deployment | PENDING |
+| Runtime evidence | PENDING |
+
+---
+
+# 108. Conclusion
+
+Le Programme IA est conçu comme une chaîne complète :
+
+```text
+POSTGRESQL
+    |
+    v
+DATASET
+    |
+    v
+FEATURES
+    |
+    +------------------+
+    |                  |
+    v                  v
+RULES                 ML
+    |                  |
+    +--------+---------+
+             |
+             v
+         EVALUATION
+             |
+             v
+           MLFLOW
+             |
+             v
+       MODEL REGISTRY
+             |
+             v
+          FASTAPI
+             |
+             v
+          DOCKER
+             |
+             v
+        KUBERNETES
+             |
+             v
+      OBSERVABILITY
+```
+
+Le projet ne se limite donc pas à concevoir un modèle de matching : il met en place son cycle d'ingénierie complet, tout en conservant les fonctions ML avancées comme une extension volontaire clairement distinguée du minimum attendu.
+
+---
+
+**BC05 / C6 — PROGRAMME IA V2 — ML/MLOPS IMPLEMENTATION EXTENSION**

@@ -1,96 +1,120 @@
-yes# MCD MERISE — Real Estate Intelligence Platform
+# MCD MERISE — Real Estate Intelligence Platform
 
 **Projet :** Real Estate Intelligence Platform  
-**Domaine :** Chasse immobilière / Property Intelligence  
+**Domaine :** Chasse immobilière  
 **Méthode :** MERISE  
-**Version :** 1.0  
-**Statut :** Baseline conceptuelle  
-**Dernière mise à jour :** 2026-08-21
+**Version :** 2.0  
+**Statut :** Baseline conceptuelle corrigée selon le StarterPack  
+**Date de référence métier :** 25 juillet 2026
 
 ---
 
 # 1. Objectif
 
-Ce document définit le **Modèle Conceptuel de Données — MCD** du projet.
+Ce document définit le Modèle Conceptuel de Données cible du projet.
 
-Il constitue la représentation métier des informations manipulées par la plateforme avant traduction vers :
+Il est construit à partir :
+
+1. du SI hérité fourni dans les fixtures ;
+2. des besoins métier décrits dans le StarterPack ;
+3. des besoins futurs Data et IA ;
+4. des exigences de traçabilité, RGPD et croissance.
+
+La chaîne de conception est :
 
 ```text
-MCD
- |
- v
+SI hérité
+   |
+   v
+Audit
+   |
+   v
+MCD cible
+   |
+   v
 MLD
- |
- v
+   |
+   v
 MPD PostgreSQL
- |
- v
+   |
+   v
 migration.sql
- |
- v
-Database
 ```
-
-Le MCD doit rester indépendant autant que possible :
-
-- de PostgreSQL ;
-- de FastAPI ;
-- de Kubernetes ;
-- de l'ORM ;
-- du frontend ;
-- des choix d'implémentation.
-
-Il répond principalement à la question :
-
-> Quelles données métier existent et comment sont-elles reliées ?
 
 ---
 
-# 2. Périmètre métier
+# 2. SI hérité
 
-Le périmètre initial couvre le processus suivant :
+Le SI existant contient uniquement :
 
 ```text
-Client
-  |
-  v
-Mandat de recherche
-  |
-  v
-Expression du besoin
-  |
-  v
-Recherche de biens
-  |
-  v
-Qualification
-  |
-  v
-Présentation au client
+SECTEURS
+UTILISATEURS
+MANDATS
 ```
 
-Les informations liées aux biens peuvent provenir de plusieurs sources et être enrichies avec des documents.
+Il constitue la source de migration.
+
+Il ne doit pas être modifié directement.
 
 ---
 
-# 3. Principales entités
+# 3. Principales anomalies du modèle hérité
 
-Le modèle comprend huit entités métier principales :
+Le modèle existant présente notamment :
 
 ```text
-CLIENT
-CHASSEUR
-MANDAT
-DEMANDE_VERSION
-BIEN
-PRESENTATION
-SOURCE
-DOCUMENT
+UTILISATEURS
+    |
+    +--> clients
+    |
+    +--> chasseurs
+```
+
+dans une seule table.
+
+Cela produit des colonnes dépendantes du rôle :
+
+```text
+taux_commission
+budget_max
+```
+
+qui n'ont pas de sens pour tous les utilisateurs.
+
+Les critères de recherche sont également stockés sous forme de texte libre :
+
+```text
+mandats.description_recherche
+```
+
+alors qu'ils doivent devenir structurés et historisables.
+
+---
+
+# 4. Exigences métier du modèle cible
+
+Le modèle cible doit permettre de gérer :
+
+```text
+Clients
+Chasseurs
+Secteurs
+Mandats
+Demandes structurées
+Historique des demandes
+Biens
+Sources d'annonces
+Commentaires
+Présentations / matching
+Documents
+Barèmes de commission
+Paiements
 ```
 
 ---
 
-# 4. Vue conceptuelle
+# 5. Vue globale
 
 ```text
 CLIENT
@@ -98,12 +122,17 @@ CLIENT
    | signe
    v
 MANDAT
+   ^
    |
-   | est pris en charge par
-   v
+   | géré par
+   |
 CHASSEUR
 
 MANDAT
+   |
+   | définit
+   v
+DEMANDE
    |
    | possède
    v
@@ -111,28 +140,38 @@ DEMANDE_VERSION
 
 DEMANDE_VERSION
    |
-   | sélectionne / présente
-   v
-PRESENTATION
-   |
-   | concerne
-   v
-BIEN
+   +-----------------------------+
+   |                             |
+   v                             v
+PRESENTATION                 COMMENTAIRE
+   |                             |
+   v                             v
+BIEN <---------------------------+
 
 BIEN
    |
-   +-------- provient de --------> SOURCE
+   +--> SOURCE
    |
-   +-------- possède ------------> DOCUMENT
+   +--> DOCUMENT
+
+CHASSEUR
+   |
+   v
+BAREME_COMMISSION
+
+MANDAT
+   |
+   v
+PAIEMENT
 ```
 
 ---
 
-# 5. Entité CLIENT
+# 6. Entité CLIENT
 
 ## Définition
 
-Le CLIENT représente une personne ou entité ayant recours au service de chasse immobilière.
+Représente un particulier utilisant le service de chasse immobilière.
 
 ## Identifiant
 
@@ -144,29 +183,29 @@ id_client
 
 | Attribut | Description |
 |---|---|
-| id_client | Identifiant métier interne |
-| nom | Nom du client |
+| id_client | Identifiant |
+| nom | Nom |
 | prenom | Prénom |
-| email | Adresse email |
+| email | Email |
 | telephone | Téléphone |
-| date_creation | Date de création du dossier |
-| statut | Statut du client |
-| consentement_contact | Consentement de contact lorsque applicable |
+| ville | Ville |
+| date_creation | Date de création |
+| statut | Statut |
+| consentement_contact | Consentement de contact |
 
 ## Règles
 
-- Un client peut avoir plusieurs mandats au cours du temps.
-- Un mandat appartient à un seul client.
-- L'email peut être unique selon la règle métier retenue.
-- Les données personnelles sont soumises au RGPD.
+- un client peut posséder plusieurs mandats ;
+- un mandat appartient à un seul client ;
+- les données personnelles sont soumises au RGPD.
 
 ---
 
-# 6. Entité CHASSEUR
+# 7. Entité CHASSEUR
 
 ## Définition
 
-Le CHASSEUR représente le professionnel responsable du traitement d'un mandat de recherche.
+Représente le professionnel chargé d'accompagner le client.
 
 ## Identifiant
 
@@ -178,27 +217,76 @@ id_chasseur
 
 | Attribut | Description |
 |---|---|
-| id_chasseur | Identifiant interne |
+| id_chasseur | Identifiant |
 | nom | Nom |
 | prenom | Prénom |
-| email | Adresse professionnelle |
+| email | Email professionnel |
 | telephone | Téléphone |
+| date_entree | Date d'entrée |
 | statut | Actif / inactif |
-| date_entree | Date d'entrée dans l'organisation |
 
 ## Règles
 
-- Un chasseur peut gérer plusieurs mandats.
-- Un mandat est rattaché à un chasseur principal.
-- Un chasseur inactif ne doit normalement pas recevoir de nouveau mandat.
+- un chasseur peut gérer plusieurs mandats ;
+- un mandat possède un chasseur référent ;
+- les commissions ne doivent plus être stockées directement dans cette entité.
+
+Les commissions sont historisées via :
+
+```text
+BAREME_COMMISSION
+```
 
 ---
 
-# 7. Entité MANDAT
+# 8. Entité SECTEUR
 
 ## Définition
 
-Le MANDAT représente l'engagement contractuel entre un client et le service de chasse immobilière.
+Représente une zone géographique couverte par le service.
+
+Cette entité est conservée car elle existe déjà dans le SI hérité.
+
+## Identifiant
+
+```text
+id_secteur
+```
+
+## Attributs
+
+| Attribut | Description |
+|---|---|
+| id_secteur | Identifiant |
+| pays | Pays |
+| ville | Ville |
+| quartier | Quartier éventuel |
+| code_postal | Code postal |
+| actif | Secteur actif |
+
+## Évolution
+
+Le modèle doit pouvoir évoluer au-delà de Montpellier vers :
+
+```text
+France
+DROM
+Espagne
+Allemagne
+Royaume-Uni
+Irlande
+BeNeLux
+Italie
+Suisse
+```
+
+---
+
+# 9. Entité MANDAT
+
+## Définition
+
+Représente le contrat de recherche signé entre le client et l'entreprise.
 
 ## Identifiant
 
@@ -210,69 +298,111 @@ id_mandat
 
 | Attribut | Description |
 |---|---|
-| id_mandat | Identifiant du mandat |
-| reference_mandat | Référence métier |
+| id_mandat | Identifiant |
+| reference_mandat | Référence |
+| type_mandat | Exclusif / non-exclusif |
 | date_signature | Date de signature |
-| date_debut | Date de début |
-| date_fin | Date de fin prévue ou réelle |
-| statut | Brouillon / actif / suspendu / terminé / annulé |
-| budget_min | Budget minimum indicatif |
-| budget_max | Budget maximum |
-| commentaire | Commentaire général |
+| mode_signature | Papier / électronique / autre |
+| date_debut | Début du mandat |
+| date_fin | Fin de validité |
+| statut | Statut |
+| commentaire | Commentaire |
 
-## Règles
+## Relations
 
-- Un mandat appartient à un seul client.
-- Un mandat est géré par un chasseur principal.
-- Un client peut signer plusieurs mandats.
-- Un chasseur peut gérer plusieurs mandats.
-- Un mandat peut connaître plusieurs versions successives de la demande client.
+```text
+CLIENT      0,N ---- SIGNE ---- 1,1 MANDAT
+CHASSEUR    0,N ---- GERE ----- 1,1 MANDAT
+SECTEUR     0,N ---- CIBLE ---- 0,N MANDAT
+```
+
+## Règle de validité
+
+Le mandat est valable six mois.
+
+Conceptuellement :
+
+```text
+date_fin = date_signature + 6 mois
+```
+
+Le renouvellement doit être historisé plutôt que d'effacer l'état précédent.
 
 ---
 
-# 8. Pourquoi DEMANDE_VERSION
+# 10. Pourquoi séparer MANDAT et DEMANDE
 
-La demande d'un client peut évoluer.
+Le mandat représente :
+
+```text
+le contrat
+```
+
+La demande représente :
+
+```text
+le besoin immobilier
+```
+
+Ces deux concepts ne doivent pas être confondus.
 
 Exemple :
 
 ```text
-Version 1
-Montpellier
-Appartement
-300 000 €
-60 m² minimum
-
-       |
-       v
-
-Version 2
-Montpellier + périphérie
-Appartement ou maison
-350 000 €
-70 m² minimum
+MANDAT
+6 mois
+exclusif
+signé électroniquement
 ```
 
-Écraser les critères précédents ferait perdre l'historique.
-
-Le modèle conserve donc des versions.
+et :
 
 ```text
-MANDAT
-   |
-   v
-DEMANDE_VERSION 1
-DEMANDE_VERSION 2
-DEMANDE_VERSION 3
+DEMANDE
+Appartement
+Montpellier
+350 000 €
+70 m²
 ```
 
 ---
 
-# 9. Entité DEMANDE_VERSION
+# 11. Entité DEMANDE
 
 ## Définition
 
-DEMANDE_VERSION représente une version datée des critères de recherche d'un mandat.
+Représente la recherche immobilière associée à un mandat.
+
+## Identifiant
+
+```text
+id_demande
+```
+
+## Attributs
+
+| Attribut | Description |
+|---|---|
+| id_demande | Identifiant |
+| date_creation | Création |
+| statut | Active / clôturée |
+| id_mandat | Mandat concerné |
+
+## Relations
+
+```text
+MANDAT 1,1 ---- POSSEDE ---- 1,N DEMANDE
+```
+
+Dans le MVP, un mandat peut généralement correspondre à une demande principale, mais le modèle autorise l'évolution.
+
+---
+
+# 12. Entité DEMANDE_VERSION
+
+## Définition
+
+Représente une version historique des critères structurés d'une demande.
 
 ## Identifiant
 
@@ -285,101 +415,91 @@ id_demande_version
 | Attribut | Description |
 |---|---|
 | id_demande_version | Identifiant |
-| numero_version | Numéro de version |
-| date_version | Date d'application |
-| type_bien | Appartement, maison, terrain, etc. |
-| localisation | Zone recherchée |
+| numero_version | Numéro |
+| date_version | Date du changement |
+| auteur_type | Client / chasseur / système |
+| auteur_id | Identifiant de l'auteur selon contexte |
+| motif_modification | Pourquoi la demande a changé |
+| ville | Ville recherchée |
+| code_postal | Code postal |
+| type_bien | Type |
 | budget_min | Budget minimum |
 | budget_max | Budget maximum |
 | surface_min | Surface minimale |
-| nb_pieces_min | Nombre minimal de pièces |
-| nb_chambres_min | Nombre minimal de chambres |
-| exterieur_requis | Balcon, terrasse, jardin |
-| parking_requis | Parking obligatoire ou non |
-| ascenseur_requis | Ascenseur requis |
-| commentaire | Critères libres |
-| active | Version active ou historique |
-
-## Règles
-
-- Un mandat possède au moins une version de demande lorsqu'il entre en recherche active.
-- Une demande version appartient à un seul mandat.
-- Un mandat peut posséder plusieurs versions.
-- Une seule version devrait normalement être active à un instant donné.
-- `numero_version` est unique à l'intérieur d'un mandat.
+| nb_pieces_min | Pièces minimum |
+| nb_chambres_min | Chambres minimum |
+| dpe_max | DPE maximum éventuel |
+| criteres_souhaites | Critères supplémentaires |
+| active | Version courante |
 
 ---
 
-# 10. Entité BIEN
+# 13. Historisation obligatoire
 
-## Définition
-
-Le BIEN représente un bien immobilier identifié par la plateforme.
-
-## Identifiant
+Une demande ne doit jamais être écrasée.
 
 ```text
-id_bien
+DEMANDE
+   |
+   +--> VERSION 1
+   |
+   +--> VERSION 2
+   |
+   +--> VERSION 3
 ```
 
-## Attributs
+Chaque changement doit conserver au minimum :
 
-| Attribut | Description |
-|---|---|
-| id_bien | Identifiant interne |
-| reference_externe | Référence de l'annonce ou de la source |
-| titre | Titre |
-| type_bien | Type de bien |
-| adresse | Adresse |
-| code_postal | Code postal |
-| ville | Ville |
-| latitude | Latitude si disponible |
-| longitude | Longitude si disponible |
-| prix | Prix |
-| surface | Surface |
-| nb_pieces | Nombre de pièces |
-| nb_chambres | Nombre de chambres |
-| etage | Étage |
-| ascenseur | Présence ascenseur |
-| parking | Présence parking |
-| balcon | Présence balcon |
-| terrasse | Présence terrasse |
-| jardin | Présence jardin |
-| description | Description |
-| date_publication | Date de publication |
-| date_collecte | Date de collecte |
-| statut | Actif / expiré / vendu / indisponible |
-
-## Règles
-
-- Un bien peut être présenté à plusieurs demandes.
-- Un bien peut provenir d'une ou plusieurs sources selon l'évolution du modèle.
-- Un bien peut avoir plusieurs documents.
-- Une référence externe n'est pas nécessairement globalement unique entre différentes sources.
+```text
+date
+auteur
+motif
+```
 
 ---
 
-# 11. Entité SOURCE
+# 14. Correspondance avec le générateur StarterPack
+
+Le générateur fournit des critères structurés contenant notamment :
+
+```text
+reference
+date_creation
+ville
+code_postal
+type_bien
+budget_max
+surface_min
+nb_pieces_min
+nb_chambres_min
+dpe_max
+criteres_souhaites
+```
+
+Ces données alimenteront le modèle :
+
+```text
+DEMANDE
++
+DEMANDE_VERSION
+```
+
+---
+
+# 15. Entité SOURCE
 
 ## Définition
 
-SOURCE représente l'origine d'une information immobilière.
+Représente la provenance d'une annonce immobilière.
 
-Exemples :
+## Exemples
 
 ```text
-Agence immobilière
-Portail immobilier
-Import manuel
-Partenaire
-Open Data
+Agence
+Particulier
+Plateforme
 API
-```
-
-## Identifiant
-
-```text
-id_source
+Open Data
 ```
 
 ## Attributs
@@ -387,1205 +507,793 @@ id_source
 | Attribut | Description |
 |---|---|
 | id_source | Identifiant |
-| nom | Nom de la source |
-| type_source | Portail / agence / API / manuel |
-| url_base | URL éventuelle |
-| active | Source active ou non |
-| niveau_confiance | Niveau de confiance éventuel |
-| date_creation | Date d'enregistrement |
-
-## Règles
-
-- Une source peut fournir plusieurs biens.
-- Un bien doit être relié à au moins une source lorsque son origine est connue.
+| nom | Source |
+| type_source | Type |
+| url_base | URL |
+| actif | Statut |
+| niveau_confiance | Niveau de confiance |
 
 ---
 
-# 12. Relation SOURCE — BIEN
-
-La première version du modèle retient :
-
-```text
-SOURCE (0,N)
-    |
-    | fournit
-    |
-BIEN (1,1)
-```
-
-Cela signifie :
-
-- une source peut fournir zéro à plusieurs biens ;
-- un bien provient d'une source principale.
-
-Cette simplification est adaptée au MVP.
-
-Si le même bien doit être consolidé depuis plusieurs portails, le modèle pourra évoluer vers :
-
-```text
-SOURCE (0,N)
-     |
-     | PUBLICATION
-     |
-BIEN (0,N)
-```
-
-avec une entité associative `PUBLICATION`.
-
-Cette évolution n'est pas nécessaire dans le MCD initial.
-
----
-
-# 13. Entité PRESENTATION
+# 16. Entité BIEN
 
 ## Définition
 
-PRESENTATION représente le fait qu'un bien a été sélectionné et proposé dans le contexte d'une demande client donnée.
-
-Elle sert également à stocker le résultat du matching entre :
-
-```text
-DEMANDE_VERSION
-```
-
-et :
-
-```text
-BIEN
-```
+Représente un bien immobilier normalisé dans le SI cible.
 
 ## Identifiant
 
 ```text
-id_presentation
+id_bien
 ```
+
+## Attributs principaux
+
+| Attribut | Description |
+|---|---|
+| id_bien | Identifiant |
+| reference_externe | Référence source |
+| type_bien | Type |
+| titre | Titre |
+| adresse | Adresse |
+| code_postal | Code postal |
+| ville | Ville |
+| latitude | Latitude |
+| longitude | Longitude |
+| prix | Prix |
+| surface | Surface |
+| nb_pieces | Pièces |
+| nb_chambres | Chambres |
+| dpe | DPE |
+| description | Description |
+| date_publication | Publication |
+| date_collecte | Collecte |
+| statut | Statut |
+
+---
+
+# 17. Données d'annonces hétérogènes
+
+Les données sources peuvent être volontairement :
+
+```text
+incomplètes
+mal nommées
+dans différents formats
+semi-structurées
+```
+
+Le modèle `BIEN` représente donc la version normalisée après ingestion.
+
+Flux :
+
+```text
+CSV / JSON / API
+      |
+      v
+RAW
+      |
+      v
+STAGING
+      |
+      v
+NORMALISATION
+      |
+      v
+BIEN
+```
+
+---
+
+# 18. Entité PRESENTATION
+
+## Définition
+
+Représente le fait qu'un bien a été sélectionné ou proposé pour une version de demande.
 
 ## Attributs
 
 | Attribut | Description |
 |---|---|
 | id_presentation | Identifiant |
-| date_selection | Date de sélection |
-| date_presentation | Date réelle de présentation |
-| score_matching | Score global de matching |
-| score_budget | Score budget |
-| score_localisation | Score localisation |
-| score_surface | Score surface |
-| score_criteres | Score autres critères |
+| date_selection | Date |
+| date_presentation | Date client |
+| score_matching | Score |
 | statut | Identifié / qualifié / présenté / rejeté / visité / retenu |
-| motif_rejet | Motif éventuel |
-| commentaire_chasseur | Analyse du chasseur |
-| feedback_client | Retour du client |
 
----
-
-# 14. Pourquoi PRESENTATION est une entité
-
-La relation :
+## Relation
 
 ```text
-DEMANDE_VERSION <----> BIEN
-```
-
-est de type plusieurs-à-plusieurs.
-
-Une même demande peut correspondre à plusieurs biens.
-
-Un même bien peut correspondre à plusieurs demandes.
-
-Cette relation possède elle-même des informations :
-
-```text
-score
-status
-feedback
-date
-```
-
-Elle doit donc devenir une entité associative :
-
-```text
+DEMANDE_VERSION 0,N
+        |
+        v
 PRESENTATION
-```
-
----
-
-# 15. Relation DEMANDE_VERSION — PRESENTATION
-
-Cardinalités :
-
-```text
-DEMANDE_VERSION (0,N)
+        ^
         |
-        | donne lieu à
-        |
-PRESENTATION (1,1)
+BIEN 0,N
 ```
-
-Une demande peut ne produire aucune présentation ou en produire plusieurs.
-
-Une présentation appartient exactement à une version de demande.
 
 ---
 
-# 16. Relation BIEN — PRESENTATION
-
-Cardinalités :
-
-```text
-BIEN (0,N)
-   |
-   | est concerné par
-   |
-PRESENTATION (1,1)
-```
-
-Un bien peut n'être présenté à personne ou être associé à plusieurs demandes.
-
-Chaque présentation concerne exactement un bien.
-
----
-
-# 17. Entité DOCUMENT
+# 19. Entité COMMENTAIRE
 
 ## Définition
 
-DOCUMENT représente un document ou fichier associé à un bien.
+Représente un commentaire sur un bien dans le contexte d'une demande.
 
-Exemples :
-
-```text
-PDF annonce
-Diagnostic
-Photo
-Plan
-Brochure
-Rapport
-Note
-```
-
-## Identifiant
+Le commentaire peut être produit par :
 
 ```text
-id_document
+client
+chasseur
 ```
 
 ## Attributs
 
 | Attribut | Description |
 |---|---|
-| id_document | Identifiant |
-| nom_fichier | Nom |
-| type_document | Type fonctionnel |
-| mime_type | Type MIME |
-| chemin_stockage | URI ou chemin logique |
-| checksum | Hash d'intégrité éventuel |
-| date_ajout | Date |
-| classification | Public / interne / confidentiel |
-| indexable_ia | Autorisation d'indexation AI/RAG |
+| id_commentaire | Identifiant |
+| date_commentaire | Date |
+| auteur_type | CLIENT / CHASSEUR |
+| auteur_id | Auteur |
+| contenu | Texte |
+| priorite | Priorité éventuelle |
+| decision | Retenir / écarter / visiter / autre |
 
----
-
-# 18. Relation BIEN — DOCUMENT
-
-Cardinalités :
+## Relations
 
 ```text
-BIEN (0,N)
+COMMENTAIRE
    |
-   | possède
+   +--> DEMANDE_VERSION
    |
-DOCUMENT (1,1)
+   +--> BIEN
 ```
-
-Un bien peut ne posséder aucun document.
-
-Un document appartient à un seul bien dans le modèle initial.
 
 ---
 
-# 19. Cardinalités globales
+# 20. Pourquoi COMMENTAIRE et PRESENTATION sont distincts
 
-| Association | Entité A | Cardinalité A | Entité B | Cardinalité B |
+`PRESENTATION` représente :
+
+```text
+la relation de sélection / matching
+```
+
+`COMMENTAIRE` représente :
+
+```text
+l'interaction humaine sur le bien
+```
+
+Un même bien présenté peut recevoir plusieurs commentaires.
+
+---
+
+# 21. Entité DOCUMENT
+
+## Définition
+
+Représente un document associé à un bien.
+
+Exemples :
+
+```text
+photo
+PDF
+diagnostic
+plan
+brochure
+vidéo
+audio
+```
+
+## Attributs
+
+```text
+id_document
+id_bien
+nom_fichier
+type_document
+mime_type
+chemin_stockage
+checksum
+classification
+indexable_ia
+date_ajout
+```
+
+---
+
+# 22. Entité BAREME_COMMISSION
+
+## Définition
+
+Représente les règles de rémunération d'un chasseur.
+
+Les commissions peuvent varier :
+
+```text
+par chasseur
+par période
+par tranche de montant
+```
+
+## Identifiant
+
+```text
+id_bareme
+```
+
+## Attributs
+
+| Attribut | Description |
+|---|---|
+| id_bareme | Identifiant |
+| id_chasseur | Chasseur |
+| montant_min | Début de tranche |
+| montant_max | Fin de tranche |
+| taux_commission | Taux |
+| montant_fixe | Montant fixe éventuel |
+| date_debut_validite | Début |
+| date_fin_validite | Fin |
+| actif | Statut |
+
+---
+
+# 23. Historisation des commissions
+
+Une modification de commission ne doit pas écraser les anciennes règles.
+
+```text
+CHASSEUR
+   |
+   +--> BAREME 2025
+   |
+   +--> BAREME 2026
+```
+
+Cela permet de recalculer correctement une rémunération historique.
+
+---
+
+# 24. Entité PAIEMENT
+
+## Définition
+
+Représente les flux financiers liés à l'aboutissement d'un mandat.
+
+## Attributs
+
+| Attribut | Description |
+|---|---|
+| id_paiement | Identifiant |
+| id_mandat | Mandat |
+| date_acte_authentique | Date de signature finale |
+| montant_achat | Montant du bien |
+| montant_honoraires | Honoraires entreprise |
+| montant_chasseur | Rémunération chasseur |
+| date_reception_honoraires | Réception entreprise |
+| date_paiement_chasseur | Paiement chasseur |
+| statut | Prévu / vérifié / programmé / payé |
+
+---
+
+# 25. Pourquoi conserver le montant d'achat
+
+Les règles de commission utilisent notamment :
+
+```text
+montant du projet
+```
+
+Le paiement doit donc permettre de conserver la valeur utilisée pour calculer les honoraires et la rémunération.
+
+---
+
+# 26. Relation BAREME_COMMISSION — PAIEMENT
+
+Au moment du calcul :
+
+```text
+CHASSEUR
+   |
+   v
+BAREME applicable à la date
+   |
+   v
+Montant achat
+   |
+   v
+Rémunération
+```
+
+Le résultat financier doit rester traçable.
+
+---
+
+# 27. Performance chasseur
+
+Les indicateurs métier décrits comprennent notamment :
+
+```text
+délai mandat -> achat
+exclusivité
+nombre de ventes réussies
+nombre de mandats signés
+nombre de visites avant achat
+```
+
+Ces indicateurs ne doivent pas nécessairement être stockés définitivement.
+
+Ils peuvent être calculés à partir des données opérationnelles et analytiques.
+
+---
+
+# 28. Future extension — VISITE
+
+Le processus métier comporte explicitement des visites.
+
+Une future entité :
+
+```text
+VISITE
+```
+
+sera probablement nécessaire.
+
+Elle pourra contenir :
+
+```text
+id_visite
+id_demande
+id_bien
+id_chasseur
+date_visite
+type_visite
+compte_rendu
+```
+
+Cette entité sera ajoutée lorsque le parcours applicatif correspondant sera implémenté.
+
+---
+
+# 29. Future extension — OFFRE
+
+Le processus métier comporte également des offres d'achat.
+
+Une future entité :
+
+```text
+OFFRE
+```
+
+pourra contenir :
+
+```text
+montant
+date
+statut
+signature
+```
+
+Elle n'est pas indispensable au premier MPD BC05 si le périmètre retenu reste centré sur Data + matching.
+
+---
+
+# 30. Cardinalités principales
+
+| Association | A | Card. | B | Card. |
 |---|---|---:|---|---:|
 | SIGNE | CLIENT | 0,N | MANDAT | 1,1 |
 | GERE | CHASSEUR | 0,N | MANDAT | 1,1 |
-| VERSIONNE | MANDAT | 0,N | DEMANDE_VERSION | 1,1 |
+| CIBLE | SECTEUR | 0,N | MANDAT | 0,N |
+| DEFINIT | MANDAT | 1,1 | DEMANDE | 1,N |
+| VERSIONNE | DEMANDE | 1,1 | DEMANDE_VERSION | 1,N |
 | FOURNIT | SOURCE | 0,N | BIEN | 1,1 |
-| MATCH_DEMANDE | DEMANDE_VERSION | 0,N | PRESENTATION | 1,1 |
-| MATCH_BIEN | BIEN | 0,N | PRESENTATION | 1,1 |
-| POSSEDE_DOCUMENT | BIEN | 0,N | DOCUMENT | 1,1 |
+| MATCH | DEMANDE_VERSION | 0,N | PRESENTATION | 1,1 |
+| CONCERNE | BIEN | 0,N | PRESENTATION | 1,1 |
+| COMMENTE | DEMANDE_VERSION | 0,N | COMMENTAIRE | 1,1 |
+| SUR | BIEN | 0,N | COMMENTAIRE | 1,1 |
+| DOCUMENTE | BIEN | 0,N | DOCUMENT | 1,1 |
+| REMUNERE | CHASSEUR | 1,N | BAREME_COMMISSION | 1,1 |
+| REGLE | MANDAT | 0,N | PAIEMENT | 1,1 |
 
 ---
 
-# 20. MCD — représentation MERISE simplifiée
+# 31. MCD simplifié
 
 ```text
-+----------------+
-|     CLIENT     |
-+----------------+
-| #id_client     |
-| nom            |
-| prenom         |
-| email          |
-| telephone      |
-| statut         |
-+----------------+
-        |
-      (0,N)
-        |
-      SIGNE
-        |
-      (1,1)
-        |
-        v
-+----------------+
-|     MANDAT     |
-+----------------+
-| #id_mandat     |
-| reference      |
-| dates          |
-| statut         |
-| budget         |
-+----------------+
-        ^
-        |
-      (1,1)
-       GERE
-        |
-      (0,N)
-        |
-+----------------+
-|    CHASSEUR    |
-+----------------+
-| #id_chasseur   |
-| nom            |
-| prenom         |
-| email          |
-| statut         |
-+----------------+
+                     SECTEUR
+                        |
+                        |
+CLIENT --------> MANDAT <-------- CHASSEUR
+                  |
+                  |
+                  v
+               DEMANDE
+                  |
+                  v
+           DEMANDE_VERSION
+              /       \
+             /         \
+            v           v
+    PRESENTATION    COMMENTAIRE
+          |             |
+          +------ BIEN -+
+                    |
+                    +--> SOURCE
+                    |
+                    +--> DOCUMENT
+
+
+CHASSEUR
+   |
+   v
+BAREME_COMMISSION
+
 
 MANDAT
-  |
-(0,N)
-  |
-VERSIONNE
-  |
-(1,1)
-  v
-
-+-----------------------+
-|   DEMANDE_VERSION     |
-+-----------------------+
-| #id_demande_version   |
-| numero_version        |
-| localisation          |
-| budget                |
-| surface               |
-| criteres              |
-+-----------------------+
-          |
-        (0,N)
-          |
-          v
-+-----------------------+
-|     PRESENTATION      |
-+-----------------------+
-| #id_presentation      |
-| score_matching        |
-| statut                |
-| feedback              |
-+-----------------------+
-          ^
-          |
-        (0,N)
-          |
-+-----------------------+
-|         BIEN          |
-+-----------------------+
-| #id_bien              |
-| reference_externe     |
-| type                  |
-| ville                 |
-| prix                  |
-| surface               |
-| caracteristiques      |
-+-----------------------+
-       |         |
-       |         |
-       |         +------ (0,N) DOCUMENT
-       |
-       +---------------- SOURCE
+   |
+   v
+PAIEMENT
 ```
 
 ---
 
-# 21. Diagramme Mermaid ER
-
-Le diagramme suivant facilite la visualisation dans les outils supportant Mermaid.
+# 32. Mermaid ER
 
 ```mermaid
 erDiagram
 
     CLIENT ||--o{ MANDAT : signe
     CHASSEUR ||--o{ MANDAT : gere
-    MANDAT ||--o{ DEMANDE_VERSION : possede
+
+    MANDAT }o--o{ SECTEUR : cible
+
+    MANDAT ||--|{ DEMANDE : definit
+    DEMANDE ||--|{ DEMANDE_VERSION : versionne
 
     SOURCE ||--o{ BIEN : fournit
 
     DEMANDE_VERSION ||--o{ PRESENTATION : genere
     BIEN ||--o{ PRESENTATION : concerne
 
+    DEMANDE_VERSION ||--o{ COMMENTAIRE : contextualise
+    BIEN ||--o{ COMMENTAIRE : concerne
+
     BIEN ||--o{ DOCUMENT : possede
 
-    CLIENT {
-        int id_client PK
-        string nom
-        string prenom
-        string email
-        string telephone
-        datetime date_creation
-        string statut
-        boolean consentement_contact
-    }
+    CHASSEUR ||--|{ BAREME_COMMISSION : dispose
 
-    CHASSEUR {
-        int id_chasseur PK
-        string nom
-        string prenom
-        string email
-        string telephone
-        string statut
-        date date_entree
-    }
-
-    MANDAT {
-        int id_mandat PK
-        string reference_mandat
-        date date_signature
-        date date_debut
-        date date_fin
-        string statut
-        decimal budget_min
-        decimal budget_max
-        string commentaire
-    }
-
-    DEMANDE_VERSION {
-        int id_demande_version PK
-        int numero_version
-        date date_version
-        string type_bien
-        string localisation
-        decimal budget_min
-        decimal budget_max
-        decimal surface_min
-        int nb_pieces_min
-        int nb_chambres_min
-        boolean exterieur_requis
-        boolean parking_requis
-        boolean ascenseur_requis
-        string commentaire
-        boolean active
-    }
-
-    SOURCE {
-        int id_source PK
-        string nom
-        string type_source
-        string url_base
-        boolean active
-        string niveau_confiance
-        datetime date_creation
-    }
-
-    BIEN {
-        int id_bien PK
-        string reference_externe
-        string titre
-        string type_bien
-        string adresse
-        string code_postal
-        string ville
-        decimal latitude
-        decimal longitude
-        decimal prix
-        decimal surface
-        int nb_pieces
-        int nb_chambres
-        int etage
-        boolean ascenseur
-        boolean parking
-        boolean balcon
-        boolean terrasse
-        boolean jardin
-        string statut
-    }
-
-    PRESENTATION {
-        int id_presentation PK
-        datetime date_selection
-        datetime date_presentation
-        decimal score_matching
-        decimal score_budget
-        decimal score_localisation
-        decimal score_surface
-        decimal score_criteres
-        string statut
-        string motif_rejet
-        string commentaire_chasseur
-        string feedback_client
-    }
-
-    DOCUMENT {
-        int id_document PK
-        string nom_fichier
-        string type_document
-        string mime_type
-        string chemin_stockage
-        string checksum
-        datetime date_ajout
-        string classification
-        boolean indexable_ia
-    }
+    MANDAT ||--o{ PAIEMENT : genere
 ```
 
 ---
 
-# 22. Modèle logique dérivé — aperçu
-
-Le MCD implique le futur MLD suivant :
+# 33. Mapping héritage → cible
 
 ```text
-CLIENT
-------
-PK id_client
+UTILISATEURS
+    |
+    +--> CLIENT
+    |
+    +--> CHASSEUR
+```
 
+selon :
 
-CHASSEUR
---------
-PK id_chasseur
+```text
+role
+```
 
+---
 
-MANDAT
-------
-PK id_mandat
-FK id_client
-FK id_chasseur
+```text
+SECTEURS
+    |
+    v
+SECTEUR
+```
 
+avec évolution pour l'international.
 
+---
+
+```text
+MANDATS
+    |
+    +--> MANDAT
+    |
+    +--> DEMANDE
+    |
+    +--> DEMANDE_VERSION
+```
+
+Le champ :
+
+```text
+description_recherche
+```
+
+doit être transformé progressivement en critères structurés.
+
+---
+
+# 34. Migration de description_recherche
+
+Le texte libre existant ne doit pas être détruit.
+
+Une stratégie possible :
+
+```text
+Legacy description_recherche
+        |
+        v
+Preserve raw text
+        |
+        v
+Structured extraction
+        |
+        v
 DEMANDE_VERSION
----------------
-PK id_demande_version
-FK id_mandat
+```
 
+La migration automatique devra être prudente car toutes les informations ne sont pas forcément extractibles avec certitude.
 
-SOURCE
-------
-PK id_source
+---
 
+# 35. Données générées
 
-BIEN
-----
-PK id_bien
-FK id_source
+Le nouveau générateur du StarterPack produit :
 
+```text
+recherches.csv
+annonces.csv
+JSON annonces
+```
 
-PRESENTATION
-------------
-PK id_presentation
-FK id_demande_version
-FK id_bien
+Ces données ne représentent pas le SI hérité.
 
+Elles constituent des données synthétiques destinées aux phases :
 
-DOCUMENT
---------
-PK id_document
-FK id_bien
+```text
+ingestion
+normalisation
+matching
+3V
+OLAP
+IA
 ```
 
 ---
 
-# 23. Contraintes logiques attendues
+# 36. Data Architecture
 
-## CLIENT
-
-```text
-email
-```
-
-peut recevoir une contrainte d'unicité si la règle métier est confirmée.
-
----
-
-## MANDAT
+La trajectoire cible devient :
 
 ```text
-reference_mandat
-```
-
-doit être unique.
-
----
-
-## DEMANDE_VERSION
-
-Couple unique :
-
-```text
-(id_mandat, numero_version)
-```
-
----
-
-## PRESENTATION
-
-Une même combinaison :
-
-```text
-(id_demande_version, id_bien)
-```
-
-ne doit normalement apparaître qu'une fois.
-
-Une contrainte :
-
-```text
-UNIQUE(id_demande_version, id_bien)
-```
-
-est donc envisagée.
-
----
-
-# 24. Contraintes de valeurs
-
-Exemples :
-
-```text
-budget_min >= 0
-budget_max >= 0
-surface_min >= 0
-prix >= 0
-surface >= 0
-score_matching BETWEEN 0 AND 100
-```
-
----
-
-# 25. Règle budget
-
-Si les deux valeurs existent :
-
-```text
-budget_min <= budget_max
-```
-
-Cette règle pourra être matérialisée via `CHECK`.
-
----
-
-# 26. Score matching
-
-Le score global peut être calculé à partir de plusieurs sous-scores.
-
-Exemple conceptuel :
-
-```text
-Score Global
-   =
-Budget
-+
-Localization
-+
-Surface
-+
-Other Criteria
-```
-
-La formule exacte appartient à la partie :
-
-```text
-BC05 / C5 — Modèle Matching IA
-```
-
-Le MCD prévoit seulement les emplacements nécessaires à sa traçabilité.
-
----
-
-# 27. Historisation de la demande
-
-Le choix de `DEMANDE_VERSION` permet :
-
-```text
-Original Need
-     |
-     v
-Modification
-     |
-     v
-New Version
-```
-
-sans perte de l'état précédent.
-
-Cela facilite :
-
-- audit ;
-- matching historique ;
-- explication des décisions ;
-- comparaison des résultats.
-
----
-
-# 28. Historisation des biens
-
-Le modèle initial ne crée pas encore d'entité :
-
-```text
-BIEN_VERSION
-```
-
-Les modifications d'annonce peuvent être historisées ultérieurement si le besoin apparaît.
-
-Ce choix évite une complexité prématurée.
-
----
-
-# 29. Gestion des sources
-
-Le MVP retient une source principale par bien.
-
-Future évolution possible :
-
-```text
-BIEN
-  |
-  v
-PUBLICATION
-  ^
-  |
-SOURCE
-```
-
-pour représenter :
-
-- plusieurs annonces du même bien ;
-- plusieurs prix ;
-- différentes dates ;
-- différentes URLs.
-
----
-
-# 30. Documents et RAG
-
-L'entité DOCUMENT prépare une future capacité RAG.
-
-```text
-DOCUMENT
-    |
-    v
-Classification
-    |
-    v
-indexable_ia?
-    |
-  +---+---+
-  |       |
- YES      NO
-  |       |
-  v       v
-RAG     Excluded
-```
-
-Cela permet d'intégrer la gouvernance AI dès le modèle métier.
-
----
-
-# 31. RGPD
-
-Les principales données personnelles sont concentrées dans :
-
-```text
-CLIENT
-CHASSEUR
-```
-
-et potentiellement dans :
-
-```text
-DOCUMENT
-COMMENTAIRES
-FEEDBACK
-```
-
-Le modèle doit être relié au :
-
-```text
-REGISTRE-RGPD.md
-```
-
----
-
-# 32. Minimisation
-
-Le modèle ne doit pas stocker une information personnelle simplement parce qu'elle pourrait être utile plus tard.
-
-Principe :
-
-```text
-Business Purpose
+Legacy Fixtures
       |
       v
-Required Data
-```
-
----
-
-# 33. Sécurité
-
-Les futurs droits applicatifs devront contrôler notamment :
-
-```text
-CLIENT
-MANDAT
-DEMANDE_VERSION
-DOCUMENT
-```
-
-Les tables ne doivent pas être directement exposées au frontend.
-
----
-
-# 34. Data Governance
-
-Dans OpenMetadata, les entités pourront progressivement être associées à :
-
-- owner ;
-- description ;
-- classification ;
-- glossary ;
-- lineage ;
-- Data Quality.
-
----
-
-# 35. Data Quality — CLIENT
-
-Exemples :
-
-```text
-id_client NOT NULL
-email valid format
-statut accepted values
-```
-
----
-
-# 36. Data Quality — MANDAT
-
-Exemples :
-
-```text
-reference unique
-client exists
-chasseur exists
-budget_min <= budget_max
-```
-
----
-
-# 37. Data Quality — DEMANDE_VERSION
-
-Exemples :
-
-```text
-numero_version > 0
-surface_min >= 0
-budget_min <= budget_max
-one active version per mandate
-```
-
-La règle d'une seule version active pourra nécessiter une contrainte SQL avancée ou un contrôle applicatif.
-
----
-
-# 38. Data Quality — BIEN
-
-Exemples :
-
-```text
-prix >= 0
-surface >= 0
-source exists
-valid status
-```
-
----
-
-# 39. Data Quality — PRESENTATION
-
-Exemples :
-
-```text
-score_matching between 0 and 100
-request exists
-property exists
-unique request/property association
-```
-
----
-
-# 40. Cycle de vie métier
-
-```text
-CLIENT
-   |
-   v
-MANDAT
-   |
-   v
-DEMANDE_VERSION
-   |
-   v
-SEARCH / MATCH
-   |
-   v
-BIEN
-   |
-   v
-PRESENTATION
-   |
-   v
-CLIENT FEEDBACK
-```
-
----
-
-# 41. Processus de matching
-
-Le MCD prépare :
-
-```text
-DEMANDE_VERSION
+Migration
       |
-      +------------------+
-      |                  |
-      v                  v
-Requirements           BIEN
-      |                  |
-      +--------+---------+
-               |
-               v
-            Matching
-               |
-               v
-         PRESENTATION
+      v
+Operational Model
+
+
+Generated Announcements
+      |
+      v
+RAW
+      |
+      v
+STAGING
+      |
+      v
+Normalized BIEN
 ```
 
 ---
 
-# 42. Séparation matching et bien
+# 37. Matching
 
-Le score de matching n'est pas un attribut intrinsèque d'un bien.
+Le modèle de matching consomme principalement :
+
+```text
+DEMANDE_VERSION
++
+BIEN
+```
+
+et produit :
+
+```text
+PRESENTATION
+```
+
+avec :
+
+```text
+score
+ranking
+status
+```
+
+---
+
+# 38. Feedback
+
+Les interactions :
+
+```text
+COMMENTAIRE
+```
+
+peuvent ensuite servir à :
+
+```text
+requalification de demande
+analytics
+future AI feedback
+```
+
+---
+
+# 39. RGPD
+
+Les données personnelles principales résident notamment dans :
+
+```text
+CLIENT
+CHASSEUR
+COMMENTAIRE
+DOCUMENT
+PAIEMENT
+```
+
+Le modèle doit donc être relié au registre RGPD.
+
+---
+
+# 40. AI Privacy
+
+Les informations transmises au matching ou à un LLM doivent être minimisées.
 
 Exemple :
 
 ```text
-BIEN A
-```
-
-peut avoir :
-
-```text
-95%
-```
-
-pour un client et :
-
-```text
-42%
-```
-
-pour un autre.
-
-Le score appartient donc à :
-
-```text
-PRESENTATION
-```
-
-et non à :
-
-```text
-BIEN
-```
-
----
-
-# 43. Séparation critères et mandat
-
-Les critères sont placés dans :
-
-```text
 DEMANDE_VERSION
 ```
 
-et non directement dans :
+peut être utilisée sans transmettre :
 
 ```text
-MANDAT
+CLIENT.email
+CLIENT.telephone
 ```
-
-afin de préserver l'historique.
 
 ---
 
-# 44. Entités hors périmètre initial
+# 41. Modèle cible minimum
 
-Les concepts suivants peuvent exister dans une version future :
+Le modèle cible retenu avant passage au MLD est donc :
+
+```text
+CLIENT
+CHASSEUR
+SECTEUR
+MANDAT
+DEMANDE
+DEMANDE_VERSION
+SOURCE
+BIEN
+PRESENTATION
+COMMENTAIRE
+DOCUMENT
+BAREME_COMMISSION
+PAIEMENT
+```
+
+---
+
+# 42. Évolutions applicatives futures
+
+Entités pouvant être ajoutées pendant l'implémentation applicative :
 
 ```text
 VISITE
 OFFRE
-NEGOCIATION
-TRANSACTION
-AGENCE
-AGENT
-PUBLICATION
-COMMUNE
-ZONE_RECHERCHE
-FEATURE
-MATCH_DETAIL
-AI_EVALUATION
+FACTURE
+ACTE
+NOTAIRE
+RENOUVELLEMENT_MANDAT
 ```
 
-Ils ne sont pas inclus dans la version 1 afin de garder un modèle cohérent avec le MVP.
+Elles ne doivent être ajoutées que lorsque leur besoin technique est réellement implémenté.
 
 ---
 
-# 45. Pourquoi ne pas tout modéliser maintenant
-
-Le principe est :
-
-```text
-Model the current business need
-not every possible future need.
-```
-
-Chaque entité supplémentaire entraîne :
-
-- règles ;
-- foreign keys ;
-- migrations ;
-- tests ;
-- API ;
-- gouvernance.
-
----
-
-# 46. Validation métier à effectuer
-
-Avant passage au MLD définitif, valider :
-
-```text
-CLIENT
-CHASSEUR
-MANDAT
-DEMANDE_VERSION
-SOURCE
-BIEN
-PRESENTATION
-DOCUMENT
-```
-
-et les règles :
-
-```text
-Client -> several mandates
-Chasseur -> several mandates
-Mandat -> several request versions
-Source -> several properties
-Request version -> several presentations
-Property -> several presentations
-Property -> several documents
-```
-
----
-
-# 47. MCD final version 1
-
-```text
-CLIENT (0,N)
-    |
-    | SIGNE
-    |
-MANDAT (1,1)
-
-
-CHASSEUR (0,N)
-    |
-    | GERE
-    |
-MANDAT (1,1)
-
-
-MANDAT (0,N)
-    |
-    | VERSIONNE
-    |
-DEMANDE_VERSION (1,1)
-
-
-SOURCE (0,N)
-    |
-    | FOURNIT
-    |
-BIEN (1,1)
-
-
-DEMANDE_VERSION (0,N)
-    |
-    | GENERE
-    |
-PRESENTATION (1,1)
-
-
-BIEN (0,N)
-    |
-    | CONCERNE
-    |
-PRESENTATION (1,1)
-
-
-BIEN (0,N)
-    |
-    | POSSEDE
-    |
-DOCUMENT (1,1)
-```
-
----
-
-# 48. Étape suivante
-
-Une fois ce MCD validé, le travail suivant sera :
-
-```text
-MCD
- |
- v
-MLD
- |
- v
-PostgreSQL MPD
- |
- v
-migration.sql
-```
-
-Le `migration.sql` devra inclure :
-
-- tables ;
-- PK ;
-- FK ;
-- UNIQUE ;
-- CHECK ;
-- indexes justifiés ;
-- timestamps utiles.
-
----
-
-# 49. Preuve attendue
-
-Pour BC05 / C1 :
-
-```text
-MCD-MERISE-PROJET.md
-        |
-        v
-MLD
-        |
-        v
-migration.sql
-        |
-        v
-PostgreSQL
-        |
-        v
-Executed validation
-```
-
----
-
-# 50. Statut
+# 43. Statut
 
 | Élément | Statut |
 |---|---|
-| Périmètre métier | DÉFINI |
-| Entités | DÉFINIES |
-| Attributs | DÉFINIS |
-| Relations | DÉFINIES |
-| Cardinalités | DÉFINIES |
-| Historisation demande | DÉFINIE |
-| Matching relationship | DÉFINIE |
-| Document/RAG readiness | DÉFINIE |
-| RGPD considerations | DOCUMENTÉES |
-| Mermaid ER diagram | DISPONIBLE |
-| MLD | PROCHAINE ÉTAPE |
-| MPD PostgreSQL | À PRODUIRE |
-| migration.sql | À PRODUIRE |
-| SQL execution | À PRODUIRE |
+| Legacy model identified | COMPLETE |
+| Client / chasseur split | COMPLETE |
+| Secteur preserved | COMPLETE |
+| Mandat corrected | COMPLETE |
+| Structured demand | COMPLETE |
+| Demand versioning | COMPLETE |
+| Author + modification reason | COMPLETE |
+| Bien | COMPLETE |
+| Source | COMPLETE |
+| Presentation | COMPLETE |
+| Commentaire | COMPLETE |
+| Document | COMPLETE |
+| Commission scale | COMPLETE |
+| Payment | COMPLETE |
+| Generator mapping | COMPLETE |
+| MLD V2 | NEXT |
+| MPD V2 | AFTER MLD |
+| migration.sql | AFTER MPD |
 
 ---
 
-# 51. Conclusion
+# 44. Conclusion
 
-Le modèle conceptuel repose sur le cœur métier :
-
-```text
-CLIENT
-   |
-   v
-MANDAT
-   |
-   v
-DEMANDE_VERSION
-   |
-   v
-PRESENTATION
-   |
-   v
-BIEN
-```
-
-en ajoutant :
+Le modèle cible corrige les principales limites du SI hérité :
 
 ```text
-CHASSEUR
-SOURCE
-DOCUMENT
+Mixed users
+        |
+        v
+CLIENT + CHASSEUR
+
+
+Free-text search
+        |
+        v
+DEMANDE + VERSIONING
+
+
+Static commission
+        |
+        v
+HISTORICAL COMMISSION SCALE
+
+
+Missing real-estate model
+        |
+        v
+BIEN + SOURCE
+
+
+Missing interaction context
+        |
+        v
+PRESENTATION + COMMENTAIRE
+
+
+Missing payment lifecycle
+        |
+        v
+PAIEMENT
 ```
 
-pour représenter respectivement :
-
-- la responsabilité métier ;
-- la provenance de l'information ;
-- les contenus associés aux biens.
-
-La structure permet ensuite d'intégrer proprement :
+Le modèle est désormais aligné à la fois avec :
 
 ```text
-Matching
-AI
-RAG
-Data Governance
-RGPD
-Analytics
+Legacy system
++
+StarterPack requirements
++
+Future growth
++
+OLTP / OLAP
++
+Matching / AI
 ```
-
-sans déplacer ces responsabilités dans le modèle de base de manière incohérente.
 
 ---
 
-**MCD MERISE V1 — READY FOR MLD**
+**MCD MERISE V2 — READY FOR MLD V2**
