@@ -4,7 +4,7 @@ stages:
 
 default:
   tags:
-    - docker
+    - shell
 
 include:
   - local: .gitlab/ci/database.yml
