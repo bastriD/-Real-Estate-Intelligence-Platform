@@ -1,0 +1,33 @@
+database:validate:
+  stage: validate
+  image: postgres:16
+  script:
+    - test -f database/migrations/001_initial_schema.sql
+    - grep -q "CREATE SCHEMA IF NOT EXISTS real_estate;" database/migrations/001_initial_schema.sql
+    - grep -q "CREATE TABLE real_estate.client" database/migrations/001_initial_schema.sql
+    - grep -q "CREATE TABLE real_estate.paiement" database/migrations/001_initial_schema.sql
+    - grep -q "^COMMIT;" database/migrations/001_initial_schema.sql
+  rules:
+    - changes:
+        - database/**/*
+
+database:migrate:
+  stage: database
+  image: bitnami/kubectl:latest
+  needs:
+    - database:validate
+  script:
+    - kubectl -n real-estate get deploy real-estate-postgresql
+    - kubectl -n real-estate get secret real-estate-postgresql-secret
+    - |
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/migrations/001_initial_schema.sql
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - database/migrations/**/*

@@ -1,0 +1,6 @@
+stages:
+  - validate
+  - database
+
+include:
+  - local: .gitlab/ci/database.yml
