@@ -2,5 +2,9 @@ stages:
   - validate
   - database
 
+default:
+  tags:
+    - docker
+
 include:
   - local: .gitlab/ci/database.yml
