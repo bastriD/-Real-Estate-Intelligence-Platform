@@ -1,0 +1,449 @@
+@startuml 12-Security-Architecture
+
+title Enterprise AI Platform — Security Architecture
+
+left to right direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam ArrowThickness 1
+
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam component {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam database {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam cloud {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+' ============================================================
+' USERS / IDENTITIES
+' ============================================================
+
+actor "Business User" as BusinessUser
+actor "Developer /\nData / AI Engineer" as Engineer
+actor "Platform / DevOps\nEngineer" as DevOps
+actor "Governance /\nSecurity" as GovernanceUser
+
+rectangle "Identity & Access" as Identity {
+    component "Authentication" as Authentication
+    component "Authorization" as Authorization
+    component "Kubernetes RBAC" as K8sRBAC
+    component "Application RBAC" as AppRBAC
+    component "Least Privilege" as LeastPrivilege
+}
+
+BusinessUser --> Authentication
+Engineer --> Authentication
+DevOps --> Authentication
+GovernanceUser --> Authentication
+
+Authentication --> Authorization
+Authorization --> K8sRBAC
+Authorization --> AppRBAC
+Authorization --> LeastPrivilege
+
+' ============================================================
+' EXTERNAL / NORTH-SOUTH BOUNDARY
+' ============================================================
+
+rectangle "External / User Access Boundary" as AccessBoundary {
+    component "Internal DNS" as DNS
+    component "NGINX Ingress" as Ingress
+    component "TLS" as TLS
+    component "cert-manager" as CertManager
+}
+
+BusinessUser --> DNS
+DNS --> Ingress
+Ingress --> TLS
+CertManager --> TLS
+
+' ============================================================
+' ENGINEERING SECURITY
+' ============================================================
+
+rectangle "Secure Software Delivery" as Delivery {
+
+    component "GitLab" as GitLab
+
+    component "Protected Branches" as ProtectedBranches
+
+    component "Merge Request Review" as MRReview
+
+    component "Secret Scanning" as SecretScanning
+
+    component "Dependency / Image\nScanning" as Scanning
+
+    component "Policy Validation" as PolicyValidation
+
+    component "GitLab Runner\nLeast Privilege" as RunnerSecurity
+}
+
+Engineer --> GitLab
+DevOps --> GitLab
+
+ProtectedBranches ..> GitLab
+MRReview ..> GitLab
+SecretScanning ..> GitLab
+Scanning ..> GitLab
+PolicyValidation ..> GitLab
+RunnerSecurity ..> GitLab
+
+' ============================================================
+' KUBERNETES SECURITY
+' ============================================================
+
+rectangle "Kubernetes Security Boundary" as KubernetesSecurity {
+
+    component "Kubernetes API" as K8sAPI
+
+    component "RBAC Enforcement" as RBACEnforcement
+
+    component "Namespace Isolation" as NamespaceIsolation
+
+    component "Security Context" as SecurityContext
+
+    component "Resource Limits" as ResourceLimits
+
+    component "Admission Policy Engine\nTarget State" as PolicyEngine
+
+    component "Pod / Workload Security" as WorkloadSecurity
+}
+
+K8sRBAC --> RBACEnforcement
+RBACEnforcement --> K8sAPI
+
+NamespaceIsolation ..> WorkloadSecurity
+SecurityContext ..> WorkloadSecurity
+ResourceLimits ..> WorkloadSecurity
+PolicyEngine ..> WorkloadSecurity
+
+' ============================================================
+' NETWORK SECURITY
+' ============================================================
+
+rectangle "Network Security" as NetworkSecurity {
+
+    component "LAN / Routing Controls" as RoutingControls
+
+    component "Host Firewall" as HostFirewall
+
+    component "Ingress Exposure Policy" as ExposurePolicy
+
+    component "NetworkPolicy\nTarget / Expanded" as NetworkPolicy
+}
+
+RoutingControls ..> KubernetesSecurity
+HostFirewall ..> KubernetesSecurity
+
+ExposurePolicy ..> Ingress
+NetworkPolicy ..> KubernetesSecurity
+
+' ============================================================
+' SECRETS / CONFIGURATION
+' ============================================================
+
+rectangle "Secrets Management" as SecretsManagement {
+
+    component "Kubernetes Secrets" as K8sSecrets
+
+    component "Protected CI Variables" as CIVariables
+
+    component "Future External Secrets /\nVault Integration" as FutureSecrets
+
+    component "Secret Rotation" as SecretRotation
+}
+
+CIVariables --> K8sSecrets : Controlled delivery
+FutureSecrets ..> K8sSecrets
+SecretRotation ..> K8sSecrets
+
+' ============================================================
+' APPLICATION SECURITY
+' ============================================================
+
+rectangle "Application Security" as ApplicationSecurity {
+
+    component "Business APIs" as BusinessAPI
+
+    component "Input Validation" as InputValidation
+
+    component "Authentication /\nAuthorization Checks" as AppAuth
+
+    component "Secure Configuration" as SecureConfig
+
+    component "Error Handling /\nNo Sensitive Leakage" as SafeErrors
+}
+
+AppRBAC --> AppAuth
+
+InputValidation ..> BusinessAPI
+AppAuth ..> BusinessAPI
+SecureConfig ..> BusinessAPI
+SafeErrors ..> BusinessAPI
+
+K8sSecrets --> SecureConfig
+TLS --> BusinessAPI
+
+' ============================================================
+' DATA SECURITY
+' ============================================================
+
+rectangle "Data Security & Governance" as DataSecurity {
+
+    database "PostgreSQL" as PostgreSQL
+
+    component "Database Roles" as DBRoles
+
+    component "Data Classification" as DataClassification
+
+    component "OpenMetadata" as OpenMetadata
+
+    component "Retention / GDPR Controls" as GDPRControls
+}
+
+LeastPrivilege --> DBRoles
+DBRoles --> PostgreSQL
+
+OpenMetadata --> DataClassification
+DataClassification --> GDPRControls
+
+GDPRControls ..> PostgreSQL
+
+' ============================================================
+' AI SECURITY
+' ============================================================
+
+rectangle "AI Security & Governance" as AISecurity {
+
+    component "Internal AI API /\nAI Gateway Target State" as AIGateway
+
+    component "Ollama / Local AI" as Ollama
+
+    component "Prompt / Input Governance" as PromptGovernance
+
+    component "RAG Source Governance" as RAGGovernance
+
+    component "Prompt Injection Controls" as PromptInjection
+
+    component "Model / Asset Governance" as ModelGovernance
+
+    component "Human Oversight" as HumanOversight
+}
+
+BusinessAPI --> AIGateway
+AIGateway --> Ollama
+
+PromptGovernance ..> AIGateway
+RAGGovernance ..> AIGateway
+PromptInjection ..> AIGateway
+ModelGovernance ..> Ollama
+HumanOversight ..> AIGateway
+
+OpenMetadata ..> RAGGovernance : Data ownership /\nclassification
+
+' ============================================================
+' EXTERNAL AI
+' ============================================================
+
+cloud "External AI Provider" as ExternalAI
+
+rectangle "External AI Security Gate" as ExternalGate {
+
+    component "Data Classification Check" as ExternalClassification
+
+    component "Privacy Review" as PrivacyReview
+
+    component "Security Review" as SecurityReview
+
+    component "Explicit Approval" as ExternalApproval
+}
+
+AIGateway ..> ExternalGate : Exception request
+
+ExternalGate --> ExternalClassification
+ExternalClassification --> PrivacyReview
+PrivacyReview --> SecurityReview
+SecurityReview --> ExternalApproval
+ExternalApproval ..> ExternalAI
+
+' ============================================================
+' OBSERVABILITY / AUDIT
+' ============================================================
+
+rectangle "Security Monitoring & Audit" as SecurityMonitoring {
+
+    component "Prometheus" as Prometheus
+
+    component "Loki" as Loki
+
+    component "Tempo / OpenTelemetry" as Tempo
+
+    component "Grafana" as Grafana
+
+    component "Audit Evidence" as AuditEvidence
+
+    component "Security Alerts" as SecurityAlerts
+}
+
+KubernetesSecurity ..> Prometheus : Security / resource metrics
+ApplicationSecurity ..> Prometheus : App metrics
+AISecurity ..> Prometheus : AI security metrics
+
+Delivery ..> Loki : CI / security logs
+KubernetesSecurity ..> Loki : Platform logs
+ApplicationSecurity ..> Loki : Application logs
+AISecurity ..> Loki : AI logs
+
+ApplicationSecurity ..> Tempo : Traces
+AISecurity ..> Tempo : AI traces
+
+Prometheus --> Grafana
+Loki --> Grafana
+Tempo --> Grafana
+
+Prometheus --> SecurityAlerts
+Loki --> SecurityAlerts
+
+Prometheus --> AuditEvidence
+Loki --> AuditEvidence
+GitLab --> AuditEvidence
+
+' ============================================================
+' GOVERNANCE AS CODE
+' ============================================================
+
+rectangle "Security Governance as Code" as SecurityGov {
+
+    component "Security Requirements" as SecurityRequirements
+
+    component "Controls" as SecurityControls
+
+    component "Policy as Code" as PolicyAsCode
+
+    component "Risk as Code" as RiskAsCode
+
+    component "Compliance as Code" as ComplianceAsCode
+}
+
+GovernanceUser --> SecurityGov
+
+SecurityRequirements --> SecurityControls
+SecurityControls --> PolicyAsCode
+SecurityControls --> RiskAsCode
+SecurityControls --> ComplianceAsCode
+
+PolicyAsCode ..> PolicyValidation : CI enforcement
+PolicyAsCode ..> PolicyEngine : Runtime enforcement
+
+RiskAsCode ..> AuditEvidence
+ComplianceAsCode ..> AuditEvidence
+
+' ============================================================
+' BACKUP / RECOVERY SECURITY
+' ============================================================
+
+rectangle "Backup & Recovery Security" as RecoverySecurity {
+
+    component "Backup Access Controls" as BackupACL
+
+    component "Restore Validation" as RestoreValidation
+
+    component "Recovery Credentials" as RecoveryCredentials
+}
+
+BackupACL ..> PostgreSQL
+RecoveryCredentials ..> SecretsManagement
+RestoreValidation ..> AuditEvidence
+
+' ============================================================
+' DEFENSE IN DEPTH
+' ============================================================
+
+note bottom of Identity
+Identity is validated
+before privileged access.
+
+Authorization follows
+least privilege.
+end note
+
+note bottom of Delivery
+Security starts before deployment.
+
+Source, dependencies, images,
+policies, and secrets are
+validated in CI.
+end note
+
+note bottom of KubernetesSecurity
+Kubernetes security combines:
+
+RBAC
+Namespace isolation
+Security context
+Resource controls
+Admission policy
+end note
+
+note bottom of NetworkSecurity
+Flannel provides networking,
+not the complete target
+network-security model.
+
+NetworkPolicy coverage is
+expanded when required.
+end note
+
+note bottom of SecretsManagement
+Secrets must never be stored
+as plaintext values in Git.
+
+External secret management
+may be introduced when justified.
+end note
+
+note bottom of AISecurity
+Local AI reduces external
+data exposure but does not
+eliminate AI security risks.
+
+Prompt injection, RAG access,
+model provenance, and human
+oversight remain required.
+end note
+
+note bottom of ExternalAI
+External AI is not the
+default inference path.
+
+Any use requires explicit
+security, privacy, data,
+and architecture governance.
+end note
+
+note bottom of SecurityGov
+Security controls progressively
+move from written standards
+to machine-readable policies,
+CI validation, runtime enforcement,
+and continuous evidence.
+end note
+
+@enduml

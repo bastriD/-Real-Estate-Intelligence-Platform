@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="2045px" preserveAspectRatio="none" style="width:4598px;height:2045px;" version="1.1" viewBox="0 0 4598 2045" width="4598px" zoomAndPan="magnify"><defs/><g><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacingAndGlyphs" textLength="591" x="2019.5" y="16.708">Enterprise AI Platform — Backup &amp; Disaster Recovery Architecture</text><!--MD5=[bf7ef243b05bf44a6c3733d5342057da]
+cluster ProtectedState--><rect fill="#FFFFFF" height="754" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="282" x="553.5" y="558.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="195" x="597" y="573.9482">Protected Platform State</text><!--MD5=[e33d9da1e2677b4ccca93c9923e45817]
+cluster BackupMechanisms--><rect fill="#FFFFFF" height="513" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="230" x="1009.5" y="795.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="159" x="1045" y="810.9482">Backup Mechanisms</text><!--MD5=[11b777e81b7845bcb2f6035b24c2354f]
+cluster RecoveryStorage--><rect fill="#FFFFFF" height="337" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="232" x="1280.5" y="897.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="141" x="1326" y="912.9482">Recovery Storage</text><!--MD5=[b139c958f4424556a401ee3d267fd5a0]
+cluster Disaster--><rect fill="#FFFFFF" height="406" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="198" x="30" y="1364.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="181" x="38.5" y="1379.9482">Disaster / Major Failure</text><!--MD5=[c58e0afb4c42582880c958149b26e345]
+cluster RecoveryProcess--><rect fill="#FFFFFF" height="122" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="2664.5" x="277" y="1348.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="143" x="1537.75" y="1363.9482">Recovery Process</text><!--MD5=[b7c7b6960d2cc4443d46f453e91edb99]
+cluster InfraRecovery--><rect fill="#FFFFFF" height="330" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="249" x="2717.5" y="44.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="189" x="2747.5" y="59.9482">Infrastructure Recovery</text><!--MD5=[05198628dba97598fcba24ba7e1f23af]
+cluster GitOpsRecovery--><rect fill="#FFFFFF" height="103" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="791" x="1748" y="592.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="132" x="2077.5" y="607.9482">GitOps Recovery</text><!--MD5=[142cfaf33dc29d6c2815ecd71e55f750]
+cluster DataRecovery--><rect fill="#FFFFFF" height="97" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="1249" x="1695" y="959.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="114" x="2262.5" y="974.9482">Data Recovery</text><!--MD5=[5fb4b52d5ffffc0c88408d588d7f7ac7]
+cluster PlatformRecovery--><rect fill="#FFFFFF" height="512" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="234" x="2073.5" y="1522.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="218" x="2081.5" y="1537.9482">Platform Services Recovery</text><!--MD5=[37edf2428e635b0f99699614f47273a9]
+cluster ApplicationRecovery--><rect fill="#FFFFFF" height="229" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="182" x="2366" y="1080.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="166" x="2374" y="1095.9482">Application Recovery</text><!--MD5=[7e190f56facd6dc327f515628bda2874]
+cluster AIRecovery--><rect fill="#FFFFFF" height="97" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="1590" x="1336.5" y="750.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="94" x="2084.5" y="765.9482">AI Recovery</text><!--MD5=[f85ea1e2177e5adb5db234deb17b37e1]
+cluster Validation--><rect fill="#FFFFFF" height="548" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="238" x="3007.5" y="707.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="156" x="3048.5" y="722.9482">Recovery Validation</text><!--MD5=[79b218990f6df8665fff7e26bc0b0ecc]
+cluster Objectives--><rect fill="#FFFFFF" height="335" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="590.5" x="3310" y="883.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="256" x="3477.25" y="898.9482">Recovery Objectives &amp; Evidence</text><!--MD5=[4164106f4044a387b593721c0dcef94b]
+cluster DRGovernance--><rect fill="#FFFFFF" height="193" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="638" x="3949.5" y="535.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="122" x="4207.5" y="550.9482">DR Governance</text><!--MD5=[79002d0045b3e84f23d2b19d8a5cfda2]
+entity GitRepos--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="154" x="617.5" y="824.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="612.5" y="829.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="612.5" y="851.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="134" x="627.5" y="847.9482">GitLab Repositories</text><!--MD5=[9529c2739b5fe57006eae0fc44d0f3ce]
+entity GitOpsState--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="165" x="612" y="682.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="607" y="687.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="607" y="709.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="145" x="622" y="705.9482">GitOps Desired State</text><!--MD5=[89112a84c8daddb34abf4f068893e892]
+entity PostgreSQL--><path d="M605,906.4531 C605,896.4531 694.5,896.4531 694.5,896.4531 C694.5,896.4531 784,896.4531 784,906.4531 L784,931.75 C784,941.75 694.5,941.75 694.5,941.75 C694.5,941.75 605,941.75 605,931.75 L605,906.4531 " fill="#FFFFFF" style="stroke: #333333; stroke-width: 1.5;"/><path d="M605,906.4531 C605,916.4531 694.5,916.4531 694.5,916.4531 C694.5,916.4531 784,916.4531 784,906.4531 " fill="none" style="stroke: #333333; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="159" x="615" y="933.4482">PostgreSQL Databases</text><!--MD5=[ec609c8d89826312bb19c41f11f7ab53]
+entity K8sResources--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="180" x="604.5" y="1189.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="599.5" y="1194.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="599.5" y="1216.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="160" x="614.5" y="1212.9482">Kubernetes Resources</text><!--MD5=[74e7a68edf44b7c4de2e6a8bde3b7a45]
+entity PVs--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="154" x="617.5" y="1260.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="612.5" y="1265.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="612.5" y="1287.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="134" x="627.5" y="1283.9482">Persistent Volumes</text><!--MD5=[c64c956e8c2d50cc4914e5ed2aa36f17]
+entity MetadataState--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="250" x="569.5" y="1047.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="564.5" y="1052.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="564.5" y="1074.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="230" x="579.5" y="1070.9482">OpenMetadata Governance State</text><!--MD5=[43d8bdc5fcc8a15269b5a8420ffc122b]
+entity MLflowMetadata--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="134" x="627.5" y="976.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="622.5" y="981.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="622.5" y="1003.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="114" x="637.5" y="999.9482">MLflow Metadata</text><!--MD5=[0c8129d7e32e662ba46c1c2bbce66589]
+entity MinIOArtifacts--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="117" x="636" y="1118.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="631" y="1123.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="631" y="1145.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="97" x="646" y="1141.9482">MinIO Artifacts</text><!--MD5=[fe273a817e597bfb1e5796ae1c6b49eb]
+entity Configuration--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="157" x="616" y="594.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="611" y="599.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="611" y="637.0469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="101" x="644" y="617.4482">Configuration /</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="137" x="626" y="633.7451">Secrets References</text><!--MD5=[e7c193b48ca9081c63b584eac6f92e77]
+entity AIModels--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="155" x="617" y="753.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="612" y="758.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="612" y="780.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="135" x="627" y="776.9482">AI Model Definitions</text><!--MD5=[b250d1dcbbf7074a1fb53b6852ed6ea9]
+entity GitBackup--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="182" x="1033.5" y="929.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1028.5" y="934.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1028.5" y="972.0469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="162" x="1043.5" y="952.4482">Git Repository Backup /</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="39" x="1105" y="968.7451">Mirror</text><!--MD5=[95229c727197441e32f5ac1bb7cb807f]
+entity PGBackup--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="157" x="1046" y="1017.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1041" y="1022.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1041" y="1044.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="137" x="1056" y="1040.9482">PostgreSQL Backup</text><!--MD5=[4883e9c3c57ccb4c971781d20a2e23c7]
+entity Velero--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="64" x="1092.5" y="1177.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1087.5" y="1182.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1087.5" y="1204.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="44" x="1102.5" y="1200.9482">Velero</text><!--MD5=[10c9181709b8e2fae722d79076afcf8b]
+entity PVBackup--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="182" x="1033.5" y="1248.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1028.5" y="1253.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1028.5" y="1275.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="162" x="1043.5" y="1271.9482">Persistent Data Backup</text><!--MD5=[b4dac443d24892d389f8eac8b61b4165]
+entity ObjectBackup--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="130" x="1059.5" y="1089.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1054.5" y="1094.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1054.5" y="1132.0469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="96" x="1076.5" y="1112.4482">MinIO / Object</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="110" x="1069.5" y="1128.7451">Storage Backup</text><!--MD5=[668bfa6bfd757f85588e86536ed2de94]
+entity ConfigBackup--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="160" x="1044.5" y="857.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1039.5" y="862.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1039.5" y="884.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="140" x="1054.5" y="880.9482">Configuration Export</text><!--MD5=[7cc256e7b464abff3bafc6039ad23113]
+entity BackupRepo--><path d="M1321.5,943.4531 C1321.5,933.4531 1396.5,933.4531 1396.5,933.4531 C1396.5,933.4531 1471.5,933.4531 1471.5,943.4531 L1471.5,968.75 C1471.5,978.75 1396.5,978.75 1396.5,978.75 C1396.5,978.75 1321.5,978.75 1321.5,968.75 L1321.5,943.4531 " fill="#FFFFFF" style="stroke: #333333; stroke-width: 1.5;"/><path d="M1321.5,943.4531 C1321.5,953.4531 1396.5,953.4531 1396.5,953.4531 C1396.5,953.4531 1471.5,953.4531 1471.5,943.4531 " fill="none" style="stroke: #333333; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="130" x="1331.5" y="970.4482">Backup Repository</text><!--MD5=[fdb286b6a6bad14fe3ff325119540291]
+entity DBBackupStorage--><path d="M1296.5,1023.4531 C1296.5,1013.4531 1396.5,1013.4531 1396.5,1013.4531 C1396.5,1013.4531 1496.5,1013.4531 1496.5,1023.4531 L1496.5,1048.75 C1496.5,1058.75 1396.5,1058.75 1396.5,1058.75 C1396.5,1058.75 1296.5,1058.75 1296.5,1048.75 L1296.5,1023.4531 " fill="#FFFFFF" style="stroke: #333333; stroke-width: 1.5;"/><path d="M1296.5,1023.4531 C1296.5,1033.4531 1396.5,1033.4531 1396.5,1033.4531 C1396.5,1033.4531 1496.5,1033.4531 1496.5,1023.4531 " fill="none" style="stroke: #333333; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="180" x="1306.5" y="1050.4482">Database Backup Storage</text><!--MD5=[7b8ac4a934430880b616720341653ffb]
+entity ObjectBackupStorage--><path d="M1306,1103.4531 C1306,1093.4531 1396.5,1093.4531 1396.5,1093.4531 C1396.5,1093.4531 1487,1093.4531 1487,1103.4531 L1487,1128.75 C1487,1138.75 1396.5,1138.75 1396.5,1138.75 C1396.5,1138.75 1306,1138.75 1306,1128.75 L1306,1103.4531 " fill="#FFFFFF" style="stroke: #333333; stroke-width: 1.5;"/><path d="M1306,1103.4531 C1306,1113.4531 1396.5,1113.4531 1396.5,1113.4531 C1396.5,1113.4531 1487,1113.4531 1487,1103.4531 " fill="none" style="stroke: #333333; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="161" x="1316" y="1130.4482">Object / Artifact Backup</text><!--MD5=[d900cc5317cf2bbb6efd08d20aebc04c]
+entity VeleroStorage--><path d="M1307.5,1183.4531 C1307.5,1173.4531 1396.5,1173.4531 1396.5,1173.4531 C1396.5,1173.4531 1485.5,1173.4531 1485.5,1183.4531 L1485.5,1208.75 C1485.5,1218.75 1396.5,1218.75 1396.5,1218.75 C1396.5,1218.75 1307.5,1218.75 1307.5,1208.75 L1307.5,1183.4531 " fill="#FFFFFF" style="stroke: #333333; stroke-width: 1.5;"/><path d="M1307.5,1183.4531 C1307.5,1193.4531 1396.5,1193.4531 1396.5,1193.4531 C1396.5,1193.4531 1485.5,1193.4531 1485.5,1183.4531 " fill="none" style="stroke: #333333; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="158" x="1317.5" y="1210.4482">Velero Backup Storage</text><!--MD5=[35e0666a37b8bea3dbcb32b9422ca531]
+entity HostFailure--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="101" x="78.5" y="1426.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="73.5" y="1431.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="73.5" y="1453.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="81" x="88.5" y="1449.9482">Host Failure</text><!--MD5=[ce6e1ec966865b456547d5af784bfc5c]
+entity ClusterFailure--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="150" x="54" y="1497.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="49" y="1502.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="49" y="1524.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="130" x="64" y="1520.9482">Kubernetes Failure</text><!--MD5=[6ed952d4426a6083da5b9273a26a1fc5]
+entity DBFailure--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="135" x="61.5" y="1710.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="56.5" y="1715.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="56.5" y="1737.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="115" x="71.5" y="1733.9482">Database Failure</text><!--MD5=[e47acc4e9abf5b5a9f88a0bc7f43ed27]
+entity StorageFailure--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="123" x="67.5" y="1639.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="62.5" y="1644.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="62.5" y="1666.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="103" x="77.5" y="1662.9482">Storage Failure</text><!--MD5=[6dcb3f48c189fdf8906350ba235b38c4]
+entity ConfigFailure--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="148" x="55" y="1568.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="50" y="1573.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="50" y="1595.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="128" x="65" y="1591.9482">Configuration Loss</text><!--MD5=[63bd95c13ecb0783cdf923401859e387]
+entity RestoreInfra--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="188" x="301" y="1391.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="296" y="1396.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="296" y="1418.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="168" x="311" y="1414.9482">1. Restore Infrastructure</text><!--MD5=[a307febc55c07fd957c028e9efdc3540]
+entity RestoreK8s--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="177" x="606" y="1391.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="601" y="1396.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="601" y="1418.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="157" x="616" y="1414.9482">2. Restore Kubernetes</text><!--MD5=[2b3840e903e3ebc756ecf84483d7c169]
+entity RestoreGit--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="175" x="1037" y="1391.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1032" y="1396.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1032" y="1418.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="155" x="1047" y="1414.9482">3. Restore Git / GitOps</text><!--MD5=[546b90c4bc6fea801230efeb046a8f46]
+entity RestoreData--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="128" x="1332.5" y="1391.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1327.5" y="1396.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1327.5" y="1418.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="108" x="1342.5" y="1414.9482">4. Restore Data</text><!--MD5=[99648b3a0fc0d3e00ad2af8355edbbe8]
+entity RestorePlatform--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="214" x="1688.5" y="1391.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1683.5" y="1396.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1683.5" y="1418.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="194" x="1698.5" y="1414.9482">5. Restore Platform Services</text><!--MD5=[6ffdff93b09ba21a6b19f18d50137743]
+entity RestoreApps--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="179" x="2100.5" y="1391.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2095.5" y="1396.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2095.5" y="1418.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="159" x="2110.5" y="1414.9482">6. Restore Applications</text><!--MD5=[e1140dac9beb546b022cc8f130838d6a]
+entity RestoreAI--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="170" x="2372" y="1391.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2367" y="1396.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2367" y="1418.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="150" x="2382" y="1414.9482">7. Restore AI Services</text><!--MD5=[5f2e988f883d57ab2f3a86c0504bedc9]
+entity Validate--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="151" x="2766.5" y="1391.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2761.5" y="1396.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2761.5" y="1418.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="131" x="2776.5" y="1414.9482">8. Validate Platform</text><!--MD5=[88d7ae51bc4698c46accd6bc618ab1d2]
+entity Proxmox--><polygon fill="#FFFFFF" points="2746.5,160.9531,2756.5,150.9531,2937.5,150.9531,2937.5,187.25,2927.5,197.25,2746.5,197.25,2746.5,160.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="2927.5" x2="2936.5" y1="160.9531" y2="151.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="2746.5" x2="2927.5" y1="160.9531" y2="160.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="2927.5" x2="2927.5" y1="160.9531" y2="197.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="151" x="2761.5" y="183.9482">Proxmox / Linux Hosts</text><!--MD5=[93949f70f9ec051f703dc7d15b4cb1e0]
+entity ControlPlane--><polygon fill="#FFFFFF" points="2733.5,322.9531,2743.5,312.9531,2950.5,312.9531,2950.5,349.25,2940.5,359.25,2733.5,359.25,2733.5,322.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="2940.5" x2="2949.5" y1="322.9531" y2="313.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="2733.5" x2="2940.5" y1="322.9531" y2="322.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="2940.5" x2="2940.5" y1="322.9531" y2="359.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="177" x="2748.5" y="345.9482">Kubernetes Control Plane</text><!--MD5=[7a1b5d849ed40d82cacd8d7f81f0bdd6]
+entity Workers--><polygon fill="#FFFFFF" points="2773,241.9531,2783,231.9531,2911,231.9531,2911,268.25,2901,278.25,2773,278.25,2773,241.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="2901" x2="2910" y1="241.9531" y2="232.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="2773" x2="2901" y1="241.9531" y2="241.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="2901" x2="2901" y1="241.9531" y2="278.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="98" x="2788" y="264.9482">Worker Nodes</text><!--MD5=[38bee72e98a6e1d486228777a75d7fc4]
+entity Networking--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="141" x="2771.5" y="79.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2766.5" y="84.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2766.5" y="106.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="121" x="2781.5" y="102.9482">Networking / DNS</text><!--MD5=[2ef3b84e9fdf90a275e237d66dec6325]
+entity GitLab--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="63" x="1764" y="643.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1759" y="648.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1759" y="670.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="43" x="1774" y="666.9482">GitLab</text><!--MD5=[0ff0fccefb57e46481a2840e66765fa8]
+entity ArgoCD--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="77" x="2151.5" y="627.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2146.5" y="632.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2146.5" y="654.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="57" x="2161.5" y="650.9482">Argo CD</text><!--MD5=[8f47512dc1953cdcd22474e88e979342]
+entity RootApp--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="132" x="2391" y="627.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2386" y="632.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2386" y="654.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="112" x="2401" y="650.9482">Root Application</text><!--MD5=[ce7ba48db1b50aced65b7ca725caa328]
+entity RestoredPG--><path d="M1711,1005.4531 C1711,995.4531 1795.5,995.4531 1795.5,995.4531 C1795.5,995.4531 1880,995.4531 1880,1005.4531 L1880,1030.75 C1880,1040.75 1795.5,1040.75 1795.5,1040.75 C1795.5,1040.75 1711,1040.75 1711,1030.75 L1711,1005.4531 " fill="#FFFFFF" style="stroke: #333333; stroke-width: 1.5;"/><path d="M1711,1005.4531 C1711,1015.4531 1795.5,1015.4531 1795.5,1015.4531 C1795.5,1015.4531 1880,1015.4531 1880,1005.4531 " fill="none" style="stroke: #333333; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="149" x="1721" y="1032.4482">Restored PostgreSQL</text><!--MD5=[14891f6b1c4b65b05f85af3352aa76a1]
+entity SchemaValidation--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="146" x="2117" y="998.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2112" y="1003.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2112" y="1025.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="126" x="2127" y="1021.9482">Schema Validation</text><!--MD5=[a42ef5dcfd151acfc6cf9952e634522a]
+entity DataValidation--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="181" x="2366.5" y="1000.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2361.5" y="1005.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2361.5" y="1027.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="161" x="2376.5" y="1023.9482">Data Integrity Validation</text><!--MD5=[929fbde2153499b289e756c304b1f7b4]
+entity DQValidation--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="172" x="2756" y="1003.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2751" y="1008.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2751" y="1030.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="152" x="2766" y="1026.9482">Data Quality Validation</text><!--MD5=[9f5e9bf8c5b2d159d9683302868f9247]
+entity Airflow--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="64" x="2158" y="1584.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2153" y="1589.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2153" y="1611.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="44" x="2168" y="1607.9482">Airflow</text><!--MD5=[00e47b23eb15b4a85a9624af0f166cf2]
+entity MLflow--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="66" x="2157" y="1655.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2152" y="1660.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2152" y="1682.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="46" x="2167" y="1678.9482">MLflow</text><!--MD5=[0f2be35736f8e85cb4d970e1dd72d3a1]
+entity OpenMetadata--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="122" x="2129" y="1726.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2124" y="1731.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2124" y="1753.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="102" x="2139" y="1749.9482">OpenMetadata</text><!--MD5=[ff67a6d56b46582aabcb52a271276edf]
+entity Monitoring--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="171" x="2104.5" y="1974.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2099.5" y="1979.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2099.5" y="2001.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="151" x="2114.5" y="1997.9482">Prometheus / Grafana</text><!--MD5=[297c88828cab3946c84bdc2177fc6964]
+entity Observability--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="127" x="2126.5" y="1798.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2121.5" y="1803.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2121.5" y="1841.0469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="98" x="2141" y="1821.4482">Loki / Tempo /</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="107" x="2136.5" y="1837.7451">OpenTelemetry</text><!--MD5=[76135f9afc5f2b97af6996623fc8da30]
+entity Ingress--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="127" x="2126.5" y="1886.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2121.5" y="1891.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2121.5" y="1929.0469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="107" x="2136.5" y="1909.4482">NGINX Ingress /</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="93" x="2143.5" y="1925.7451">cert-manager</text><!--MD5=[91ea6bd7857376bba2349040f701efc1]
+entity BusinessAPI--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="117" x="2398.5" y="1186.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2393.5" y="1191.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2393.5" y="1213.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="97" x="2408.5" y="1209.9482">Business APIs</text><!--MD5=[2c0c6eb595af467f40d1827f8b6d49c3]
+entity DataPipelines--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="118" x="2398" y="1115.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2393" y="1120.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2393" y="1142.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="98" x="2408" y="1138.9482">Data Pipelines</text><!--MD5=[78444b0373532d6497ce4bf9dd597f37]
+entity Analytics--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="142" x="2386" y="1257.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2381" y="1262.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2381" y="1284.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="122" x="2396" y="1280.9482">Analytics Services</text><!--MD5=[12483283563c22de9c14763e35bf5690]
+entity AIHost--><polygon fill="#FFFFFF" points="1352.5,795.9531,1362.5,785.9531,1440.5,785.9531,1440.5,822.25,1430.5,832.25,1352.5,832.25,1352.5,795.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1430.5" x2="1439.5" y1="795.9531" y2="786.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1352.5" x2="1430.5" y1="795.9531" y2="795.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1430.5" x2="1430.5" y1="795.9531" y2="832.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="48" x="1367.5" y="818.9482">AI Host</text><!--MD5=[75c87977805623edb1b0703c8ba57b70]
+entity NVIDIA--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="162" x="1714.5" y="787.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1709.5" y="792.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1709.5" y="814.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="142" x="1724.5" y="810.9482">NVIDIA Driver / CUDA</text><!--MD5=[d1d0d8266c4f5365d142423f17dea357]
+entity Ollama--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="66" x="2157" y="785.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2152" y="790.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2152" y="812.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="46" x="2167" y="808.9482">Ollama</text><!--MD5=[ca73e4f6ec3b50150f4a88dd5bb62e34]
+entity Models--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="140" x="2387" y="792.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2382" y="797.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2382" y="819.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="120" x="2397" y="815.9482">Approved Models</text><!--MD5=[d4c63efc849c138da47c28c0daf11e88]
+entity RAG--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="137" x="2773.5" y="792.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2768.5" y="797.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2768.5" y="819.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="117" x="2783.5" y="815.9482">RAG / AI Services</text><!--MD5=[c618d4893814bca1d2ed9d4cb2da9af6]
+entity InfraHealth--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="160" x="3046.5" y="1176.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3041.5" y="1181.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3041.5" y="1203.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="140" x="3056.5" y="1199.9482">Infrastructure Health</text><!--MD5=[a3d560125cca3e94b231d49dac8bb3eb]
+entity K8sHealth--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="149" x="3052" y="750.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3047" y="755.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3047" y="777.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="129" x="3062" y="773.9482">Kubernetes Health</text><!--MD5=[62aa5bb7affb218e2dd2ef7492bfe0ef]
+entity DBHealth--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="145" x="3054" y="963.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3049" y="968.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3049" y="990.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="125" x="3064" y="986.9482">Database Integrity</text><!--MD5=[e9e621d7805ae587da2f22ed720c72ab]
+entity GitOpsHealth--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="152" x="3050.5" y="821.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3045.5" y="826.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3045.5" y="848.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="132" x="3060.5" y="844.9482">GitOps Sync Status</text><!--MD5=[abd198168966f93e156b1ce1018a63ca]
+entity AppHealth--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="190" x="3031.5" y="1105.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3026.5" y="1110.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3026.5" y="1132.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="170" x="3041.5" y="1128.9482">Application Smoke Tests</text><!--MD5=[b3f6b90dfbeec91f1b0f10a7533fee98]
+entity DataHealth--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="158" x="3047.5" y="1034.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3042.5" y="1039.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3042.5" y="1061.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="138" x="3057.5" y="1057.9482">Data Quality Checks</text><!--MD5=[0c57eb324a86b0838ea32868ffeb83b6]
+entity AIHealth--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="136" x="3058.5" y="892.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3053.5" y="897.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3053.5" y="919.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="116" x="3068.5" y="915.9482">AI Inference Test</text><!--MD5=[aa0001d96f1ffe8eb6808a186c9dc9de]
+entity RPO--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="50" x="3393" y="1068.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3388" y="1073.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3388" y="1095.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="30" x="3403" y="1091.9482">RPO</text><!--MD5=[1b2cc2fd85a1d8718a8b9666a45c214a]
+entity RTO--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="50" x="3393" y="1139.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3388" y="1144.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3388" y="1166.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="30" x="3403" y="1162.9482">RTO</text><!--MD5=[b893403ac5ffd575b11f39d71a90417c]
+entity ActualRTO--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="168" x="3334" y="997.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3329" y="1002.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3329" y="1024.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="148" x="3344" y="1020.9482">Actual Recovery Time</text><!--MD5=[62fc5a3e7d16d5a0949a56e28a9bb4ae]
+entity ActualRPO--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="134" x="3351" y="926.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3346" y="931.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3346" y="953.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="114" x="3361" y="949.9482">Actual Data Loss</text><!--MD5=[2f60951a9548860fcbf8bd5046d84bee]
+entity TestEvidence--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="177" x="3699.5" y="997.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3694.5" y="1002.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3694.5" y="1024.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="157" x="3709.5" y="1020.9482">Restore Test Evidence</text><!--MD5=[e4691f12f5fa5579288963399b8c83c6]
+entity Prometheus--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="159" x="4175.5" y="613.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="4170.5" y="618.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="4170.5" y="640.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="139" x="4185.5" y="636.9482">Prometheus Metrics</text><!--MD5=[f7432d0799c6dc01e356f54ac86b0ac1]
+entity BackupSuccess--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="135" x="3976.5" y="578.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3971.5" y="583.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3971.5" y="605.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="115" x="3986.5" y="601.9482">Backup Success</text><!--MD5=[c2a1d5328bef405d1bbb98db540b3f9a]
+entity RestoreAge--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="141" x="3973.5" y="649.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3968.5" y="654.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3968.5" y="676.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="121" x="3983.5" y="672.9482">Restore Test Age</text><!--MD5=[41474415743c5bd3e966b69fd92b6c20]
+entity Risks--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="111" x="4424" y="649.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="4419" y="654.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="4419" y="676.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="91" x="4434" y="672.9482">Risk Register</text><!--MD5=[9fa95a6bc9cc4737dc3f36095608d11b]
+entity Compliance--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="168" x="4395.5" y="578.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="4390.5" y="583.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="4390.5" y="605.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="148" x="4405.5" y="601.9482">Compliance Evidence</text><path d="M1024.5,373.4531 L1024.5,494.5156 A5,5 0 0 0 1029.5,499.5156 L1219.5,499.5156 A5,5 0 0 0 1224.5,494.5156 L1224.5,378.4531 L1214.5,368.4531 L1029.5,368.4531 A5,5 0 0 0 1024.5,373.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1214.5,368.4531 L1214.5,375.9531 A2.5,2.5 0 0 0 1217,378.4531 L1224.5,378.4531 L1214.5,368.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="179" x="1030.5" y="385.52">Git protects reconstructable</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="88" x="1030.5" y="400.6528">desired state:</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="1034.5" y="415.7856"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="33" x="1030.5" y="430.9185">Code</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="85" x="1030.5" y="446.0513">Configuration</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="34" x="1030.5" y="461.1841">ADRs</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="77" x="1030.5" y="476.3169">Governance</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="110" x="1030.5" y="491.4497">GitOps manifests</text><path d="M1022,539.9531 L1022,615.6172 A5,5 0 0 0 1027,620.6172 L1222,620.6172 A5,5 0 0 0 1227,615.6172 L1227,544.9531 L1217,534.9531 L1027,534.9531 A5,5 0 0 0 1022,539.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1217,534.9531 L1217,542.4531 A2.5,2.5 0 0 0 1219.5,544.9531 L1227,544.9531 L1217,534.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="169" x="1028" y="552.02">Database backups protect</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="184" x="1028" y="567.1528">state that Git cannot rebuild.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="1032" y="582.2856"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="155" x="1028" y="597.4185">Backup success alone is</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="147" x="1028" y="612.5513">not sufficient evidence.</text><path d="M1024,660.9531 L1024,766.8828 A5,5 0 0 0 1029,771.8828 L1220,771.8828 A5,5 0 0 0 1225,766.8828 L1225,665.9531 L1215,655.9531 L1029,655.9531 A5,5 0 0 0 1024,660.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1215,655.9531 L1215,663.4531 A2.5,2.5 0 0 0 1217.5,665.9531 L1225,665.9531 L1215,655.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="175" x="1030" y="673.02">Velero protects Kubernetes</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="149" x="1030" y="688.1528">resources and selected</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="105" x="1030" y="703.2856">persistent state.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="1034" y="718.4185"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="180" x="1030" y="733.5513">It complements, rather than</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="174" x="1030" y="748.6841">replaces, application-aware</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="114" x="1030" y="763.8169">database backup.</text><path d="M283.5,1243.9531 L283.5,1319.6172 A5,5 0 0 0 288.5,1324.6172 L501.5,1324.6172 A5,5 0 0 0 506.5,1319.6172 L506.5,1248.9531 L496.5,1238.9531 L288.5,1238.9531 A5,5 0 0 0 283.5,1243.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M496.5,1238.9531 L496.5,1246.4531 A2.5,2.5 0 0 0 499,1248.9531 L506.5,1248.9531 L496.5,1238.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="182" x="289.5" y="1256.02">Recovery order is deliberate.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="293.5" y="1271.1528"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="202" x="289.5" y="1286.2856">Infrastructure and control-plane</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="199" x="289.5" y="1301.4185">capabilities are restored before</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="158" x="289.5" y="1316.5513">higher-level applications.</text><path d="M3027,633.4531 L3027,678.8516 A5,5 0 0 0 3032,683.8516 L3221,683.8516 A5,5 0 0 0 3226,678.8516 L3226,638.4531 L3216,628.4531 L3032,628.4531 A5,5 0 0 0 3027,633.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M3216,628.4531 L3216,635.9531 A2.5,2.5 0 0 0 3218.5,638.4531 L3226,638.4531 L3216,628.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="178" x="3033" y="645.52">Recovery is incomplete until</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="164" x="3033" y="660.6528">the restored platform has</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="174" x="3033" y="675.7856">been functionally validated.</text><path d="M3300.5,455.4531 L3300.5,500.8516 A5,5 0 0 0 3305.5,505.8516 L3530.5,505.8516 A5,5 0 0 0 3535.5,500.8516 L3535.5,460.4531 L3525.5,450.4531 L3305.5,450.4531 A5,5 0 0 0 3300.5,455.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M3525.5,450.4531 L3525.5,457.9531 A2.5,2.5 0 0 0 3528,460.4531 L3535.5,460.4531 L3525.5,450.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="214" x="3306.5" y="467.52">RPO and RTO become meaningful</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="176" x="3306.5" y="482.6528">only when measured during</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="142" x="3306.5" y="497.7856">real restore exercises.</text><path d="M3982,385.4531 L3982,506.5156 A5,5 0 0 0 3987,511.5156 L4101,511.5156 A5,5 0 0 0 4106,506.5156 L4106,390.4531 L4096,380.4531 L3987,380.4531 A5,5 0 0 0 3982,385.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M4096,380.4531 L4096,387.9531 A2.5,2.5 0 0 0 4098.5,390.4531 L4106,390.4531 L4096,380.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="103" x="3988" y="397.52">Target maturity:</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="3992" y="412.6528"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="47" x="3988" y="427.7856">Backup</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="64" x="3988" y="442.9185">→ Restore</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="67" x="3988" y="458.0513">→ Validate</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="70" x="3988" y="473.1841">→ Measure</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="72" x="3988" y="488.3169">→ Evidence</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="67" x="3988" y="503.4497">→ Improve</text><!--MD5=[ae01a390d9bce045c6f485198e5a47cb]
+link GitRepos to GitBackup--><path d="M771.9,838.4531 C873.07,838.4531 1037.5,838.4531 1037.5,838.4531 C1037.5,838.4531 1037.5,924.2931 1037.5,924.2931 " fill="none" id="GitRepos-&gt;GitBackup" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1037.5,929.2931,1041.5,920.2931,1037.5,924.2931,1033.5,920.2931,1037.5,929.2931" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[8d8a6da490008ebd74256094f3d04447]
+link GitOpsState to GitBackup--><path d="M777.18,700.9531 C791.82,700.9531 802.5,700.9531 802.5,700.9531 C802.5,700.9531 802.5,935.4531 802.5,935.4531 C802.5,935.4531 1028.09,935.4531 1028.09,935.4531 " fill="none" id="GitOpsState-&gt;GitBackup" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1033.09,935.4531,1024.09,931.4531,1028.09,935.4531,1024.09,939.4531,1033.09,935.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[3daf0ed816bc1ee2db4029f3a0fca09a]
+link PostgreSQL to PGBackup--><path d="M773.5,941.5331 C773.5,973.4631 773.5,1027.9531 773.5,1027.9531 C773.5,1027.9531 1040.73,1027.9531 1040.73,1027.9531 " fill="none" id="PostgreSQL-&gt;PGBackup" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1045.73,1027.9531,1036.73,1023.9531,1040.73,1027.9531,1036.73,1031.9531,1045.73,1027.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[cc44d82c2991a327ee52f89e5559109e]
+link K8sResources to Velero--><path d="M784.64,1201.9531 C784.64,1201.9531 1087.17,1201.9531 1087.17,1201.9531 " fill="none" id="K8sResources-&gt;Velero" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1092.17,1201.9531,1083.17,1197.9531,1087.17,1201.9531,1083.17,1205.9531,1092.17,1201.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[4574e256197708b9982ffceae5fd2062]
+link PVs to PVBackup--><path d="M771.87,1272.9531 C771.87,1272.9531 1028.2,1272.9531 1028.2,1272.9531 " fill="none" id="PVs-&gt;PVBackup" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1033.2,1272.9531,1024.2,1268.9531,1028.2,1272.9531,1024.2,1276.9531,1033.2,1272.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[2b7da56f9da00bee839c4424abd9bdb8]
+link MinIOArtifacts to ObjectBackup--><path d="M753.39,1130.7031 C753.39,1130.7031 1054.3,1130.7031 1054.3,1130.7031 " fill="none" id="MinIOArtifacts-&gt;ObjectBackup" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1059.3,1130.7031,1050.3,1126.7031,1054.3,1130.7031,1050.3,1134.7031,1059.3,1130.7031" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[7d3cdeea2d196c9baaa75dd2eae87806]
+link Configuration to ConfigBackup--><path d="M773.17,635.9531 C777.72,635.9531 780.5,635.9531 780.5,635.9531 C780.5,635.9531 780.5,877.4531 780.5,877.4531 C780.5,877.4531 1039.28,877.4531 1039.28,877.4531 " fill="none" id="Configuration-&gt;ConfigBackup" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1044.28,877.4531,1035.28,873.4531,1039.28,877.4531,1035.28,881.4531,1044.28,877.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[dbce41b0fb3b90315199c8c5920b94c5]
+link MetadataState to PGBackup--><path d="M819.56,1062.6231 C923.16,1062.6231 1053.5,1062.6231 1053.5,1062.6231 C1053.5,1062.6231 1053.5,1059.1831 1053.5,1059.1831 " fill="none" id="MetadataState-&gt;PGBackup" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1053.5,1054.1831,1049.5,1063.1831,1053.5,1059.1831,1057.5,1063.1831,1053.5,1054.1831" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[5cc1cbe91bdbb25b7723f582e38d5050]
+link MLflowMetadata to PGBackup--><path d="M694.5,1013.4431 C694.5,1025.0931 694.5,1037.9531 694.5,1037.9531 C694.5,1037.9531 1040.63,1037.9531 1040.63,1037.9531 " fill="none" id="MLflowMetadata-&gt;PGBackup" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1045.63,1037.9531,1036.63,1033.9531,1040.63,1037.9531,1036.63,1041.9531,1045.63,1037.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[9a9e4a26125c79447a5eaa9b9e84eec4]
+link AIModels to GitBackup--><path d="M772.37,776.6231 C874.68,776.6231 1041.5,776.6231 1041.5,776.6231 C1041.5,776.6231 1041.5,924.1031 1041.5,924.1031 " fill="none" id="AIModels-&gt;GitBackup" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1041.5,929.1031,1045.5,920.1031,1041.5,924.1031,1037.5,920.1031,1041.5,929.1031" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="132" x="852.5" y="789.02">Definitions / versions</text><!--MD5=[16c0b7d2a05bdd991f33fab4ca956b25]
+link GitBackup to BackupRepo--><path d="M1215.83,963.4531 C1215.83,963.4531 1316.25,963.4531 1316.25,963.4531 " fill="none" id="GitBackup-&gt;BackupRepo" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1321.25,963.4531,1312.25,959.4531,1316.25,963.4531,1312.25,967.4531,1321.25,963.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[c268ad07d3160be002e3fabd7b0af64d]
+link PGBackup to DBBackupStorage--><path d="M1203.17,1041.9531 C1203.17,1041.9531 1291.17,1041.9531 1291.17,1041.9531 " fill="none" id="PGBackup-&gt;DBBackupStorage" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1296.17,1041.9531,1287.17,1037.9531,1291.17,1041.9531,1287.17,1045.9531,1296.17,1041.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[e4f5d0ef77b6796d95b637469722825c]
+link ObjectBackup to ObjectBackupStorage--><path d="M1189.65,1115.9531 C1189.65,1115.9531 1300.92,1115.9531 1300.92,1115.9531 " fill="none" id="ObjectBackup-&gt;ObjectBackupStorage" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1305.92,1115.9531,1296.92,1111.9531,1300.92,1115.9531,1296.92,1119.9531,1305.92,1115.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[9cc2b39ecdb0f0b06ff907bc2830c070]
+link Velero to VeleroStorage--><path d="M1156.5,1195.9531 C1156.5,1195.9531 1302.33,1195.9531 1302.33,1195.9531 " fill="none" id="Velero-&gt;VeleroStorage" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1307.33,1195.9531,1298.33,1191.9531,1302.33,1195.9531,1298.33,1199.9531,1307.33,1195.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[b36dc4c60a205a5dc02429b522580b51]
+link PVBackup to VeleroStorage--><path d="M1215.61,1253.4531 C1266.8,1253.4531 1320.5,1253.4531 1320.5,1253.4531 C1320.5,1253.4531 1320.5,1223.6831 1320.5,1223.6831 " fill="none" id="PVBackup-&gt;VeleroStorage" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1320.5,1218.6831,1316.5,1227.6831,1320.5,1223.6831,1324.5,1227.6831,1320.5,1218.6831" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[9284b80517c99a787a877859c0bb6154]
+link ConfigBackup to BackupRepo--><path d="M1204.72,875.4531 C1265.1,875.4531 1337.5,875.4531 1337.5,875.4531 C1337.5,875.4531 1337.5,928.1031 1337.5,928.1031 " fill="none" id="ConfigBackup-&gt;BackupRepo" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1337.5,933.1031,1341.5,924.1031,1337.5,928.1031,1333.5,924.1031,1337.5,933.1031" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[ab6a64d0abb8957e66efb0e9b67f2117]
+link Disaster to RestoreInfra--><path d="M228.0535,1392.4531 C233.187,1392.4531 238.2391,1392.4531 243.1281,1392.4531 C252.9063,1392.4531 262.0325,1392.4531 269.855,1392.4531 C285.5,1392.4531 295.93,1392.4531 295.93,1392.4531 " fill="none" id="Disaster-&gt;RestoreInfra" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="300.93,1392.4531,291.93,1388.4531,295.93,1392.4531,291.93,1396.4531,300.93,1392.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[4d50acd81d3f0cf83a724abb65f68686]
+link RestoreInfra to RestoreK8s--><path d="M489.35,1418.9531 C489.35,1418.9531 600.98,1418.9531 600.98,1418.9531 " fill="none" id="RestoreInfra-&gt;RestoreK8s" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="605.98,1418.9531,596.98,1414.9531,600.98,1418.9531,596.98,1422.9531,605.98,1418.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[02868fb7aaa44349c9cb013774de64f2]
+link RestoreK8s to RestoreGit--><path d="M783.07,1415.9531 C783.07,1415.9531 1031.78,1415.9531 1031.78,1415.9531 " fill="none" id="RestoreK8s-&gt;RestoreGit" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1036.78,1415.9531,1027.78,1411.9531,1031.78,1415.9531,1027.78,1419.9531,1036.78,1415.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[10f7131aed595dcf2f8d52e4a003d09c]
+link RestoreGit to RestoreData--><path d="M1212.06,1415.9531 C1212.06,1415.9531 1327.39,1415.9531 1327.39,1415.9531 " fill="none" id="RestoreGit-&gt;RestoreData" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1332.39,1415.9531,1323.4015,1411.9274,1327.39,1415.9388,1323.3786,1419.9274,1332.39,1415.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[4298be90cd13723cd884f95932834b4b]
+link RestoreData to RestorePlatform--><path d="M1460.61,1415.9531 C1460.61,1415.9531 1683.35,1415.9531 1683.35,1415.9531 " fill="none" id="RestoreData-&gt;RestorePlatform" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1688.35,1415.9531,1679.35,1411.9531,1683.35,1415.9531,1679.35,1419.9531,1688.35,1415.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[3055ded4afedf746eae53b35bef8c902]
+link RestorePlatform to RestoreApps--><path d="M1902.52,1409.9531 C1902.52,1409.9531 2095.3,1409.9531 2095.3,1409.9531 " fill="none" id="RestorePlatform-&gt;RestoreApps" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2100.3,1409.9531,2091.3,1405.9531,2095.3,1409.9531,2091.3,1413.9531,2100.3,1409.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[713f6172c2a7d3255625ae8dfff36c79]
+link RestoreApps to RestoreAI--><path d="M2279.65,1409.9531 C2279.65,1409.9531 2366.65,1409.9531 2366.65,1409.9531 " fill="none" id="RestoreApps-&gt;RestoreAI" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2371.65,1409.9531,2362.65,1405.9531,2366.65,1409.9531,2362.65,1413.9531,2371.65,1409.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[c74ec3c4ad0ef1dda1762f645a5c976d]
+link RestoreAI to Validate--><path d="M2542.44,1409.9531 C2542.44,1409.9531 2761.24,1409.9531 2761.24,1409.9531 " fill="none" id="RestoreAI-&gt;Validate" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2766.24,1409.9531,2757.24,1405.9531,2761.24,1409.9531,2757.24,1413.9531,2766.24,1409.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[3328a07cb0cbae10618ed2d1ad8e2856]
+link RestoreInfra to Proxmox--><path d="M489.15,1409.9531 C520.93,1409.9531 548.5,1409.9531 548.5,1409.9531 C548.5,1409.9531 548.5,173.9531 548.5,173.9531 C548.5,173.9531 2741.37,173.9531 2741.37,173.9531 " fill="none" id="RestoreInfra-&gt;Proxmox" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2746.37,173.9531,2737.37,169.9531,2741.37,173.9531,2737.37,177.9531,2746.37,173.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[f63e0520e0edc9f38624be2d637ec531]
+link RestoreInfra to Networking--><path d="M489.18,1400.9531 C510.76,1400.9531 527.5,1400.9531 527.5,1400.9531 C527.5,1400.9531 527.5,97.9531 527.5,97.9531 C527.5,97.9531 2766.47,97.9531 2766.47,97.9531 " fill="none" id="RestoreInfra-&gt;Networking" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2771.47,97.9531,2762.47,93.9531,2766.47,97.9531,2762.47,101.9531,2771.47,97.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[741a83b90e5ad1f50bbcd2ad52f57b3c]
+link RestoreK8s to ControlPlane--><path d="M777.5,1391.7231 C777.5,1349.4431 777.5,1248.2831 777.5,1248.2831 C777.5,1248.2831 2748.5,1248.2831 2748.5,1248.2831 C2748.5,1248.2831 2748.5,363.9631 2748.5,363.9631 " fill="none" id="RestoreK8s-&gt;ControlPlane" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2748.5,358.9631,2744.5,367.9631,2748.5,363.9631,2752.5,367.9631,2748.5,358.9631" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[b389b361da04f8c71f83271f14cc1a3c]
+link RestoreK8s to Workers--><path d="M783.24,1403.9531 C846.91,1403.9531 921.5,1403.9531 921.5,1403.9531 C921.5,1403.9531 921.5,254.9531 921.5,254.9531 C921.5,254.9531 2767.8,254.9531 2767.8,254.9531 " fill="none" id="RestoreK8s-&gt;Workers" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2772.8,254.9531,2763.8,250.9531,2767.8,254.9531,2763.8,258.9531,2772.8,254.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[066ea6bf5580cbce4c127f2ab266603a]
+link BackupRepo to GitLab--><path d="M1456.5,933.1931 C1456.5,865.8031 1456.5,671.9531 1456.5,671.9531 C1456.5,671.9531 1758.91,671.9531 1758.91,671.9531 " fill="none" id="BackupRepo-&gt;GitLab" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1763.91,671.9531,1754.91,667.9531,1758.91,671.9531,1754.91,675.9531,1763.91,671.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="128" x="1529.5" y="886.02">Restore repositories</text><!--MD5=[907d9eba6c6002e8f1e1fcb3c361c94b]
+link RestoreGit to GitLab--><path d="M1212.42,1403.9531 C1247.4,1403.9531 1279.5,1403.9531 1279.5,1403.9531 C1279.5,1403.9531 1279.5,663.9531 1279.5,663.9531 C1279.5,663.9531 1759,663.9531 1759,663.9531 " fill="none" id="RestoreGit-&gt;GitLab" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1764,663.9531,1755,659.9531,1759,663.9531,1755,667.9531,1764,663.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[0f67a81b5b5aee8f61e6d47dd61dbe90]
+link GitLab to ArgoCD--><path d="M1827.12,653.9531 C1827.12,653.9531 2146.35,653.9531 2146.35,653.9531 " fill="none" id="GitLab-&gt;ArgoCD" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2151.35,653.9531,2142.35,649.9531,2146.35,653.9531,2142.35,657.9531,2151.35,653.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="86" x="1948" y="641.02">Desired state</text><!--MD5=[ffc5056946df39b070ad03c9613f5760]
+link ArgoCD to RootApp--><path d="M2228.54,639.9531 C2228.54,639.9531 2385.85,639.9531 2385.85,639.9531 " fill="none" id="ArgoCD-&gt;RootApp" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2390.85,639.9531,2381.85,635.9531,2385.85,639.9531,2381.85,643.9531,2390.85,639.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[ac9ce3774a8d3ca39d738736eb282e18]
+link RootApp to ControlPlane--><path d="M2523.34,646.2031 C2607.41,646.2031 2741.5,646.2031 2741.5,646.2031 C2741.5,646.2031 2741.5,364.0231 2741.5,364.0231 " fill="none" id="RootApp-&gt;ControlPlane" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2741.5,359.0231,2737.5,368.0231,2741.5,364.0231,2745.5,368.0231,2741.5,359.0231" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="118" x="2582.5" y="619.02">Reconcile platform</text><!--MD5=[92a6d702fda198b9c989ec3987b5be63]
+link DBBackupStorage to RestoredPG--><path d="M1496.67,1022.4531 C1496.67,1022.4531 1705.82,1022.4531 1705.82,1022.4531 " fill="none" id="DBBackupStorage-&gt;RestoredPG" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1710.82,1022.4531,1701.82,1018.4531,1705.82,1022.4531,1701.82,1026.4531,1710.82,1022.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[693cd48ec2bc3e4c6b187e2a5c4c2b8f]
+link RestoreData to RestoredPG--><path d="M1460.68,1403.9531 C1517.84,1403.9531 1592.5,1403.9531 1592.5,1403.9531 C1592.5,1403.9531 1592.5,1031.4531 1592.5,1031.4531 C1592.5,1031.4531 1705.88,1031.4531 1705.88,1031.4531 " fill="none" id="RestoreData-&gt;RestoredPG" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1710.88,1031.4531,1701.88,1027.4531,1705.88,1031.4531,1701.88,1035.4531,1710.88,1031.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[a489b86069d5d2e706cb1b19c16456e9]
+link RestoredPG to SchemaValidation--><path d="M1880.13,1006.1531 C1880.13,1006.1531 2111.78,1006.1531 2111.78,1006.1531 " fill="none" id="RestoredPG-&gt;SchemaValidation" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2116.78,1006.1531,2107.78,1002.1531,2111.78,1006.1531,2107.78,1010.1531,2116.78,1006.1531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[11353021d894e3f674ee6b4d5d40d578]
+link SchemaValidation to DataValidation--><path d="M2263.31,1017.9531 C2263.31,1017.9531 2361.22,1017.9531 2361.22,1017.9531 " fill="none" id="SchemaValidation-&gt;DataValidation" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2366.22,1017.9531,2357.22,1013.9531,2361.22,1017.9531,2357.22,1021.9531,2366.22,1017.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[bcd4e766d40f662b969061107200d0b8]
+link DataValidation to DQValidation--><path d="M2547.75,1020.4531 C2547.75,1020.4531 2750.82,1020.4531 2750.82,1020.4531 " fill="none" id="DataValidation-&gt;DQValidation" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2755.82,1020.4531,2746.82,1016.4531,2750.82,1020.4531,2746.82,1024.4531,2755.82,1020.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[490092f593dc479641ff156f8d99b7c4]
+link RestorePlatform to Airflow--><path d="M1872.5,1428.0131 C1872.5,1475.1531 1872.5,1598.2831 1872.5,1598.2831 C1872.5,1598.2831 2152.81,1598.2831 2152.81,1598.2831 " fill="none" id="RestorePlatform-&gt;Airflow" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2157.81,1598.2831,2148.81,1594.2831,2152.81,1598.2831,2148.81,1602.2831,2157.81,1598.2831" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[b0067a5412a5f4a4750e6fdd578d7cbe]
+link RestorePlatform to MLflow--><path d="M1841.5,1428.3031 C1841.5,1487.7131 1841.5,1670.9531 1841.5,1670.9531 C1841.5,1670.9531 2151.9,1670.9531 2151.9,1670.9531 " fill="none" id="RestorePlatform-&gt;MLflow" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2156.9,1670.9531,2147.9,1666.9531,2151.9,1670.9531,2147.9,1674.9531,2156.9,1670.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[51177f42d9bdd520be1f277ebafcf4eb]
+link RestorePlatform to OpenMetadata--><path d="M1811.5,1428.1831 C1811.5,1497.4331 1811.5,1740.2831 1811.5,1740.2831 C1811.5,1740.2831 2123.77,1740.2831 2123.77,1740.2831 " fill="none" id="RestorePlatform-&gt;OpenMetadata" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2128.77,1740.2831,2119.77,1736.2831,2123.77,1740.2831,2119.77,1744.2831,2128.77,1740.2831" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[6a37bce5551896802b36be797e7087d9]
+link RestorePlatform to Monitoring--><path d="M1719.5,1428.0431 C1719.5,1526.4431 1719.5,1992.9531 1719.5,1992.9531 C1719.5,1992.9531 2099.25,1992.9531 2099.25,1992.9531 " fill="none" id="RestorePlatform-&gt;Monitoring" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2104.25,1992.9531,2095.25,1988.9531,2099.25,1992.9531,2095.25,1996.9531,2104.25,1992.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[d6f7fae0e792c741d699007de1eba947]
+link RestorePlatform to Observability--><path d="M1780.5,1428.0531 C1780.5,1507.9231 1780.5,1824.9531 1780.5,1824.9531 C1780.5,1824.9531 2121.46,1824.9531 2121.46,1824.9531 " fill="none" id="RestorePlatform-&gt;Observability" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2126.46,1824.9531,2117.46,1820.9531,2121.46,1824.9531,2117.46,1828.9531,2126.46,1824.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[20b85ff676406ab7f5f9b376e6862bae]
+link RestorePlatform to Ingress--><path d="M1750.5,1428.1531 C1750.5,1518.3331 1750.5,1912.9531 1750.5,1912.9531 C1750.5,1912.9531 2121.09,1912.9531 2121.09,1912.9531 " fill="none" id="RestorePlatform-&gt;Ingress" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2126.09,1912.9531,2117.09,1908.9531,2121.09,1912.9531,2117.09,1916.9531,2126.09,1912.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[b2ace187c5f8adb5156311e2855dc743]
+link RestoredPG to Airflow--><path d="M1880.03,1013.3531 C1957.92,1013.3531 2061.5,1013.3531 2061.5,1013.3531 C2061.5,1013.3531 2061.5,1591.6231 2061.5,1591.6231 C2061.5,1591.6231 2152.91,1591.6231 2152.91,1591.6231 " fill="none" id="RestoredPG-&gt;Airflow" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2157.91,1591.6231,2148.91,1587.6231,2152.91,1591.6231,2148.91,1595.6231,2157.91,1591.6231" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[df97813ac78231abcbbb0932143bdc22]
+link RestoredPG to MLflow--><path d="M1880.3,1020.5531 C1944.43,1020.5531 2021.5,1020.5531 2021.5,1020.5531 C2021.5,1020.5531 2021.5,1660.9531 2021.5,1660.9531 C2021.5,1660.9531 2151.71,1660.9531 2151.71,1660.9531 " fill="none" id="RestoredPG-&gt;MLflow" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2156.71,1660.9531,2147.71,1656.9531,2151.71,1660.9531,2147.71,1664.9531,2156.71,1660.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[d5f1085fba1730691dea8759ff8da1d8]
+link RestoredPG to OpenMetadata--><path d="M1880.25,1027.7531 C1929.72,1027.7531 1982.5,1027.7531 1982.5,1027.7531 C1982.5,1027.7531 1982.5,1733.6231 1982.5,1733.6231 C1982.5,1733.6231 2123.87,1733.6231 2123.87,1733.6231 " fill="none" id="RestoredPG-&gt;OpenMetadata" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2128.87,1733.6231,2119.87,1729.6231,2123.87,1733.6231,2119.87,1737.6231,2128.87,1733.6231" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[13d5ed39364961a12b6faac513fd92d4]
+link ObjectBackupStorage to MLflow--><path d="M1487.27,1130.9531 C1642.53,1130.9531 1942.5,1130.9531 1942.5,1130.9531 C1942.5,1130.9531 1942.5,1665.9531 1942.5,1665.9531 C1942.5,1665.9531 2151.88,1665.9531 2151.88,1665.9531 " fill="none" id="ObjectBackupStorage-&gt;MLflow" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2156.88,1665.9531,2147.88,1661.9531,2151.88,1665.9531,2147.88,1669.9531,2156.88,1665.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="105" x="1743" y="1199.02">Restore artifacts</text><!--MD5=[039aa284dc038f32016e37b7a7df6c26]
+link VeleroStorage to PlatformRecovery--><path d="M1473.5,1218.6331 C1473.5,1296.7631 1473.5,1549.9531 1473.5,1549.9531 C1473.5,1549.9531 1647.07,1549.9531 1823.3525,1549.9531 C1911.4938,1549.9531 2000.3131,1549.9531 2068.4534,1549.9531 C2069.5181,1549.9531 2070.5778,1549.9531 2071.6323,1549.9531 " fill="none" id="VeleroStorage-&gt;PlatformRecovery" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2071.6323,1549.9531,2062.6323,1545.9531,2066.6323,1549.9531,2062.6323,1553.9531,2071.6323,1549.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="110" x="1740.5" y="1286.02">Kubernetes state</text><!--MD5=[4540b617996a1734e9a9d3a16cb8205d]
+link RestoreApps to BusinessAPI--><path d="M2271.5,1391.6731 C2271.5,1341.9431 2271.5,1207.9531 2271.5,1207.9531 C2271.5,1207.9531 2393.31,1207.9531 2393.31,1207.9531 " fill="none" id="RestoreApps-&gt;BusinessAPI" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2398.31,1207.9531,2389.31,1203.9531,2393.31,1207.9531,2389.31,1211.9531,2398.31,1207.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[16cc64d74f8d5ed46d086825b060a68e]
+link RestoreApps to DataPipelines--><path d="M2267.5,1391.8931 C2267.5,1332.5331 2267.5,1147.2031 2267.5,1147.2031 C2267.5,1147.2031 2392.82,1147.2031 2392.82,1147.2031 " fill="none" id="RestoreApps-&gt;DataPipelines" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2397.82,1147.2031,2388.82,1143.2031,2392.82,1147.2031,2388.82,1151.2031,2397.82,1147.2031" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[a27696e1c89afec5ce55318a0e1d187c]
+link RestoreApps to Analytics--><path d="M2275.5,1391.9131 C2275.5,1358.2931 2275.5,1289.4531 2275.5,1289.4531 C2275.5,1289.4531 2380.79,1289.4531 2380.79,1289.4531 " fill="none" id="RestoreApps-&gt;Analytics" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2385.79,1289.4531,2376.79,1285.4531,2380.79,1289.4531,2376.79,1293.4531,2385.79,1289.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[21fa584da8c8484ababd5c2009f61c9d]
+link RestoredPG to BusinessAPI--><path d="M1795.5,1040.6831 C1795.5,1088.9831 1795.5,1197.4531 1795.5,1197.4531 C1795.5,1197.4531 2393.3,1197.4531 2393.3,1197.4531 " fill="none" id="RestoredPG-&gt;BusinessAPI" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2398.3,1197.4531,2389.3,1193.4531,2393.3,1197.4531,2389.3,1201.4531,2398.3,1197.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[929786d1c4cb32cfa0ac9b42bc0a1bf5]
+link RestoredPG to DataPipelines--><path d="M1838.5,1040.5831 C1838.5,1071.5831 1838.5,1123.4531 1838.5,1123.4531 C1838.5,1123.4531 2392.98,1123.4531 2392.98,1123.4531 " fill="none" id="RestoredPG-&gt;DataPipelines" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2397.98,1123.4531,2388.98,1119.4531,2392.98,1123.4531,2388.98,1127.4531,2397.98,1123.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[c432002560edee752b2f89c09525dc3e]
+link RestoredPG to Analytics--><path d="M1753.5,1040.8931 C1753.5,1103.2931 1753.5,1271.4531 1753.5,1271.4531 C1753.5,1271.4531 2381,1271.4531 2381,1271.4531 " fill="none" id="RestoredPG-&gt;Analytics" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2386,1271.4531,2377,1267.4531,2381,1271.4531,2377,1275.4531,2386,1271.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[26d2e410aaf955da886291788ed54781]
+link RestoreAI to AIHost--><path d="M2379.5,1391.9131 C2379.5,1391.6131 2379.5,1391.4531 2379.5,1391.4531 C2379.5,1391.4531 1700.5,1391.4531 1700.5,1391.4531 C1700.5,1391.4531 1700.5,811.9531 1700.5,811.9531 C1700.5,811.9531 1445.7,811.9531 1445.7,811.9531 " fill="none" id="RestoreAI-&gt;AIHost" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1440.7,811.9531,1449.7,815.9531,1445.7,811.9531,1449.7,807.9531,1440.7,811.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[375f7e90e597344ea5633fbf79d264e5]
+link AIHost to NVIDIA--><path d="M1440.72,799.9531 C1440.72,799.9531 1709.48,799.9531 1709.48,799.9531 " fill="none" id="AIHost-&gt;NVIDIA" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1714.48,799.9531,1705.48,795.9531,1709.48,799.9531,1705.48,803.9531,1714.48,799.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[f8f0b17b9136cc881d6776effe9567ef]
+link NVIDIA to Ollama--><path d="M1876.76,804.9531 C1876.76,804.9531 2151.82,804.9531 2151.82,804.9531 " fill="none" id="NVIDIA-&gt;Ollama" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2156.82,804.9531,2147.82,800.9531,2151.82,804.9531,2147.82,808.9531,2156.82,804.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[e2c3d1df43e146a4cac6395128369031]
+link Ollama to Models--><path d="M2223.01,807.4531 C2223.01,807.4531 2381.81,807.4531 2381.81,807.4531 " fill="none" id="Ollama-&gt;Models" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2386.81,807.4531,2377.81,803.4531,2381.81,807.4531,2377.81,811.4531,2386.81,807.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[e082e99987b3807f2453174763909fef]
+link Models to RAG--><path d="M2527.17,804.9531 C2527.17,804.9531 2768.29,804.9531 2768.29,804.9531 " fill="none" id="Models-&gt;RAG" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2773.29,804.9531,2764.29,800.9531,2768.29,804.9531,2764.29,808.9531,2773.29,804.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[4aa6d0cfd63235bbe2f06057be10475b]
+link BackupRepo to Models--><path d="M1471.53,953.1231 C1713.48,953.1231 2457.5,953.1231 2457.5,953.1231 C2457.5,953.1231 2457.5,833.9631 2457.5,833.9631 " fill="none" id="BackupRepo-&gt;Models" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2457.5,828.9631,2453.5,837.9631,2457.5,833.9631,2461.5,837.9631,2457.5,828.9631" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="115" x="1933.5" y="863.02">Model definitions /</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="113" x="1934.5" y="878.1528">version metadata</text><!--MD5=[c16234059e516f311954347a67934521]
+link BusinessAPI to RAG--><path d="M2515.57,1195.6231 C2569.27,1195.6231 2640.5,1195.6231 2640.5,1195.6231 C2640.5,1195.6231 2640.5,816.9531 2640.5,816.9531 C2640.5,816.9531 2768.22,816.9531 2768.22,816.9531 " fill="none" id="BusinessAPI-&gt;RAG" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2773.22,816.9531,2764.22,812.9531,2768.22,816.9531,2764.22,820.9531,2773.22,816.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[44746293f011fcca4e118dd5f9792ec1]
+link Validate to InfraHealth--><path d="M2917.69,1422.8131 C2989.49,1422.8131 3086.5,1422.8131 3086.5,1422.8131 C3086.5,1422.8131 3086.5,1218.2131 3086.5,1218.2131 " fill="none" id="Validate-&gt;InfraHealth" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3086.5,1213.2131,3082.5,1222.2131,3086.5,1218.2131,3090.5,1222.2131,3086.5,1213.2131" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[2364b110228f934f823471e561571e69]
+link Validate to K8sHealth--><path d="M2917.56,1397.0931 C2926.48,1397.0931 2932.5,1397.0931 2932.5,1397.0931 C2932.5,1397.0931 2932.5,781.2831 2932.5,781.2831 C2932.5,781.2831 3046.77,781.2831 3046.77,781.2831 " fill="none" id="Validate-&gt;K8sHealth" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3051.77,781.2831,3042.77,777.2831,3046.77,781.2831,3042.77,785.2831,3051.77,781.2831" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[7c50c1e9464274f759ee3ab012e24f2f]
+link Validate to DBHealth--><path d="M2917.55,1412.5231 C2934.46,1412.5231 2947.5,1412.5231 2947.5,1412.5231 C2947.5,1412.5231 2947.5,991.1231 2947.5,991.1231 C2947.5,991.1231 3048.95,991.1231 3048.95,991.1231 " fill="none" id="Validate-&gt;DBHealth" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3053.95,991.1231,3044.95,987.1231,3048.95,991.1231,3044.95,995.1231,3053.95,991.1231" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[d4b59deb32d8ec4ec07d0bb001bcd267]
+link Validate to GitOpsHealth--><path d="M2917.91,1402.2431 C2928.31,1402.2431 2935.5,1402.2431 2935.5,1402.2431 C2935.5,1402.2431 2935.5,851.4531 2935.5,851.4531 C2935.5,851.4531 3045.46,851.4531 3045.46,851.4531 " fill="none" id="Validate-&gt;GitOpsHealth" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3050.46,851.4531,3041.46,847.4531,3045.46,851.4531,3041.46,855.4531,3050.46,851.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[1436b6ee6645566a3add017a64699f1f]
+link Validate to AppHealth--><path d="M2917.71,1417.6631 C2974.14,1417.6631 3041.5,1417.6631 3041.5,1417.6631 C3041.5,1417.6631 3041.5,1147.3231 3041.5,1147.3231 " fill="none" id="Validate-&gt;AppHealth" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3041.5,1142.3231,3037.5,1151.3231,3041.5,1147.3231,3045.5,1151.3231,3041.5,1142.3231" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[a5d944d81af9d8145009b966bfd2994c]
+link Validate to DataHealth--><path d="M2842.5,1391.5031 C2842.5,1320.2231 2842.5,1066.7831 2842.5,1066.7831 C2842.5,1066.7831 3042.39,1066.7831 3042.39,1066.7831 " fill="none" id="Validate-&gt;DataHealth" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3047.39,1066.7831,3038.39,1062.7831,3042.39,1066.7831,3038.39,1070.7831,3047.39,1066.7831" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[4dadb06e3e8e0097ecfe21c792199c95]
+link Validate to AIHealth--><path d="M2917.86,1407.3831 C2930.45,1407.3831 2939.5,1407.3831 2939.5,1407.3831 C2939.5,1407.3831 2939.5,918.1231 2939.5,918.1231 C2939.5,918.1231 3053.46,918.1231 3053.46,918.1231 " fill="none" id="Validate-&gt;AIHealth" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3058.46,918.1231,3049.46,914.1231,3053.46,918.1231,3049.46,922.1231,3058.46,918.1231" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[54443d805723b004828929bf0679df35]
+link ControlPlane to K8sHealth--><path d="M2943.5,359.1331 C2943.5,447.9231 2943.5,761.4531 2943.5,761.4531 C2943.5,761.4531 3046.8,761.4531 3046.8,761.4531 " fill="none" id="ControlPlane-&gt;K8sHealth" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3051.8,761.4531,3042.8,757.4531,3046.8,761.4531,3042.8,765.4531,3051.8,761.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[ac4473d12b9d5776490d75005d65bfb2]
+link RestoredPG to DBHealth--><path d="M1795.5,995.3031 C1795.5,990.4731 1795.5,986.7831 1795.5,986.7831 C1795.5,986.7831 3048.99,986.7831 3048.99,986.7831 " fill="none" id="RestoredPG-&gt;DBHealth" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3053.99,986.7831,3044.99,982.7831,3048.99,986.7831,3044.99,990.7831,3053.99,986.7831" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[8ef92a5a2899b62c2bc262638fb6ef2a]
+link ArgoCD to GitOpsHealth--><path d="M2228.61,651.9531 C2268.04,651.9531 2323.5,651.9531 2323.5,651.9531 C2323.5,651.9531 2323.5,844.9531 2323.5,844.9531 C2323.5,844.9531 3045.23,844.9531 3045.23,844.9531 " fill="none" id="ArgoCD-&gt;GitOpsHealth" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3050.23,844.9531,3041.23,840.9531,3045.23,844.9531,3041.23,848.9531,3050.23,844.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[11fcf09be4a87c78dd26b8e61c5fe460]
+link BusinessAPI to AppHealth--><path d="M2515.75,1204.2831 C2663.08,1204.2831 3036.5,1204.2831 3036.5,1204.2831 C3036.5,1204.2831 3036.5,1147.1831 3036.5,1147.1831 " fill="none" id="BusinessAPI-&gt;AppHealth" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3036.5,1142.1831,3032.5,1151.1831,3036.5,1147.1831,3040.5,1151.1831,3036.5,1142.1831" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[2983cb09a7b5cb6a53ac5efae76bd242]
+link DQValidation to DataHealth--><path d="M2923.5,1040.1431 C2923.5,1045.2531 2923.5,1049.4531 2923.5,1049.4531 C2923.5,1049.4531 3042.43,1049.4531 3042.43,1049.4531 " fill="none" id="DQValidation-&gt;DataHealth" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3047.43,1049.4531,3038.43,1045.4531,3042.43,1049.4531,3038.43,1053.4531,3047.43,1049.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[e4f85bcae2081f48baf043e29c837400]
+link RAG to AIHealth--><path d="M2842.5,829.0731 C2842.5,856.9731 2842.5,907.2831 2842.5,907.2831 C2842.5,907.2831 3053.47,907.2831 3053.47,907.2831 " fill="none" id="RAG-&gt;AIHealth" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3058.47,907.2831,3049.47,903.2831,3053.47,907.2831,3049.47,911.2831,3058.47,907.2831" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[51d02cd1bcfcfec3ea7a57f888059f17]
+link Validation to ActualRTO--><path d="M3246.4535,1247.9531 C3247.3575,1247.9531 3248.2614,1247.9531 3249.165,1247.9531 C3306.995,1247.9531 3363.5,1247.9531 3363.5,1247.9531 C3363.5,1247.9531 3363.5,1039.1531 3363.5,1039.1531 " fill="none" id="Validation-&gt;ActualRTO" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3363.5,1034.1531,3359.5,1043.1531,3363.5,1039.1531,3367.5,1043.1531,3363.5,1034.1531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[8310a0d0b0e085328568d1b82fdf94b0]
+link Validation to ActualRPO--><path d="M3007.4974,1247.6231 C3007.3887,1247.6231 3007.2813,1247.6231 3007.1753,1247.6231 C3006.9632,1247.6231 3006.7564,1247.6231 3006.555,1247.6231 C3003.333,1247.6231 3001.5,1247.6231 3001.5,1247.6231 C3001.5,1247.6231 3001.5,943.2831 3001.5,943.2831 C3001.5,943.2831 3345.62,943.2831 3345.62,943.2831 " fill="none" id="Validation-&gt;ActualRPO" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3350.62,943.2831,3341.62,939.2831,3345.62,943.2831,3341.62,947.2831,3350.62,943.2831" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[d9f7fc737561c154de91c82cb370c8e1]
+link ActualRTO to TestEvidence--><path d="M3502.42,1015.9531 C3502.42,1015.9531 3694.43,1015.9531 3694.43,1015.9531 " fill="none" id="ActualRTO-&gt;TestEvidence" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3699.43,1015.9531,3690.43,1011.9531,3694.43,1015.9531,3690.43,1019.9531,3699.43,1015.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[19ec723bfca5ed8340bffe73536e2712]
+link ActualRPO to TestEvidence--><path d="M3485.09,944.9531 C3591.86,944.9531 3788.5,944.9531 3788.5,944.9531 C3788.5,944.9531 3788.5,992.6731 3788.5,992.6731 " fill="none" id="ActualRPO-&gt;TestEvidence" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3788.5,997.6731,3792.5,988.6731,3788.5,992.6731,3784.5,988.6731,3788.5,997.6731" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[58cbd721285cf8b48eab41c287240320]
+link RPO to TestEvidence--><path d="M3443.04,1086.9531 C3521.67,1086.9531 3758.5,1086.9531 3758.5,1086.9531 C3758.5,1086.9531 3758.5,1039.2331 3758.5,1039.2331 " fill="none" id="RPO-&gt;TestEvidence" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3758.5,1034.2331,3754.5,1043.2331,3758.5,1039.2331,3762.5,1043.2331,3758.5,1034.2331" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="102" x="3566.5" y="1046.02">Compare target</text><!--MD5=[9132b53a6a11a6b52dfed8c4374c65fb]
+link RTO to TestEvidence--><path d="M3443.29,1157.9531 C3531.11,1157.9531 3817.5,1157.9531 3817.5,1157.9531 C3817.5,1157.9531 3817.5,1039.2231 3817.5,1039.2231 " fill="none" id="RTO-&gt;TestEvidence" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3817.5,1034.2231,3813.5,1043.2231,3817.5,1039.2231,3821.5,1043.2231,3817.5,1034.2231" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="102" x="3566.5" y="1125.02">Compare target</text><!--MD5=[1576c4da7dfaef81c957529605ce8452]
+link BackupMechanisms to BackupSuccess--><path d="M1240.02,822.9531 C1240.7004,822.9531 1241.3791,822.9531 1242.0558,822.9531 C1243.4093,822.9531 1244.755,822.9531 1246.0917,822.9531 C1248.7651,822.9531 1251.4024,822.9531 1253.9934,822.9531 C1264.3571,822.9531 1273.9791,822.9531 1282.2023,822.9531 C1298.6488,822.9531 1309.5,822.9531 1309.5,822.9531 C1309.5,822.9531 1309.5,602.9531 1309.5,602.9531 C1309.5,602.9531 3971.41,602.9531 3971.41,602.9531 " fill="none" id="BackupMechanisms-&gt;BackupSuccess" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3976.41,602.9531,3967.41,598.9531,3971.41,602.9531,3967.41,606.9531,3976.41,602.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[36a40529e68f7ef272ba15c02321ed6a]
+link TestEvidence to RestoreAge--><path d="M3876.73,1015.9531 C3938,1015.9531 4008.5,1015.9531 4008.5,1015.9531 C4008.5,1015.9531 4008.5,691.1731 4008.5,691.1731 " fill="none" id="TestEvidence-&gt;RestoreAge" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="4008.5,686.1731,4004.5,695.1731,4008.5,691.1731,4012.5,695.1731,4008.5,686.1731" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[741d9a6f07bf808498da7ceb37106d68]
+link BackupSuccess to Prometheus--><path d="M4066.5,615.1431 C4066.5,620.2531 4066.5,624.4531 4066.5,624.4531 C4066.5,624.4531 4170.33,624.4531 4170.33,624.4531 " fill="none" id="BackupSuccess-&gt;Prometheus" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="4175.33,624.4531,4166.33,620.4531,4170.33,624.4531,4166.33,628.4531,4175.33,624.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[1ab6f02307ee5f42c4af2b44125dcdf2]
+link RestoreAge to Prometheus--><path d="M4021.5,649.9131 C4021.5,644.1331 4021.5,639.2031 4021.5,639.2031 C4021.5,639.2031 4170.3,639.2031 4170.3,639.2031 " fill="none" id="RestoreAge-&gt;Prometheus" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="4175.3,639.2031,4166.3,635.2031,4170.3,639.2031,4166.3,643.2031,4175.3,639.2031" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[540c32fc81073794b738b5a0ecff6f7c]
+link Prometheus to Risks--><path d="M4334.5,638.2831 C4399.43,638.2831 4480.5,638.2831 4480.5,638.2831 C4480.5,638.2831 4480.5,644.6731 4480.5,644.6731 " fill="none" id="Prometheus-&gt;Risks" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="4480.5,649.6731,4484.5,640.6731,4480.5,644.6731,4476.5,640.6731,4480.5,649.6731" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[8e0e23ab7f37402554be4c5b447fa8ff]
+link Prometheus to Compliance--><path d="M4334.57,626.6231 C4372.83,626.6231 4410.5,626.6231 4410.5,626.6231 C4410.5,626.6231 4410.5,620.2331 4410.5,620.2331 " fill="none" id="Prometheus-&gt;Compliance" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="4410.5,615.2331,4406.5,624.2331,4410.5,620.2331,4414.5,624.2331,4410.5,615.2331" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[a42b713be439686bb8544dfdc0432a06]
+link HostFailure to RestoreInfra--><path d="M155.5,1426.6331 C155.5,1418.1631 155.5,1409.9531 155.5,1409.9531 C155.5,1409.9531 295.69,1409.9531 295.69,1409.9531 " fill="none" id="HostFailure-&gt;RestoreInfra" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="300.69,1409.9531,291.69,1405.9531,295.69,1409.9531,291.69,1413.9531,300.69,1409.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[f4faf4e931165ab59041760aeca34aa8]
+link ClusterFailure to RestoreK8s--><path d="M204.09,1515.9531 C357.92,1515.9531 694.5,1515.9531 694.5,1515.9531 C694.5,1515.9531 694.5,1433.4131 694.5,1433.4131 " fill="none" id="ClusterFailure-&gt;RestoreK8s" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="694.5,1428.4131,690.5,1437.4131,694.5,1433.4131,698.5,1437.4131,694.5,1428.4131" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[ec8e6a1d75dcf8e1a3946565c1f3174e]
+link DBFailure to RestoreData--><path d="M196.51,1718.9531 C461.84,1718.9531 1418.5,1718.9531 1418.5,1718.9531 C1418.5,1718.9531 1418.5,1433.3531 1418.5,1433.3531 " fill="none" id="DBFailure-&gt;RestoreData" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1418.5,1428.3531,1414.5,1437.3531,1418.5,1433.3531,1422.5,1437.3531,1418.5,1428.3531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[891db249ca913b7dd43a75e2c1a7c726]
+link StorageFailure to RestoreData--><path d="M190.81,1647.9531 C442.33,1647.9531 1375.5,1647.9531 1375.5,1647.9531 C1375.5,1647.9531 1375.5,1433.2331 1375.5,1433.2331 " fill="none" id="StorageFailure-&gt;RestoreData" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1375.5,1428.2331,1371.5,1437.2331,1375.5,1433.2331,1379.5,1437.2331,1375.5,1428.2331" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[7f3668857cf1fc95cd31c14472ab8a9f]
+link ConfigFailure to RestoreGit--><path d="M203.01,1576.9531 C433.72,1576.9531 1124.5,1576.9531 1124.5,1576.9531 C1124.5,1576.9531 1124.5,1433.1431 1124.5,1433.1431 " fill="none" id="ConfigFailure-&gt;RestoreGit" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1124.5,1428.1431,1120.5,1437.1431,1124.5,1433.1431,1128.5,1437.1431,1124.5,1428.1431" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[fb507cdd13d650c30e51df0189455228]
+link GitBackup to GMN184--><path d="M1215.76,948.4531 C1232.34,948.4531 1244.5,948.4531 1244.5,948.4531 C1244.5,948.4531 1244.5,474.9531 1244.5,474.9531 C1244.5,474.9531 1236.52,474.9531 1224.68,474.9531 " fill="none" id="GitBackup-GMN184" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[b6956b042b04737b385b1b4524cd8d1e]
+link PGBackup to GMN187--><path d="M1203.17,1029.9531 C1234.17,1029.9531 1262.5,1029.9531 1262.5,1029.9531 C1262.5,1029.9531 1262.5,590.9531 1262.5,590.9531 C1262.5,590.9531 1247.46,590.9531 1227.32,590.9531 " fill="none" id="PGBackup-GMN187" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[5635df1092237e16ea134b1c453d2dba]
+link Velero to GMN190--><path d="M1092.34,1183.9531 C1064.78,1183.9531 1029.5,1183.9531 1029.5,1183.9531 C1029.5,1183.9531 1029.5,897.8031 1029.5,772.0531 " fill="none" id="Velero-GMN190" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[41af4ff921c7e39bf46750c82a7913c1]
+link RecoveryProcess to GMN193--><path d="M292.5,1348.5019 C292.5,1348.2691 292.5,1348.0365 292.5,1347.8042 C292.5,1347.3396 292.5,1346.8758 292.5,1346.4131 C292.5,1339.0092 292.5,1331.8581 292.5,1325.1831 " fill="none" id="RecoveryProcess-GMN193" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[11fe2a577d485a56ca707a6203b762a0]
+link Validation to GMN196--><path d="M3006.8547,1232.4531 C3006.3731,1232.4531 3005.8953,1232.4531 3005.4215,1232.4531 C3003.5264,1232.4531 3001.6953,1232.4531 2999.9375,1232.4531 C2985.875,1232.4531 2976.5,1232.4531 2976.5,1232.4531 C2976.5,1232.4531 2976.5,671.9531 2976.5,671.9531 C2976.5,671.9531 2999.16,671.9531 3026.87,671.9531 " fill="none" id="Validation-GMN196" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[7cb2e4823a6f17f463a739a278ea1126]
+link Objectives to GMN199--><path d="M3317.5,882.2755 C3317.5,881.0177 3317.5,879.7592 3317.5,878.5002 C3317.5,868.4281 3317.5,858.3214 3317.5,848.211 C3317.5,827.99 3317.5,807.7538 3317.5,787.7485 C3317.5,747.7381 3317.5,708.6516 3317.5,672.4592 C3317.5,600.0744 3317.5,539.2656 3317.5,505.7931 " fill="none" id="Objectives-GMN199" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[4868633ee86b80ee777b05e33c9c6309]
+link DRGovernance to GMN202--><path d="M4145.5,534.4786 C4145.5,533.973 4145.5,533.4684 4145.5,532.9648 C4145.5,516.8516 4145.5,501.8125 4145.5,488.9219 C4145.5,463.1406 4145.5,445.9531 4145.5,445.9531 C4145.5,445.9531 4127.27,445.9531 4106.26,445.9531 " fill="none" id="DRGovernance-GMN202" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[9061f35eb73ca15f57355a9d0c3f86fe]
+@startuml 14-Backup-DR-Architecture
+
+title Enterprise AI Platform — Backup & Disaster Recovery Architecture
+
+left to right direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam ArrowThickness 1
+
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam component {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam database {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam node {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+
+rectangle "Protected Platform State" as ProtectedState {
+
+    component "GitLab Repositories" as GitRepos
+
+    component "GitOps Desired State" as GitOpsState
+
+    database "PostgreSQL Databases" as PostgreSQL
+
+    component "Kubernetes Resources" as K8sResources
+
+    component "Persistent Volumes" as PVs
+
+    component "OpenMetadata Governance State" as MetadataState
+
+    component "MLflow Metadata" as MLflowMetadata
+
+    component "MinIO Artifacts" as MinIOArtifacts
+
+    component "Configuration /\nSecrets References" as Configuration
+
+    component "AI Model Definitions" as AIModels
+}
+
+
+rectangle "Backup Mechanisms" as BackupMechanisms {
+
+    component "Git Repository Backup /\nMirror" as GitBackup
+
+    component "PostgreSQL Backup" as PGBackup
+
+    component "Velero" as Velero
+
+    component "Persistent Data Backup" as PVBackup
+
+    component "MinIO / Object\nStorage Backup" as ObjectBackup
+
+    component "Configuration Export" as ConfigBackup
+}
+
+GitRepos - -> GitBackup
+GitOpsState - -> GitBackup
+
+PostgreSQL - -> PGBackup
+
+K8sResources - -> Velero
+PVs - -> PVBackup
+
+MinIOArtifacts - -> ObjectBackup
+
+Configuration - -> ConfigBackup
+
+MetadataState - -> PGBackup
+MLflowMetadata - -> PGBackup
+
+AIModels - -> GitBackup : Definitions / versions
+
+
+rectangle "Recovery Storage" as RecoveryStorage {
+
+    database "Backup Repository" as BackupRepo
+
+    database "Database Backup Storage" as DBBackupStorage
+
+    database "Object / Artifact Backup" as ObjectBackupStorage
+
+    database "Velero Backup Storage" as VeleroStorage
+}
+
+GitBackup - -> BackupRepo
+
+PGBackup - -> DBBackupStorage
+
+ObjectBackup - -> ObjectBackupStorage
+
+Velero - -> VeleroStorage
+PVBackup - -> VeleroStorage
+
+ConfigBackup - -> BackupRepo
+
+
+rectangle "Disaster / Major Failure" as Disaster {
+
+    component "Host Failure" as HostFailure
+    component "Kubernetes Failure" as ClusterFailure
+    component "Database Failure" as DBFailure
+    component "Storage Failure" as StorageFailure
+    component "Configuration Loss" as ConfigFailure
+}
+
+
+rectangle "Recovery Process" as RecoveryProcess {
+
+    component "1. Restore Infrastructure" as RestoreInfra
+
+    component "2. Restore Kubernetes" as RestoreK8s
+
+    component "3. Restore Git / GitOps" as RestoreGit
+
+    component "4. Restore Data" as RestoreData
+
+    component "5. Restore Platform Services" as RestorePlatform
+
+    component "6. Restore Applications" as RestoreApps
+
+    component "7. Restore AI Services" as RestoreAI
+
+    component "8. Validate Platform" as Validate
+}
+
+Disaster - -> RestoreInfra
+
+RestoreInfra - -> RestoreK8s
+RestoreK8s - -> RestoreGit
+RestoreGit - -> RestoreData
+RestoreData - -> RestorePlatform
+RestorePlatform - -> RestoreApps
+RestoreApps - -> RestoreAI
+RestoreAI - -> Validate
+
+
+rectangle "Infrastructure Recovery" as InfraRecovery {
+
+    node "Proxmox / Linux Hosts" as Proxmox
+
+    node "Kubernetes Control Plane" as ControlPlane
+
+    node "Worker Nodes" as Workers
+
+    component "Networking / DNS" as Networking
+}
+
+RestoreInfra - -> Proxmox
+RestoreInfra - -> Networking
+
+RestoreK8s - -> ControlPlane
+RestoreK8s - -> Workers
+
+
+rectangle "GitOps Recovery" as GitOpsRecovery {
+
+    component "GitLab" as GitLab
+
+    component "Argo CD" as ArgoCD
+
+    component "Root Application" as RootApp
+}
+
+BackupRepo - -> GitLab : Restore repositories
+
+RestoreGit - -> GitLab
+
+GitLab - -> ArgoCD : Desired state
+ArgoCD - -> RootApp
+
+RootApp - -> ControlPlane : Reconcile platform
+
+
+rectangle "Data Recovery" as DataRecovery {
+
+    database "Restored PostgreSQL" as RestoredPG
+
+    component "Schema Validation" as SchemaValidation
+
+    component "Data Integrity Validation" as DataValidation
+
+    component "Data Quality Validation" as DQValidation
+}
+
+DBBackupStorage - -> RestoredPG
+
+RestoreData - -> RestoredPG
+
+RestoredPG - -> SchemaValidation
+SchemaValidation - -> DataValidation
+DataValidation - -> DQValidation
+
+
+rectangle "Platform Services Recovery" as PlatformRecovery {
+
+    component "Airflow" as Airflow
+
+    component "MLflow" as MLflow
+
+    component "OpenMetadata" as OpenMetadata
+
+    component "Prometheus / Grafana" as Monitoring
+
+    component "Loki / Tempo /\nOpenTelemetry" as Observability
+
+    component "NGINX Ingress /\ncert-manager" as Ingress
+}
+
+RestorePlatform - -> Airflow
+RestorePlatform - -> MLflow
+RestorePlatform - -> OpenMetadata
+RestorePlatform - -> Monitoring
+RestorePlatform - -> Observability
+RestorePlatform - -> Ingress
+
+RestoredPG - -> Airflow
+RestoredPG - -> MLflow
+RestoredPG - -> OpenMetadata
+
+ObjectBackupStorage - -> MLflow : Restore artifacts
+
+VeleroStorage ..> PlatformRecovery : Kubernetes state
+
+
+rectangle "Application Recovery" as ApplicationRecovery {
+
+    component "Business APIs" as BusinessAPI
+
+    component "Data Pipelines" as DataPipelines
+
+    component "Analytics Services" as Analytics
+}
+
+RestoreApps - -> BusinessAPI
+RestoreApps - -> DataPipelines
+RestoreApps - -> Analytics
+
+RestoredPG - -> BusinessAPI
+RestoredPG - -> DataPipelines
+RestoredPG - -> Analytics
+
+
+rectangle "AI Recovery" as AIRecovery {
+
+    node "AI Host" as AIHost
+
+    component "NVIDIA Driver / CUDA" as NVIDIA
+
+    component "Ollama" as Ollama
+
+    component "Approved Models" as Models
+
+    component "RAG / AI Services" as RAG
+}
+
+RestoreAI - -> AIHost
+
+AIHost - -> NVIDIA
+NVIDIA - -> Ollama
+Ollama - -> Models
+Models - -> RAG
+
+BackupRepo ..> Models : Model definitions /\nversion metadata
+
+BusinessAPI - -> RAG
+
+
+rectangle "Recovery Validation" as Validation {
+
+    component "Infrastructure Health" as InfraHealth
+
+    component "Kubernetes Health" as K8sHealth
+
+    component "Database Integrity" as DBHealth
+
+    component "GitOps Sync Status" as GitOpsHealth
+
+    component "Application Smoke Tests" as AppHealth
+
+    component "Data Quality Checks" as DataHealth
+
+    component "AI Inference Test" as AIHealth
+}
+
+Validate - -> InfraHealth
+Validate - -> K8sHealth
+Validate - -> DBHealth
+Validate - -> GitOpsHealth
+Validate - -> AppHealth
+Validate - -> DataHealth
+Validate - -> AIHealth
+
+ControlPlane ..> K8sHealth
+RestoredPG ..> DBHealth
+ArgoCD ..> GitOpsHealth
+BusinessAPI ..> AppHealth
+DQValidation ..> DataHealth
+RAG ..> AIHealth
+
+
+rectangle "Recovery Objectives & Evidence" as Objectives {
+
+    component "RPO" as RPO
+
+    component "RTO" as RTO
+
+    component "Actual Recovery Time" as ActualRTO
+
+    component "Actual Data Loss" as ActualRPO
+
+    component "Restore Test Evidence" as TestEvidence
+}
+
+Validation - -> ActualRTO
+Validation - -> ActualRPO
+
+ActualRTO - -> TestEvidence
+ActualRPO - -> TestEvidence
+
+RPO ..> TestEvidence : Compare target
+RTO ..> TestEvidence : Compare target
+
+
+rectangle "DR Governance" as DRGovernance {
+
+    component "Prometheus Metrics" as Prometheus
+
+    component "Backup Success" as BackupSuccess
+
+    component "Restore Test Age" as RestoreAge
+
+    component "Risk Register" as Risks
+
+    component "Compliance Evidence" as Compliance
+}
+
+BackupMechanisms ..> BackupSuccess
+
+TestEvidence - -> RestoreAge
+
+BackupSuccess - -> Prometheus
+RestoreAge - -> Prometheus
+
+Prometheus - -> Risks
+Prometheus - -> Compliance
+
+
+HostFailure ..> RestoreInfra
+ClusterFailure ..> RestoreK8s
+DBFailure ..> RestoreData
+StorageFailure ..> RestoreData
+ConfigFailure ..> RestoreGit
+
+
+note bottom of GitBackup
+Git protects reconstructable
+desired state:
+
+Code
+Configuration
+ADRs
+Governance
+GitOps manifests
+end note
+
+note bottom of PGBackup
+Database backups protect
+state that Git cannot rebuild.
+
+Backup success alone is
+not sufficient evidence.
+end note
+
+note bottom of Velero
+Velero protects Kubernetes
+resources and selected
+persistent state.
+
+It complements, rather than
+replaces, application-aware
+database backup.
+end note
+
+note bottom of RecoveryProcess
+Recovery order is deliberate.
+
+Infrastructure and control-plane
+capabilities are restored before
+higher-level applications.
+end note
+
+note bottom of Validation
+Recovery is incomplete until
+the restored platform has
+been functionally validated.
+end note
+
+note bottom of Objectives
+RPO and RTO become meaningful
+only when measured during
+real restore exercises.
+end note
+
+note bottom of DRGovernance
+Target maturity:
+
+Backup
+→ Restore
+→ Validate
+→ Measure
+→ Evidence
+→ Improve
+end note
+
+@enduml
+
+PlantUML version 1.2020.02(Sun Mar 01 11:22:07 CET 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 11.0.31+11-post-1ubuntu1-22.04.2-Ubuntu
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: null
+--></g></svg>

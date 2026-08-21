@@ -1,0 +1,327 @@
+@startuml 07-Data-Architecture
+
+title Enterprise AI Platform — Data Architecture
+
+left to right direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam ArrowThickness 1
+
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam component {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam database {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+' ============================================================
+' SOURCES
+' ============================================================
+
+rectangle "Source Systems" as Sources {
+    component "Business Applications" as BusinessSources
+    component "Files / CSV / Excel" as Files
+    component "External APIs" as APIs
+    component "IoT / Operational Sources" as IoT
+}
+
+' ============================================================
+' ORCHESTRATION
+' ============================================================
+
+rectangle "Workflow Orchestration" as Orchestration {
+    component "Apache Airflow" as Airflow
+    component "Ingestion DAGs" as IngestionDAGs
+    component "Transformation DAGs" as TransformDAGs
+    component "Quality / Governance DAGs" as GovernanceDAGs
+}
+
+Airflow --> IngestionDAGs
+Airflow --> TransformDAGs
+Airflow --> GovernanceDAGs
+
+' ============================================================
+' DATA PLATFORM
+' ============================================================
+
+rectangle "PostgreSQL Data Platform" as PostgreSQLPlatform {
+
+    database "raw" as Raw
+
+    database "staging" as Staging
+
+    database "warehouse" as Warehouse
+
+    database "analytics" as Analytics
+}
+
+' ============================================================
+' TRANSFORMATION
+' ============================================================
+
+rectangle "Transformation Layer" as Transformation {
+    component "dbt" as DBT
+    component "Staging Models" as DBTStaging
+    component "Warehouse Models" as DBTWarehouse
+    component "Analytics Models" as DBTAnalytics
+}
+
+DBT --> DBTStaging
+DBT --> DBTWarehouse
+DBT --> DBTAnalytics
+
+' ============================================================
+' DATA QUALITY
+' ============================================================
+
+rectangle "Data Quality" as DQ {
+    component "dbt Tests" as DBTTests
+    component "OpenMetadata Tests" as OMTests
+    component "Freshness Checks" as Freshness
+    component "Row Count / Integrity" as Integrity
+}
+
+' ============================================================
+' GOVERNANCE
+' ============================================================
+
+rectangle "Data Governance" as Governance {
+    component "OpenMetadata" as OpenMetadata
+    component "Ownership" as Ownership
+    component "Classification" as Classification
+    component "Glossary" as Glossary
+    component "Lineage" as Lineage
+    component "Profiling" as Profiling
+}
+
+OpenMetadata --> Ownership
+OpenMetadata --> Classification
+OpenMetadata --> Glossary
+OpenMetadata --> Lineage
+OpenMetadata --> Profiling
+
+' ============================================================
+' CONSUMERS
+' ============================================================
+
+rectangle "Consumers" as Consumers {
+    component "Business Applications" as BusinessConsumers
+    component "Dashboards / BI" as BI
+    component "Data Analysts" as Analysts
+    component "ML / AI Workloads" as AIConsumers
+}
+
+' ============================================================
+' MLOPS / AI
+' ============================================================
+
+rectangle "AI / MLOps" as AIML {
+    component "MLflow" as MLflow
+    component "RAG / AI Services" as RAG
+}
+
+' ============================================================
+' OBSERVABILITY
+' ============================================================
+
+rectangle "Data Observability" as Observability {
+    component "Prometheus" as Prometheus
+    component "Grafana" as Grafana
+    component "Loki" as Loki
+}
+
+' ============================================================
+' GOVERNANCE-AS-CODE
+' ============================================================
+
+rectangle "Governance as Code" as GovCode {
+    component "Git Repository" as Git
+    component "Data Quality Definitions" as DQCode
+    component "Ownership / Tags /\nClassification" as MetadataCode
+    component "Data Contracts\nFuture" as DataContracts
+}
+
+' ============================================================
+' SOURCE INGESTION
+' ============================================================
+
+BusinessSources --> IngestionDAGs : Operational data
+Files --> IngestionDAGs : Batch files
+APIs --> IngestionDAGs : API data
+IoT --> IngestionDAGs : Operational telemetry
+
+IngestionDAGs --> Raw : Load source data
+
+' ============================================================
+' LAYERED DATA FLOW
+' ============================================================
+
+Raw --> Staging : Clean / normalize
+Staging --> Warehouse : Integrate / model
+Warehouse --> Analytics : Curated views
+
+' ============================================================
+' DBT TRANSFORMATIONS
+' ============================================================
+
+TransformDAGs --> DBT : Execute
+
+DBTStaging --> Staging
+DBTWarehouse --> Warehouse
+DBTAnalytics --> Analytics
+
+Raw --> DBTStaging
+Staging --> DBTWarehouse
+Warehouse --> DBTAnalytics
+
+' ============================================================
+' DATA QUALITY
+' ============================================================
+
+GovernanceDAGs --> DQ
+
+DBTTests ..> Staging
+DBTTests ..> Warehouse
+DBTTests ..> Analytics
+
+OMTests ..> Warehouse
+OMTests ..> Analytics
+
+Freshness ..> Analytics
+Integrity ..> Warehouse
+
+' ============================================================
+' GOVERNANCE / METADATA
+' ============================================================
+
+OpenMetadata ..> Raw : Catalog
+OpenMetadata ..> Staging : Catalog
+OpenMetadata ..> Warehouse : Catalog
+OpenMetadata ..> Analytics : Catalog
+
+OpenMetadata ..> Airflow : Pipeline metadata
+OpenMetadata ..> DBT : Models / lineage
+OpenMetadata ..> DQ : Quality results
+
+Lineage ..> Raw
+Lineage ..> Staging
+Lineage ..> Warehouse
+Lineage ..> Analytics
+
+' ============================================================
+' CONSUMPTION
+' ============================================================
+
+Analytics --> BusinessConsumers : Curated business data
+Analytics --> BI : Reporting
+Analytics --> Analysts : Analytical queries
+Warehouse --> AIConsumers : Governed datasets
+Analytics --> AIConsumers : Curated features / context
+
+' ============================================================
+' AI / MLOPS
+' ============================================================
+
+AIConsumers --> MLflow : Training / experiments
+AIConsumers --> RAG : AI context
+
+Warehouse --> MLflow : Training datasets
+Analytics --> RAG : Governed context
+
+' ============================================================
+' OBSERVABILITY
+' ============================================================
+
+Airflow ..> Prometheus : DAG metrics
+DBT ..> Prometheus : Job metrics
+DQ ..> Prometheus : Quality metrics
+
+Airflow ..> Loki : Logs
+DBT ..> Loki : Logs
+OpenMetadata ..> Loki : Logs
+
+Prometheus --> Grafana
+Loki --> Grafana
+
+' ============================================================
+' GOVERNANCE-AS-CODE
+' ============================================================
+
+Git --> DQCode
+Git --> MetadataCode
+Git --> DataContracts
+
+DQCode ..> DQ : Apply rules
+MetadataCode ..> OpenMetadata : Apply governance metadata
+DataContracts ..> DBT : Future validation
+
+' ============================================================
+' NOTES
+' ============================================================
+
+note bottom of Raw
+RAW
+
+Preserves source-oriented
+data with minimal transformation.
+end note
+
+note bottom of Staging
+STAGING
+
+Standardization,
+typing, cleansing,
+deduplication.
+end note
+
+note bottom of Warehouse
+WAREHOUSE
+
+Integrated business models,
+facts, dimensions,
+business logic.
+end note
+
+note bottom of Analytics
+ANALYTICS
+
+Consumer-oriented
+curated datasets and views.
+end note
+
+note bottom of DBT
+Airflow orchestrates.
+
+dbt owns transformation logic.
+
+Transformation SQL should not
+be hidden inside DAG code.
+end note
+
+note bottom of OpenMetadata
+OpenMetadata is the
+authoritative enterprise
+metadata and data-governance
+platform.
+end note
+
+note bottom of GovCode
+Governance definitions are
+version-controlled and
+applied automatically
+where practical.
+end note
+
+@enduml

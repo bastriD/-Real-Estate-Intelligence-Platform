@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="3801px" preserveAspectRatio="none" style="width:1817px;height:3801px;" version="1.1" viewBox="0 0 1817 3801" width="1817px" zoomAndPan="magnify"><defs/><g><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacingAndGlyphs" textLength="418" x="715.5" y="16.708">Enterprise AI Platform — Network Architecture</text><!--MD5=[0a301fc9cb836441c8580750e3ade370]
+cluster LAN--><rect fill="#FFFFFF" height="1306" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="1120.5" x="686" y="670.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="118" x="1187.25" y="685.9482">Enterprise LAN</text><!--MD5=[5a661a27faca442b02d955f56313ec42]
+cluster Router--><polygon fill="#FFFFFF" points="726,1393.9531,736,1383.9531,980,1383.9531,980,1571.9531,970,1581.9531,726,1581.9531,726,1393.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="970" x2="979" y1="1393.9531" y2="1384.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="726" x2="970" y1="1393.9531" y2="1393.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="970" x2="970" y1="1393.9531" y2="1581.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="178" x="760" y="1409.9482">Main Router / Gateway</text><!--MD5=[b6c4ebe5a3b1fdd69e6660919b301660]
+cluster DNS--><rect fill="#FFFFFF" height="87" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="118" x="794" y="1613.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="97" x="804.5" y="1628.9482">Internal DNS</text><!--MD5=[babff698500f5056dd913bbc747ae629]
+cluster PrimaryNet--><rect fill="#FFFFFF" height="526" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="454" x="1300" y="1076.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="247" x="1403.5" y="1091.9482">Primary Infrastructure Network</text><!--MD5=[1208285007246cea78f90318d89e8349]
+cluster SecondaryNet--><rect fill="#FFFFFF" height="294" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="229" x="1277.5" y="1642.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="213" x="1285.5" y="1657.9482">Additional Worker Network</text><!--MD5=[f340391a167a16d7145982cb8dea08de]
+cluster AINet--><rect fill="#FFFFFF" height="299" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="499.5" x="1267" y="737.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="163" x="1435.25" y="752.9482">AI Compute Network</text><!--MD5=[dbc2c8bc815d2902e35bfb64f1a22840]
+cluster AI1--><polygon fill="#FFFFFF" points="1342.5,798.9531,1352.5,788.9531,1734.5,788.9531,1734.5,870.9531,1724.5,880.9531,1342.5,880.9531,1342.5,798.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1724.5" x2="1733.5" y1="798.9531" y2="789.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1342.5" x2="1724.5" y1="798.9531" y2="798.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1724.5" x2="1724.5" y1="798.9531" y2="880.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="71" x="1499" y="814.9482">AI Host 1</text><!--MD5=[b0ab32f8855c33664933daff0d9b39f5]
+cluster AI2--><polygon fill="#FFFFFF" points="1299,914.9531,1309,904.9531,1734.5,904.9531,1734.5,986.9531,1724.5,996.9531,1299,996.9531,1299,914.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1724.5" x2="1733.5" y1="914.9531" y2="905.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1299" x2="1724.5" y1="914.9531" y2="914.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1724.5" x2="1724.5" y1="914.9531" y2="996.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="71" x="1477.25" y="930.9482">AI Host 2</text><!--MD5=[846649a57a133fd52de4194f180e73e6]
+cluster K8sNetwork--><rect fill="#FFFFFF" height="594" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="1310" x="253" y="2644.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="165" x="825.5" y="2659.9482">Kubernetes Network</text><!--MD5=[10a7cef785d0744e97f649f74acf344e]
+cluster NodeNetwork--><rect fill="#FFFFFF" height="87" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="193" x="285" y="2695.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="113" x="325" y="2710.9482">Node Network</text><!--MD5=[14edfeec8b70f495d59fcc089e058326]
+cluster Overlay--><rect fill="#FFFFFF" height="122" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="736.5" x="786.5" y="2941.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="121" x="1094.25" y="2956.9482">Flannel Overlay</text><!--MD5=[87ed1686228f8d047b58a4433658c636]
+cluster ServiceNetwork--><rect fill="#FFFFFF" height="103" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="683.5" x="795.5" y="3095.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="229" x="1022.75" y="3110.9482">Kubernetes Service Network</text><!--MD5=[8a15dac0724e94b2b87071bc1444ff41]
+cluster NorthSouth--><rect fill="#FFFFFF" height="103" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="619" x="309" y="2806.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="158" x="539.5" y="2821.9482">North-South Access</text><!--MD5=[cdfd548b3455e70392372b1f27091970]
+cluster Services--><rect fill="#FFFFFF" height="442" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="247" x="1268.5" y="2162.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="231" x="1276.5" y="2177.9482">Internal Kubernetes Services</text><!--MD5=[109515bbac35f821417e1764695b17cb]
+cluster Security--><rect fill="#FFFFFF" height="193" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="458" x="30" y="3278.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="209" x="154.5" y="3293.9482">Network Security Controls</text><!--MD5=[8d82a412091c6e88d7159ceb54543645]
+cluster NetObs--><rect fill="#FFFFFF" height="193" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="658.5" x="286" y="3597.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="175" x="527.75" y="3612.9482">Network Observability</text><!--MD5=[49cbbb1648246ecd0e2d56eda0c19f08]
+entity Gateway--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="132" x="787" y="1431.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="782" y="1436.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="782" y="1458.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="112" x="797" y="1454.9482">Default Gateway</text><!--MD5=[7a980fe5388f2c0b48dbfb0a8ec1f254]
+entity Routing--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="104" x="801" y="1502.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="796" y="1507.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="796" y="1529.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="84" x="811" y="1525.9482">LAN Routing</text><!--MD5=[41088c4f667ed498126df9eeaf4c4844]
+entity LabDNS--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="86" x="810" y="1648.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="805" y="1653.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="805" y="1675.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="66" x="820" y="1671.9482">*.lab.local</text><!--MD5=[88d7ae51bc4698c46accd6bc618ab1d2]
+entity Proxmox--><polygon fill="#FFFFFF" points="1324,1291.9531,1334,1281.9531,1459,1281.9531,1459,1318.25,1449,1328.25,1324,1328.25,1324,1291.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1449" x2="1458" y1="1291.9531" y2="1282.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1324" x2="1449" y1="1291.9531" y2="1291.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1449" x2="1449" y1="1291.9531" y2="1328.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="95" x="1339" y="1314.9482">Proxmox Host</text><!--MD5=[6ca98cb2f82f86ba7618cb25650248fa]
+entity CP1--><polygon fill="#FFFFFF" points="1619,1372.9531,1629,1362.9531,1729,1362.9531,1729,1399.25,1719,1409.25,1619,1409.25,1619,1372.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1719" x2="1728" y1="1372.9531" y2="1363.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1619" x2="1719" y1="1372.9531" y2="1372.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1719" x2="1719" y1="1372.9531" y2="1409.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="70" x="1634" y="1395.9482">k8s-cp-01</text><!--MD5=[8b482012c9d1be25a0ab8e9eec39b733]
+entity CP2--><polygon fill="#FFFFFF" points="1619,1453.9531,1629,1443.9531,1729,1443.9531,1729,1480.25,1719,1490.25,1619,1490.25,1619,1453.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1719" x2="1728" y1="1453.9531" y2="1444.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1619" x2="1719" y1="1453.9531" y2="1453.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1719" x2="1719" y1="1453.9531" y2="1490.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="70" x="1634" y="1476.9482">k8s-cp-02</text><!--MD5=[26b1a0e1433c2d0667b9c0ce44bacbae]
+entity CP3--><polygon fill="#FFFFFF" points="1619,1129.9531,1629,1119.9531,1729,1119.9531,1729,1156.25,1719,1166.25,1619,1166.25,1619,1129.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1719" x2="1728" y1="1129.9531" y2="1120.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1619" x2="1719" y1="1129.9531" y2="1129.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1719" x2="1719" y1="1129.9531" y2="1166.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="70" x="1634" y="1152.9482">k8s-cp-03</text><!--MD5=[4d2e473b3ba4e9d368524a300606109c]
+entity WK1--><polygon fill="#FFFFFF" points="1618,1291.9531,1628,1281.9531,1730,1281.9531,1730,1318.25,1720,1328.25,1618,1328.25,1618,1291.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1720" x2="1729" y1="1291.9531" y2="1282.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1618" x2="1720" y1="1291.9531" y2="1291.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1720" x2="1720" y1="1291.9531" y2="1328.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="72" x="1633" y="1314.9482">k8s-wk-01</text><!--MD5=[53c3b3a80a7a2c563efab8a80a2747cb]
+entity WK2--><polygon fill="#FFFFFF" points="1618,1210.9531,1628,1200.9531,1730,1200.9531,1730,1237.25,1720,1247.25,1618,1247.25,1618,1210.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1720" x2="1729" y1="1210.9531" y2="1201.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1618" x2="1720" y1="1210.9531" y2="1210.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1720" x2="1720" y1="1210.9531" y2="1247.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="72" x="1633" y="1233.9482">k8s-wk-02</text><!--MD5=[fa227347b0be1b1d3edc3c22ba8e37e5]
+entity WK3--><polygon fill="#FFFFFF" points="1618,1534.9531,1628,1524.9531,1730,1524.9531,1730,1561.25,1720,1571.25,1618,1571.25,1618,1534.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1720" x2="1729" y1="1534.9531" y2="1525.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1618" x2="1720" y1="1534.9531" y2="1534.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1720" x2="1720" y1="1534.9531" y2="1571.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="72" x="1633" y="1557.9482">k8s-wk-03</text><!--MD5=[539a096e493ff5f8275681e06b674419]
+entity WK4--><polygon fill="#FFFFFF" points="1335.5,1795.9531,1345.5,1785.9531,1447.5,1785.9531,1447.5,1822.25,1437.5,1832.25,1335.5,1832.25,1335.5,1795.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1437.5" x2="1446.5" y1="1795.9531" y2="1786.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1335.5" x2="1437.5" y1="1795.9531" y2="1795.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1437.5" x2="1437.5" y1="1795.9531" y2="1832.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="72" x="1350.5" y="1818.9482">k8s-wk-04</text><!--MD5=[3cafd4a15822017a928b317bc49f3fc1]
+entity WK5--><polygon fill="#FFFFFF" points="1335.5,1876.9531,1345.5,1866.9531,1447.5,1866.9531,1447.5,1903.25,1437.5,1913.25,1335.5,1913.25,1335.5,1876.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1437.5" x2="1446.5" y1="1876.9531" y2="1867.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1335.5" x2="1437.5" y1="1876.9531" y2="1876.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1437.5" x2="1437.5" y1="1876.9531" y2="1913.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="72" x="1350.5" y="1899.9482">k8s-wk-05</text><!--MD5=[a493adadaeebc2cf7e4247f5bc01d9d7]
+entity WK6--><polygon fill="#FFFFFF" points="1335.5,1714.9531,1345.5,1704.9531,1447.5,1704.9531,1447.5,1741.25,1437.5,1751.25,1335.5,1751.25,1335.5,1714.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1437.5" x2="1446.5" y1="1714.9531" y2="1705.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1335.5" x2="1437.5" y1="1714.9531" y2="1714.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1437.5" x2="1437.5" y1="1714.9531" y2="1751.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="72" x="1350.5" y="1737.9482">k8s-wk-06</text><!--MD5=[3e393b41668216ca5a9f4df10fa0d635]
+entity Ollama1--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="66" x="1358.5" y="828.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1353.5" y="833.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1353.5" y="855.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="46" x="1368.5" y="851.9482">Ollama</text><!--MD5=[0ccd69410c5429c48799d583f6266d55]
+entity GPU1--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="89" x="1629.5" y="828.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1624.5" y="833.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1624.5" y="855.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="69" x="1639.5" y="851.9482">GTX 1080</text><!--MD5=[c665df9a6a0ad7eb0d5088dcf1fada76]
+entity Ollama2--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="153" x="1315" y="944.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1310" y="949.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1310" y="971.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="133" x="1325" y="967.9482">Ollama / AI Capacity</text><!--MD5=[edf8e8b8c44bfbfb7fda7a3569d4aae0]
+entity GPU2--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="89" x="1629.5" y="944.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1624.5" y="949.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1624.5" y="971.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="69" x="1639.5" y="967.9482">GTX 1080</text><!--MD5=[61127bc699ae864d2f5b3c0f8557fffd]
+entity NodeIP--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="161" x="301" y="2730.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="296" y="2735.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="296" y="2757.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="141" x="311" y="2753.9482">Node IP Connectivity</text><!--MD5=[dd6596a2d56ab7baaa5030698379be63]
+entity PodCIDR--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="85" x="810.5" y="2984.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="805.5" y="2989.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="805.5" y="3011.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="65" x="820.5" y="3007.9482">Pod CIDR</text><!--MD5=[2d24b4dc33a8d7d69ffdf78c05fd2236]
+entity PodRouting--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="215" x="1284" y="2984.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1279" y="2989.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1279" y="3011.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="195" x="1294" y="3007.9482">Cross-Node Pod Networking</text><!--MD5=[d1e76645bc5c97fe8b53e3087a4e1458]
+entity ClusterIP--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="143" x="1320" y="3130.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1315" y="3135.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1315" y="3157.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="123" x="1330" y="3153.9482">ClusterIP Services</text><!--MD5=[3802dd8f6a690a540ef0c8d872589e3d]
+entity CoreDNS--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="83" x="811.5" y="3138.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="806.5" y="3143.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="806.5" y="3165.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="63" x="821.5" y="3161.9482">CoreDNS</text><!--MD5=[76135f9afc5f2b97af6996623fc8da30]
+entity Ingress--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="118" x="794" y="2841.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="789" y="2846.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="789" y="2868.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="98" x="804" y="2864.9482">NGINX Ingress</text><!--MD5=[9d913db2312b7d8a797dc2fd1242f377]
+entity CertManager--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="113" x="325" y="2841.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="320" y="2846.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="320" y="2868.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="93" x="335" y="2864.9482">cert-manager</text><!--MD5=[9f5e9bf8c5b2d159d9683302868f9247]
+entity Airflow--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="122" x="1330.5" y="2508.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1325.5" y="2513.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1325.5" y="2551.0469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="44" x="1369.5" y="2531.4482">Airflow</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="102" x="1340.5" y="2547.7451">airflow.lab.local</text><!--MD5=[00e47b23eb15b4a85a9624af0f166cf2]
+entity MLflow--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="122" x="1330.5" y="2206.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1325.5" y="2211.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1325.5" y="2249.0469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="46" x="1368.5" y="2229.4482">MLflow</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="102" x="1340.5" y="2245.7451">mlflow.lab.local</text><!--MD5=[0f2be35736f8e85cb4d970e1dd72d3a1]
+entity OpenMetadata--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="122" x="1330.5" y="2294.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1325.5" y="2299.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1325.5" y="2321.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="102" x="1340.5" y="2317.9482">OpenMetadata</text><!--MD5=[1e38ee63cc23f89100e14039e3aadfb2]
+entity Grafana--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="73" x="1355" y="2365.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1350" y="2370.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1350" y="2392.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="53" x="1365" y="2388.9482">Grafana</text><!--MD5=[d526f857cd3c2e7a462935218592b6d4]
+entity APIs--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="117" x="1333" y="2436.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1328" y="2441.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1328" y="2463.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="97" x="1343" y="2459.9482">Business APIs</text><!--MD5=[7ac472af81b10326706c68d963fcc47c]
+entity Firewall--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="106" x="73" y="3411.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="68" y="3416.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="68" y="3438.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="86" x="83" y="3434.9482">Host Firewall</text><!--MD5=[e2e501cb905ca5a3d839068a61c30cc0]
+entity RBAC--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="144" x="54" y="3340.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="49" y="3345.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="49" y="3367.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="124" x="64" y="3363.9482">Kubernetes RBAC</text><!--MD5=[82de11c4f095ca08f56f00026471c36c]
+entity NetPolicy--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="165" x="299" y="3411.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="294" y="3416.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="294" y="3438.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="145" x="309" y="3434.9482">Future NetworkPolicy</text><!--MD5=[854f0acb531e34c3ad487e248fbb3a2a]
+entity Reachability--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="143" x="310" y="3730.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="305" y="3735.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="305" y="3757.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="123" x="320" y="3753.9482">Node Reachability</text><!--MD5=[8e249faf94f06c6699b828455823cc2d]
+entity DNSChecks--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="106" x="328.5" y="3659.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="323.5" y="3664.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="323.5" y="3686.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="86" x="338.5" y="3682.9482">DNS Checks</text><!--MD5=[c5d601adfdd003694cd8e1f311804797]
+entity IngressMetrics--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="125" x="790.5" y="3730.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="785.5" y="3735.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="785.5" y="3757.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="105" x="800.5" y="3753.9482">Ingress Metrics</text><!--MD5=[b7cffa2f70d523816c271c0015b2a176]
+entity PodChecks--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="135" x="785.5" y="3659.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="780.5" y="3664.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="780.5" y="3686.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="115" x="795.5" y="3682.9482">Pod Connectivity</text><!--MD5=[fee662a292a0353a69bd162820bae93b]
+entity User--><ellipse cx="381.5" cy="3505.4531" fill="#FEFECE" rx="8" ry="8" style="stroke: #A80036; stroke-width: 1.5;"/><path d="M381.5,3513.4531 L381.5,3540.4531 M368.5,3521.4531 L394.5,3521.4531 M381.5,3540.4531 L368.5,3555.4531 M381.5,3540.4531 L394.5,3555.4531 " fill="none" style="stroke: #A80036; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="87" x="338" y="3570.9482">Internal User</text><!--MD5=[9d1330f94e15b99f5c39504305aed57e]
+entity DevOps--><ellipse cx="381.5" cy="78.9531" fill="#FEFECE" rx="8" ry="8" style="stroke: #A80036; stroke-width: 1.5;"/><path d="M381.5,86.9531 L381.5,113.9531 M368.5,94.9531 L394.5,94.9531 M381.5,113.9531 L368.5,128.9531 M381.5,113.9531 L394.5,128.9531 " fill="none" style="stroke: #A80036; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="124" x="319.5" y="144.4482">Platform / DevOps</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="62" x="350.5" y="160.7451">Engineer</text><path d="M740,565.9531 L740,641.6172 A5,5 0 0 0 745,646.6172 L961,646.6172 A5,5 0 0 0 966,641.6172 L966,570.9531 L956,560.9531 L745,560.9531 A5,5 0 0 0 740,565.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M956,560.9531 L956,568.4531 A2.5,2.5 0 0 0 958.5,570.9531 L966,570.9531 L956,560.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="205" x="746" y="578.02">Flannel provides the Kubernetes</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="78" x="746" y="593.1528">Pod overlay.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="750" y="608.2856"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="136" x="746" y="623.4185">It depends on correct</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="199" x="746" y="638.5513">node-to-node underlay routing.</text><path d="M1277,550.4531 L1277,641.25 A5,5 0 0 0 1282,646.25 L1501,646.25 A5,5 0 0 0 1506,641.25 L1506,555.4531 L1496,545.4531 L1282,545.4531 A5,5 0 0 0 1277,550.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1496,545.4531 L1496,552.9531 A2.5,2.5 0 0 0 1498.5,555.4531 L1506,555.4531 L1496,545.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="182" x="1283" y="562.52">Additional workers may exist</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="157" x="1283" y="577.6528">on a different physical or</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="159" x="1283" y="592.7856">logical network segment.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="1287" y="607.9185"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="199" x="1283" y="623.0513">Static routing is required where</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="208" x="1283" y="638.1841">automatic routing is unavailable.</text><path d="M1274.5,428.9531 L1274.5,504.6172 A5,5 0 0 0 1279.5,509.6172 L1503.5,509.6172 A5,5 0 0 0 1508.5,504.6172 L1508.5,433.9531 L1498.5,423.9531 L1279.5,423.9531 A5,5 0 0 0 1274.5,428.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1498.5,423.9531 L1498.5,431.4531 A2.5,2.5 0 0 0 1501,433.9531 L1508.5,433.9531 L1498.5,423.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="169" x="1280.5" y="441.02">Local AI hosts are reached</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="139" x="1280.5" y="456.1528">over the internal LAN.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="1284.5" y="471.2856"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="172" x="1280.5" y="486.4185">AI inference remains inside</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="213" x="1280.5" y="501.5513">the controlled network by default.</text><path d="M743.5,475.4531 L743.5,520.8516 A5,5 0 0 0 748.5,525.8516 L957.5,525.8516 A5,5 0 0 0 962.5,520.8516 L962.5,480.4531 L952.5,470.4531 L748.5,470.4531 A5,5 0 0 0 743.5,475.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M952.5,470.4531 L952.5,477.9531 A2.5,2.5 0 0 0 955,480.4531 L962.5,480.4531 L952.5,470.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="198" x="749.5" y="487.52">North-south HTTP/HTTPS traffic</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="138" x="749.5" y="502.6528">is centralized through</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="95" x="749.5" y="517.7856">NGINX Ingress.</text><!--MD5=[2cfbc688497934c7f8c52d38cf85a622]
+link User to LabDNS--><path d="M425.37,3521.9531 C527.1,3521.9531 770.5,3521.9531 770.5,3521.9531 C770.5,3521.9531 770.5,1666.9531 770.5,1666.9531 C770.5,1666.9531 804.82,1666.9531 804.82,1666.9531 " fill="none" id="User-&gt;LabDNS" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="809.82,1666.9531,800.82,1662.9531,804.82,1666.9531,800.82,1670.9531,809.82,1666.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="146" x="514" y="1669.02">Resolve service names</text><!--MD5=[48b96c1988e4d81e04ca5354490c603a]
+link LabDNS to Ingress--><path d="M853.5,1685.2131 C853.5,1685.2131 853.5,2836.6631 853.5,2836.6631 " fill="none" id="LabDNS-&gt;Ingress" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="853.5,2841.6631,857.5,2832.6631,853.5,2836.6631,849.5,2832.6631,853.5,2841.6631" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[b2313d941bbdb8f93cd3fc0af1228dd4]
+link User to Ingress--><path d="M425.05,3547.9531 C532.11,3547.9531 799.5,3547.9531 799.5,3547.9531 C799.5,3547.9531 799.5,2883.0031 799.5,2883.0031 " fill="none" id="User-&gt;Ingress" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="799.5,2878.0031,795.5,2887.0031,799.5,2883.0031,803.5,2887.0031,799.5,2878.0031" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="41" x="566.5" y="2960.02">HTTPS</text><!--MD5=[461f2760dbca6c85ef1fd60c1f900b3f]
+link Ingress to Airflow--><path d="M910.5,2841.5531 C910.5,2772.7931 910.5,2534.9531 910.5,2534.9531 C910.5,2534.9531 1325.09,2534.9531 1325.09,2534.9531 " fill="none" id="Ingress-&gt;Airflow" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1330.09,2534.9531,1321.09,2530.9531,1325.09,2534.9531,1321.09,2538.9531,1330.09,2534.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[487c636e3a01be08b890bde71c053153]
+link Ingress to MLflow--><path d="M898.5,2841.7831 C898.5,2739.6831 898.5,2241.7831 898.5,2241.7831 C898.5,2241.7831 1325.06,2241.7831 1325.06,2241.7831 " fill="none" id="Ingress-&gt;MLflow" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1330.06,2241.7831,1321.06,2237.7831,1325.06,2241.7831,1321.06,2245.7831,1330.06,2241.7831" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[83c395722855b9058a81500a574fe34a]
+link Ingress to OpenMetadata--><path d="M900.5,2841.7531 C900.5,2746.8431 900.5,2312.9531 900.5,2312.9531 C900.5,2312.9531 1325.31,2312.9531 1325.31,2312.9531 " fill="none" id="Ingress-&gt;OpenMetadata" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1330.31,2312.9531,1321.31,2308.9531,1325.31,2312.9531,1321.31,2316.9531,1330.31,2312.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[5b88d0db4f2ed7e362565f61aebba37d]
+link Ingress to Grafana--><path d="M907.5,2841.8731 C907.5,2754.9231 907.5,2383.9531 907.5,2383.9531 C907.5,2383.9531 1349.72,2383.9531 1349.72,2383.9531 " fill="none" id="Ingress-&gt;Grafana" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1354.72,2383.9531,1345.72,2379.9531,1349.72,2383.9531,1345.72,2387.9531,1354.72,2383.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[0efa6326df08bf79d3c9b4851ab38539]
+link Ingress to APIs--><path d="M908.5,2841.9131 C908.5,2764.4431 908.5,2463.9531 908.5,2463.9531 C908.5,2463.9531 1327.76,2463.9531 1327.76,2463.9531 " fill="none" id="Ingress-&gt;APIs" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1332.76,2463.9531,1323.76,2459.9531,1327.76,2463.9531,1323.76,2467.9531,1332.76,2463.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[106cc24de8179d40d6df4049030be85c]
+link CertManager to Ingress--><path d="M438.37,2865.9531 C438.37,2865.9531 788.7,2865.9531 788.7,2865.9531 " fill="none" id="CertManager-&gt;Ingress" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="793.7,2865.9531,784.7,2861.9531,788.7,2865.9531,784.7,2869.9531,793.7,2865.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="97" x="538.5" y="2855.02">TLS certificates</text><!--MD5=[a3bca35b3e3cadf13ebf880a190a7e78]
+link DevOps to Router--><path d="M344.5,164.6031 C344.5,415.7031 344.5,1573.9531 344.5,1573.9531 C344.5,1573.9531 467.6825,1573.9531 592.79,1573.9531 C624.0669,1573.9531 655.4641,1573.9531 685.0869,1573.9531 C692.4926,1573.9531 699.7874,1573.9531 706.9418,1573.9531 C710.5189,1573.9531 714.061,1573.9531 717.5642,1573.9531 C719.3158,1573.9531 721.0577,1573.9531 722.7894,1573.9531 C723.6553,1573.9531 724.5186,1573.9531 725.3793,1573.9531 " fill="none" id="DevOps-&gt;Router" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="725.3793,1573.9531,716.3793,1569.9531,720.3793,1573.9531,716.3793,1577.9531,725.3793,1573.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="148" x="513" y="311.02">Network administration</text><!--MD5=[b4d926a7e1e6023c5ee9baccb129d373]
+link DevOps to Proxmox--><path d="M419.5,164.6231 C419.5,386.2331 419.5,1304.9531 419.5,1304.9531 C419.5,1304.9531 1318.92,1304.9531 1318.92,1304.9531 " fill="none" id="DevOps-&gt;Proxmox" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1323.92,1304.9531,1314.92,1300.9531,1318.92,1304.9531,1314.92,1308.9531,1323.92,1304.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="134" x="786" y="183.02">Infrastructure access</text><!--MD5=[3a7cc251538ce6c79e55f9d8456a2593]
+link DevOps to CP1--><path d="M394.5,164.5931 C394.5,394.8431 394.5,1381.3531 394.5,1381.3531 C394.5,1381.3531 1613.61,1381.3531 1613.61,1381.3531 " fill="none" id="DevOps-&gt;CP1" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1618.61,1381.3531,1609.61,1377.3531,1613.61,1381.3531,1609.61,1385.3531,1618.61,1381.3531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="86" x="1080.5" y="42.02">kubectl / SSH</text><!--MD5=[5101b9affca20b070e05bdc2ce10285e]
+link DevOps to CP2--><path d="M369.5,164.8331 C369.5,405.7031 369.5,1473.4531 369.5,1473.4531 C369.5,1473.4531 1613.78,1473.4531 1613.78,1473.4531 " fill="none" id="DevOps-&gt;CP2" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1618.78,1473.4531,1609.78,1469.4531,1613.78,1473.4531,1609.78,1477.4531,1618.78,1473.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[34ad53b8d9d84e6dcc3aa62409bdfb42]
+link DevOps to CP3--><path d="M443.57,116.9531 C695,116.9531 1624.5,116.9531 1624.5,116.9531 C1624.5,116.9531 1624.5,1114.5931 1624.5,1114.5931 " fill="none" id="DevOps-&gt;CP3" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1624.5,1119.5931,1628.5,1110.5931,1624.5,1114.5931,1620.5,1110.5931,1624.5,1119.5931" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[48fc197a1ecc91eb2b93bd6e5dfebfff]
+link Gateway to PrimaryNet--><path d="M917.5,1468.0231 C917.5,1506.8931 917.5,1594.9531 917.5,1594.9531 C917.5,1594.9531 1030.51,1594.9531 1146.1687,1594.9531 C1175.0834,1594.9531 1204.1637,1594.9531 1231.6851,1594.9531 C1245.4458,1594.9531 1258.8167,1594.9531 1271.5825,1594.9531 C1277.9653,1594.9531 1284.1969,1594.9531 1290.2501,1594.9531 C1293.2768,1594.9531 1296.2589,1594.9531 1299.193,1594.9531 " fill="none" id="Gateway-&gt;PrimaryNet" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1299.193,1594.9531,1290.193,1590.9531,1294.193,1594.9531,1290.193,1598.9531,1299.193,1594.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[9dc3688502187a4dbba5d5b26a6c5bd8]
+link Gateway to SecondaryNet--><path d="M914.5,1468.0831 C914.5,1512.3731 914.5,1622.4531 914.5,1622.4531 C914.5,1622.4531 1391.5,1622.4531 1391.5,1622.4531 C1391.5,1622.4531 1391.5,1625.0625 1391.5,1629.0581 C1391.5,1631.0559 1391.5,1633.4003 1391.5,1635.9384 C1391.5,1637.2074 1391.5,1638.5248 1391.5,1639.8716 C1391.5,1640.5449 1391.5,1641.2256 1391.5,1641.9113 C1391.5,1642.2541 1391.5,1642.5982 1391.5,1642.9431 " fill="none" id="Gateway-&gt;SecondaryNet" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1391.5,1642.9431,1395.5,1633.9431,1391.5,1637.9431,1387.5,1633.9431,1391.5,1642.9431" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[287b688cfb0e42b28c1450fb2702a3c4]
+link Gateway to AINet--><path d="M886.5,1431.8631 C886.5,1351.2831 886.5,1028.9531 886.5,1028.9531 C886.5,1028.9531 1008.835,1028.9531 1133.0813,1028.9531 C1164.1428,1028.9531 1195.3238,1028.9531 1224.7427,1028.9531 C1232.0974,1028.9531 1239.342,1028.9531 1246.447,1028.9531 C1249.9995,1028.9531 1253.5172,1028.9531 1256.9962,1028.9531 C1258.7358,1028.9531 1260.4657,1028.9531 1262.1855,1028.9531 C1263.0454,1028.9531 1263.9028,1028.9531 1264.7575,1028.9531 " fill="none" id="Gateway-&gt;AINet" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1264.7575,1028.9531,1255.7575,1024.9531,1259.7575,1028.9531,1255.7575,1032.9531,1264.7575,1028.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[35a35703df7e726120d26a4d646d78f5]
+link Proxmox to CP1--><path d="M1434.5,1328.0831 C1434.5,1347.5131 1434.5,1372.1531 1434.5,1372.1531 C1434.5,1372.1531 1613.75,1372.1531 1613.75,1372.1531 " fill="none" id="Proxmox-&gt;CP1" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1618.75,1372.1531,1609.75,1368.1531,1613.75,1372.1531,1609.75,1376.1531,1618.75,1372.1531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[64cc00e1691ed344323e417e6f341a38]
+link Proxmox to CP2--><path d="M1420.5,1328.2131 C1420.5,1370.5731 1420.5,1455.9531 1420.5,1455.9531 C1420.5,1455.9531 1613.99,1455.9531 1613.99,1455.9531 " fill="none" id="Proxmox-&gt;CP2" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1618.99,1455.9531,1609.99,1451.9531,1613.99,1455.9531,1609.99,1459.9531,1618.99,1455.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[0f94457ccb5dd6aad4a0a52761bd35b8]
+link Proxmox to CP3--><path d="M1415.5,1281.7431 C1415.5,1236.9431 1415.5,1142.9531 1415.5,1142.9531 C1415.5,1142.9531 1613.86,1142.9531 1613.86,1142.9531 " fill="none" id="Proxmox-&gt;CP3" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1618.86,1142.9531,1609.86,1138.9531,1613.86,1142.9531,1609.86,1146.9531,1618.86,1142.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[c1b27d74c305d728678bb6707963153b]
+link Proxmox to WK1--><path d="M1459.17,1304.9531 C1459.17,1304.9531 1612.81,1304.9531 1612.81,1304.9531 " fill="none" id="Proxmox-&gt;WK1" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1617.81,1304.9531,1608.81,1300.9531,1612.81,1304.9531,1608.81,1308.9531,1617.81,1304.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[a38b20501b4df1b5a7f679d5976192e7]
+link Proxmox to WK2--><path d="M1437.5,1281.5231 C1437.5,1257.6031 1437.5,1223.9531 1437.5,1223.9531 C1437.5,1223.9531 1612.95,1223.9531 1612.95,1223.9531 " fill="none" id="Proxmox-&gt;WK2" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1617.95,1223.9531,1608.95,1219.9531,1612.95,1223.9531,1608.95,1227.9531,1617.95,1223.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[ca4e41950e6b7d4395e0e591ee5b60df]
+link Proxmox to WK3--><path d="M1406.5,1327.9731 C1406.5,1385.6831 1406.5,1531.9531 1406.5,1531.9531 C1406.5,1531.9531 1612.92,1531.9531 1612.92,1531.9531 " fill="none" id="Proxmox-&gt;WK3" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1617.92,1531.9531,1608.92,1527.9531,1612.92,1531.9531,1608.92,1535.9531,1617.92,1531.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[142a8ec28ef51af5be3a19568b2c7659]
+link CP1 to NodeIP--><path d="M1618.65,1390.5531 C1379.94,1390.5531 450.5,1390.5531 450.5,1390.5531 C450.5,1390.5531 450.5,2725.7731 450.5,2725.7731 " fill="none" id="CP1-&gt;NodeIP" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="450.5,2730.7731,454.5,2721.7731,450.5,2725.7731,446.5,2721.7731,450.5,2730.7731" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[bf2f91cb4759e29bb0dbe6c0dcf26fb3]
+link CP2 to NodeIP--><path d="M1618.74,1478.9531 C1380.42,1478.9531 452.5,1478.9531 452.5,1478.9531 C452.5,1478.9531 452.5,2725.5131 452.5,2725.5131 " fill="none" id="CP2-&gt;NodeIP" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="452.5,2730.5131,456.5,2721.5131,452.5,2725.5131,448.5,2721.5131,452.5,2730.5131" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[2882b8e56c180b3aaa5df85374bd607a]
+link CP3 to NodeIP--><path d="M1618.87,1131.4531 C1380.02,1131.4531 446.5,1131.4531 446.5,1131.4531 C446.5,1131.4531 446.5,2725.7831 446.5,2725.7831 " fill="none" id="CP3-&gt;NodeIP" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="446.5,2730.7831,450.5,2721.7831,446.5,2725.7831,442.5,2721.7831,446.5,2730.7831" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[50d7b045fc29123656ebf89507864ffd]
+link WK1 to NodeIP--><path d="M1617.64,1293.4531 C1583.11,1293.4531 1545.5,1293.4531 1545.5,1293.4531 C1545.5,1293.4531 1545.5,2748.9531 1545.5,2748.9531 C1545.5,2748.9531 467.43,2748.9531 467.43,2748.9531 " fill="none" id="WK1-&gt;NodeIP" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="462.43,2748.9531,471.43,2752.9531,467.43,2748.9531,471.43,2744.9531,462.43,2748.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[59a0fe071fa51dbaa7623cc66bcc5f83]
+link WK2 to NodeIP--><path d="M1617.75,1212.4531 C1377.37,1212.4531 448.5,1212.4531 448.5,1212.4531 C448.5,1212.4531 448.5,2725.8931 448.5,2725.8931 " fill="none" id="WK2-&gt;NodeIP" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="448.5,2730.8931,452.5,2721.8931,448.5,2725.8931,444.5,2721.8931,448.5,2730.8931" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[0ee19323e034fb916bd6452817b7ffef]
+link WK3 to NodeIP--><path d="M1617.63,1549.6231 C1377.79,1549.6231 454.5,1549.6231 454.5,1549.6231 C454.5,1549.6231 454.5,2725.5931 454.5,2725.5931 " fill="none" id="WK3-&gt;NodeIP" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="454.5,2730.5931,458.5,2721.5931,454.5,2725.5931,450.5,2721.5931,454.5,2730.5931" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[138782fb3904f98da64eaff186d0dd01]
+link WK4 to NodeIP--><path d="M1335.24,1808.9531 C1133.52,1808.9531 458.5,1808.9531 458.5,1808.9531 C458.5,1808.9531 458.5,2725.5931 458.5,2725.5931 " fill="none" id="WK4-&gt;NodeIP" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="458.5,2730.5931,462.5,2721.5931,458.5,2725.5931,454.5,2721.5931,458.5,2730.5931" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[2b0dfdfc63899554095d2cbddc03888b]
+link WK5 to NodeIP--><path d="M1335.36,1889.9531 C1134.08,1889.9531 460.5,1889.9531 460.5,1889.9531 C460.5,1889.9531 460.5,2725.6131 460.5,2725.6131 " fill="none" id="WK5-&gt;NodeIP" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="460.5,2730.6131,464.5,2721.6131,460.5,2725.6131,456.5,2721.6131,460.5,2730.6131" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[1b26c87a7585a212f1185dfe905a0d55]
+link WK6 to NodeIP--><path d="M1335.46,1727.9531 C1133.75,1727.9531 456.5,1727.9531 456.5,1727.9531 C456.5,1727.9531 456.5,2725.8031 456.5,2725.8031 " fill="none" id="WK6-&gt;NodeIP" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="456.5,2730.8031,460.5,2721.8031,456.5,2725.8031,452.5,2721.8031,456.5,2730.8031" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[21265b0174fdeb5fbcaf71ab7b4873bf]
+link Routing to SecondaryNet--><path d="M903.5,1539.2231 C903.5,1579.0131 903.5,1669.9531 903.5,1669.9531 C903.5,1669.9531 1019.8475,1669.9531 1138.9225,1669.9531 C1168.6913,1669.9531 1198.6305,1669.9531 1226.9648,1669.9531 C1241.132,1669.9531 1254.898,1669.9531 1268.0409,1669.9531 C1269.6837,1669.9531 1271.3168,1669.9531 1272.9398,1669.9531 C1273.7513,1669.9531 1274.5602,1669.9531 1275.3665,1669.9531 " fill="none" id="Routing-&gt;SecondaryNet" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1275.3665,1669.9531,1266.3665,1665.9531,1270.3665,1669.9531,1266.3665,1673.9531,1275.3665,1669.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="148" x="1049.5" y="1523.02">Route to worker subnet</text><path d="M1009,1537.0859 L1009,1582.0859 A5,5 0 0 0 1014,1587.0859 L1233,1587.0859 A5,5 0 0 0 1238,1582.0859 L1238,1542.0859 L1228,1532.0859 L1014,1532.0859 A5,5 0 0 0 1009,1537.0859 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1228,1532.0859 L1228,1539.5859 A2.5,2.5 0 0 0 1230.5,1542.0859 L1238,1542.0859 L1228,1532.0859 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="197" x="1025" y="1549.1528">Routing between node subnets</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="189" x="1029" y="1564.2856">must exist before Kubernetes</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="199" x="1024" y="1579.4185">overlay traffic can work reliably.</text><!--MD5=[303d49ec5a2b796062bdc6f9a56c432c]
+link NodeIP to Overlay--><path d="M450.5,2767.2331 C450.5,2833.3331 450.5,3055.9531 450.5,3055.9531 C450.5,3055.9531 546.4625,3055.9531 644.675,3055.9531 C693.7813,3055.9531 743.45,3055.9531 781.9672,3055.9531 C783.1708,3055.9531 784.3636,3055.9531 785.5451,3055.9531 " fill="none" id="NodeIP-&gt;Overlay" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="785.5451,3055.9531,776.5451,3051.9531,780.5451,3055.9531,776.5451,3059.9531,785.5451,3055.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="137" x="518.5" y="2749.02">Underlay connectivity</text><!--MD5=[bdc9cb87df7045a6acc07a8912ed89e0]
+link PodCIDR to PodRouting--><path d="M895.71,3002.9531 C895.71,3002.9531 1278.79,3002.9531 1278.79,3002.9531 " fill="none" id="PodCIDR-&gt;PodRouting" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1283.79,3002.9531,1274.79,2998.9531,1278.79,3002.9531,1274.79,3006.9531,1283.79,3002.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[6f80fa98cbd98e55095f693fbc77d02e]
+link PodRouting to CP1--><path d="M1489.5,2984.9531 C1489.5,2808.8131 1489.5,1399.7531 1489.5,1399.7531 C1489.5,1399.7531 1613.64,1399.7531 1613.64,1399.7531 " fill="none" id="PodRouting-&gt;CP1" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1618.64,1399.7531,1609.64,1395.7531,1613.64,1399.7531,1609.64,1403.7531,1618.64,1399.7531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[2b42beb911a23c68c5056171e17b404f]
+link PodRouting to CP2--><path d="M1492.5,2984.8431 C1492.5,2813.5131 1492.5,1484.4531 1492.5,1484.4531 C1492.5,1484.4531 1613.56,1484.4531 1613.56,1484.4531 " fill="none" id="PodRouting-&gt;CP2" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1618.56,1484.4531,1609.56,1480.4531,1613.56,1484.4531,1609.56,1488.4531,1618.56,1484.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[f821b0aced1fb0281bd60307c3571d10]
+link PodRouting to CP3--><path d="M1478.5,2984.6531 C1478.5,2792.6831 1478.5,1154.4531 1478.5,1154.4531 C1478.5,1154.4531 1613.76,1154.4531 1613.76,1154.4531 " fill="none" id="PodRouting-&gt;CP3" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1618.76,1154.4531,1609.76,1150.4531,1613.76,1154.4531,1609.76,1158.4531,1618.76,1154.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[d029e62e190c97078a8f4ce37e99863a]
+link PodRouting to WK1--><path d="M1485.5,2984.8731 C1485.5,2803.3631 1485.5,1316.4531 1485.5,1316.4531 C1485.5,1316.4531 1612.95,1316.4531 1612.95,1316.4531 " fill="none" id="PodRouting-&gt;WK1" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1617.95,1316.4531,1608.95,1312.4531,1612.95,1316.4531,1608.95,1320.4531,1617.95,1316.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[16d6a4d2a2562577d61cf4b54411c4a3]
+link PodRouting to WK2--><path d="M1482.5,2984.8831 C1482.5,2798.6431 1482.5,1235.4531 1482.5,1235.4531 C1482.5,1235.4531 1612.84,1235.4531 1612.84,1235.4531 " fill="none" id="PodRouting-&gt;WK2" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1617.84,1235.4531,1608.84,1231.4531,1612.84,1235.4531,1608.84,1239.4531,1617.84,1235.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[c8dad2ce9587152c5dbb211aab10d935]
+link PodRouting to WK3--><path d="M1496.5,2984.7131 C1496.5,2817.7131 1496.5,1560.2831 1496.5,1560.2831 C1496.5,1560.2831 1612.84,1560.2831 1612.84,1560.2831 " fill="none" id="PodRouting-&gt;WK3" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1617.84,1560.2831,1608.84,1556.2831,1612.84,1560.2831,1608.84,1564.2831,1617.84,1560.2831" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[3ef4a71bc57e15de98f05941ba6011fe]
+link PodRouting to WK4--><path d="M1463.5,2984.6731 C1463.5,2834.4531 1463.5,1808.9531 1463.5,1808.9531 C1463.5,1808.9531 1452.52,1808.9531 1452.52,1808.9531 " fill="none" id="PodRouting-&gt;WK4" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1447.52,1808.9531,1456.52,1812.9531,1452.52,1808.9531,1456.52,1804.9531,1447.52,1808.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[b948dc0d388565d386c52e331659581c]
+link PodRouting to WK5--><path d="M1461.5,2984.5631 C1461.5,2839.8531 1461.5,1889.9531 1461.5,1889.9531 C1461.5,1889.9531 1452.67,1889.9531 1452.67,1889.9531 " fill="none" id="PodRouting-&gt;WK5" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1447.67,1889.9531,1456.67,1893.9531,1452.67,1889.9531,1456.67,1885.9531,1447.67,1889.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[f19f987b22dd0413e37029dda8eaf955]
+link PodRouting to WK6--><path d="M1466.5,2984.9331 C1466.5,2829.9631 1466.5,1727.9531 1466.5,1727.9531 C1466.5,1727.9531 1452.57,1727.9531 1452.57,1727.9531 " fill="none" id="PodRouting-&gt;WK6" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1447.57,1727.9531,1456.57,1731.9531,1452.57,1727.9531,1456.57,1723.9531,1447.57,1727.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[3d361ed28852263b3dae9043db378424]
+link Overlay to ClusterIP--><path d="M853.5,3064.0286 C853.5,3064.1261 853.5,3064.2243 853.5,3064.3232 C853.5,3065.9058 853.5,3067.6707 853.5,3069.5805 C853.5,3077.2197 853.5,3087.1775 853.5,3097.0594 C853.5,3116.8231 853.5,3136.2831 853.5,3136.2831 C853.5,3136.2831 1314.78,3136.2831 1314.78,3136.2831 " fill="none" id="Overlay-&gt;ClusterIP" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1319.78,3136.2831,1310.78,3132.2831,1314.78,3136.2831,1310.78,3140.2831,1319.78,3136.2831" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[0322cb6bb83b7c31f009af3b58bfe016]
+link CoreDNS to ClusterIP--><path d="M894.81,3152.9531 C894.81,3152.9531 1314.64,3152.9531 1314.64,3152.9531 " fill="none" id="CoreDNS-&gt;ClusterIP" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1319.64,3152.9531,1310.64,3148.9531,1314.64,3152.9531,1310.64,3156.9531,1319.64,3152.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="111" x="1068" y="3144.02">Service discovery</text><!--MD5=[f67f013760ddeeb1983f2a8c2b8d6442]
+link ClusterIP to Services--><path d="M1319.95,3133.6231 C1298.47,3133.6231 1280.5,3133.6231 1280.5,3133.6231 C1280.5,3133.6231 1280.5,2999.4556 1280.5,2865.2881 C1280.5,2798.2044 1280.5,2731.1206 1280.5,2680.8078 C1280.5,2655.6514 1280.5,2634.6877 1280.5,2620.0132 C1280.5,2616.3445 1280.5,2613.0689 1280.5,2610.2192 C1280.5,2608.7943 1280.5,2607.4759 1280.5,2606.268 C1280.5,2605.9661 1280.5,2605.671 1280.5,2605.3829 " fill="none" id="ClusterIP-&gt;Services" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1280.5,2605.3829,1276.5,2614.3829,1280.5,2610.3829,1284.5,2614.3829,1280.5,2605.3829" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[54d424d9ee8f689604c2cf58a37fbd58]
+link APIs to Ollama1--><path d="M1332.84,2454.9531 C1312.41,2454.9531 1294.5,2454.9531 1294.5,2454.9531 C1294.5,2454.9531 1294.5,840.9531 1294.5,840.9531 C1294.5,840.9531 1353.39,840.9531 1353.39,840.9531 " fill="none" id="APIs-&gt;Ollama1" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1358.39,840.9531,1349.39,836.9531,1353.39,840.9531,1349.39,844.9531,1358.39,840.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="72" x="1087.5" y="1931.52">Internal API</text><!--MD5=[804effe2d7f755e126b3e6e6a63ef486]
+link Airflow to Ollama1--><path d="M1452.54,2534.9531 C1463.49,2534.9531 1471.5,2534.9531 1471.5,2534.9531 C1471.5,2534.9531 1471.5,852.9531 1471.5,852.9531 C1471.5,852.9531 1429.5,852.9531 1429.5,852.9531 " fill="none" id="Airflow-&gt;Ollama1" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1424.5,852.9531,1433.5,856.9531,1429.5,852.9531,1433.5,848.9531,1424.5,852.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76" x="1085.5" y="1953.52">AI workflows</text><!--MD5=[b040d0cdde035edf4b55dc3a7bb0144e]
+link MLflow to Ollama1--><path d="M1330.37,2224.1231 C1316.37,2224.1231 1305.5,2224.1231 1305.5,2224.1231 C1305.5,2224.1231 1305.5,852.9531 1305.5,852.9531 C1305.5,852.9531 1353.5,852.9531 1353.5,852.9531 " fill="none" id="MLflow-&gt;Ollama1" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1358.5,852.9531,1349.5,848.9531,1353.5,852.9531,1349.5,856.9531,1358.5,852.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="128" x="1059.5" y="1845.52">AI / model workflows</text><!--MD5=[7da46f7acc2ffcfb2c400e009c8b8792]
+link APIs to Ollama2--><path d="M1332.71,2445.9531 C1324.88,2445.9531 1319.5,2445.9531 1319.5,2445.9531 C1319.5,2445.9531 1319.5,986.1731 1319.5,986.1731 " fill="none" id="APIs-&gt;Ollama2" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1319.5,981.1731,1315.5,990.1731,1319.5,986.1731,1323.5,990.1731,1319.5,981.1731" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="120" x="1063.5" y="1909.52">Additional capacity</text><!--MD5=[8f804e84e3c7a8621185bb84c78e8f8b]
+link Ollama1 to GPU1--><path d="M1424.74,840.9531 C1424.74,840.9531 1624.28,840.9531 1624.28,840.9531 " fill="none" id="Ollama1-&gt;GPU1" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1629.28,840.9531,1620.28,836.9531,1624.28,840.9531,1620.28,844.9531,1629.28,840.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[75491e4f87450c75142e6255bb341d83]
+link Ollama2 to GPU2--><path d="M1468.32,962.9531 C1468.32,962.9531 1624.35,962.9531 1624.35,962.9531 " fill="none" id="Ollama2-&gt;GPU2" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1629.35,962.9531,1620.35,958.9531,1624.35,962.9531,1620.35,966.9531,1629.35,962.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[982dbfe469873a90603fc24d2967a3b6]
+link Security to LAN--><path d="M126.5,3276.872 C126.5,3275.6869 126.5,3274.4672 126.5,3273.2133 C126.5,3253.15 126.5,3224.3162 126.5,3187.9704 C126.5,3115.279 126.5,3012.5398 126.5,2889.8216 C126.5,2644.385 126.5,2319.0319 126.5,1994.3106 C126.5,1344.8681 126.5,697.9531 126.5,697.9531 C126.5,697.9531 302.4925,697.9531 481.235,697.9531 C525.9206,697.9531 570.7781,697.9531 613.1006,697.9531 C634.2618,697.9531 654.7893,697.9531 674.3446,697.9531 C676.7891,697.9531 679.2183,697.9531 681.6317,697.9531 C682.8383,697.9531 684.0411,697.9531 685.2398,697.9531 " fill="none" id="Security-&gt;LAN" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="685.2398,697.9531,676.2398,693.9531,680.2398,697.9531,676.2398,701.9531,685.2398,697.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[d7a0452d5becab0b9aa0d49c48d73c2b]
+link Security to K8sNetwork--><path d="M381.5,3278.924 C381.5,3278.7893 381.5,3278.6544 381.5,3278.5194 C381.5,3278.2493 381.5,3277.9785 381.5,3277.7069 C381.5,3275.5347 381.5,3273.3183 381.5,3271.0894 C381.5,3262.1738 381.5,3253.0584 381.5,3245.7727 C381.5,3243.9512 381.5,3242.2441 381.5,3240.6831 C381.5,3240.2928 381.5,3239.9117 381.5,3239.5402 C381.5,3239.3544 381.5,3239.1711 381.5,3238.9902 " fill="none" id="Security-&gt;K8sNetwork" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="381.5,3238.9902,377.5,3247.9902,381.5,3243.9902,385.5,3247.9902,381.5,3238.9902" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[9791b2908cabf851ddbfbaf0ece242ad]
+link NetObs to PrimaryNet--><path d="M948.5687,3625.2831 C1226.6125,3625.2831 1502.5,3625.2831 1502.5,3625.2831 C1502.5,3625.2831 1502.5,3117.7006 1502.5,2610.1181 C1502.5,2356.3269 1502.5,2102.5356 1502.5,1912.1922 C1502.5,1817.0205 1502.5,1737.7107 1502.5,1682.1939 C1502.5,1654.4354 1502.5,1632.6253 1502.5,1617.7547 C1502.5,1614.037 1502.5,1610.7531 1502.5,1607.9184 C1502.5,1606.5011 1502.5,1605.196 1502.5,1604.0052 " fill="none" id="NetObs-&gt;PrimaryNet" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1502.5,1604.0052,1498.5,1613.0052,1502.5,1609.0052,1506.5,1613.0052,1502.5,1604.0052" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[af093d92cf1290fd01027c1542f8ea73]
+link NetObs to SecondaryNet--><path d="M285.637,3624.9531 C284.7233,3624.9531 283.8188,3624.9531 282.9244,3624.9531 C281.1358,3624.9531 279.3878,3624.9531 277.688,3624.9531 C274.2883,3624.9531 271.0809,3624.9531 268.125,3624.9531 C256.3013,3624.9531 248.5,3624.9531 248.5,3624.9531 C248.5,3624.9531 248.5,1694.9531 248.5,1694.9531 C248.5,1694.9531 534.25,1694.9531 820,1694.9531 C962.875,1694.9531 1105.75,1694.9531 1212.9063,1694.9531 C1226.3008,1694.9531 1239.1372,1694.9531 1251.3458,1694.9531 C1257.45,1694.9531 1263.3974,1694.9531 1269.179,1694.9531 C1270.6244,1694.9531 1272.0594,1694.9531 1273.484,1694.9531 " fill="none" id="NetObs-&gt;SecondaryNet" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1273.484,1694.9531,1264.484,1690.9531,1268.484,1694.9531,1264.484,1698.9531,1273.484,1694.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[1a318d2f16a1f561605c1d5204bab8e1]
+link NetObs to CoreDNS--><path d="M853.5,3596.8102 C853.5,3596.3616 853.5,3595.9083 853.5,3595.4504 C853.5,3591.7868 853.5,3587.8247 853.5,3583.5913 C853.5,3575.1244 853.5,3565.572 853.5,3555.1513 C853.5,3513.4681 853.5,3457.8906 853.5,3402.3131 C853.5,3291.1581 853.5,3180.0031 853.5,3180.0031 " fill="none" id="NetObs-&gt;CoreDNS" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="853.5,3175.0031,849.5,3184.0031,853.5,3180.0031,857.5,3184.0031,853.5,3175.0031" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[d8d87fb2d22ef38d8ee1884b4bfb3dba]
+link NetObs to Ingress--><path d="M805.5,3597.6996 C805.5,3596.1989 805.5,3594.6657 805.5,3593.1005 C805.5,3586.84 805.5,3580.0693 805.5,3572.8349 C805.5,3558.366 805.5,3542.0422 805.5,3524.2344 C805.5,3453.0031 805.5,3358.0281 805.5,3263.0531 C805.5,3073.1031 805.5,2883.1531 805.5,2883.1531 " fill="none" id="NetObs-&gt;Ingress" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="805.5,2878.1531,801.5,2887.1531,805.5,2883.1531,809.5,2887.1531,805.5,2878.1531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[c26a470d34cd40d2f16e93176f1e9edf]
+link NetObs to Overlay--><path d="M904.5,3597.7574 C904.5,3597.6445 904.5,3597.5239 904.5,3597.3954 C904.5,3596.368 904.5,3594.8435 904.5,3592.855 C904.5,3588.8779 904.5,3583.0449 904.5,3575.6211 C904.5,3560.7734 904.5,3539.5625 904.5,3514.1094 C904.5,3463.2031 904.5,3395.3281 904.5,3327.4531 C904.5,3259.5781 904.5,3191.7031 904.5,3140.7969 C904.5,3115.3438 904.5,3094.1328 904.5,3079.2852 C904.5,3075.5732 904.5,3072.259 904.5,3069.3757 C904.5,3067.934 904.5,3066.6 904.5,3065.3779 C904.5,3065.0724 904.5,3064.7738 904.5,3064.4824 C904.5,3064.3366 904.5,3064.1926 904.5,3064.0504 " fill="none" id="NetObs-&gt;Overlay" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="904.5,3064.0504,900.5,3073.0504,904.5,3069.0504,908.5,3073.0504,904.5,3064.0504" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[10dc657f8792635fb73f31a735079a70]
+link Overlay to GMN116--><path d="M785.9706,3037.9531 C785.7919,3037.9531 785.6136,3037.9531 785.4357,3037.9531 C785.0799,3037.9531 784.7257,3037.9531 784.3732,3037.9531 C783.6681,3037.9531 782.9698,3037.9531 782.2789,3037.9531 C780.8972,3037.9531 779.5454,3037.9531 778.2295,3037.9531 C775.5977,3037.9531 773.1094,3037.9531 770.8125,3037.9531 C761.625,3037.9531 755.5,3037.9531 755.5,3037.9531 C755.5,3037.9531 755.5,972.6931 755.5,646.9731 " fill="none" id="Overlay-GMN116" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[881dade54f9bda06f6278c431bee5d0a]
+link SecondaryNet to GMN119--><path d="M1475.5,1642.7114 C1475.5,1640.2047 1475.5,1637.5377 1475.5,1634.7159 C1475.5,1612.141 1475.5,1579.6535 1475.5,1540.0033 C1475.5,1460.7028 1475.5,1352.7513 1475.5,1238.1469 C1475.5,1008.9381 1475.5,753.1181 1475.5,646.6731 " fill="none" id="SecondaryNet-GMN119" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[c4b9f5f1d86128e2dfc834ba2ad148c9]
+link AINet to GMN122--><path d="M1581.5,734.7855 C1581.5,730.3992 1581.5,726.0172 1581.5,721.6437 C1581.5,712.8967 1581.5,704.1841 1581.5,695.54 C1581.5,678.252 1581.5,661.2383 1581.5,644.7734 C1581.5,611.8438 1581.5,581.1094 1581.5,554.7656 C1581.5,502.0781 1581.5,466.9531 1581.5,466.9531 C1581.5,466.9531 1547.68,466.9531 1508.58,466.9531 " fill="none" id="AINet-GMN122" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[a57ac2c543874970d170340abebb23ff]
+link Ingress to GMN125--><path d="M793.95,2853.9531 C719.89,2853.9531 602.5,2853.9531 602.5,2853.9531 C602.5,2853.9531 602.5,497.9531 602.5,497.9531 C602.5,497.9531 676.09,497.9531 743.49,497.9531 " fill="none" id="Ingress-GMN125" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[ef7b15a9cab4e062ae119c3854f69807]
+link Firewall to RBAC--><!--MD5=[03b112455a6b883312a74f7228e3cfe5]
+link Firewall to NetPolicy--><!--MD5=[900b91c8f56d96a6c1b726cc57baa6d8]
+link Reachability to DNSChecks--><!--MD5=[71433f27dec3e8f7737f485d0a57bf27]
+link Reachability to IngressMetrics--><!--MD5=[1fdaf34dfd378732dd9d119eb7be8574]
+link IngressMetrics to PodChecks--><!--MD5=[09f984329a0acd410750afbbba931515]
+@startuml 05-Network-Architecture
+
+title Enterprise AI Platform — Network Architecture
+
+left to right direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam ArrowThickness 1
+
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam node {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam cloud {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam component {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+
+actor "Internal User" as User
+actor "Platform / DevOps\nEngineer" as DevOps
+
+
+rectangle "Enterprise LAN" as LAN {
+
+    node "Main Router / Gateway" as Router {
+        component "Default Gateway" as Gateway
+        component "LAN Routing" as Routing
+    }
+
+    rectangle "Internal DNS" as DNS {
+        component "*.lab.local" as LabDNS
+    }
+
+    rectangle "Primary Infrastructure Network" as PrimaryNet {
+
+        node "Proxmox Host" as Proxmox
+
+        node "k8s-cp-01" as CP1
+        node "k8s-cp-02" as CP2
+        node "k8s-cp-03" as CP3
+
+        node "k8s-wk-01" as WK1
+        node "k8s-wk-02" as WK2
+        node "k8s-wk-03" as WK3
+    }
+
+    rectangle "Additional Worker Network" as SecondaryNet {
+
+        node "k8s-wk-04" as WK4
+        node "k8s-wk-05" as WK5
+        node "k8s-wk-06" as WK6
+    }
+
+    rectangle "AI Compute Network" as AINet {
+
+        node "AI Host 1" as AI1 {
+            component "Ollama" as Ollama1
+            component "GTX 1080" as GPU1
+        }
+
+        node "AI Host 2" as AI2 {
+            component "Ollama / AI Capacity" as Ollama2
+            component "GTX 1080" as GPU2
+        }
+    }
+}
+
+
+rectangle "Kubernetes Network" as K8sNetwork {
+
+    rectangle "Node Network" as NodeNetwork {
+        component "Node IP Connectivity" as NodeIP
+    }
+
+    rectangle "Flannel Overlay" as Overlay {
+        component "Pod CIDR" as PodCIDR
+        component "Cross-Node Pod Networking" as PodRouting
+    }
+
+    rectangle "Kubernetes Service Network" as ServiceNetwork {
+        component "ClusterIP Services" as ClusterIP
+        component "CoreDNS" as CoreDNS
+    }
+
+    rectangle "North-South Access" as NorthSouth {
+        component "NGINX Ingress" as Ingress
+        component "cert-manager" as CertManager
+    }
+}
+
+
+rectangle "Internal Kubernetes Services" as Services {
+
+    component "Airflow\nairflow.lab.local" as Airflow
+
+    component "MLflow\nmlflow.lab.local" as MLflow
+
+    component "OpenMetadata" as OpenMetadata
+
+    component "Grafana" as Grafana
+
+    component "Business APIs" as APIs
+}
+
+
+User - -> LabDNS : Resolve service names
+LabDNS - -> Ingress : Hostname → ingress endpoint
+
+User - -> Ingress : HTTPS
+
+Ingress - -> Airflow
+Ingress - -> MLflow
+Ingress - -> OpenMetadata
+Ingress - -> Grafana
+Ingress - -> APIs
+
+CertManager - -> Ingress : TLS certificates
+
+
+DevOps - -> Router : Network administration
+DevOps - -> Proxmox : Infrastructure access
+
+DevOps - -> CP1 : kubectl / SSH
+DevOps - -> CP2
+DevOps - -> CP3
+
+
+Gateway - -> PrimaryNet
+Gateway - -> SecondaryNet
+Gateway - -> AINet
+
+Proxmox - -> CP1
+Proxmox - -> CP2
+Proxmox - -> CP3
+Proxmox - -> WK1
+Proxmox - -> WK2
+Proxmox - -> WK3
+
+
+CP1 - -> NodeIP
+CP2 - -> NodeIP
+CP3 - -> NodeIP
+
+WK1 - -> NodeIP
+WK2 - -> NodeIP
+WK3 - -> NodeIP
+WK4 - -> NodeIP
+WK5 - -> NodeIP
+WK6 - -> NodeIP
+
+
+Routing - -> SecondaryNet : Route to worker subnet
+
+note on link
+Routing between node subnets
+must exist before Kubernetes
+overlay traffic can work reliably.
+end note
+
+
+NodeIP - -> Overlay : Underlay connectivity
+
+PodCIDR - -> PodRouting
+
+PodRouting ..> CP1
+PodRouting ..> CP2
+PodRouting ..> CP3
+PodRouting ..> WK1
+PodRouting ..> WK2
+PodRouting ..> WK3
+PodRouting ..> WK4
+PodRouting ..> WK5
+PodRouting ..> WK6
+
+
+Overlay - -> ClusterIP
+CoreDNS - -> ClusterIP : Service discovery
+
+ClusterIP - -> Services
+
+
+APIs - -> Ollama1 : Internal API
+Airflow - -> Ollama1 : AI workflows
+MLflow ..> Ollama1 : AI / model workflows
+
+APIs ..> Ollama2 : Additional capacity
+
+Ollama1 - -> GPU1
+Ollama2 - -> GPU2
+
+
+rectangle "Network Security Controls" as Security {
+    component "Host Firewall" as Firewall
+    component "Kubernetes RBAC" as RBAC
+    component "Future NetworkPolicy" as NetPolicy
+}
+
+Security ..> LAN
+Security ..> K8sNetwork
+
+
+rectangle "Network Observability" as NetObs {
+    component "Node Reachability" as Reachability
+    component "DNS Checks" as DNSChecks
+    component "Ingress Metrics" as IngressMetrics
+    component "Pod Connectivity" as PodChecks
+}
+
+NetObs ..> PrimaryNet
+NetObs ..> SecondaryNet
+NetObs ..> CoreDNS
+NetObs ..> Ingress
+NetObs ..> Overlay
+
+
+note bottom of Overlay
+Flannel provides the Kubernetes
+Pod overlay.
+
+It depends on correct
+node-to-node underlay routing.
+end note
+
+note bottom of SecondaryNet
+Additional workers may exist
+on a different physical or
+logical network segment.
+
+Static routing is required where
+automatic routing is unavailable.
+end note
+
+note bottom of AINet
+Local AI hosts are reached
+over the internal LAN.
+
+AI inference remains inside
+the controlled network by default.
+end note
+
+note bottom of Ingress
+North-south HTTP/HTTPS traffic
+is centralized through
+NGINX Ingress.
+end note
+
+@enduml
+
+PlantUML version 1.2020.02(Sun Mar 01 11:22:07 CET 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 11.0.31+11-post-1ubuntu1-22.04.2-Ubuntu
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: null
+--></g></svg>

@@ -1,0 +1,354 @@
+@startuml 04-Kubernetes-Architecture
+
+title Enterprise AI Platform — Kubernetes Architecture
+
+left to right direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam ArrowThickness 1
+
+skinparam node {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam component {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam database {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+' ============================================================
+' EXTERNAL ACCESS
+' ============================================================
+
+actor "Internal Users" as Users
+actor "Platform / DevOps\nEngineer" as DevOps
+
+rectangle "Internal DNS" as DNS
+
+' ============================================================
+' KUBERNETES CLUSTER
+' ============================================================
+
+rectangle "Kubernetes Cluster — kubeadm HA" as Cluster {
+
+    ' --------------------------------------------------------
+    ' CONTROL PLANE
+    ' --------------------------------------------------------
+
+    rectangle "Control Plane" as ControlPlane {
+
+        node "k8s-cp-01" as CP1 {
+            component "kube-apiserver" as API1
+            component "scheduler" as SCH1
+            component "controller-manager" as CM1
+            database "etcd" as ETCD1
+        }
+
+        node "k8s-cp-02" as CP2 {
+            component "kube-apiserver" as API2
+            component "scheduler" as SCH2
+            component "controller-manager" as CM2
+            database "etcd" as ETCD2
+        }
+
+        node "k8s-cp-03" as CP3 {
+            component "kube-apiserver" as API3
+            component "scheduler" as SCH3
+            component "controller-manager" as CM3
+            database "etcd" as ETCD3
+        }
+    }
+
+    ' --------------------------------------------------------
+    ' WORKERS
+    ' --------------------------------------------------------
+
+    rectangle "Worker Nodes" as Workers {
+
+        node "k8s-wk-01" as WK1
+        node "k8s-wk-02" as WK2
+        node "k8s-wk-03" as WK3
+
+        node "k8s-wk-04" as WK4
+        node "k8s-wk-05" as WK5
+        node "k8s-wk-06" as WK6
+    }
+
+    ' --------------------------------------------------------
+    ' NETWORKING
+    ' --------------------------------------------------------
+
+    rectangle "Cluster Networking" as Networking {
+        component "Flannel CNI" as Flannel
+        component "CoreDNS" as CoreDNS
+        component "NGINX Ingress Controller" as Ingress
+        component "cert-manager" as CertManager
+    }
+
+    ' --------------------------------------------------------
+    ' GITOPS
+    ' --------------------------------------------------------
+
+    rectangle "GitOps" as GitOps {
+        component "Argo CD" as ArgoCD
+        component "Root Application" as RootApp
+    }
+
+    ' --------------------------------------------------------
+    ' APPLICATION NAMESPACES
+    ' --------------------------------------------------------
+
+    rectangle "Application & Platform Namespaces" as Namespaces {
+
+        rectangle "argocd" as NSArgo {
+            component "Argo CD Workloads" as ArgoWorkloads
+        }
+
+        rectangle "airflow" as NSAirflow {
+            component "Airflow Scheduler" as AirflowScheduler
+            component "Airflow Webserver" as AirflowWeb
+            component "KubernetesExecutor\nTask Pods" as AirflowTasks
+        }
+
+        rectangle "mlflow / mlops" as NSML {
+            component "MLflow Tracking" as MLflow
+            component "ML / AI Workloads" as MLWorkloads
+        }
+
+        rectangle "openmetadata" as NSMeta {
+            component "OpenMetadata" as OpenMetadata
+            component "Metadata Ingestion" as MetadataIngestion
+        }
+
+        rectangle "retail-data" as NSData {
+            component "Data / ETL Workloads" as DataWorkloads
+            database "PostgreSQL" as PostgreSQL
+        }
+
+        rectangle "monitoring" as NSMon {
+            component "Prometheus" as Prometheus
+            component "Grafana" as Grafana
+            component "Alertmanager" as Alertmanager
+        }
+
+        rectangle "tempo / promtail" as NSObs {
+            component "Loki" as Loki
+            component "Tempo" as Tempo
+            component "OpenTelemetry Collector" as OTel
+            component "Promtail" as Promtail
+        }
+
+        rectangle "velero" as NSVelero {
+            component "Velero" as Velero
+        }
+    }
+
+    ' --------------------------------------------------------
+    ' STORAGE
+    ' --------------------------------------------------------
+
+    rectangle "Persistent Storage" as Storage {
+        database "PVC / Persistent Volumes" as PVC
+    }
+}
+
+' ============================================================
+' EXTERNAL AI
+' ============================================================
+
+node "Local AI Host" as AIHost {
+    component "Ollama" as Ollama
+    component "NVIDIA GTX 1080\n8 GB VRAM" as GPU
+}
+
+' ============================================================
+' CONTROL PLANE LINKS
+' ============================================================
+
+API1 --> ETCD1
+API2 --> ETCD2
+API3 --> ETCD3
+
+ETCD1 <--> ETCD2
+ETCD2 <--> ETCD3
+ETCD1 <--> ETCD3
+
+SCH1 --> API1
+SCH2 --> API2
+SCH3 --> API3
+
+CM1 --> API1
+CM2 --> API2
+CM3 --> API3
+
+' ============================================================
+' WORKER TO CONTROL PLANE
+' ============================================================
+
+WK1 --> API1 : kubelet
+WK2 --> API1 : kubelet
+WK3 --> API2 : kubelet
+WK4 --> API2 : kubelet
+WK5 --> API3 : kubelet
+WK6 --> API3 : kubelet
+
+' ============================================================
+' NETWORKING
+' ============================================================
+
+Flannel ..> CP1
+Flannel ..> CP2
+Flannel ..> CP3
+
+Flannel ..> WK1
+Flannel ..> WK2
+Flannel ..> WK3
+Flannel ..> WK4
+Flannel ..> WK5
+Flannel ..> WK6
+
+CoreDNS --> Flannel : Service discovery
+
+DNS --> Ingress : *.lab.local
+
+Users --> DNS
+Users --> Ingress : HTTPS
+
+Ingress --> AirflowWeb
+Ingress --> MLflow
+Ingress --> OpenMetadata
+Ingress --> Grafana
+
+CertManager --> Ingress : TLS certificates
+
+' ============================================================
+' GITOPS
+' ============================================================
+
+DevOps --> ArgoCD : Operations
+
+ArgoCD --> RootApp
+RootApp --> API1 : Reconcile desired state
+
+RootApp ..> NSAirflow
+RootApp ..> NSML
+RootApp ..> NSMeta
+RootApp ..> NSData
+RootApp ..> NSMon
+RootApp ..> NSObs
+RootApp ..> NSVelero
+
+' ============================================================
+' AIRFLOW
+' ============================================================
+
+AirflowScheduler --> AirflowTasks : Creates task Pods
+AirflowTasks --> PostgreSQL : ETL / data operations
+AirflowTasks --> MLflow : ML workflows
+AirflowTasks --> MetadataIngestion : Governance workflows
+
+' ============================================================
+' DATA
+' ============================================================
+
+DataWorkloads --> PostgreSQL
+MetadataIngestion --> OpenMetadata
+MetadataIngestion ..> PostgreSQL : Metadata / profiling
+
+' ============================================================
+' ML / AI
+' ============================================================
+
+MLWorkloads --> MLflow
+MLWorkloads --> Ollama : AI inference
+AirflowTasks --> Ollama : AI workflows
+
+Ollama --> GPU : GPU acceleration
+
+' ============================================================
+' OBSERVABILITY
+' ============================================================
+
+Promtail ..> WK1 : Collect logs
+Promtail ..> WK2
+Promtail ..> WK3
+Promtail ..> WK4
+Promtail ..> WK5
+Promtail ..> WK6
+
+Promtail --> Loki : Logs
+
+OTel --> Tempo : Traces
+
+NSAirflow ..> Prometheus : Metrics
+NSML ..> Prometheus : Metrics
+NSMeta ..> Prometheus : Metrics
+NSData ..> Prometheus : Metrics
+
+Workers ..> Prometheus : Node / Pod metrics
+ControlPlane ..> Prometheus : Control-plane metrics
+
+Prometheus --> Grafana
+Loki --> Grafana
+Tempo --> Grafana
+
+Prometheus --> Alertmanager : Alerts
+
+' ============================================================
+' STORAGE
+' ============================================================
+
+PostgreSQL --> PVC
+MLflow --> PVC
+OpenMetadata --> PVC
+Prometheus --> PVC
+Loki --> PVC
+Tempo --> PVC
+
+Velero ..> Namespaces : Backup Kubernetes resources
+Velero ..> Storage : Backup persistent state\nwhere supported
+
+' ============================================================
+' GOVERNANCE NOTES
+' ============================================================
+
+note bottom of Cluster
+Kubernetes is the primary runtime platform.
+
+Git is the desired-state source of truth,
+and Argo CD continuously reconciles
+approved configuration.
+end note
+
+note bottom of Networking
+Flannel is retained for simplicity
+and low resource overhead.
+
+Advanced network-policy requirements
+may trigger future CNI review.
+end note
+
+note bottom of AIHost
+AI inference remains local-first.
+
+The GPU host is outside the main
+Kubernetes VM pool and is accessed
+through the internal network.
+end note
+
+@enduml

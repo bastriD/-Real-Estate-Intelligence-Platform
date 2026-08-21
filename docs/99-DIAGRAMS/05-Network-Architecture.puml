@@ -1,0 +1,308 @@
+@startuml 05-Network-Architecture
+
+title Enterprise AI Platform — Network Architecture
+
+left to right direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam ArrowThickness 1
+
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam node {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam cloud {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam component {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+' ============================================================
+' USERS
+' ============================================================
+
+actor "Internal User" as User
+actor "Platform / DevOps\nEngineer" as DevOps
+
+' ============================================================
+' LAN / ROUTING
+' ============================================================
+
+rectangle "Enterprise LAN" as LAN {
+
+    node "Main Router / Gateway" as Router {
+        component "Default Gateway" as Gateway
+        component "LAN Routing" as Routing
+    }
+
+    rectangle "Internal DNS" as DNS {
+        component "*.lab.local" as LabDNS
+    }
+
+    rectangle "Primary Infrastructure Network" as PrimaryNet {
+
+        node "Proxmox Host" as Proxmox
+
+        node "k8s-cp-01" as CP1
+        node "k8s-cp-02" as CP2
+        node "k8s-cp-03" as CP3
+
+        node "k8s-wk-01" as WK1
+        node "k8s-wk-02" as WK2
+        node "k8s-wk-03" as WK3
+    }
+
+    rectangle "Additional Worker Network" as SecondaryNet {
+
+        node "k8s-wk-04" as WK4
+        node "k8s-wk-05" as WK5
+        node "k8s-wk-06" as WK6
+    }
+
+    rectangle "AI Compute Network" as AINet {
+
+        node "AI Host 1" as AI1 {
+            component "Ollama" as Ollama1
+            component "GTX 1080" as GPU1
+        }
+
+        node "AI Host 2" as AI2 {
+            component "Ollama / AI Capacity" as Ollama2
+            component "GTX 1080" as GPU2
+        }
+    }
+}
+
+' ============================================================
+' KUBERNETES NETWORKING
+' ============================================================
+
+rectangle "Kubernetes Network" as K8sNetwork {
+
+    rectangle "Node Network" as NodeNetwork {
+        component "Node IP Connectivity" as NodeIP
+    }
+
+    rectangle "Flannel Overlay" as Overlay {
+        component "Pod CIDR" as PodCIDR
+        component "Cross-Node Pod Networking" as PodRouting
+    }
+
+    rectangle "Kubernetes Service Network" as ServiceNetwork {
+        component "ClusterIP Services" as ClusterIP
+        component "CoreDNS" as CoreDNS
+    }
+
+    rectangle "North-South Access" as NorthSouth {
+        component "NGINX Ingress" as Ingress
+        component "cert-manager" as CertManager
+    }
+}
+
+' ============================================================
+' APPLICATION SERVICES
+' ============================================================
+
+rectangle "Internal Kubernetes Services" as Services {
+
+    component "Airflow\nairflow.lab.local" as Airflow
+
+    component "MLflow\nmlflow.lab.local" as MLflow
+
+    component "OpenMetadata" as OpenMetadata
+
+    component "Grafana" as Grafana
+
+    component "Business APIs" as APIs
+}
+
+' ============================================================
+' USER ACCESS FLOW
+' ============================================================
+
+User --> LabDNS : Resolve service names
+LabDNS --> Ingress : Hostname → ingress endpoint
+
+User --> Ingress : HTTPS
+
+Ingress --> Airflow
+Ingress --> MLflow
+Ingress --> OpenMetadata
+Ingress --> Grafana
+Ingress --> APIs
+
+CertManager --> Ingress : TLS certificates
+
+' ============================================================
+' DEVOPS ACCESS
+' ============================================================
+
+DevOps --> Router : Network administration
+DevOps --> Proxmox : Infrastructure access
+
+DevOps --> CP1 : kubectl / SSH
+DevOps --> CP2
+DevOps --> CP3
+
+' ============================================================
+' PHYSICAL NETWORK
+' ============================================================
+
+Gateway --> PrimaryNet
+Gateway --> SecondaryNet
+Gateway --> AINet
+
+Proxmox --> CP1
+Proxmox --> CP2
+Proxmox --> CP3
+Proxmox --> WK1
+Proxmox --> WK2
+Proxmox --> WK3
+
+' ============================================================
+' K8S NODE NETWORK
+' ============================================================
+
+CP1 --> NodeIP
+CP2 --> NodeIP
+CP3 --> NodeIP
+
+WK1 --> NodeIP
+WK2 --> NodeIP
+WK3 --> NodeIP
+WK4 --> NodeIP
+WK5 --> NodeIP
+WK6 --> NodeIP
+
+' ============================================================
+' STATIC ROUTING
+' ============================================================
+
+Routing --> SecondaryNet : Route to worker subnet
+
+note on link
+Routing between node subnets
+must exist before Kubernetes
+overlay traffic can work reliably.
+end note
+
+' ============================================================
+' FLANNEL
+' ============================================================
+
+NodeIP --> Overlay : Underlay connectivity
+
+PodCIDR --> PodRouting
+
+PodRouting ..> CP1
+PodRouting ..> CP2
+PodRouting ..> CP3
+PodRouting ..> WK1
+PodRouting ..> WK2
+PodRouting ..> WK3
+PodRouting ..> WK4
+PodRouting ..> WK5
+PodRouting ..> WK6
+
+' ============================================================
+' SERVICE NETWORK
+' ============================================================
+
+Overlay --> ClusterIP
+CoreDNS --> ClusterIP : Service discovery
+
+ClusterIP --> Services
+
+' ============================================================
+' AI CONNECTIVITY
+' ============================================================
+
+APIs --> Ollama1 : Internal API
+Airflow --> Ollama1 : AI workflows
+MLflow ..> Ollama1 : AI / model workflows
+
+APIs ..> Ollama2 : Additional capacity
+
+Ollama1 --> GPU1
+Ollama2 --> GPU2
+
+' ============================================================
+' NETWORK SECURITY
+' ============================================================
+
+rectangle "Network Security Controls" as Security {
+    component "Host Firewall" as Firewall
+    component "Kubernetes RBAC" as RBAC
+    component "Future NetworkPolicy" as NetPolicy
+}
+
+Security ..> LAN
+Security ..> K8sNetwork
+
+' ============================================================
+' OBSERVABILITY
+' ============================================================
+
+rectangle "Network Observability" as NetObs {
+    component "Node Reachability" as Reachability
+    component "DNS Checks" as DNSChecks
+    component "Ingress Metrics" as IngressMetrics
+    component "Pod Connectivity" as PodChecks
+}
+
+NetObs ..> PrimaryNet
+NetObs ..> SecondaryNet
+NetObs ..> CoreDNS
+NetObs ..> Ingress
+NetObs ..> Overlay
+
+' ============================================================
+' NOTES
+' ============================================================
+
+note bottom of Overlay
+Flannel provides the Kubernetes
+Pod overlay.
+
+It depends on correct
+node-to-node underlay routing.
+end note
+
+note bottom of SecondaryNet
+Additional workers may exist
+on a different physical or
+logical network segment.
+
+Static routing is required where
+automatic routing is unavailable.
+end note
+
+note bottom of AINet
+Local AI hosts are reached
+over the internal LAN.
+
+AI inference remains inside
+the controlled network by default.
+end note
+
+note bottom of Ingress
+North-south HTTP/HTTPS traffic
+is centralized through
+NGINX Ingress.
+end note
+
+@enduml

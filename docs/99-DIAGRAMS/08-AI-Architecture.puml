@@ -1,0 +1,397 @@
+@startuml 08-AI-Architecture
+
+title Enterprise AI Platform — AI Architecture
+
+left to right direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam ArrowThickness 1
+
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam component {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam database {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam cloud {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam node {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+' ============================================================
+' USERS / APPLICATIONS
+' ============================================================
+
+actor "Business User" as BusinessUser
+actor "Data / AI Engineer" as AIEngineer
+
+rectangle "Business Applications" as BusinessApps {
+    component "Business API" as BusinessAPI
+    component "AI-enabled Features" as AIFeatures
+}
+
+' ============================================================
+' AI ACCESS LAYER
+' ============================================================
+
+rectangle "AI Access Layer" as Access {
+
+    component "Internal AI API" as InternalAI
+
+    component "AI Gateway\nTarget State" as AIGateway
+}
+
+' ============================================================
+' RAG PLATFORM
+' ============================================================
+
+rectangle "RAG Platform" as RAGPlatform {
+
+    component "RAG Service" as RAG
+
+    component "Prompt Builder" as PromptBuilder
+
+    component "Embedding Service" as Embeddings
+
+    component "Retriever" as Retriever
+
+    component "Response Validation" as Validation
+}
+
+' ============================================================
+' KNOWLEDGE / DATA
+' ============================================================
+
+rectangle "Governed Enterprise Knowledge" as Knowledge {
+
+    component "Documents" as Documents
+
+    database "PostgreSQL\nStructured Data" as PostgreSQL
+
+    component "OpenMetadata\nMetadata / Classification /\nOwnership / Lineage" as OpenMetadata
+}
+
+rectangle "Vector Retrieval Layer" as Vector {
+
+    database "Vector Store\nPostgreSQL + pgvector\nCandidate" as PGVector
+}
+
+' ============================================================
+' LOCAL INFERENCE
+' ============================================================
+
+rectangle "Local AI Runtime" as LocalAI {
+
+    component "Ollama API" as Ollama
+
+    component "Qwen Models" as Qwen
+
+    component "Embedding Model" as EmbedModel
+}
+
+node "AI Host 1" as AIHost1 {
+    component "NVIDIA GTX 1080\n8 GB VRAM" as GPU1
+}
+
+node "AI Host 2" as AIHost2 {
+    component "NVIDIA GTX 1080\n8 GB VRAM" as GPU2
+}
+
+' ============================================================
+' MLOPS
+' ============================================================
+
+rectangle "MLOps" as MLOps {
+
+    component "MLflow Tracking" as MLflowTracking
+
+    component "Model Registry" as ModelRegistry
+
+    component "Evaluation" as Evaluation
+}
+
+' ============================================================
+' EXTERNAL AI
+' ============================================================
+
+cloud "External AI Provider" as ExternalAI
+
+rectangle "External AI Governance Gate" as ExternalGate {
+    component "Data Classification" as DataClassification
+    component "Security / Privacy Review" as PrivacyReview
+    component "Explicit Approval" as Approval
+}
+
+' ============================================================
+' AI GOVERNANCE
+' ============================================================
+
+rectangle "AI Governance as Code" as Governance {
+
+    component "AI Asset Registry" as AIAssets
+
+    component "Prompt Registry" as PromptRegistry
+
+    component "Risk Classification" as Risk
+
+    component "Evaluation Rules" as EvalRules
+
+    component "Human Oversight Rules" as HumanRules
+}
+
+' ============================================================
+' OBSERVABILITY
+' ============================================================
+
+rectangle "AI Observability" as Observability {
+
+    component "Prometheus" as Prometheus
+
+    component "Loki" as Loki
+
+    component "OpenTelemetry" as OTel
+
+    component "Tempo" as Tempo
+
+    component "Grafana" as Grafana
+}
+
+' ============================================================
+' USER / APPLICATION FLOW
+' ============================================================
+
+BusinessUser --> BusinessAPI : Business request
+BusinessAPI --> AIFeatures : AI-enhanced operation
+
+AIFeatures --> InternalAI
+
+InternalAI --> AIGateway
+
+' ============================================================
+' GATEWAY ROUTING
+' ============================================================
+
+AIGateway --> RAG : Governed AI request
+
+AIGateway --> Ollama : Direct local inference\nwhen RAG not required
+
+' ============================================================
+' RAG FLOW
+' ============================================================
+
+RAG --> PromptBuilder
+
+PromptBuilder --> Retriever : Retrieve context
+
+Retriever --> PGVector : Vector similarity search
+
+PGVector --> Retriever : Relevant chunks
+
+Retriever --> PromptBuilder : Governed context
+
+PromptBuilder --> Ollama : Prompt + context
+
+Ollama --> Validation : Generated response
+
+Validation --> RAG : Validated output
+
+RAG --> InternalAI : Response
+
+' ============================================================
+' KNOWLEDGE INGESTION
+' ============================================================
+
+Documents --> Embeddings : Governed documents
+
+PostgreSQL --> Embeddings : Governed structured context
+
+OpenMetadata ..> Documents : Ownership /\nclassification
+
+OpenMetadata ..> PostgreSQL : Metadata /\nclassification
+
+Embeddings --> EmbedModel : Generate vectors
+
+EmbedModel --> PGVector : Store embeddings
+
+' ============================================================
+' LOCAL MODEL EXECUTION
+' ============================================================
+
+Ollama --> Qwen : LLM inference
+
+Qwen --> GPU1 : GPU acceleration
+Qwen ..> GPU2 : Additional capacity /\nfuture failover
+
+EmbedModel --> GPU1 : GPU / CPU inference
+
+' ============================================================
+' MLOPS
+' ============================================================
+
+AIEngineer --> MLflowTracking : Experiments
+
+MLflowTracking --> ModelRegistry : Register versions
+
+Evaluation --> MLflowTracking : Evaluation metrics
+
+ModelRegistry ..> Ollama : Approved model /\nmodel reference
+
+' ============================================================
+' GOVERNANCE
+' ============================================================
+
+Governance ..> AIGateway : Runtime AI policies
+
+AIAssets ..> Ollama : Model metadata
+
+PromptRegistry ..> PromptBuilder : Versioned prompts
+
+Risk ..> AIAssets : Risk level
+
+EvalRules ..> Evaluation : Required tests
+
+HumanRules ..> Validation : Human review\nwhen required
+
+OpenMetadata ..> Governance : Dataset governance evidence
+
+MLflowTracking ..> Governance : Model lifecycle evidence
+
+' ============================================================
+' EXTERNAL AI EXCEPTION
+' ============================================================
+
+AIGateway ..> ExternalGate : External routing request
+
+ExternalGate --> DataClassification
+DataClassification --> PrivacyReview
+PrivacyReview --> Approval
+
+Approval ..> ExternalAI : Allowed only if approved
+
+ExternalAI ..> AIGateway : External inference response
+
+' ============================================================
+' OBSERVABILITY
+' ============================================================
+
+AIGateway ..> Prometheus : Request metrics
+RAG ..> Prometheus : RAG metrics
+Ollama ..> Prometheus : Inference metrics
+GPU1 ..> Prometheus : GPU metrics
+GPU2 ..> Prometheus : GPU metrics
+
+AIGateway ..> Loki : Structured logs
+RAG ..> Loki : Structured logs
+Ollama ..> Loki : Runtime logs
+
+AIGateway ..> OTel : Traces
+RAG ..> OTel : RAG spans
+Ollama ..> OTel : Inference spans
+
+OTel --> Tempo
+
+Prometheus --> Grafana
+Loki --> Grafana
+Tempo --> Grafana
+
+' ============================================================
+' GRACEFUL DEGRADATION
+' ============================================================
+
+note bottom of BusinessAPI
+Core business functionality
+should remain available where
+possible if AI services fail.
+
+AI is an enhancement unless
+explicitly classified as
+business-critical.
+end note
+
+' ============================================================
+' LOCAL-FIRST PRINCIPLE
+' ============================================================
+
+note bottom of Ollama
+DEFAULT INFERENCE PATH
+
+Local inference through Ollama.
+
+Enterprise prompts and context
+remain inside the controlled
+platform by default.
+end note
+
+' ============================================================
+' VECTOR STRATEGY
+' ============================================================
+
+note bottom of PGVector
+PostgreSQL + pgvector
+is evaluated first.
+
+A dedicated vector database
+requires demonstrated need
+and a separate ADR.
+end note
+
+' ============================================================
+' EXTERNAL AI PRINCIPLE
+' ============================================================
+
+note bottom of ExternalAI
+External AI is an exception,
+not the default.
+
+Usage requires data,
+security, privacy, cost,
+and architecture governance.
+end note
+
+' ============================================================
+' GPU CONSTRAINT
+' ============================================================
+
+note bottom of AIHost1
+Current hardware:
+
+GTX 1080
+8 GB VRAM
+
+Architecture must use
+appropriate model sizes,
+quantization, and controlled
+concurrency.
+end note
+
+' ============================================================
+' GOVERNANCE PRINCIPLE
+' ============================================================
+
+note bottom of Governance
+Models, prompts, AI tools,
+risk levels, evaluations,
+and approvals progressively
+become machine-readable
+Governance as Code artifacts.
+end note
+
+@enduml

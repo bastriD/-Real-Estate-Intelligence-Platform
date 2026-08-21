@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="1615px" preserveAspectRatio="none" style="width:4406px;height:1615px;" version="1.1" viewBox="0 0 4406 1615" width="4406px" zoomAndPan="magnify"><defs/><g><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacingAndGlyphs" textLength="462" x="1975" y="16.708">Enterprise AI Platform — Infrastructure Architecture</text><!--MD5=[f751332d9083dbc36892b4dab0075a61]
+cluster Physical--><rect fill="#FFFFFF" height="810" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="2195" x="30" y="251.4531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="179" x="1038" y="266.4482">Physical Infrastructure</text><!--MD5=[97d962c1c69569ec8b9ec349e6e5ceb0]
+cluster Proxmox--><polygon fill="#FFFFFF" points="1166,320.4531,1176,310.4531,2177,310.4531,2177,716.9531,2167,726.9531,1166,726.9531,1166,320.4531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="2167" x2="2176" y1="320.4531" y2="311.4531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1166" x2="2167" y1="320.4531" y2="320.4531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="2167" x2="2167" y1="320.4531" y2="726.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="175" x="1580" y="336.4482">Primary Proxmox Host</text><!--MD5=[fab5713678125468ca6a8f0f73428522]
+cluster K8sVMs--><rect fill="#FFFFFF" height="133" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="939" x="1206" y="561.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="297" x="1527" y="576.9482">Virtualized Kubernetes Infrastructure</text><!--MD5=[03db1556a53bc55f17bc626934a1e679]
+cluster AdditionalWorkers--><rect fill="#FFFFFF" height="149" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="473" x="653" y="553.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="248" x="765.5" y="568.9482">Additional Kubernetes Workers</text><!--MD5=[f8c34f46fc0da24155577027800c7ea4]
+cluster AIInfra--><rect fill="#FFFFFF" height="523" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="543" x="70" y="498.4531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="206" x="238.5" y="513.4482">AI Compute Infrastructure</text><!--MD5=[dbc2c8bc815d2902e35bfb64f1a22840]
+cluster AI1--><polygon fill="#FFFFFF" points="118,567.4531,128,557.4531,312,557.4531,312,971.4531,302,981.4531,118,981.4531,118,567.4531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="302" x2="311" y1="567.4531" y2="558.4531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="118" x2="302" y1="567.4531" y2="567.4531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="302" x2="302" y1="567.4531" y2="981.4531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="71" x="175.5" y="583.4482">AI Host 1</text><!--MD5=[b0ab32f8855c33664933daff0d9b39f5]
+cluster AI2--><polygon fill="#FFFFFF" points="352,567.4531,362,557.4531,573,557.4531,573,971.4531,563,981.4531,352,981.4531,352,567.4531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="563" x2="572" y1="567.4531" y2="558.4531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="352" x2="563" y1="567.4531" y2="567.4531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="563" x2="563" y1="567.4531" y2="981.4531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="71" x="423" y="583.4482">AI Host 2</text><!--MD5=[c16d822e175d79abcb56292e8c5a0d37]
+cluster Network--><rect fill="#FFFFFF" height="106" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="231" x="903" y="332.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="182" x="927.5" y="347.9482">Network Infrastructure</text><!--MD5=[85c29abb6924ba539b01a2368cd4e5a6]
+cluster Cluster--><rect fill="#FFFFFF" height="813" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="676" x="2265" y="791.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="155" x="2525.5" y="806.9482">Kubernetes Cluster</text><!--MD5=[74194663ce6ffe37bf8e616e91b878be]
+cluster ControlPlane--><rect fill="#FFFFFF" height="357.5" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="344" x="2305" y="1207.4531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="106" x="2424" y="1222.4482">Control Plane</text><!--MD5=[b984a07ef524b0a992284f57363b6eb1]
+cluster WorkerRuntime--><rect fill="#FFFFFF" height="478.5" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="204" x="2689" y="850.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="127" x="2727.5" y="865.9482">Worker Runtime</text><!--MD5=[19e577dad2441ea6e2f575b36e4438f2]
+cluster PlatformServices--><rect fill="#FFFFFF" height="405.5" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="477" x="3413" y="567.4531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="182" x="3560.5" y="582.4482">Core Platform Services</text><!--MD5=[ab4fc43433dda6048e924e5d902d9ac4]
+cluster Recovery--><rect fill="#FFFFFF" height="122" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="316" x="2733" y="52.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="146" x="2818" y="67.9482">Backup / Recovery</text><!--MD5=[198e62d9df857bc4a13a885b5adaaaab]
+entity VMStorage--><path d="M1684.5,392.4531 C1684.5,382.4531 1759,382.4531 1759,382.4531 C1759,382.4531 1833.5,382.4531 1833.5,392.4531 L1833.5,417.75 C1833.5,427.75 1759,427.75 1759,427.75 C1759,427.75 1684.5,427.75 1684.5,417.75 L1684.5,392.4531 " fill="#FFFFFF" style="stroke: #333333; stroke-width: 1.5;"/><path d="M1684.5,392.4531 C1684.5,402.4531 1759,402.4531 1759,402.4531 C1759,402.4531 1833.5,402.4531 1833.5,392.4531 " fill="none" style="stroke: #333333; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="129" x="1694.5" y="419.4482">Virtualized Storage</text><!--MD5=[6ca98cb2f82f86ba7618cb25650248fa]
+entity CP1--><polygon fill="#FFFFFF" points="1997,625.9531,2007,615.9531,2129,615.9531,2129,668.5469,2119,678.5469,1997,678.5469,1997,625.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="2119" x2="2128" y1="625.9531" y2="616.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1997" x2="2119" y1="625.9531" y2="625.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="2119" x2="2119" y1="625.9531" y2="678.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="70" x="2023" y="648.9482">k8s-cp-01</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="92" x="2012" y="665.2451">Control Plane</text><!--MD5=[8b482012c9d1be25a0ab8e9eec39b733]
+entity CP2--><polygon fill="#FFFFFF" points="1389,625.9531,1399,615.9531,1521,615.9531,1521,668.5469,1511,678.5469,1389,678.5469,1389,625.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1511" x2="1520" y1="625.9531" y2="616.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1389" x2="1511" y1="625.9531" y2="625.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1511" x2="1511" y1="625.9531" y2="678.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="70" x="1415" y="648.9482">k8s-cp-02</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="92" x="1404" y="665.2451">Control Plane</text><!--MD5=[26b1a0e1433c2d0667b9c0ce44bacbae]
+entity CP3--><polygon fill="#FFFFFF" points="1222,625.9531,1232,615.9531,1354,615.9531,1354,668.5469,1344,678.5469,1222,678.5469,1222,625.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1344" x2="1353" y1="625.9531" y2="616.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1222" x2="1344" y1="625.9531" y2="625.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1344" x2="1344" y1="625.9531" y2="678.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="70" x="1248" y="648.9482">k8s-cp-03</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="92" x="1237" y="665.2451">Control Plane</text><!--MD5=[4d2e473b3ba4e9d368524a300606109c]
+entity WK1--><polygon fill="#FFFFFF" points="1703,625.9531,1713,615.9531,1815,615.9531,1815,668.5469,1805,678.5469,1703,678.5469,1703,625.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1805" x2="1814" y1="625.9531" y2="616.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1703" x2="1805" y1="625.9531" y2="625.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1805" x2="1805" y1="625.9531" y2="678.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="72" x="1718" y="648.9482">k8s-wk-01</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="49" x="1729.5" y="665.2451">Worker</text><!--MD5=[53c3b3a80a7a2c563efab8a80a2747cb]
+entity WK2--><polygon fill="#FFFFFF" points="1556,625.9531,1566,615.9531,1668,615.9531,1668,668.5469,1658,678.5469,1556,678.5469,1556,625.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1658" x2="1667" y1="625.9531" y2="616.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1556" x2="1658" y1="625.9531" y2="625.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1658" x2="1658" y1="625.9531" y2="678.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="72" x="1571" y="648.9482">k8s-wk-02</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="49" x="1582.5" y="665.2451">Worker</text><!--MD5=[fa227347b0be1b1d3edc3c22ba8e37e5]
+entity WK3--><polygon fill="#FFFFFF" points="1850,625.9531,1860,615.9531,1962,615.9531,1962,668.5469,1952,678.5469,1850,678.5469,1850,625.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1952" x2="1961" y1="625.9531" y2="616.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1850" x2="1952" y1="625.9531" y2="625.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1952" x2="1952" y1="625.9531" y2="678.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="72" x="1865" y="648.9482">k8s-wk-03</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="49" x="1876.5" y="665.2451">Worker</text><!--MD5=[539a096e493ff5f8275681e06b674419]
+entity WK4--><polygon fill="#FFFFFF" points="843,625.9531,853,615.9531,955,615.9531,955,668.5469,945,678.5469,843,678.5469,843,625.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="945" x2="954" y1="625.9531" y2="616.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="843" x2="945" y1="625.9531" y2="625.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="945" x2="945" y1="625.9531" y2="678.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="72" x="858" y="648.9482">k8s-wk-04</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="49" x="869.5" y="665.2451">Worker</text><!--MD5=[3cafd4a15822017a928b317bc49f3fc1]
+entity WK5--><polygon fill="#FFFFFF" points="990,625.9531,1000,615.9531,1102,615.9531,1102,668.5469,1092,678.5469,990,678.5469,990,625.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1092" x2="1101" y1="625.9531" y2="616.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="990" x2="1092" y1="625.9531" y2="625.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="1092" x2="1092" y1="625.9531" y2="678.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="72" x="1005" y="648.9482">k8s-wk-05</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="49" x="1016.5" y="665.2451">Worker</text><!--MD5=[a493adadaeebc2cf7e4247f5bc01d9d7]
+entity WK6--><polygon fill="#FFFFFF" points="696,625.9531,706,615.9531,808,615.9531,808,668.5469,798,678.5469,696,678.5469,696,625.9531" style="stroke: #333333; stroke-width: 1.5;"/><line style="stroke: #333333; stroke-width: 1.5;" x1="798" x2="807" y1="625.9531" y2="616.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="696" x2="798" y1="625.9531" y2="625.9531"/><line style="stroke: #333333; stroke-width: 1.5;" x1="798" x2="798" y1="625.9531" y2="678.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="72" x="711" y="648.9482">k8s-wk-06</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="49" x="722.5" y="665.2451">Worker</text><!--MD5=[0ccd69410c5429c48799d583f6266d55]
+entity GPU1--><rect fill="#FEFECE" height="52.5938" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;" width="138" x="150" y="904.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="145" y="909.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="145" y="947.0469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="118" x="160" y="927.4482">NVIDIA GTX 1080</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="78" x="180" y="943.7451">8 GB VRAM</text><!--MD5=[3e393b41668216ca5a9f4df10fa0d635]
+entity Ollama1--><rect fill="#FEFECE" height="36.2969" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;" width="66" x="192" y="629.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="187" y="634.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="187" y="655.75"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="46" x="202" y="652.4482">Ollama</text><!--MD5=[edf8e8b8c44bfbfb7fda7a3569d4aae0]
+entity GPU2--><rect fill="#FEFECE" height="52.5938" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;" width="138" x="395" y="904.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="390" y="909.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="390" y="947.0469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="118" x="405" y="927.4482">NVIDIA GTX 1080</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="78" x="425" y="943.7451">8 GB VRAM</text><!--MD5=[c665df9a6a0ad7eb0d5088dcf1fada76]
+entity Ollama2--><rect fill="#FEFECE" height="36.2969" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;" width="153" x="395.5" y="629.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="390.5" y="634.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="390.5" y="655.75"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="133" x="405.5" y="652.4482">Ollama / AI Capacity</text><!--MD5=[37a261da05c18e747d350ad4a70a9b82]
+entity LAN--><rect fill="#FEFECE" height="36.2969" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;" width="113" x="919.5" y="386.9531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="914.5" y="391.9531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="914.5" y="413.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="93" x="929.5" y="409.9482">LAN / Routing</text><!--MD5=[60dbf8e8a50666c70dad943d5e023697]
+entity DNS--><rect fill="#FEFECE" height="36.2969" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;" width="50" x="1068" y="386.9531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="1063" y="391.9531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="1063" y="413.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="30" x="1078" y="409.9482">DNS</text><!--MD5=[288286bd962d9a8f6ce195471fe21d6a]
+entity APIServer--><rect fill="#FEFECE" height="36.2969" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;" width="89" x="2535.5" y="1398.9531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="2530.5" y="1403.9531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="2530.5" y="1425.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="69" x="2545.5" y="1421.9482">API Server</text><!--MD5=[e3152162072024c50465e7b26cb20ed6]
+entity Scheduler--><rect fill="#FEFECE" height="36.2969" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;" width="90" x="2535" y="1269.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="2530" y="1274.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="2530" y="1295.75"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="70" x="2545" y="1292.4482">Scheduler</text><!--MD5=[ad43a2726cff26472700b45723acb2fd]
+entity ControllerManager--><rect fill="#FEFECE" height="36.2969" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;" width="151" x="2348.5" y="1269.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="2343.5" y="1274.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="2343.5" y="1295.75"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="131" x="2358.5" y="1292.4482">Controller Manager</text><!--MD5=[07448adf051c4d2a7a7b24b902650517]
+entity Etcd--><path d="M2554.5,1505.9531 C2554.5,1495.9531 2580,1495.9531 2580,1495.9531 C2580,1495.9531 2605.5,1495.9531 2605.5,1505.9531 L2605.5,1531.25 C2605.5,1541.25 2580,1541.25 2580,1541.25 C2580,1541.25 2554.5,1541.25 2554.5,1531.25 L2554.5,1505.9531 " fill="#FFFFFF" style="stroke: #333333; stroke-width: 1.5;"/><path d="M2554.5,1505.9531 C2554.5,1515.9531 2580,1515.9531 2580,1515.9531 C2580,1515.9531 2605.5,1515.9531 2605.5,1505.9531 " fill="none" style="stroke: #333333; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="31" x="2564.5" y="1532.9482">etcd</text><!--MD5=[59ce76870ad30b3c4b6b78be8498a705]
+entity Kubelet--><rect fill="#FEFECE" height="36.2969" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;" width="72" x="2740" y="1269.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="2735" y="1274.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="2735" y="1295.75"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="52" x="2750" y="1292.4482">kubelet</text><!--MD5=[15e0eaf3f746112dfeba249f7f214daa]
+entity Runtime--><rect fill="#FEFECE" height="36.2969" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;" width="149" x="2720.5" y="1116.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="2715.5" y="1121.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="2715.5" y="1142.75"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="129" x="2730.5" y="1139.4482">Container Runtime</text><!--MD5=[39efe64359c622345fdcef125efbffe6]
+entity Pods--><rect fill="#FEFECE" height="36.2969" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;" width="123" x="2732.5" y="912.9531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="2727.5" y="917.9531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="2727.5" y="939.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="103" x="2742.5" y="935.9482">Pod Workloads</text><!--MD5=[0ff0fccefb57e46481a2840e66765fa8]
+entity ArgoCD--><rect fill="#FEFECE" height="36.2969" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;" width="77" x="3788.5" y="629.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="3783.5" y="634.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="3783.5" y="655.75"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="57" x="3798.5" y="652.4482">Argo CD</text><!--MD5=[76135f9afc5f2b97af6996623fc8da30]
+entity Ingress--><rect fill="#FEFECE" height="36.2969" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;" width="118" x="3457" y="912.9531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="3452" y="917.9531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="3452" y="939.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="98" x="3467" y="935.9482">NGINX Ingress</text><!--MD5=[9d913db2312b7d8a797dc2fd1242f377]
+entity CertManager--><rect fill="#FEFECE" height="36.2969" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;" width="113" x="3640.5" y="629.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="3635.5" y="634.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="3635.5" y="655.75"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="93" x="3650.5" y="652.4482">cert-manager</text><!--MD5=[297c88828cab3946c84bdc2177fc6964]
+entity Observability--><rect fill="#FEFECE" height="36.2969" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;" width="149" x="3456.5" y="629.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="3451.5" y="634.4531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="3451.5" y="655.75"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="129" x="3466.5" y="652.4482">Observability Stack</text><!--MD5=[4883e9c3c57ccb4c971781d20a2e23c7]
+entity Velero--><rect fill="#FEFECE" height="36.2969" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;" width="64" x="2961" y="114.9531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="2956" y="119.9531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="2956" y="141.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="44" x="2971" y="137.9482">Velero</text><!--MD5=[01f843a9ea6a85f4706273612798aed5]
+entity DBBackups--><rect fill="#FEFECE" height="36.2969" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;" width="150" x="2776" y="114.9531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="2771" y="119.9531"/><rect fill="#FEFECE" height="5" style="stroke: #A80036; stroke-width: 1.5;" width="10" x="2771" y="141.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="130" x="2786" y="137.9482">Database Backups</text><!--MD5=[9d1330f94e15b99f5c39504305aed57e]
+entity DevOps--><ellipse cx="1626" cy="94.9531" fill="#FEFECE" rx="8" ry="8" style="stroke: #A80036; stroke-width: 1.5;"/><path d="M1626,102.9531 L1626,129.9531 M1613,110.9531 L1639,110.9531 M1626,129.9531 L1613,144.9531 M1626,129.9531 L1639,144.9531 " fill="none" style="stroke: #A80036; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="124" x="1564" y="160.4482">Platform / DevOps</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="62" x="1595" y="176.7451">Engineer</text><path d="M2964.5,1241.9531 L2964.5,1332.75 A5,5 0 0 0 2969.5,1337.75 L3192.5,1337.75 A5,5 0 0 0 3197.5,1332.75 L3197.5,1246.9531 L3187.5,1236.9531 L2969.5,1236.9531 A5,5 0 0 0 2964.5,1241.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M3187.5,1236.9531 L3187.5,1244.4531 A2.5,2.5 0 0 0 3190,1246.9531 L3197.5,1246.9531 L3187.5,1236.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="167" x="2970.5" y="1254.02">Three control-plane nodes</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="212" x="2970.5" y="1269.1528">provide Kubernetes control-plane</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="101" x="2970.5" y="1284.2856">high availability.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="2974.5" y="1299.4185"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="190" x="2970.5" y="1314.5513">Logical HA does not eliminate</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="189" x="2970.5" y="1329.6841">physical host failure domains.</text><path d="M3913.5,609.4531 L3913.5,685.1172 A5,5 0 0 0 3918.5,690.1172 L4139.5,690.1172 A5,5 0 0 0 4144.5,685.1172 L4144.5,614.4531 L4134.5,604.4531 L3918.5,604.4531 A5,5 0 0 0 3913.5,609.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M4134.5,604.4531 L4134.5,611.9531 A2.5,2.5 0 0 0 4137,614.4531 L4144.5,614.4531 L4134.5,604.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="164" x="3919.5" y="621.52">Additional workers extend</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="195" x="3919.5" y="636.6528">Kubernetes compute capacity.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="3923.5" y="651.7856"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="177" x="3919.5" y="666.9185">Network routing between all</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="210" x="3919.5" y="682.0513">node subnets must remain valid.</text><path d="M4180,609.4531 L4180,685.1172 A5,5 0 0 0 4185,690.1172 L4389,690.1172 A5,5 0 0 0 4394,685.1172 L4394,614.4531 L4384,604.4531 L4185,604.4531 A5,5 0 0 0 4180,609.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M4384,604.4531 L4384,611.9531 A2.5,2.5 0 0 0 4386.5,614.4531 L4394,614.4531 L4384,604.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="180" x="4186" y="621.52">AI compute remains outside</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="193" x="4186" y="636.6528">the main Kubernetes VM pool.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="4190" y="651.7856"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="190" x="4186" y="666.9185">Local AI inference is accessed</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="163" x="4186" y="682.0513">over the internal network.</text><path d="M2491,601.9531 L2491,692.75 A5,5 0 0 0 2496,697.75 L2722,697.75 A5,5 0 0 0 2727,692.75 L2727,606.9531 L2717,596.9531 L2496,596.9531 A5,5 0 0 0 2491,601.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2717,596.9531 L2717,604.4531 A2.5,2.5 0 0 0 2719.5,606.9531 L2727,606.9531 L2717,596.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="193" x="2497" y="614.02">Physical infrastructure is fixed.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="2501" y="629.1528"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="214" x="2497" y="644.2856">Architecture maturity is improved</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="215" x="2497" y="659.4185">through automation, governance,</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="201" x="2497" y="674.5513">observability, and recoverability</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="183" x="2497" y="689.6841">rather than hardware sprawl.</text><!--MD5=[b4d926a7e1e6023c5ee9baccb129d373]
+link DevOps to Proxmox--><path d="M1563.63,132.9531 C1439.63,132.9531 1174,132.9531 1174,132.9531 C1174,132.9531 1174,197.8031 1174,264.1731 C1174,272.4694 1174,280.7894 1174,289.0094 C1174,293.1195 1174,297.2045 1174,301.2491 C1174,303.2714 1174,305.2836 1174,307.2837 C1174,308.2838 1174,309.2809 1174,310.2747 " fill="none" id="DevOps-&gt;Proxmox" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1174,310.2747,1178,301.2747,1174,305.2747,1170,301.2747,1174,310.2747" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="182" x="1457" y="223.52">Infrastructure administration</text><!--MD5=[a709e961a1635b20dfab02298b383942]
+link DevOps to Cluster--><path d="M1688.17,165.9531 C1938.91,165.9531 2862.5,165.9531 2862.5,165.9531 C2862.5,165.9531 2862.5,357.2031 2862.5,548.4531 C2862.5,596.2656 2862.5,644.0781 2862.5,688.9023 C2862.5,711.3145 2862.5,732.9795 2862.5,753.5239 C2862.5,763.7961 2862.5,773.7882 2862.5,783.4534 C2862.5,785.8697 2862.5,788.2656 2862.5,790.6403 " fill="none" id="DevOps-&gt;Cluster" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2862.5,790.6403,2866.5,781.6403,2862.5,785.6403,2858.5,781.6403,2862.5,790.6403" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="169" x="2641" y="470.52">Kubernetes administration</text><!--MD5=[98451308aa4ef6ad28d709c0e7baf982]
+link CP1 to ControlPlane--><path d="M2129.01,647.9531 C2203.08,647.9531 2313,647.9531 2313,647.9531 C2313,647.9531 2313,802.8706 2313,960.2094 C2313,1038.8788 2313,1118.1534 2313,1178.9714 C2313,1186.5737 2313,1193.8875 2313,1200.8758 C2313,1202.6228 2313,1204.3495 2313,1206.0553 " fill="none" id="CP1-&gt;ControlPlane" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2313,1206.0553,2317,1197.0553,2313,1201.0553,2309,1197.0553,2313,1206.0553" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[263524494db672b135b75ad7d5e6b09b]
+link CP2 to ControlPlane--><path d="M1455,679.2131 C1455,808.4531 1455,1287.9531 1455,1287.9531 C1455,1287.9531 1666.1625,1287.9531 1878.9737,1287.9531 C1985.3794,1287.9531 2092.1972,1287.9531 2173.238,1287.9531 C2213.7584,1287.9531 2247.8345,1287.9531 2272.1927,1287.9531 C2284.3718,1287.9531 2294.1215,1287.9531 2301.0324,1287.9531 C2301.8963,1287.9531 2302.7158,1287.9531 2303.4902,1287.9531 C2303.8773,1287.9531 2304.2532,1287.9531 2304.6177,1287.9531 " fill="none" id="CP2-&gt;ControlPlane" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2304.6177,1287.9531,2295.6177,1283.9531,2299.6177,1287.9531,2295.6177,1291.9531,2304.6177,1287.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[6df7c91b9176fcc288751c654f59f19f]
+link CP3 to ControlPlane--><path d="M1288,679.3231 C1288,684.9031 1288,688.9531 1288,688.9531 C1288,688.9531 2331.25,688.9531 2331.25,688.9531 C2331.25,688.9531 2331.25,838.7031 2331.25,988.4531 C2331.25,1063.3281 2331.25,1138.2031 2331.25,1194.3594 C2331.25,1197.8691 2331.25,1201.3058 2331.25,1204.6647 C2331.25,1205.5045 2331.25,1206.3394 2331.25,1207.1693 " fill="none" id="CP3-&gt;ControlPlane" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2331.25,1207.1693,2335.25,1198.1693,2331.25,1202.1693,2327.25,1198.1693,2331.25,1207.1693" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[0effac2e8ab0c92c8fba9396dccad2db]
+link WK1 to WorkerRuntime--><path d="M1759,679.1331 C1759,752.1231 1759,925.9531 1759,925.9531 C1759,925.9531 1993.4175,925.9531 2227.835,925.9531 C2345.0438,925.9531 2462.2525,925.9531 2550.1591,925.9531 C2594.1123,925.9531 2630.7401,925.9531 2656.3795,925.9531 C2669.1992,925.9531 2679.2718,925.9531 2686.1395,925.9531 C2686.998,925.9531 2687.8064,925.9531 2688.5638,925.9531 " fill="none" id="WK1-&gt;WorkerRuntime" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2688.5638,925.9531,2679.5638,921.9531,2683.5638,925.9531,2679.5638,929.9531,2688.5638,925.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[a5732facc0d2a6c8b144bd860738985f]
+link WK2 to WorkerRuntime--><path d="M1612,679.1131 C1612,736.7531 1612,852.9531 1612,852.9531 C1612,852.9531 1883.3325,852.9531 2154.665,852.9531 C2290.3313,852.9531 2425.9975,852.9531 2527.7472,852.9531 C2578.622,852.9531 2621.0177,852.9531 2650.6947,852.9531 C2665.5332,852.9531 2677.192,852.9531 2685.1412,852.9531 C2686.1349,852.9531 2687.0706,852.9531 2687.9473,852.9531 " fill="none" id="WK2-&gt;WorkerRuntime" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2687.9473,852.9531,2678.9473,848.9531,2682.9473,852.9531,2678.9473,856.9531,2687.9473,852.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[cbbb79b3497e33b79c00ae85980d0f36]
+link WK3 to WorkerRuntime--><path d="M1906,679.1531 C1906,753.1231 1906,930.9531 1906,930.9531 C1906,930.9531 2097.6175,930.9531 2292.23,930.9531 C2389.5362,930.9531 2487.5912,930.9531 2562.8172,930.9531 C2600.4302,930.9531 2632.3359,930.9531 2655.5871,930.9531 C2667.2127,930.9531 2676.6747,930.9531 2683.6046,930.9531 C2685.3371,930.9531 2686.9113,930.9531 2688.3216,930.9531 " fill="none" id="WK3-&gt;WorkerRuntime" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2688.3216,930.9531,2679.3216,926.9531,2683.3216,930.9531,2679.3216,934.9531,2688.3216,930.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[7d845cb6026b6c9631a0c42a70c1ed9c]
+link WK4 to WorkerRuntime--><path d="M899,679.1831 C899,757.1731 899,951.9531 899,951.9531 C899,951.9531 1348.4175,951.9531 1797.835,951.9531 C2022.5438,951.9531 2247.2525,951.9531 2415.7841,951.9531 C2500.0498,951.9531 2570.2713,951.9531 2619.4264,951.9531 C2644.0039,951.9531 2663.3148,951.9531 2676.4813,951.9531 C2679.773,951.9531 2682.6806,951.9531 2685.1904,951.9531 C2686.4454,951.9531 2687.6009,951.9531 2688.6552,951.9531 " fill="none" id="WK4-&gt;WorkerRuntime" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2688.6552,951.9531,2679.6552,947.9531,2683.6552,951.9531,2679.6552,955.9531,2688.6552,951.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[7323db2f34260072f6d1bb1b02a6622b]
+link WK5 to WorkerRuntime--><path d="M1046,679.1431 C1046,755.0331 1046,940.9531 1046,940.9531 C1046,940.9531 1458.8325,940.9531 1871.665,940.9531 C2078.0813,940.9531 2284.4975,940.9531 2439.3097,940.9531 C2516.7158,940.9531 2581.2209,940.9531 2626.3744,940.9531 C2648.9512,940.9531 2666.6901,940.9531 2678.7848,940.9531 C2681.8085,940.9531 2684.4794,940.9531 2686.7849,940.9531 C2687.3613,940.9531 2687.9149,940.9531 2688.4454,940.9531 " fill="none" id="WK5-&gt;WorkerRuntime" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2688.4454,940.9531,2679.4454,936.9531,2683.4454,940.9531,2679.4454,944.9531,2688.4454,940.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[ea0cc6aae6e4d11b510a27329bb4d8c2]
+link WK6 to WorkerRuntime--><path d="M752,679.2131 C752,751.4631 752,921.9531 752,921.9531 C752,921.9531 1241.3125,921.9531 1730.625,921.9531 C1975.2813,921.9531 2219.9375,921.9531 2403.4297,921.9531 C2495.1758,921.9531 2571.6309,921.9531 2625.1494,921.9531 C2651.9087,921.9531 2672.9338,921.9531 2687.2692,921.9531 " fill="none" id="WK6-&gt;WorkerRuntime" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2687.2692,921.9531,2678.2692,917.9531,2682.2692,921.9531,2678.2692,925.9531,2687.2692,921.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[c6012a0fd0463d1f2bd242a4b54a825e]
+link APIServer to Etcd--><path d="M2580,1435.1031 C2580,1435.1031 2580,1490.8431 2580,1490.8431 " fill="none" id="APIServer-&gt;Etcd" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2580,1495.8431,2584,1486.8431,2580,1490.8431,2576,1486.8431,2580,1495.8431" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[b1fecef5218ce8d8ff9bc293c1625d73]
+link Scheduler to APIServer--><path d="M2580,1305.4631 C2580,1305.4631 2580,1393.6831 2580,1393.6831 " fill="none" id="Scheduler-&gt;APIServer" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2580,1398.6831,2584,1389.6831,2580,1393.6831,2576,1389.6831,2580,1398.6831" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[3db573a140f96a4249bb027de3d1d818]
+link ControllerManager to APIServer--><path d="M2424,1305.4631 C2424,1341.0431 2424,1416.9531 2424,1416.9531 C2424,1416.9531 2530.3,1416.9531 2530.3,1416.9531 " fill="none" id="ControllerManager-&gt;APIServer" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2535.3,1416.9531,2526.3,1412.9531,2530.3,1416.9531,2526.3,1420.9531,2535.3,1416.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[24dc9af3aee2488d95fefc1073b89878]
+link Kubelet to APIServer--><path d="M2776,1305.6731 C2776,1340.0331 2776,1410.9531 2776,1410.9531 C2776,1410.9531 2629.97,1410.9531 2629.97,1410.9531 " fill="none" id="Kubelet-&gt;APIServer" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2624.97,1410.9531,2633.97,1414.9531,2629.97,1410.9531,2633.97,1406.9531,2624.97,1410.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[60e263b106fc0467bab0119cb19e0ae6]
+link Runtime to Kubelet--><path d="M2776,1152.6031 C2776,1152.6031 2776,1264.3231 2776,1264.3231 " fill="none" id="Runtime-&gt;Kubelet" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2776,1269.3231,2780,1260.3231,2776,1264.3231,2772,1260.3231,2776,1269.3231" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[7f23c074154fcd70b7ea65b02266cb3b]
+link Pods to Runtime--><path d="M2794,949.0131 C2794,949.0131 2794,1111.4331 2794,1111.4331 " fill="none" id="Pods-&gt;Runtime" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2794,1116.4331,2798,1107.4331,2794,1111.4331,2790,1107.4331,2794,1116.4331" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[379f6e4f651eabeabffdca9200c20ac5]
+link Cluster to PlatformServices--><path d="M2941.201,930.9531 C2941.7292,930.9531 2942.2815,930.9531 2942.8574,930.9531 C2947.4646,930.9531 2953.5827,930.9531 2960.9895,930.9531 C2975.8033,930.9531 2995.7725,930.9531 3019.1219,930.9531 C3065.8206,930.9531 3126.04,930.9531 3185.5775,930.9531 C3245.115,930.9531 3303.9706,930.9531 3347.9419,930.9531 C3369.9275,930.9531 3388.192,930.9531 3400.9602,930.9531 C3404.1522,930.9531 3407.0007,930.9531 3409.4779,930.9531 C3410.7166,930.9531 3411.8624,930.9531 3412.9119,930.9531 " fill="none" id="Cluster-&gt;PlatformServices" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3412.9119,930.9531,3403.9119,926.9531,3407.9119,930.9531,3403.9119,934.9531,3412.9119,930.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="37" x="3132" y="764.02">Hosts</text><!--MD5=[4c1db72215d5e742f1661dc2341f4177]
+link ArgoCD to APIServer--><path d="M3827,665.4831 C3827,781.9231 3827,1422.9531 3827,1422.9531 C3827,1422.9531 2629.75,1422.9531 2629.75,1422.9531 " fill="none" id="ArgoCD-&gt;APIServer" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2624.75,1422.9531,2633.75,1426.9531,2629.75,1422.9531,2633.75,1418.9531,2624.75,1422.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="131" x="3780" y="1139.02">GitOps reconciliation</text><!--MD5=[64538076161cb33794560c2195eb5d02]
+link Ingress to Pods--><path d="M3456.92,940.9531 C3456.92,940.9531 2860.69,940.9531 2860.69,940.9531 " fill="none" id="Ingress-&gt;Pods" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2855.69,940.9531,2864.69,944.9531,2860.69,940.9531,2864.69,936.9531,2855.69,940.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="157" x="2891.5" y="764.02">Routes application traffic</text><!--MD5=[106cc24de8179d40d6df4049030be85c]
+link CertManager to Ingress--><path d="M3697,665.6231 C3697,728.1931 3697,930.9531 3697,930.9531 C3697,930.9531 3580.27,930.9531 3580.27,930.9531 " fill="none" id="CertManager-&gt;Ingress" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3575.27,930.9531,3584.27,934.9531,3580.27,930.9531,3584.27,926.9531,3575.27,930.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="97" x="3564" y="764.02">TLS certificates</text><!--MD5=[26e4b053188ba5c720b0bb900a3ce3c3]
+link Observability to Cluster--><path d="M3456.47,656.9531 C3296.17,656.9531 2933,656.9531 2933,656.9531 C2933,656.9531 2933,722.2806 2933,789.1394 C2933,789.6617 2933,790.1841 2933,790.7066 " fill="none" id="Observability-&gt;Cluster" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2933,790.7066,2937,781.7066,2933,785.7066,2929,781.7066,2933,790.7066" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="136" x="3211" y="764.02">Metrics / logs / traces</text><!--MD5=[e297ff3adee60028af93c96b232089fb]
+link LAN to CP1--><path d="M1027.19,423.3031 C1027.19,471.8431 1027.19,599.9531 1027.19,599.9531 C1027.19,599.9531 2041,599.9531 2041,599.9531 C2041,599.9531 2041,610.7731 2041,610.7731 " fill="none" id="LAN-&gt;CP1" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2041,615.7731,2045,606.7731,2041,610.7731,2037,606.7731,2041,615.7731" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[394071ed2b112b70cd957373e8058208]
+link LAN to CP2--><path d="M1005.94,423.0531 C1005.94,472.9831 1005.94,608.9531 1005.94,608.9531 C1005.94,608.9531 1433,608.9531 1433,608.9531 C1433,608.9531 1433,610.6631 1433,610.6631 " fill="none" id="LAN-&gt;CP2" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1433,615.6631,1437,606.6631,1433,610.6631,1429,606.6631,1433,615.6631" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[006b54e61c30894c0b1d5eaaa0d07787]
+link LAN to CP3--><path d="M1000.62,423.1331 C1000.62,473.9831 1000.62,613.9531 1000.62,613.9531 C1000.62,613.9531 1266,613.9531 1266,613.9531 C1266,613.9531 1266,614.1331 1266,614.1331 " fill="none" id="LAN-&gt;CP3" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1266,615.7531,1270,606.7531,1266,610.7531,1262,606.7531,1266,615.7531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[e1cf563339a15e37dcaaf5d22e4cf5ad]
+link LAN to WK1--><path d="M1016.56,423.0531 C1016.56,472.2831 1016.56,604.9531 1016.56,604.9531 C1016.56,604.9531 1740.33,604.9531 1740.33,604.9531 C1740.33,604.9531 1740.33,610.6731 1740.33,610.6731 " fill="none" id="LAN-&gt;WK1" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1740.33,615.6731,1744.33,606.6731,1740.33,610.6731,1736.33,606.6731,1740.33,615.6731" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[48f0efe610d4f7d538c64ace602610e4]
+link LAN to WK2--><path d="M1011.25,423.2331 C1011.25,472.9631 1011.25,606.9531 1011.25,606.9531 C1011.25,606.9531 1560,606.9531 1560,606.9531 C1560,606.9531 1560,610.9431 1560,610.9431 " fill="none" id="LAN-&gt;WK2" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1560,615.9431,1564,606.9431,1560,610.9431,1556,606.9431,1560,615.9431" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[97d422e0e233655e76e0ff18e455a81a]
+link LAN to WK3--><path d="M1021.88,423.1331 C1021.88,471.9031 1021.88,601.9531 1021.88,601.9531 C1021.88,601.9531 1906,601.9531 1906,601.9531 C1906,601.9531 1906,610.8531 1906,610.8531 " fill="none" id="LAN-&gt;WK3" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1906,615.8531,1910,606.8531,1906,610.8531,1902,606.8531,1906,615.8531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[3b9206e87256a5f8e6d991be26c291e0]
+link LAN to WK4--><path d="M937.25,423.1831 C937.25,423.1831 937.25,610.9231 937.25,610.9231 " fill="none" id="LAN-&gt;WK4" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="937.25,615.9231,941.25,606.9231,937.25,610.9231,933.25,606.9231,937.25,615.9231" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[4da3f076beb31c0648d7c9ce2edcc4ca]
+link LAN to WK5--><path d="M995.31,423.1831 C995.31,423.1831 995.31,610.9231 995.31,610.9231 " fill="none" id="LAN-&gt;WK5" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="995.31,615.9231,999.31,606.9231,995.31,610.9231,991.31,606.9231,995.31,615.9231" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[6e7e25ec60b04a214a032b99fbc1d5d2]
+link LAN to WK6--><path d="M919.48,413.9531 C853.12,413.9531 752,413.9531 752,413.9531 C752,413.9531 752,610.4731 752,610.4731 " fill="none" id="LAN-&gt;WK6" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="752,615.4731,756,606.4731,752,610.4731,748,606.4731,752,615.4731" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[0ec30cee17ce2b2782e81ab3aabb2ab4]
+link LAN to AI1--><path d="M919.24,395.9531 C729.03,395.9531 126,395.9531 126,395.9531 C126,395.9531 126,455.9156 126,517.2831 C126,524.9541 126,532.647 126,540.2474 C126,544.0477 126,547.8248 126,551.5645 C126,553.4344 126,555.2949 126,557.1443 " fill="none" id="LAN-&gt;AI1" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="126,557.1443,130,548.1443,126,552.1443,122,548.1443,126,557.1443" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[dc95b8d570d45159e7bd8770ecedc712]
+link LAN to AI2--><path d="M919.43,404.9531 C767.15,404.9531 360,404.9531 360,404.9531 C360,404.9531 360,462.7706 360,521.9431 C360,529.3397 360,536.7574 360,544.086 C360,547.7504 360,551.3924 360,554.9984 C360,555.4491 360,555.8993 360,556.3489 " fill="none" id="LAN-&gt;AI2" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="360,556.3489,364,547.3489,360,551.3489,356,547.3489,360,556.3489" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[9a6aa7b12d5e1eaf1cc509ad8de77e3c]
+link DNS to Ingress--><path d="M1110,423.0131 C1110,494.0031 1110,749.9531 1110,749.9531 C1110,749.9531 3516,749.9531 3516,749.9531 C3516,749.9531 3516,907.9331 3516,907.9331 " fill="none" id="DNS-&gt;Ingress" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3516,912.9331,3520,903.9331,3516,907.9331,3512,903.9331,3516,912.9331" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="145" x="2310" y="652.02">Internal service names</text><!--MD5=[8f804e84e3c7a8621185bb84c78e8f8b]
+link Ollama1 to GPU1--><path d="M214,665.6231 C214,665.6231 214,899.1531 214,899.1531 " fill="none" id="Ollama1-&gt;GPU1" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="214,904.1531,218,895.1531,214,899.1531,210,895.1531,214,904.1531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="91" x="196" y="764.02">GPU inference</text><!--MD5=[75491e4f87450c75142e6255bb341d83]
+link Ollama2 to GPU2--><path d="M464.25,665.6231 C464.25,665.6231 464.25,899.1531 464.25,899.1531 " fill="none" id="Ollama2-&gt;GPU2" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="464.25,904.1531,468.25,895.1531,464.25,899.1531,460.25,895.1531,464.25,904.1531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="91" x="457" y="764.02">GPU inference</text><!--MD5=[ec7784bfff19babb16372264cd478c23]
+link Pods to Ollama1--><path d="M2736.25,912.7431 C2736.25,877.1831 2736.25,801.9531 2736.25,801.9531 C2736.25,801.9531 236,801.9531 236,801.9531 C236,801.9531 236,670.4831 236,670.4831 " fill="none" id="Pods-&gt;Ollama1" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="236,665.4831,232,674.4831,236,670.4831,240,674.4831,236,665.4831" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="88" x="2280" y="764.02">Internal AI API</text><!--MD5=[fac82cb54dd036bee224f187ec2058ff]
+link Pods to Ollama2--><path d="M2732.27,917.9531 C2370.44,917.9531 540.75,917.9531 540.75,917.9531 C540.75,917.9531 540.75,670.6231 540.75,670.6231 " fill="none" id="Pods-&gt;Ollama2" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="540.75,665.6231,536.75,674.6231,540.75,670.6231,544.75,674.6231,540.75,665.6231" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="170" x="2536" y="764.02">Additional / future capacity</text><!--MD5=[51e513428e53692113d7234a59ef0164]
+link VMStorage to CP1--><path d="M1833.79,416.9531 C1930.04,416.9531 2085,416.9531 2085,416.9531 C2085,416.9531 2085,610.8831 2085,610.8831 " fill="none" id="VMStorage-&gt;CP1" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2085,615.8831,2089,606.8831,2085,610.8831,2081,606.8831,2085,615.8831" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[bdcac86c1baa28ebe6d5e4fe1a0d1c18]
+link VMStorage to CP2--><path d="M1684.17,417.9531 C1600.63,417.9531 1477,417.9531 1477,417.9531 C1477,417.9531 1477,610.5431 1477,610.5431 " fill="none" id="VMStorage-&gt;CP2" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1477,615.5431,1481,606.5431,1477,610.5431,1473,606.5431,1477,615.5431" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[7d6376028e280bb7cd476f6da84d3c4c]
+link VMStorage to CP3--><path d="M1684.35,411.9531 C1556.68,411.9531 1310,411.9531 1310,411.9531 C1310,411.9531 1310,610.6931 1310,610.6931 " fill="none" id="VMStorage-&gt;CP3" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1310,615.6931,1314,606.6931,1310,610.6931,1306,606.6931,1310,615.6931" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[63d10f812860542d2e27450f1c1274df]
+link VMStorage to WK1--><path d="M1777.67,427.7631 C1777.67,427.7631 1777.67,610.7931 1777.67,610.7931 " fill="none" id="VMStorage-&gt;WK1" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1777.67,615.7931,1781.67,606.7931,1777.67,610.7931,1773.67,606.7931,1777.67,615.7931" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[8abbc8d7014c2f5f546da659bc525517]
+link VMStorage to WK2--><path d="M1693.75,427.8131 C1693.75,488.3031 1693.75,647.9531 1693.75,647.9531 C1693.75,647.9531 1673.33,647.9531 1673.33,647.9531 " fill="none" id="VMStorage-&gt;WK2" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1668.33,647.9531,1677.33,651.9531,1673.33,647.9531,1677.33,643.9531,1668.33,647.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[90506c4b0e24abd80f6f1a378f9f5d5d]
+link VMStorage to WK3--><path d="M1824.25,427.8131 C1824.25,488.3031 1824.25,647.9531 1824.25,647.9531 C1824.25,647.9531 1844.67,647.9531 1844.67,647.9531 " fill="none" id="VMStorage-&gt;WK3" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1849.67,647.9531,1840.67,643.9531,1844.67,647.9531,1840.67,651.9531,1849.67,647.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[c7239bca1edaccf835c5a208bc1003e8]
+link Velero to Cluster--><path d="M2994.75,151.2731 C2994.75,272.5631 2994.75,954.9531 2994.75,954.9531 C2994.75,954.9531 2979.3125,954.9531 2963.875,954.9531 C2956.1563,954.9531 2948.4375,954.9531 2942.6484,954.9531 C2942.2866,954.9531 2941.9323,954.9531 2941.5861,954.9531 C2941.4129,954.9531 2941.2418,954.9531 2941.0727,954.9531 " fill="none" id="Velero-&gt;Cluster" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2941.0727,954.9531,2950.0727,958.9531,2946.0727,954.9531,2950.0727,950.9531,2941.0727,954.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="123" x="3074" y="470.52">Kubernetes backup</text><!--MD5=[7b326416de9d09b3ff4c9990dd38f7bf]
+link DBBackups to Pods--><path d="M2815.75,151.1231 C2815.75,151.1231 2815.75,907.8131 2815.75,907.8131 " fill="none" id="DBBackups-&gt;Pods" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2815.75,912.8131,2819.75,903.8131,2815.75,907.8131,2811.75,903.8131,2815.75,912.8131" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="180" x="2852" y="470.52">Stateful application backups</text><!--MD5=[d82f278023ba813df731bb834765dfde]
+link Recovery to VMStorage--><path d="M2741,175.5482 C2741,175.9276 2741,176.3088 2741,176.6919 C2741,177.4581 2741,178.2315 2741,179.012 C2741,203.9884 2741,236.1962 2741,268.0394 C2741,331.7256 2741,393.9531 2741,393.9531 C2741,393.9531 1838.62,393.9531 1838.62,393.9531 " fill="none" id="Recovery-&gt;VMStorage" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1833.62,393.9531,1842.62,397.9531,1838.62,393.9531,1842.62,389.9531,1833.62,393.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="91" x="2244" y="223.52">Recovery data</text><!--MD5=[6cf9571060a749f56a0eacc0b8feed1b]
+link ControlPlane to GMN92--><path d="M2650.3447,1321.9531 C2654.8384,1321.9531 2659.3407,1321.9531 2663.8491,1321.9531 C2699.9166,1321.9531 2736.3771,1321.9531 2771.9452,1321.9531 C2843.0813,1321.9531 2910.6475,1321.9531 2964.36,1321.9531 " fill="none" id="ControlPlane-GMN92" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[0232ab7ae14ca5c541e9ca2371085f67]
+link AdditionalWorkers to GMN95--><path d="M661,553.707 C661,553.4384 661,553.1733 661,552.9115 C661,551.8646 661,550.8727 661,549.9415 C661,548.0792 661,546.4597 661,545.1281 C661,542.4648 661,540.9531 661,540.9531 C661,540.9531 4029,540.9531 4029,540.9531 C4029,540.9531 4029,574.8831 4029,604.4431 " fill="none" id="AdditionalWorkers-GMN95" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[f795f160f9fda44e9e2340cb1204118c]
+link AIInfra to GMN98--><path d="M78,498.1766 C78,495.2335 78,492.6722 78,490.565 C78,486.3506 78,483.9531 78,483.9531 C78,483.9531 4287,483.9531 4287,483.9531 C4287,483.9531 4287,555.6331 4287,604.0631 " fill="none" id="AIInfra-GMN98" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[f8000a4e6ba13be1993f224636fb4202]
+link Physical to GMN101--><path d="M2225.3694,611.9531 C2225.5239,611.9531 2225.6804,611.9531 2225.8389,611.9531 C2226.4729,611.9531 2227.1386,611.9531 2227.8354,611.9531 C2229.2289,611.9531 2230.7463,611.9531 2232.3816,611.9531 C2235.6522,611.9531 2239.3942,611.9531 2243.5583,611.9531 C2260.2147,611.9531 2283.6256,611.9531 2310.6438,611.9531 C2364.68,611.9531 2433.145,611.9531 2490.86,611.9531 " fill="none" id="Physical-GMN101" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[0e27f751679466d64c7912894844ad0b]
+@startuml 03-Infrastructure-Architecture
+
+title Enterprise AI Platform — Infrastructure Architecture
+
+top to bottom direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam ArrowThickness 1
+
+skinparam node {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam database {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam cloud {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+
+actor "Platform / DevOps\nEngineer" as DevOps
+
+
+rectangle "Physical Infrastructure" as Physical {
+
+    node "Primary Proxmox Host" as Proxmox {
+
+        rectangle "Virtualized Kubernetes Infrastructure" as K8sVMs {
+
+            node "k8s-cp-01\nControl Plane" as CP1
+            node "k8s-cp-02\nControl Plane" as CP2
+            node "k8s-cp-03\nControl Plane" as CP3
+
+            node "k8s-wk-01\nWorker" as WK1
+            node "k8s-wk-02\nWorker" as WK2
+            node "k8s-wk-03\nWorker" as WK3
+        }
+
+        database "Virtualized Storage" as VMStorage
+    }
+
+    rectangle "Additional Kubernetes Workers" as AdditionalWorkers {
+
+        node "k8s-wk-04\nWorker" as WK4
+        node "k8s-wk-05\nWorker" as WK5
+        node "k8s-wk-06\nWorker" as WK6
+    }
+
+    rectangle "AI Compute Infrastructure" as AIInfra {
+
+        node "AI Host 1" as AI1 {
+            component "NVIDIA GTX 1080\n8 GB VRAM" as GPU1
+            component "Ollama" as Ollama1
+        }
+
+        node "AI Host 2" as AI2 {
+            component "NVIDIA GTX 1080\n8 GB VRAM" as GPU2
+            component "Ollama / AI Capacity" as Ollama2
+        }
+    }
+
+    rectangle "Network Infrastructure" as Network {
+        component "LAN / Routing" as LAN
+        component "DNS" as DNS
+    }
+}
+
+
+rectangle "Kubernetes Cluster" as Cluster {
+
+    rectangle "Control Plane" as ControlPlane {
+        component "API Server" as APIServer
+        component "Scheduler" as Scheduler
+        component "Controller Manager" as ControllerManager
+        database "etcd" as Etcd
+    }
+
+    rectangle "Worker Runtime" as WorkerRuntime {
+        component "kubelet" as Kubelet
+        component "Container Runtime" as Runtime
+        component "Pod Workloads" as Pods
+    }
+}
+
+
+rectangle "Core Platform Services" as PlatformServices {
+    component "Argo CD" as ArgoCD
+    component "NGINX Ingress" as Ingress
+    component "cert-manager" as CertManager
+    component "Observability Stack" as Observability
+}
+
+
+rectangle "Backup / Recovery" as Recovery {
+    component "Velero" as Velero
+    component "Database Backups" as DBBackups
+}
+
+
+DevOps - -> Proxmox : Infrastructure administration
+DevOps - -> Cluster : Kubernetes administration
+
+
+CP1 - -> ControlPlane
+CP2 - -> ControlPlane
+CP3 - -> ControlPlane
+
+WK1 - -> WorkerRuntime
+WK2 - -> WorkerRuntime
+WK3 - -> WorkerRuntime
+WK4 - -> WorkerRuntime
+WK5 - -> WorkerRuntime
+WK6 - -> WorkerRuntime
+
+
+APIServer - -> Etcd
+Scheduler - -> APIServer
+ControllerManager - -> APIServer
+
+Kubelet - -> APIServer
+Runtime - -> Kubelet
+Pods - -> Runtime
+
+
+Cluster - -> PlatformServices : Hosts
+
+ArgoCD - -> APIServer : GitOps reconciliation
+Ingress - -> Pods : Routes application traffic
+CertManager - -> Ingress : TLS certificates
+Observability ..> Cluster : Metrics / logs / traces
+
+
+LAN - -> CP1
+LAN - -> CP2
+LAN - -> CP3
+
+LAN - -> WK1
+LAN - -> WK2
+LAN - -> WK3
+LAN - -> WK4
+LAN - -> WK5
+LAN - -> WK6
+
+LAN - -> AI1
+LAN - -> AI2
+
+DNS ..> Ingress : Internal service names
+
+
+Ollama1 - -> GPU1 : GPU inference
+Ollama2 - -> GPU2 : GPU inference
+
+Pods - -> Ollama1 : Internal AI API
+Pods ..> Ollama2 : Additional / future capacity
+
+
+VMStorage - -> CP1
+VMStorage - -> CP2
+VMStorage - -> CP3
+VMStorage - -> WK1
+VMStorage - -> WK2
+VMStorage - -> WK3
+
+
+Velero ..> Cluster : Kubernetes backup
+DBBackups ..> Pods : Stateful application backups
+
+Recovery ..> VMStorage : Recovery data
+
+
+note right of ControlPlane
+Three control-plane nodes
+provide Kubernetes control-plane
+high availability.
+
+Logical HA does not eliminate
+physical host failure domains.
+end note
+
+note right of AdditionalWorkers
+Additional workers extend
+Kubernetes compute capacity.
+
+Network routing between all
+node subnets must remain valid.
+end note
+
+note right of AIInfra
+AI compute remains outside
+the main Kubernetes VM pool.
+
+Local AI inference is accessed
+over the internal network.
+end note
+
+note bottom of Physical
+Physical infrastructure is fixed.
+
+Architecture maturity is improved
+through automation, governance,
+observability, and recoverability
+rather than hardware sprawl.
+end note
+
+@enduml
+
+PlantUML version 1.2020.02(Sun Mar 01 11:22:07 CET 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 11.0.31+11-post-1ubuntu1-22.04.2-Ubuntu
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: null
+--></g></svg>

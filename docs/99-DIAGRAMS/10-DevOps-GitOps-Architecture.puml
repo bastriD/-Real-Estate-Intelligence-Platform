@@ -1,0 +1,376 @@
+@startuml 10-DevOps-GitOps-Architecture
+
+title Enterprise AI Platform — DevOps & GitOps Architecture
+
+left to right direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam ArrowThickness 1
+
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam component {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam database {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam cloud {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+' ============================================================
+' ACTORS
+' ============================================================
+
+actor "Developer /\nData / AI Engineer" as Developer
+actor "Platform / DevOps\nEngineer" as DevOps
+actor "Reviewer /\nApprover" as Reviewer
+
+' ============================================================
+' SOURCE CONTROL
+' ============================================================
+
+rectangle "GitLab Source Control" as SCM {
+
+    component "Application Repository" as AppRepo
+
+    component "Data / Airflow /\nML Repository" as DataRepo
+
+    component "Governance Repository" as GovRepo
+
+    component "GitOps Repository" as GitOpsRepo
+
+    component "Merge Request" as MR
+}
+
+Developer --> AppRepo : Code
+Developer --> DataRepo : Data / ML changes
+DevOps --> GovRepo : Governance / platform config
+
+AppRepo --> MR
+DataRepo --> MR
+GovRepo --> MR
+
+Reviewer --> MR : Review / approval
+
+' ============================================================
+' CI
+' ============================================================
+
+rectangle "GitLab CI" as CI {
+
+    component "Lint" as Lint
+
+    component "Unit Tests" as Tests
+
+    component "Security Scanning" as SecurityScan
+
+    component "Policy Validation" as PolicyValidation
+
+    component "Governance Validation" as GovernanceValidation
+
+    component "Build" as Build
+
+    component "Publish Artifact" as Publish
+}
+
+MR --> CI : Trigger pipeline
+
+CI --> Lint
+CI --> Tests
+CI --> SecurityScan
+CI --> PolicyValidation
+CI --> GovernanceValidation
+CI --> Build
+CI --> Publish
+
+' ============================================================
+' RUNNER
+' ============================================================
+
+rectangle "CI Execution" as CIExecution {
+
+    component "GitLab Runner" as Runner
+
+    component "Docker Executor" as DockerExecutor
+}
+
+CI --> Runner
+Runner --> DockerExecutor
+
+' ============================================================
+' ARTIFACTS
+' ============================================================
+
+rectangle "Artifact Layer" as ArtifactLayer {
+
+    database "Container Registry" as Registry
+
+    component "Immutable Image\nTag / Digest" as Image
+}
+
+Publish --> Registry
+Registry --> Image
+
+' ============================================================
+' GITOPS PROMOTION
+' ============================================================
+
+rectangle "GitOps Promotion" as Promotion {
+
+    component "Update Image Version" as VersionUpdate
+
+    component "GitOps Merge Request" as GitOpsMR
+}
+
+Image --> VersionUpdate
+
+VersionUpdate --> GitOpsMR
+GitOpsMR --> GitOpsRepo
+
+Reviewer --> GitOpsMR : Review when required
+
+' ============================================================
+' ARGO CD
+' ============================================================
+
+rectangle "Continuous Delivery" as CD {
+
+    component "Argo CD" as ArgoCD
+
+    component "Root Application" as RootApp
+
+    component "Sync Engine" as Sync
+
+    component "Drift Detection" as Drift
+}
+
+GitOpsRepo --> ArgoCD : Desired state
+
+ArgoCD --> RootApp
+RootApp --> Sync
+ArgoCD --> Drift
+
+' ============================================================
+' KUBERNETES
+' ============================================================
+
+rectangle "Kubernetes Runtime" as Kubernetes {
+
+    component "Namespaces" as Namespaces
+
+    component "Deployments /\nStatefulSets / Jobs" as Workloads
+
+    component "Services / Ingress" as Services
+
+    component "ConfigMaps / Secrets" as Config
+}
+
+Sync --> Kubernetes : Reconcile
+
+Kubernetes --> Namespaces
+Namespaces --> Workloads
+Workloads --> Services
+Workloads --> Config
+
+' ============================================================
+' RUNTIME DRIFT
+' ============================================================
+
+Kubernetes --> Drift : Actual state
+
+Drift --> Sync : Reconcile if drift detected
+
+' ============================================================
+' GOVERNANCE AS CODE
+' ============================================================
+
+rectangle "Governance as Code" as Governance {
+
+    component "Policy as Code" as Policy
+
+    component "Risk as Code" as Risk
+
+    component "Compliance as Code" as Compliance
+
+    component "SLO as Code" as SLO
+
+    component "Documentation as Code" as Documentation
+}
+
+GovRepo --> Governance
+
+Policy --> PolicyValidation
+Risk --> GovernanceValidation
+Compliance --> GovernanceValidation
+SLO --> GovernanceValidation
+Documentation --> GovernanceValidation
+
+' ============================================================
+' RUNTIME POLICY ENFORCEMENT
+' ============================================================
+
+rectangle "Runtime Policy Enforcement" as RuntimePolicy {
+
+    component "Kubernetes Admission\nPolicy Engine" as PolicyEngine
+
+    component "Policy Reports" as PolicyReports
+}
+
+Policy ..> PolicyEngine : Approved policies
+
+Kubernetes --> PolicyEngine : Admission requests
+
+PolicyEngine --> Kubernetes : Allow / deny
+
+PolicyEngine --> PolicyReports
+
+' ============================================================
+' OBSERVABILITY
+' ============================================================
+
+rectangle "Delivery Observability" as Observability {
+
+    component "Prometheus" as Prometheus
+
+    component "Grafana" as Grafana
+
+    component "Loki" as Loki
+}
+
+CI ..> Prometheus : Pipeline / job metrics
+ArgoCD ..> Prometheus : Sync / health metrics
+Kubernetes ..> Prometheus : Runtime metrics
+PolicyReports ..> Prometheus : Governance metrics
+
+CI ..> Loki : CI logs
+ArgoCD ..> Loki : GitOps logs
+Kubernetes ..> Loki : Runtime logs
+
+Prometheus --> Grafana
+Loki --> Grafana
+
+' ============================================================
+' CHANGE TRACEABILITY
+' ============================================================
+
+rectangle "Change Traceability" as Traceability {
+
+    component "Git Commit" as GitCommit
+
+    component "Merge Request ID" as MRID
+
+    component "Pipeline ID" as PipelineID
+
+    component "Image Digest" as Digest
+
+    component "Deployment Revision" as DeploymentRevision
+}
+
+AppRepo ..> GitCommit
+MR ..> MRID
+CI ..> PipelineID
+Image ..> Digest
+ArgoCD ..> DeploymentRevision
+
+' ============================================================
+' ROLLBACK
+' ============================================================
+
+rectangle "Rollback" as Rollback {
+
+    component "Git Revert" as GitRevert
+
+    component "Previous Approved\nImage / Config" as PreviousState
+}
+
+Kubernetes ..> GitRevert : Incident / regression
+
+PreviousState --> GitRevert
+
+GitRevert --> GitOpsRepo
+
+GitOpsRepo --> ArgoCD
+
+' ============================================================
+' SECURITY CONTROLS
+' ============================================================
+
+rectangle "Security Controls" as Security {
+
+    component "Protected Branches" as ProtectedBranches
+
+    component "Protected Variables" as ProtectedVariables
+
+    component "Secret Scanning" as SecretScanning
+
+    component "Least Privilege\nRunner Access" as RunnerSecurity
+}
+
+ProtectedBranches ..> MR
+ProtectedVariables ..> CI
+SecretScanning ..> SecurityScan
+RunnerSecurity ..> Runner
+
+' ============================================================
+' NOTES
+' ============================================================
+
+note bottom of CI
+GitLab CI answers:
+
+"Is this change acceptable
+to merge and publish?"
+end note
+
+note bottom of ArgoCD
+Argo CD answers:
+
+"Does the runtime match
+the approved Git state?"
+end note
+
+note bottom of GitOpsRepo
+Production desired state
+is represented in Git.
+
+Direct runtime configuration
+must not become the permanent
+source of truth.
+end note
+
+note bottom of Governance
+Governance validation is part
+of the normal engineering
+delivery workflow.
+end note
+
+note bottom of PolicyEngine
+Target-state control.
+
+Policies are validated in CI
+and enforced again at
+Kubernetes admission time.
+end note
+
+note bottom of Rollback
+Rollback should normally
+change the desired state
+in Git and allow Argo CD
+to reconcile it.
+end note
+
+@enduml

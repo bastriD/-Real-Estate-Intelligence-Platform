@@ -1,0 +1,190 @@
+@startuml 01-Enterprise-Context
+
+title Enterprise AI Platform — System Context
+
+skinparam backgroundColor transparent
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam componentStyle rectangle
+skinparam linetype ortho
+
+skinparam rectangle {
+    RoundCorner 10
+}
+
+skinparam ArrowColor #555555
+skinparam ArrowThickness 1
+
+' ============================================================
+' ACTORS
+' ============================================================
+
+actor "Business User" as BusinessUser
+actor "Data / AI Engineer" as Engineer
+actor "Platform / DevOps\nEngineer" as DevOps
+actor "Governance /\nSecurity" as Governance
+
+' ============================================================
+' ENTERPRISE AI PLATFORM
+' ============================================================
+
+rectangle "Enterprise AI Platform" as Platform {
+
+    rectangle "Business & Application\nServices" as Applications
+
+    rectangle "Data Platform" as Data {
+        component "Data Ingestion &\nOrchestration" as Ingestion
+        component "Transformation &\nAnalytics" as Analytics
+        database "Enterprise Data" as EnterpriseData
+    }
+
+    rectangle "AI / ML Platform" as AI {
+        component "ML Lifecycle" as ML
+        component "Local AI Inference" as LocalAI
+        component "RAG / AI Services" as RAG
+    }
+
+    rectangle "Platform Engineering" as PlatformEngineering {
+        component "Kubernetes Platform" as Kubernetes
+        component "GitOps & CI/CD" as Delivery
+    }
+
+    rectangle "Observability" as Observability {
+        component "Metrics" as Metrics
+        component "Logs" as Logs
+        component "Traces" as Traces
+    }
+
+    rectangle "Governance" as GovPlatform {
+        component "Data Governance" as DataGov
+        component "Governance as Code" as GovCode
+    }
+}
+
+' ============================================================
+' SOURCE SYSTEMS
+' ============================================================
+
+rectangle "Enterprise / Business\nSource Systems" as Sources
+
+rectangle "Documents & Knowledge\nSources" as Documents
+
+' ============================================================
+' EXTERNAL SERVICES
+' ============================================================
+
+cloud "External AI Providers\n(Governed Exception)" as ExternalAI
+
+' ============================================================
+' USER RELATIONSHIPS
+' ============================================================
+
+BusinessUser --> Applications : Uses business services
+BusinessUser --> RAG : Uses AI capabilities
+
+Engineer --> Data : Builds data pipelines
+Engineer --> AI : Builds AI / ML workloads
+
+DevOps --> PlatformEngineering : Operates platform
+DevOps --> Observability : Monitors platform
+
+Governance --> GovPlatform : Defines and reviews\ncontrols
+
+' ============================================================
+' DATA FLOW
+' ============================================================
+
+Sources --> Ingestion : Operational data
+
+Ingestion --> EnterpriseData : Loads data
+
+EnterpriseData --> Analytics : Structured data
+
+Analytics --> Applications : Curated datasets
+
+Documents --> RAG : Governed knowledge
+
+EnterpriseData --> ML : Training / analytical data
+
+EnterpriseData --> RAG : Governed context
+
+' ============================================================
+' AI FLOW
+' ============================================================
+
+RAG --> LocalAI : Inference
+
+ML --> LocalAI : Models / AI workloads
+
+RAG ..> ExternalAI : Explicitly governed\nfallback / exception
+
+' ============================================================
+' PLATFORM RELATIONSHIPS
+' ============================================================
+
+Kubernetes --> Applications : Hosts
+Kubernetes --> Data : Hosts platform workloads
+Kubernetes --> Observability : Hosts services
+
+Delivery --> Kubernetes : GitOps reconciliation
+
+' ============================================================
+' OBSERVABILITY
+' ============================================================
+
+Applications ..> Metrics : Metrics
+Applications ..> Logs : Logs
+Applications ..> Traces : Traces
+
+Data ..> Metrics
+AI ..> Metrics
+PlatformEngineering ..> Metrics
+
+' ============================================================
+' GOVERNANCE
+' ============================================================
+
+DataGov ..> Data : Metadata / lineage /\nquality / ownership
+
+GovCode ..> Delivery : Policies / controls /\nvalidation
+
+GovCode ..> Kubernetes : Runtime governance
+
+GovCode ..> AI : AI governance
+
+GovCode ..> Observability : Evidence / SLO /\nrisk indicators
+
+' ============================================================
+' NOTES
+' ============================================================
+
+note bottom of LocalAI
+Local-first AI inference
+
+Default:
+enterprise data remains
+inside the controlled platform.
+end note
+
+note bottom of GovCode
+Governance definitions are
+version-controlled, validated,
+and progressively enforced
+as code.
+end note
+
+note bottom of ExternalAI
+External AI is not
+the default execution path.
+
+Usage requires explicit
+governance.
+end note
+
+legend bottom
+|= Relationship |= Meaning |
+| --> | Primary interaction / data flow |
+| ..> | Governance, telemetry or optional relationship |
+endlegend
+
+@enduml

@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="1755px" preserveAspectRatio="none" style="width:3274px;height:1755px;" version="1.1" viewBox="0 0 3274 1755" width="3274px" zoomAndPan="magnify"><defs/><g><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacingAndGlyphs" textLength="416" x="1444.5" y="16.708">Enterprise AI Platform — Platform Architecture</text><!--MD5=[6f155b1ac04aed279be6782d2853cc48]
+cluster Sources--><rect fill="#FFFFFF" height="176" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="168" x="744" y="1199.4531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="152" x="752" y="1214.4482">Enterprise Sources</text><!--MD5=[d16a42daa9239977498104b7c7091e07]
+cluster Delivery--><rect fill="#FFFFFF" height="232" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="558" x="345" y="1446.4531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="181" x="533.5" y="1461.4482">Engineering &amp; Delivery</text><!--MD5=[30afa6242ed7a9da9c35c8eba5ba651d]
+cluster Kubernetes--><rect fill="#FFFFFF" height="780" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="2923.5" x="339.5" y="154.4531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="164" x="1719.25" y="169.4482">Kubernetes Platform</text><!--MD5=[4f404de55baf87f510f6f29ca86187cc]
+cluster Applications--><rect fill="#FFFFFF" height="140" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="176" x="2146.5" y="608.4531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="160" x="2154.5" y="623.4482">Application Services</text><!--MD5=[1c09abebb8d8dc71a0a7e69d2f7f2c75]
+cluster DataPlatform--><rect fill="#FFFFFF" height="253" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="1223.5" x="716" y="322.4531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="106" x="1274.75" y="337.4482">Data Platform</text><!--MD5=[09262c1ad90603bc2cffdcf97d50a8b0]
+cluster AIPlatform--><rect fill="#FFFFFF" height="211" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="584" x="2142" y="260.4531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="123" x="2372.5" y="275.4482">AI / ML Platform</text><!--MD5=[4d80cb34bea7e6d18036fabb7fa53544]
+cluster ObsPlatform--><rect fill="#FFFFFF" height="281" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="678.5" x="2552.5" y="590.4531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="174" x="2804.75" y="605.4482">Observability Platform</text><!--MD5=[e93106a9db9793b0df5d84ad5c5a7c4f]
+cluster Governance--><rect fill="#FFFFFF" height="193" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="528.5" x="362.5" y="974.4531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="165" x="544.25" y="989.4482">Governance as Code</text><!--MD5=[3261f9233a5b0b9a9cc5f3c9a4d5e9be]
+entity BusinessData--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="120" x="768" y="1234.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="763" y="1239.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="763" y="1260.75"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="100" x="778" y="1257.4482">Business Data</text><!--MD5=[fb5a3e7215d08b05546bbd010da0a793]
+entity Documents--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="110" x="773" y="1305.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="768" y="1310.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="768" y="1348.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="90" x="783" y="1328.9482">Documents /</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="77" x="789.5" y="1345.2451">Knowledge</text><!--MD5=[2ef3b84e9fdf90a275e237d66dec6325]
+entity GitLab--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="123" x="361" y="1528.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="356" y="1533.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="356" y="1571.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="66" x="389.5" y="1551.9482">GitLab CE</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="103" x="371" y="1568.2451">Source Control</text><!--MD5=[b44dd552d190738f366cb0d4cbe6023c]
+entity Runner--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="118" x="769" y="1569.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="764" y="1574.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="764" y="1612.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="98" x="779" y="1592.9482">GitLab Runner</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="13" x="821.5" y="1609.2451">CI</text><!--MD5=[0ff0fccefb57e46481a2840e66765fa8]
+entity ArgoCD--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="77" x="789.5" y="1481.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="784.5" y="1486.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="784.5" y="1524.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="57" x="799.5" y="1504.9482">Argo CD</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="47" x="804.5" y="1521.2451">GitOps</text><!--MD5=[76135f9afc5f2b97af6996623fc8da30]
+entity Ingress--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="118" x="363.5" y="357.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="358.5" y="362.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="358.5" y="383.75"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="98" x="373.5" y="380.4482">NGINX Ingress</text><!--MD5=[d526f857cd3c2e7a462935218592b6d4]
+entity APIs--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="126" x="2171.5" y="651.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2166.5" y="656.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2166.5" y="694.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="106" x="2181.5" y="674.9482">Business APIs /</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="83" x="2193" y="691.2451">Applications</text><!--MD5=[9f5e9bf8c5b2d159d9683302868f9247]
+entity Airflow--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="120" x="1112" y="452.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1107" y="457.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1107" y="495.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="100" x="1122" y="475.9482">Apache Airflow</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="94" x="1125" y="492.2451">Orchestration</text><!--MD5=[69a44038bf82ea1b8171516b9a8be922]
+entity DBT--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="132" x="1451" y="365.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1446" y="370.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1446" y="408.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="23" x="1505.5" y="388.9482">dbt</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="112" x="1461" y="405.2451">Transformations</text><!--MD5=[89112a84c8daddb34abf4f068893e892]
+entity PostgreSQL--><path d="M1814.5,397.9531 C1814.5,387.9531 1865,387.9531 1865,387.9531 C1865,387.9531 1915.5,387.9531 1915.5,397.9531 L1915.5,423.25 C1915.5,433.25 1865,433.25 1865,433.25 C1865,433.25 1814.5,433.25 1814.5,423.25 L1814.5,397.9531 " fill="#FFFFFF" style="stroke: #333333; stroke-width: 1.5;"/><path d="M1814.5,397.9531 C1814.5,407.9531 1865,407.9531 1865,407.9531 C1865,407.9531 1915.5,407.9531 1915.5,397.9531 " fill="none" style="stroke: #333333; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="81" x="1824.5" y="424.9482">PostgreSQL</text><!--MD5=[0f2be35736f8e85cb4d970e1dd72d3a1]
+entity OpenMetadata--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="176" x="740" y="452.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="735" y="457.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="735" y="495.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="102" x="777" y="475.9482">OpenMetadata</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="156" x="750" y="492.2451">Catalog &amp; Governance</text><!--MD5=[00e47b23eb15b4a85a9624af0f166cf2]
+entity MLflow--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="101" x="2184" y="303.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2179" y="308.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2179" y="346.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="46" x="2211.5" y="326.9482">MLflow</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="81" x="2194" y="343.2451">ML Lifecycle</text><!--MD5=[d4c63efc849c138da47c28c0daf11e88]
+entity RAG--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="137" x="2166" y="392.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2161" y="397.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2161" y="418.75"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="117" x="2176" y="415.4482">RAG / AI Services</text><!--MD5=[d1d0d8266c4f5365d142423f17dea357]
+entity Ollama--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="140" x="2562" y="303.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2557" y="308.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2557" y="346.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="46" x="2609" y="326.9482">Ollama</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="120" x="2572" y="343.2451">Local AI Inference</text><!--MD5=[e4691f12f5fa5579288963399b8c83c6]
+entity Prometheus--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="105" x="2916" y="801.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2911" y="806.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2911" y="844.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="85" x="2926" y="824.9482">Prometheus</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="50" x="2943.5" y="841.2451">Metrics</text><!--MD5=[1e38ee63cc23f89100e14039e3aadfb2]
+entity Grafana--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="105" x="3110" y="713.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3105" y="718.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3105" y="756.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="53" x="3136" y="736.9482">Grafana</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="85" x="3120" y="753.2451">Visualization</text><!--MD5=[331b67947ba2840a66d34c20f83daee9]
+entity Loki--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="53" x="2942" y="625.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2937" y="630.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2937" y="668.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="27" x="2955" y="648.9482">Loki</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="33" x="2952" y="665.2451">Logs</text><!--MD5=[e98e32d5519b7a4ea87df1e6b173c71b]
+entity Tempo--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="69" x="2934" y="713.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2929" y="718.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2929" y="756.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="49" x="2944" y="736.9482">Tempo</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="47" x="2945" y="753.2451">Traces</text><!--MD5=[c8912baf253427cbc40012a5a035d2d0]
+entity OTel--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="127" x="2568.5" y="713.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2563.5" y="718.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2563.5" y="756.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="107" x="2578.5" y="736.9482">OpenTelemetry</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="61" x="2601.5" y="753.2451">Collector</text><!--MD5=[3e532d09feba80fa378bcd91ddba2cb2]
+entity Policies--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="72" x="386.5" y="1088.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="381.5" y="1093.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="381.5" y="1114.75"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="52" x="396.5" y="1111.4482">Policies</text><!--MD5=[41474415743c5bd3e966b69fd92b6c20]
+entity Risks--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="57" x="394" y="1017.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="389" y="1022.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="389" y="1043.75"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="37" x="404" y="1040.4482">Risks</text><!--MD5=[b250361d24587d58e9109af53dc73ec8]
+entity Controls--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="78" x="789" y="1088.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="784" y="1093.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="784" y="1114.75"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="58" x="799" y="1111.4482">Controls</text><!--MD5=[b36f630e885ee042840564834b07ea0a]
+entity SLO--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="55" x="800.5" y="1017.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="795.5" y="1022.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="795.5" y="1043.75"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="35" x="810.5" y="1040.4482">SLOs</text><!--MD5=[5906df8851a550185e3c18175640f90c]
+entity Business--><ellipse cx="68" cy="337.4531" fill="#FEFECE" rx="8" ry="8" style="stroke: #A80036; stroke-width: 1.5;"/><path d="M68,345.4531 L68,372.4531 M55,353.4531 L81,353.4531 M68,372.4531 L55,387.4531 M68,372.4531 L81,387.4531 " fill="none" style="stroke: #A80036; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="64" x="36" y="402.9482">Business</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="40" x="48" y="419.2451">Users</text><!--MD5=[74488ff47fc8ac491c307ae5e6951701]
+entity DataEngineer--><ellipse cx="68" cy="1517.4531" fill="#FEFECE" rx="8" ry="8" style="stroke: #A80036; stroke-width: 1.5;"/><path d="M68,1525.4531 L68,1552.4531 M55,1533.4531 L81,1533.4531 M68,1552.4531 L55,1567.4531 M68,1552.4531 L81,1567.4531 " fill="none" style="stroke: #A80036; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="57" x="39.5" y="1582.9482">Data / AI</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="70" x="33" y="1599.2451">Engineers</text><!--MD5=[9d1330f94e15b99f5c39504305aed57e]
+entity DevOps--><ellipse cx="68" cy="1660.4531" fill="#FEFECE" rx="8" ry="8" style="stroke: #A80036; stroke-width: 1.5;"/><path d="M68,1668.4531 L68,1695.4531 M55,1676.4531 L81,1676.4531 M68,1695.4531 L55,1710.4531 M68,1695.4531 L81,1710.4531 " fill="none" style="stroke: #A80036; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="124" x="6" y="1725.9482">Platform / DevOps</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="62" x="37" y="1742.2451">Engineer</text><!--MD5=[5491b4b9e7b97e7d3f63ac852e130b14]
+entity AINode--><polygon fill="#FEFECE" points="2888,76.9531,2898,66.9531,3049,66.9531,3049,119.5469,3039,129.5469,2888,129.5469,2888,76.9531" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="3039" x2="3048" y1="76.9531" y2="67.9531"/><line style="stroke: #000000; stroke-width: 1.5;" x1="2888" x2="3039" y1="76.9531" y2="76.9531"/><line style="stroke: #000000; stroke-width: 1.5;" x1="3039" x2="3039" y1="76.9531" y2="129.5469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="121" x="2903" y="99.9482">AI Compute Node</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="103" x="2912" y="116.2451">GTX 1080 GPU</text><path d="M722,49.4531 L722,125.1172 A5,5 0 0 0 727,130.1172 L929,130.1172 A5,5 0 0 0 934,125.1172 L934,54.4531 L924,44.4531 L727,44.4531 A5,5 0 0 0 722,49.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M924,44.4531 L924,51.9531 A2.5,2.5 0 0 0 926.5,54.4531 L934,54.4531 L924,44.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="191" x="728" y="61.52">GitLab CI validates and builds.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="732" y="76.6528"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="115" x="728" y="91.7856">Argo CD performs</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="150" x="728" y="106.9185">continuous deployment</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="116" x="728" y="122.0513">and reconciliation.</text><path d="M1793,33.9531 L1793,124.75 A5,5 0 0 0 1798,129.75 L1845,129.75 L1849,387.7031 L1853,129.75 L1932,129.75 A5,5 0 0 0 1937,124.75 L1937,38.9531 L1927,28.9531 L1798,28.9531 A5,5 0 0 0 1793,33.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M1927,28.9531 L1927,36.4531 A2.5,2.5 0 0 0 1929.5,38.9531 L1937,38.9531 L1927,28.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="123" x="1799" y="46.02">Logical data layers:</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="1803" y="61.1528"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="22" x="1799" y="76.2856">raw</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="47" x="1799" y="91.4185">staging</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="69" x="1799" y="106.5513">warehouse</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="56" x="1799" y="121.6841">analytics</text><path d="M2546.5,49.4531 L2546.5,125.1172 A5,5 0 0 0 2551.5,130.1172 L2628,130.1172 L2632,303.5231 L2636,130.1172 L2712.5,130.1172 A5,5 0 0 0 2717.5,125.1172 L2717.5,54.4531 L2707.5,44.4531 L2551.5,44.4531 A5,5 0 0 0 2546.5,49.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2707.5,44.4531 L2707.5,51.9531 A2.5,2.5 0 0 0 2710,54.4531 L2717.5,54.4531 L2707.5,44.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="145" x="2552.5" y="61.52">Local-first AI inference.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="2556.5" y="76.6528"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="150" x="2552.5" y="91.7856">GPU capacity is treated</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="149" x="2552.5" y="106.9185">as a governed platform</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="60" x="2552.5" y="122.0513">resource.</text><path d="M333,63.9531 L333,124.4844 A5,5 0 0 0 338,129.4844 L507,129.4844 A5,5 0 0 0 512,124.4844 L512,68.9531 L502,58.9531 L338,58.9531 A5,5 0 0 0 333,63.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M502,58.9531 L502,66.4531 A2.5,2.5 0 0 0 504.5,68.9531 L512,68.9531 L502,58.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="158" x="339" y="76.02">Governance artifacts are</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="142" x="339" y="91.1528">version-controlled and</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="146" x="339" y="106.2856">progressively validated</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="142" x="339" y="121.4185">and enforced as code.</text><!--MD5=[42995581c55f8a21fc6871da646dee80]
+link GitLab to Runner--><path d="M484.09,1577.9531 C484.09,1577.9531 763.81,1577.9531 763.81,1577.9531 " fill="none" id="GitLab-&gt;Runner" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="768.81,1577.9531,759.81,1573.9531,763.81,1577.9531,759.81,1581.9531,768.81,1577.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="72" x="581" y="1551.52">CI pipelines</text><!--MD5=[283a377fb0803e4dacb3c9b5821ad838]
+link Runner to GitLab--><path d="M768.6,1573.9531 C768.6,1573.9531 489.05,1573.9531 489.05,1573.9531 " fill="none" id="Runner-&gt;GitLab" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="484.05,1573.9531,493.05,1577.9531,489.05,1573.9531,493.05,1569.9531,484.05,1573.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76" x="579" y="1608.52">Build / test /</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="108" x="563" y="1623.6528">validation results</text><!--MD5=[0f67a81b5b5aee8f61e6d47dd61dbe90]
+link GitLab to ArgoCD--><path d="M476,1528.5631 C476,1522.8231 476,1518.4531 476,1518.4531 C476,1518.4531 784.32,1518.4531 784.32,1518.4531 " fill="none" id="GitLab-&gt;ArgoCD" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="789.32,1518.4531,780.32,1514.4531,784.32,1518.4531,780.32,1522.4531,789.32,1518.4531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="86" x="574" y="1494.52">Desired state</text><!--MD5=[408adaa4ece686a96cd29cce5b3849ef]
+link Business to Ingress--><path d="M100.08,375.4531 C100.08,375.4531 358.36,375.4531 358.36,375.4531 " fill="none" id="Business-&gt;Ingress" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="363.36,375.4531,354.36,371.4531,358.36,375.4531,354.36,379.4531,363.36,375.4531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="41" x="211" y="371.52">HTTPS</text><!--MD5=[f7392c916440a1ccc1d9e72ec204ad61]
+link DataEngineer to GitLab--><path d="M103.29,1546.6231 C103.29,1546.6231 355.76,1546.6231 355.76,1546.6231 " fill="none" id="DataEngineer-&gt;GitLab" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="360.76,1546.6231,351.76,1542.6231,355.76,1546.6231,351.76,1550.6231,360.76,1546.6231" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="100" x="181.5" y="1551.52">Code / Data / AI</text><!--MD5=[d321ac289b4b211bb5fec237a5261699]
+link DevOps to GitLab--><path d="M117,1650.7731 C117,1612.2131 117,1564.2831 117,1564.2831 C117,1564.2831 355.68,1564.2831 355.68,1564.2831 " fill="none" id="DevOps-&gt;GitLab" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="360.68,1564.2831,351.68,1560.2831,355.68,1564.2831,351.68,1568.2831,360.68,1564.2831" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="141" x="161" y="1629.52">Platform configuration</text><!--MD5=[89fc90104b2ce9413023674ca27e4f60]
+link DevOps to Grafana--><path d="M130.17,1698.4531 C567.42,1698.4531 3163,1698.4531 3163,1698.4531 C3163,1698.4531 3163,772.0731 3163,772.0731 " fill="none" id="DevOps-&gt;Grafana" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3163,767.0731,3159,776.0731,3163,772.0731,3167,776.0731,3163,767.0731" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="70" x="1653" y="1708.52">Operations</text><!--MD5=[0efa6326df08bf79d3c9b4851ab38539]
+link Ingress to APIs--><path d="M465,393.5631 C465,460.1231 465,687.2831 465,687.2831 C465,687.2831 2166.26,687.2831 2166.26,687.2831 " fill="none" id="Ingress-&gt;APIs" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2171.26,687.2831,2162.26,683.2831,2166.26,687.2831,2162.26,691.2831,2171.26,687.2831" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[461f2760dbca6c85ef1fd60c1f900b3f]
+link Ingress to Airflow--><path d="M481.62,379.7031 C658.61,379.7031 1172,379.7031 1172,379.7031 C1172,379.7031 1172,447.7231 1172,447.7231 " fill="none" id="Ingress-&gt;Airflow" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1172,452.7231,1176,443.7231,1172,447.7231,1168,443.7231,1172,452.7231" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[487c636e3a01be08b890bde71c053153]
+link Ingress to MLflow--><path d="M481.52,360.2831 C793.36,360.2831 2235,360.2831 2235,360.2831 C2235,360.2831 2235,359.9631 2235,359.9631 " fill="none" id="Ingress-&gt;MLflow" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2235,357.0931,2231,366.0931,2235,362.0931,2239,366.0931,2235,357.0931" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[83c395722855b9058a81500a574fe34a]
+link Ingress to OpenMetadata--><path d="M470,393.5731 C470,423.3631 470,479.4531 470,479.4531 C470,479.4531 734.96,479.4531 734.96,479.4531 " fill="none" id="Ingress-&gt;OpenMetadata" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="739.96,479.4531,730.96,475.4531,734.96,479.4531,730.96,483.4531,739.96,479.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[5b88d0db4f2ed7e362565f61aebba37d]
+link Ingress to Grafana--><path d="M481.69,363.1231 C882.23,363.1231 3180,363.1231 3180,363.1231 C3180,363.1231 3180,708.9231 3180,708.9231 " fill="none" id="Ingress-&gt;Grafana" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3180,713.9231,3184,704.9231,3180,708.9231,3176,704.9231,3180,713.9231" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[e16c34e4f70420418907ef516e6311e0]
+link BusinessData to Airflow--><path d="M888.31,1252.4531 C986.97,1252.4531 1172,1252.4531 1172,1252.4531 C1172,1252.4531 1172,511.0631 1172,511.0631 " fill="none" id="BusinessData-&gt;Airflow" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1172,506.0631,1168,515.0631,1172,511.0631,1176,515.0631,1172,506.0631" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="58" x="994" y="1079.52">Ingestion</text><!--MD5=[1f689fb69e99accb72172aaff8233a65]
+link Airflow to PostgreSQL--><path d="M1232.08,457.7031 C1397.77,457.7031 1849,457.7031 1849,457.7031 C1849,457.7031 1849,437.9731 1849,437.9731 " fill="none" id="Airflow-&gt;PostgreSQL" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1849,432.9731,1845,441.9731,1849,437.9731,1853,441.9731,1849,432.9731" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="117" x="1458.5" y="467.52">Load / orchestrate</text><!--MD5=[d7d5033aab7ab88d8f3ea4964016b871]
+link Airflow to DBT--><path d="M1232.09,455.3331 C1330.94,455.3331 1517,455.3331 1517,455.3331 C1517,455.3331 1517,424.1131 1517,424.1131 " fill="none" id="Airflow-&gt;DBT" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1517,419.1131,1513,428.1131,1517,424.1131,1521,428.1131,1517,419.1131" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="157" x="1263" y="413.52">Execute transformations</text><!--MD5=[081cfd5e8b363db08782b63d25e5fd73]
+link DBT to PostgreSQL--><path d="M1583.28,403.4531 C1583.28,403.4531 1809.49,403.4531 1809.49,403.4531 " fill="none" id="DBT-&gt;PostgreSQL" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1814.49,403.4531,1805.49,399.4531,1809.49,403.4531,1805.49,407.4531,1814.49,403.4531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="98" x="1639" y="397.52">Transform data</text><!--MD5=[5f78aa1a93d6618128040977c25d8f0c]
+link PostgreSQL to APIs--><path d="M1882,433.0031 C1882,496.0531 1882,669.6231 1882,669.6231 C1882,669.6231 2166.48,669.6231 2166.48,669.6231 " fill="none" id="PostgreSQL-&gt;APIs" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2171.48,669.6231,2162.48,665.6231,2166.48,669.6231,2162.48,673.6231,2171.48,669.6231" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="84" x="1983" y="569.52">Curated data</text><!--MD5=[dec13708d26e56b141dd8e4c025b68ad]
+link PostgreSQL to MLflow--><path d="M1882,387.8131 C1882,368.0331 1882,342.4531 1882,342.4531 C1882,342.4531 2179,342.4531 2179,342.4531 " fill="none" id="PostgreSQL-&gt;MLflow" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2184,342.4531,2175,338.4531,2179,342.4531,2175,346.4531,2184,342.4531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="110" x="1970" y="337.52">Training datasets</text><!--MD5=[cc2fc7bac4368df61d431c70058fce6e]
+link PostgreSQL to RAG--><path d="M1915.6,404.4531 C1915.6,404.4531 2160.99,404.4531 2160.99,404.4531 " fill="none" id="PostgreSQL-&gt;RAG" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2165.99,404.4531,2156.99,400.4531,2160.99,404.4531,2156.99,408.4531,2165.99,404.4531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="114" x="1968" y="406.52">Governed context</text><!--MD5=[5af3bcfa93840b91db7df53d8a6b20e8]
+link Documents to RAG--><path d="M883.25,1332.4531 C1106.11,1332.4531 1927,1332.4531 1927,1332.4531 C1927,1332.4531 1927,416.4531 1927,416.4531 C1927,416.4531 2160.87,416.4531 2160.87,416.4531 " fill="none" id="Documents-&gt;RAG" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2165.87,416.4531,2156.87,412.4531,2160.87,416.4531,2156.87,420.4531,2165.87,416.4531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="122" x="1456" y="1144.52">Knowledge sources</text><!--MD5=[eb9f4ce705a311b7f29f12e694083f07]
+link OpenMetadata to PostgreSQL--><path d="M858,452.7931 C858,440.2331 858,427.9531 858,427.9531 C858,427.9531 1809.37,427.9531 1809.37,427.9531 " fill="none" id="OpenMetadata-&gt;PostgreSQL" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1814.37,427.9531,1805.37,423.9531,1809.37,427.9531,1805.37,431.9531,1814.37,427.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="123" x="1280" y="504.52">Metadata / profiling</text><!--MD5=[0b4afc010e9748f5fe5f4de654152e76]
+link OpenMetadata to Airflow--><path d="M916.14,479.4531 C916.14,479.4531 1106.98,479.4531 1106.98,479.4531 " fill="none" id="OpenMetadata-&gt;Airflow" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1111.98,479.4531,1102.98,475.4531,1106.98,479.4531,1102.98,483.4531,1111.98,479.4531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="116" x="965" y="475.52">Pipeline metadata</text><!--MD5=[7064a2a0fd0586a496b2b9c5d1de85f1]
+link OpenMetadata to DBT--><path d="M799,452.5931 C799,431.6831 799,406.2031 799,406.2031 C799,406.2031 1445.74,406.2031 1445.74,406.2031 " fill="none" id="OpenMetadata-&gt;DBT" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1450.74,406.2031,1441.74,402.2031,1445.74,406.2031,1441.74,410.2031,1450.74,406.2031" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="103" x="1120.5" y="378.52">Models / lineage</text><!--MD5=[9840753e0686870c775395d316dfc159]
+link MLflow to Ollama--><path d="M2285.25,321.6231 C2285.25,321.6231 2556.82,321.6231 2556.82,321.6231 " fill="none" id="MLflow-&gt;Ollama" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2561.82,321.6231,2552.82,317.6231,2556.82,321.6231,2552.82,325.6231,2561.82,321.6231" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="128" x="2387.5" y="326.52">AI / model workflows</text><!--MD5=[788041ffb8502320e7f59a12bf40aa44]
+link RAG to Ollama--><path d="M2294,392.1231 C2294,371.0431 2294,339.2831 2294,339.2831 C2294,339.2831 2556.97,339.2831 2556.97,339.2831 " fill="none" id="RAG-&gt;Ollama" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2561.97,339.2831,2552.97,335.2831,2556.97,339.2831,2552.97,343.2831,2561.97,339.2831" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="59" x="2422" y="386.52">Inference</text><!--MD5=[e3411088c65e76e803533775d1f3310c]
+link Ollama to AINode--><path d="M2702.23,330.4531 C2782.23,330.4531 2902,330.4531 2902,330.4531 C2902,330.4531 2902,135.2231 2902,135.2231 " fill="none" id="Ollama-&gt;AINode" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2902,130.2231,2898,139.2231,2902,135.2231,2906,139.2231,2902,130.2231" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="91" x="2758.5" y="94.52">GPU inference</text><!--MD5=[14734ed008c99164f72f78e78129726b]
+link ArgoCD to Kubernetes--><path d="M866.51,1508.4531 C1127.96,1508.4531 2632,1508.4531 2632,1508.4531 C2632,1508.4531 2632,1367.4656 2632,1224.2744 C2632,1152.6788 2632,1080.5322 2632,1025.1827 C2632,997.5079 2632,974.0324 2632,956.9246 C2632,948.3708 2632,941.4088 2632,936.3099 C2632,935.6725 2632,935.0643 2632,934.4856 " fill="none" id="ArgoCD-&gt;Kubernetes" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2632,934.4856,2628,943.4856,2632,939.4856,2636,943.4856,2632,934.4856" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="148" x="1614" y="1491.52">Reconcile desired state</text><!--MD5=[cfda671206c87b454161527cd8c82848]
+link Applications to Prometheus--><path d="M2235,748.7013 C2235,750.2609 2235,752.0002 2235,753.8823 C2235,761.4109 2235,771.225 2235,780.9644 C2235,800.4431 2235,819.6231 2235,819.6231 C2235,819.6231 2910.75,819.6231 2910.75,819.6231 " fill="none" id="Applications-&gt;Prometheus" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2915.75,819.6231,2906.75,815.6231,2910.75,819.6231,2906.75,823.6231,2915.75,819.6231" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="46" x="2609" y="639.52">Metrics</text><!--MD5=[a1e566f2c6010e4e3ebebfced9b64f1f]
+link DataPlatform to Prometheus--><path d="M1943.9589,567.4531 C1948.1843,567.4531 1952.4093,567.4531 1956.6335,567.4531 C1965.0818,567.4531 1973.5271,567.4531 1981.9674,567.4531 C1998.8478,567.4531 2015.7079,567.4531 2032.5314,567.4531 C2066.1784,567.4531 2099.6789,567.4531 2132.9031,567.4531 C2199.3514,567.4531 2264.694,567.4531 2327.8907,567.4531 C2454.2842,567.4531 2572.0941,567.4531 2672.9992,567.4531 C2874.8094,567.4531 3009,567.4531 3009,567.4531 C3009,567.4531 3009,796.5031 3009,796.5031 " fill="none" id="DataPlatform-&gt;Prometheus" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3009,801.5031,3013,792.5031,3009,796.5031,3005,792.5031,3009,801.5031" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="46" x="1842" y="815.52">Metrics</text><!--MD5=[d30695f3679376c62eb7cd739a6e6ed3]
+link AIPlatform to Prometheus--><path d="M2729.1193,460.0731 C2731.5771,460.0731 2734.0224,460.0731 2736.4545,460.0731 C2746.1829,460.0731 2755.7007,460.0731 2764.9658,460.0731 C2783.4961,460.0731 2801.0156,460.0731 2817.1875,460.0731 C2881.875,460.0731 2925,460.0731 2925,460.0731 C2925,460.0731 2925,796.6631 2925,796.6631 " fill="none" id="AIPlatform-&gt;Prometheus" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2925,801.6631,2929,792.6631,2925,796.6631,2921,792.6631,2925,801.6631" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="46" x="2609" y="552.52">Metrics</text><!--MD5=[26daaaef6e12a05ff8a5d56cc634c448]
+link Kubernetes to Prometheus--><path d="M2632,925.8831 C2632,918.2931 2632,837.2831 2632,837.2831 C2632,837.2831 2910.92,837.2831 2910.92,837.2831 " fill="none" id="Kubernetes-&gt;Prometheus" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2915.92,837.2831,2906.92,833.2831,2910.92,837.2831,2906.92,841.2831,2915.92,837.2831" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="106" x="2751" y="887.52">Platform metrics</text><!--MD5=[ff39d6da1f02bfda533ecd19dba5c165]
+link Applications to Loki--><path d="M2325.0028,709.4531 C2332.8428,709.4531 2341.0859,709.4531 2349.6875,709.4531 C2418.5,709.4531 2510.25,709.4531 2602,709.4531 C2785.5,709.4531 2969,709.4531 2969,709.4531 C2969,709.4531 2969,684.2831 2969,684.2831 " fill="none" id="Applications-&gt;Loki" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2969,679.2831,2965,688.2831,2969,684.2831,2973,688.2831,2969,679.2831" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="30" x="2617" y="815.52">Logs</text><!--MD5=[ffaa5a7eb9747dc7b5828399ede21820]
+link DataPlatform to Loki--><path d="M828,575.5739 C828,575.7568 828,575.9422 828,576.13 C828,576.5057 828,576.8911 828,577.2857 C828,578.8641 828,580.5902 828,582.4319 C828,589.7988 828,599.0156 828,608.0306 C828,626.0606 828,643.2831 828,643.2831 C828,643.2831 2936.82,643.2831 2936.82,643.2831 " fill="none" id="DataPlatform-&gt;Loki" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2941.82,643.2831,2932.82,639.2831,2936.82,643.2831,2932.82,647.2831,2941.82,643.2831" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="30" x="1850" y="284.52">Logs</text><!--MD5=[52a889d6d53a43d9b82ad642690d07ae]
+link AIPlatform to Loki--><path d="M2235,471.4916 C2235,471.7914 2235,472.0985 2235,472.413 C2235,477.445 2235,484.3496 2235,492.4892 C2235,508.7684 2235,529.9875 2235,551.0444 C2235,593.1581 2235,634.6231 2235,634.6231 C2235,634.6231 2936.96,634.6231 2936.96,634.6231 " fill="none" id="AIPlatform-&gt;Loki" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2941.96,634.6231,2932.96,630.6231,2936.96,634.6231,2932.96,638.6231,2941.96,634.6231" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="30" x="2617" y="465.52">Logs</text><!--MD5=[2702c0e051f671b5dde62921a532a039]
+link Applications to OTel--><path d="M2323.0648,740.4531 C2323.6399,740.4531 2324.2165,740.4531 2324.7948,740.4531 C2329.4207,740.4531 2334.1467,740.4531 2338.9529,740.4531 C2358.1775,740.4531 2378.6837,740.4531 2399.19,740.4531 C2481.215,740.4531 2563.24,740.4531 2563.24,740.4531 " fill="none" id="Applications-&gt;OTel" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2568.24,740.4531,2559.24,736.4531,2563.24,740.4531,2559.24,744.4531,2568.24,740.4531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="42" x="2430.5" y="736.52">Traces</text><!--MD5=[8d28c95d3f8497069a8738e12579052a]
+link AIPlatform to OTel--><path d="M2632,471.6194 C2632,472.3665 2632,473.1605 2632,473.9994 C2632,480.7106 2632,490.2981 2632,501.8031 C2632,524.8131 2632,555.4931 2632,586.1731 C2632,647.5331 2632,708.8931 2632,708.8931 " fill="none" id="AIPlatform-&gt;OTel" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2632,713.8931,2636,704.8931,2632,708.8931,2628,704.8931,2632,713.8931" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="42" x="2430.5" y="586.52">Traces</text><!--MD5=[f007567d4498269cf30d05b33163be64]
+link OTel to Tempo--><path d="M2695.69,740.4531 C2695.69,740.4531 2928.91,740.4531 2928.91,740.4531 " fill="none" id="OTel-&gt;Tempo" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2933.91,740.4531,2924.91,736.4531,2928.91,740.4531,2924.91,744.4531,2933.91,740.4531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76" x="2766" y="736.52">OTLP traces</text><!--MD5=[cc5bb479812f7763a19c9b64f3173319]
+link Prometheus to Grafana--><path d="M3015,801.6531 C3015,778.6831 3015,749.2831 3015,749.2831 C3015,749.2831 3104.67,749.2831 3104.67,749.2831 " fill="none" id="Prometheus-&gt;Grafana" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3109.67,749.2831,3100.67,745.2831,3104.67,749.2831,3100.67,753.2831,3109.67,749.2831" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[2678cfc309838449c02af64f63828469]
+link Loki to Grafana--><path d="M2995.31,652.4531 C3044.68,652.4531 3145,652.4531 3145,652.4531 C3145,652.4531 3145,708.5731 3145,708.5731 " fill="none" id="Loki-&gt;Grafana" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3145,713.5731,3149,704.5731,3145,708.5731,3141,704.5731,3145,713.5731" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[3afe6a590278a3939abd9ee437c36e95]
+link Tempo to Grafana--><path d="M3003.18,731.6231 C3003.18,731.6231 3104.84,731.6231 3104.84,731.6231 " fill="none" id="Tempo-&gt;Grafana" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3109.84,731.6231,3100.84,727.6231,3104.84,731.6231,3100.84,735.6231,3109.84,731.6231" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[39077bac07b772ecffe4a5bd3a5c2191]
+link GitLab to Governance--><path d="M423,1528.8531 C423,1484.8081 423,1393.5506 423,1312.7644 C423,1272.3713 423,1234.5959 423,1206.6489 C423,1192.6754 423,1181.1589 423,1173.0009 C423,1170.9614 423,1169.1317 423,1167.5261 " fill="none" id="GitLab-&gt;Governance" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="423,1167.5261,419,1176.5261,423,1172.5261,427,1176.5261,423,1167.5261" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[763efb3f2e1c6136c760404394f0d60e]
+link Governance to Runner--><path d="M362.4042,1159.4531 C362.1725,1159.4531 361.9426,1159.4531 361.7144,1159.4531 C361.2581,1159.4531 360.8091,1159.4531 360.3679,1159.4531 C359.4854,1159.4531 358.634,1159.4531 357.8177,1159.4531 C351.2869,1159.4531 347,1159.4531 347,1159.4531 C347,1159.4531 347,1592.4531 347,1592.4531 C347,1592.4531 763.54,1592.4531 763.54,1592.4531 " fill="none" id="Governance-&gt;Runner" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="768.54,1592.4531,759.54,1588.4531,763.54,1592.4531,759.54,1596.4531,768.54,1592.4531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="77" x="578.5" y="1437.52">CI validation</text><!--MD5=[ff01fb072d1237ffa0fd76587a46bd45]
+link Governance to ArgoCD--><path d="M441,1167.5119 C441,1167.7288 441,1167.95 441,1168.1753 C441,1169.9781 441,1172.0502 441,1174.371 C441,1183.6542 441,1196.9159 441,1212.83 C441,1244.6581 441,1287.0956 441,1329.5331 C441,1414.4081 441,1499.2831 441,1499.2831 C441,1499.2831 784.48,1499.2831 784.48,1499.2831 " fill="none" id="Governance-&gt;ArgoCD" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="789.48,1499.2831,780.48,1495.2831,784.48,1499.2831,780.48,1503.2831,789.48,1499.2831" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="148" x="543" y="1380.52">Approved configuration</text><!--MD5=[b1e590c4defe8770c993156741e8e837]
+link Governance to OpenMetadata--><path d="M754,971.6269 C754,969.4491 754,967.2588 754,965.0565 C754,956.2475 754,947.2479 754,938.0957 C754,901.4869 754,862.4375 754,823.3881 C754,667.1906 754,510.9931 754,510.9931 " fill="none" id="Governance-&gt;OpenMetadata" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="754,505.9931,750,514.9931,754,510.9931,758,514.9931,754,505.9931" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="110" x="562" y="932.52">Data governance</text><!--MD5=[db0a8db5760b3efc0817b67eaa982b93]
+link Governance to Prometheus--><path d="M901.8831,1147.1231 C905.8697,1147.1231 909.8736,1147.1231 913.8944,1147.1231 C946.0613,1147.1231 979.3159,1147.1231 1013.5029,1147.1231 C1081.877,1147.1231 1153.9805,1147.1231 1228.5703,1147.1231 C1377.75,1147.1231 1536.875,1147.1231 1696,1147.1231 C2332.5,1147.1231 2969,1147.1231 2969,1147.1231 C2969,1147.1231 2969,860.0731 2969,860.0731 " fill="none" id="Governance-&gt;Prometheus" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2969,855.0731,2965,864.0731,2969,860.0731,2973,864.0731,2969,855.0731" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="140" x="1618" y="1408.52">Evidence / KRIs / SLOs</text><!--MD5=[cfd81347c6be8bbe3b6736e948178920]
+link ArgoCD to GMN82--><path d="M789.38,1490.6231 C762.33,1490.6231 731,1490.6231 731,1490.6231 C731,1490.6231 731,366.6031 731,130.6031 " fill="none" id="ArgoCD-GMN82" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[edbc5f31499a74ca41b52ff0a3d26296]
+link Governance to GMN91--><path d="M498,971.0349 C498,969.5833 498,968.1258 498,966.6624 C498,963.7355 498,960.7851 498,957.8118 C498,934.0258 498,908.7777 498,882.4343 C498,829.7475 498,772.6794 498,714.1631 C498,480.0981 498,222.8631 498,130.1831 " fill="none" id="Governance-GMN91" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[a302a37e2f51494f02fc431a74d318b9]
+link Policies to Risks--><!--MD5=[d3166293e9de172943418f3312202696]
+link Policies to Controls--><!--MD5=[e331d0df8a96da89657ff4a74ea02788]
+link Controls to SLO--><!--MD5=[3325595fab89a1e3bc0f23f3daf150d6]
+@startuml 02-Enterprise-Platform-Architecture
+
+title Enterprise AI Platform — Platform Architecture
+
+left to right direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam ArrowThickness 1
+
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam database {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam component {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+
+actor "Business\nUsers" as Business
+actor "Data / AI\nEngineers" as DataEngineer
+actor "Platform / DevOps\nEngineer" as DevOps
+
+
+rectangle "Enterprise Sources" as Sources {
+    component "Business Data" as BusinessData
+    component "Documents /\nKnowledge" as Documents
+}
+
+
+rectangle "Engineering & Delivery" as Delivery {
+
+    component "GitLab CE\nSource Control" as GitLab
+
+    component "GitLab Runner\nCI" as Runner
+
+    component "Argo CD\nGitOps" as ArgoCD
+}
+
+GitLab - -> Runner : CI pipelines
+GitLab - -> ArgoCD : Desired state
+
+
+rectangle "Kubernetes Platform" as Kubernetes {
+
+    component "NGINX Ingress" as Ingress
+
+    rectangle "Application Services" as Applications {
+        component "Business APIs /\nApplications" as APIs
+    }
+
+    rectangle "Data Platform" as DataPlatform {
+
+        component "Apache Airflow\nOrchestration" as Airflow
+
+        component "dbt\nTransformations" as DBT
+
+        database "PostgreSQL" as PostgreSQL
+
+        component "OpenMetadata\nCatalog & Governance" as OpenMetadata
+    }
+
+    rectangle "AI / ML Platform" as AIPlatform {
+
+        component "MLflow\nML Lifecycle" as MLflow
+
+        component "RAG / AI Services" as RAG
+
+        component "Ollama\nLocal AI Inference" as Ollama
+    }
+
+    rectangle "Observability Platform" as ObsPlatform {
+
+        component "Prometheus\nMetrics" as Prometheus
+
+        component "Grafana\nVisualization" as Grafana
+
+        component "Loki\nLogs" as Loki
+
+        component "Tempo\nTraces" as Tempo
+
+        component "OpenTelemetry\nCollector" as OTel
+    }
+}
+
+
+node "AI Compute Node\nGTX 1080 GPU" as AINode
+
+
+Business - -> Ingress : HTTPS
+DataEngineer - -> GitLab : Code / Data / AI
+DevOps - -> GitLab : Platform configuration
+DevOps - -> Grafana : Operations
+
+Ingress - -> APIs
+Ingress - -> Airflow
+Ingress - -> MLflow
+Ingress - -> OpenMetadata
+Ingress - -> Grafana
+
+
+BusinessData - -> Airflow : Ingestion
+
+Airflow - -> PostgreSQL : Load / orchestrate
+
+Airflow - -> DBT : Execute transformations
+
+DBT - -> PostgreSQL : Transform data
+
+PostgreSQL - -> APIs : Curated data
+
+PostgreSQL - -> MLflow : Training datasets
+
+PostgreSQL - -> RAG : Governed context
+
+Documents - -> RAG : Knowledge sources
+
+
+OpenMetadata ..> PostgreSQL : Metadata / profiling
+
+OpenMetadata ..> Airflow : Pipeline metadata
+
+OpenMetadata ..> DBT : Models / lineage
+
+
+MLflow - -> Ollama : AI / model workflows
+
+RAG - -> Ollama : Inference
+
+Ollama - -> AINode : GPU inference
+
+
+ArgoCD - -> Kubernetes : Reconcile desired state
+
+Runner ..> GitLab : Build / test /\nvalidation results
+
+
+Applications ..> Prometheus : Metrics
+DataPlatform ..> Prometheus : Metrics
+AIPlatform ..> Prometheus : Metrics
+Kubernetes ..> Prometheus : Platform metrics
+
+Applications ..> Loki : Logs
+DataPlatform ..> Loki : Logs
+AIPlatform ..> Loki : Logs
+
+Applications ..> OTel : Traces
+AIPlatform ..> OTel : Traces
+
+OTel - -> Tempo : OTLP traces
+
+Prometheus - -> Grafana
+Loki - -> Grafana
+Tempo - -> Grafana
+
+
+rectangle "Governance as Code" as Governance {
+    component "Policies" as Policies
+    component "Risks" as Risks
+    component "Controls" as Controls
+    component "SLOs" as SLO
+}
+
+GitLab - -> Governance : Version controlled
+
+Governance ..> Runner : CI validation
+Governance ..> ArgoCD : Approved configuration
+Governance ..> OpenMetadata : Data governance
+Governance ..> Prometheus : Evidence / KRIs / SLOs
+
+
+note bottom of ArgoCD
+GitLab CI validates and builds.
+
+Argo CD performs
+continuous deployment
+and reconciliation.
+end note
+
+note bottom of PostgreSQL
+Logical data layers:
+
+raw
+staging
+warehouse
+analytics
+end note
+
+note bottom of Ollama
+Local-first AI inference.
+
+GPU capacity is treated
+as a governed platform
+resource.
+end note
+
+note bottom of Governance
+Governance artifacts are
+version-controlled and
+progressively validated
+and enforced as code.
+end note
+
+@enduml
+
+PlantUML version 1.2020.02(Sun Mar 01 11:22:07 CET 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 11.0.31+11-post-1ubuntu1-22.04.2-Ubuntu
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: null
+--></g></svg>

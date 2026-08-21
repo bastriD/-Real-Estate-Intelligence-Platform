@@ -1,0 +1,370 @@
+@startuml 11-Observability-Architecture
+
+title Enterprise AI Platform — Observability Architecture
+
+left to right direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam ArrowThickness 1
+
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam component {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam database {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+' ============================================================
+' OBSERVED SYSTEMS
+' ============================================================
+
+rectangle "Observed Platform" as Observed {
+
+    rectangle "Applications" as Applications {
+        component "Business APIs" as BusinessAPI
+        component "AI / RAG Services" as AIService
+    }
+
+    rectangle "Data Platform" as DataPlatform {
+        component "Airflow" as Airflow
+        component "dbt Jobs" as DBT
+        component "PostgreSQL" as PostgreSQL
+        component "OpenMetadata" as OpenMetadata
+    }
+
+    rectangle "Kubernetes Platform" as Kubernetes {
+        component "Control Plane" as ControlPlane
+        component "Worker Nodes" as Workers
+        component "Ingress" as Ingress
+    }
+
+    rectangle "AI Infrastructure" as AIInfra {
+        component "Ollama" as Ollama
+        component "GPU Metrics" as GPUMetrics
+    }
+}
+
+' ============================================================
+' METRICS COLLECTION
+' ============================================================
+
+rectangle "Metrics Pipeline" as MetricsPipeline {
+
+    component "Application /metrics" as AppMetrics
+
+    component "node-exporter" as NodeExporter
+
+    component "kube-state-metrics" as KubeState
+
+    component "Database / Service Exporters" as Exporters
+
+    component "Pushgateway" as Pushgateway
+
+    database "Prometheus" as Prometheus
+}
+
+' ============================================================
+' LOGGING PIPELINE
+' ============================================================
+
+rectangle "Logging Pipeline" as LoggingPipeline {
+
+    component "Container stdout / stderr" as ContainerLogs
+
+    component "Promtail" as Promtail
+
+    database "Loki" as Loki
+}
+
+' ============================================================
+' TRACING PIPELINE
+' ============================================================
+
+rectangle "Tracing Pipeline" as TracingPipeline {
+
+    component "OpenTelemetry SDK /\nInstrumentation" as OTelSDK
+
+    component "OpenTelemetry Collector" as OTelCollector
+
+    database "Tempo" as Tempo
+}
+
+' ============================================================
+' VISUALIZATION / ALERTING
+' ============================================================
+
+rectangle "Observability Control Plane" as ObsControl {
+
+    component "Grafana" as Grafana
+
+    component "Alertmanager" as Alertmanager
+
+    component "PrometheusRule" as PromRules
+
+    component "Recording Rules" as RecordingRules
+}
+
+' ============================================================
+' SLO / GOVERNANCE
+' ============================================================
+
+rectangle "Reliability & Governance" as Governance {
+
+    component "SLI Definitions" as SLI
+
+    component "SLO as Code" as SLO
+
+    component "Error Budgets" as ErrorBudgets
+
+    component "Burn Rate Alerts" as BurnRate
+
+    component "Key Risk Indicators" as KRI
+
+    component "Compliance Evidence" as ComplianceEvidence
+}
+
+' ============================================================
+' USERS
+' ============================================================
+
+actor "Platform / DevOps\nEngineer" as DevOps
+actor "Data / AI\nEngineer" as Engineer
+actor "Governance /\nSecurity" as GovernanceUser
+
+' ============================================================
+' METRIC SOURCES
+' ============================================================
+
+BusinessAPI --> AppMetrics : RED metrics
+AIService --> AppMetrics : AI / RAG metrics
+
+Workers --> NodeExporter : Host metrics
+ControlPlane --> KubeState : Kubernetes state
+Workers --> KubeState : Workload state
+
+PostgreSQL --> Exporters : Database metrics
+Airflow --> Exporters : Scheduler / DAG metrics
+OpenMetadata --> Exporters : Service metrics
+Ingress --> Exporters : Traffic metrics
+Ollama --> Exporters : Inference metrics
+GPUMetrics --> Exporters : GPU utilization / VRAM
+
+DBT --> Pushgateway : Batch metrics
+
+' ============================================================
+' PROMETHEUS
+' ============================================================
+
+AppMetrics --> Prometheus : Scrape
+NodeExporter --> Prometheus : Scrape
+KubeState --> Prometheus : Scrape
+Exporters --> Prometheus : Scrape
+Pushgateway --> Prometheus : Scrape
+
+RecordingRules --> Prometheus
+PromRules --> Prometheus
+
+Prometheus --> Alertmanager : Alerts
+
+' ============================================================
+' LOGGING
+' ============================================================
+
+BusinessAPI --> ContainerLogs : Logs
+AIService --> ContainerLogs : Logs
+Airflow --> ContainerLogs : Logs
+DBT --> ContainerLogs : Logs
+OpenMetadata --> ContainerLogs : Logs
+Ingress --> ContainerLogs : Access / error logs
+Ollama --> ContainerLogs : Runtime logs
+
+ContainerLogs --> Promtail
+Promtail --> Loki
+
+' ============================================================
+' TRACING
+' ============================================================
+
+BusinessAPI --> OTelSDK : Trace spans
+AIService --> OTelSDK : AI / RAG spans
+Ingress ..> OTelSDK : Request context
+PostgreSQL ..> OTelSDK : DB spans where instrumented
+Ollama ..> OTelSDK : Inference spans where available
+
+OTelSDK --> OTelCollector : OTLP
+
+OTelCollector --> Tempo : Export traces
+
+' ============================================================
+' GRAFANA
+' ============================================================
+
+Prometheus --> Grafana : Metrics
+Loki --> Grafana : Logs
+Tempo --> Grafana : Traces
+
+DevOps --> Grafana : Platform operations
+Engineer --> Grafana : Application / data / AI analysis
+GovernanceUser --> Grafana : Governance evidence
+
+' ============================================================
+' CROSS-SIGNAL CORRELATION
+' ============================================================
+
+Prometheus ..> Tempo : Exemplars / trace IDs
+Loki ..> Tempo : trace_id correlation
+
+Grafana ..> Prometheus
+Grafana ..> Loki
+Grafana ..> Tempo
+
+' ============================================================
+' SLO MODEL
+' ============================================================
+
+SLI --> SLO
+SLO --> ErrorBudgets
+ErrorBudgets --> BurnRate
+
+SLO ..> RecordingRules : Generate / validate
+BurnRate ..> PromRules : Alert rules
+
+Prometheus --> SLI : Measured indicators
+
+' ============================================================
+' GOVERNANCE EVIDENCE
+' ============================================================
+
+Prometheus --> KRI : Operational evidence
+Prometheus --> ComplianceEvidence : Control evidence
+
+Alertmanager ..> KRI : Alert state
+
+Loki ..> ComplianceEvidence : Audit / event evidence
+
+' ============================================================
+' INCIDENT FLOW
+' ============================================================
+
+rectangle "Operational Response" as Response {
+
+    component "Alert" as Alert
+
+    component "Dashboard" as Dashboard
+
+    component "Trace Investigation" as TraceInvestigation
+
+    component "Log Investigation" as LogInvestigation
+
+    component "Runbook" as Runbook
+}
+
+Alertmanager --> Alert
+
+Alert --> Dashboard
+Dashboard --> TraceInvestigation
+TraceInvestigation --> LogInvestigation
+LogInvestigation --> Runbook
+
+Grafana --> Dashboard
+
+' ============================================================
+' DATA MINIMIZATION
+' ============================================================
+
+rectangle "Telemetry Governance" as TelemetryGovernance {
+
+    component "Label Cardinality\nRules" as Cardinality
+
+    component "Log Redaction /\nData Minimization" as Redaction
+
+    component "Trace Sampling" as Sampling
+
+    component "Retention Policies" as Retention
+}
+
+Cardinality ..> Prometheus
+Redaction ..> Loki
+Sampling ..> OTelCollector
+Retention ..> Prometheus
+Retention ..> Loki
+Retention ..> Tempo
+
+' ============================================================
+' NOTES
+' ============================================================
+
+note bottom of Prometheus
+Authoritative operational
+metrics and SLI measurement
+platform.
+
+High-cardinality labels
+must be avoided.
+end note
+
+note bottom of Loki
+Centralized logs.
+
+Identifiers such as request_id
+or trace_id belong in log fields,
+not as unbounded labels.
+end note
+
+note bottom of Tempo
+Distributed trace backend.
+
+Used to follow requests across
+applications, data, and AI services.
+end note
+
+note bottom of OTelCollector
+Vendor-neutral telemetry
+collection and processing layer.
+
+Applications should not be tightly
+coupled to tracing backends.
+end note
+
+note bottom of Grafana
+Unified exploration layer for:
+
+Metrics
+Logs
+Traces
+SLOs
+Governance evidence
+end note
+
+note bottom of Governance
+Operational telemetry becomes
+machine-readable evidence for:
+
+SLOs
+Risk indicators
+Compliance controls
+Continuous governance
+end note
+
+note bottom of TelemetryGovernance
+Observability must remain
+resource-aware.
+
+Telemetry should never expose
+secrets, sensitive documents,
+or unnecessary personal data.
+end note
+
+@enduml

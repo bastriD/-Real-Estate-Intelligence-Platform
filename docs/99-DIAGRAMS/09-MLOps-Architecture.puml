@@ -1,0 +1,374 @@
+@startuml 09-MLOps-Architecture
+
+title Enterprise AI Platform — MLOps Architecture
+
+left to right direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam ArrowThickness 1
+
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam component {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam database {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+' ============================================================
+' USERS
+' ============================================================
+
+actor "Data / AI Engineer" as AIEngineer
+actor "Platform / DevOps\nEngineer" as DevOps
+
+' ============================================================
+' SOURCE CONTROL / CI
+' ============================================================
+
+rectangle "Engineering" as Engineering {
+
+    component "GitLab\nSource Control" as GitLab
+
+    component "GitLab CI" as GitLabCI
+
+    component "Model / Training Code" as TrainingCode
+
+    component "Evaluation Code" as EvaluationCode
+}
+
+AIEngineer --> GitLab : Commit / merge request
+
+GitLab --> GitLabCI : CI pipeline
+
+GitLabCI --> TrainingCode : Validate / test
+GitLabCI --> EvaluationCode : Validate / test
+
+' ============================================================
+' DATA
+' ============================================================
+
+rectangle "Governed Data Platform" as DataPlatform {
+
+    database "PostgreSQL" as PostgreSQL
+
+    component "OpenMetadata" as OpenMetadata
+
+    component "Training Dataset" as TrainingDataset
+}
+
+PostgreSQL --> TrainingDataset
+
+OpenMetadata ..> TrainingDataset : Ownership / lineage /\nclassification / quality
+
+' ============================================================
+' ORCHESTRATION
+' ============================================================
+
+rectangle "Workflow Orchestration" as Orchestration {
+
+    component "Apache Airflow" as Airflow
+
+    component "Training DAG" as TrainingDAG
+
+    component "Evaluation DAG" as EvaluationDAG
+
+    component "Promotion DAG" as PromotionDAG
+}
+
+Airflow --> TrainingDAG
+Airflow --> EvaluationDAG
+Airflow --> PromotionDAG
+
+' ============================================================
+' TRAINING
+' ============================================================
+
+rectangle "Model Training" as Training {
+
+    component "Training Job" as TrainingJob
+
+    component "Feature / Data Preparation" as DataPrep
+
+    component "Model Artifact" as ModelArtifact
+}
+
+TrainingDAG --> DataPrep
+DataPrep --> TrainingDataset
+DataPrep --> TrainingJob
+
+TrainingCode --> TrainingJob
+
+TrainingJob --> ModelArtifact
+
+' ============================================================
+' MLFLOW
+' ============================================================
+
+rectangle "MLflow Platform" as MLflowPlatform {
+
+    component "MLflow Tracking" as MLflowTracking
+
+    component "Experiment Runs" as Experiments
+
+    component "Model Registry" as Registry
+
+    database "PostgreSQL\nMLflow Metadata" as MLflowDB
+
+    database "MinIO\nArtifacts" as MinIO
+}
+
+TrainingJob --> MLflowTracking : Metrics / params
+ModelArtifact --> MLflowTracking : Log artifact
+
+MLflowTracking --> Experiments
+
+MLflowTracking --> MLflowDB : Metadata
+MLflowTracking --> MinIO : Artifacts
+
+Experiments --> Registry : Register candidate
+
+' ============================================================
+' EVALUATION
+' ============================================================
+
+rectangle "Model Evaluation" as ModelEvaluation {
+
+    component "Quality Metrics" as QualityMetrics
+
+    component "Regression Tests" as RegressionTests
+
+    component "Security / Robustness\nChecks" as SecurityChecks
+}
+
+EvaluationDAG --> ModelEvaluation
+
+EvaluationCode --> ModelEvaluation
+
+Registry --> ModelEvaluation : Candidate version
+
+TrainingDataset --> ModelEvaluation : Validation data
+
+ModelEvaluation --> QualityMetrics
+ModelEvaluation --> RegressionTests
+ModelEvaluation --> SecurityChecks
+
+ModelEvaluation --> MLflowTracking : Evaluation results
+
+' ============================================================
+' GOVERNANCE
+' ============================================================
+
+rectangle "AI Governance as Code" as Governance {
+
+    component "Model Owner" as ModelOwner
+
+    component "Risk Classification" as Risk
+
+    component "Required Metrics" as RequiredMetrics
+
+    component "Promotion Policy" as PromotionPolicy
+
+    component "Human Approval\nwhen required" as HumanApproval
+}
+
+Governance ..> ModelEvaluation : Governance requirements
+
+RequiredMetrics ..> QualityMetrics
+Risk ..> SecurityChecks
+
+PromotionDAG --> PromotionPolicy
+
+ModelOwner ..> PromotionPolicy
+HumanApproval ..> PromotionPolicy
+
+' ============================================================
+' PROMOTION GATE
+' ============================================================
+
+rectangle "Promotion Gate" as Gate {
+
+    component "Evaluation Passed?" as EvalPassed
+
+    component "Governance Passed?" as GovPassed
+
+    component "Approved Model" as Approved
+}
+
+PromotionPolicy --> EvalPassed
+PromotionPolicy --> GovPassed
+
+EvalPassed --> Approved
+GovPassed --> Approved
+
+Approved --> Registry : Mark approved /\nproduction candidate
+
+' ============================================================
+' DEPLOYMENT
+' ============================================================
+
+rectangle "Deployment" as Deployment {
+
+    component "GitOps Repository" as GitOpsRepo
+
+    component "Argo CD" as ArgoCD
+
+    component "Kubernetes Model Service" as ModelService
+
+    component "Ollama / AI Runtime" as Ollama
+}
+
+Approved --> GitOpsRepo : Select model version
+
+DevOps --> GitOpsRepo : Review / approve
+
+GitOpsRepo --> ArgoCD
+
+ArgoCD --> ModelService : Reconcile deployment
+
+ModelService --> Ollama : Runtime inference
+
+' ============================================================
+' RUNTIME
+' ============================================================
+
+rectangle "Production Runtime" as Runtime {
+
+    component "Business API" as BusinessAPI
+
+    component "AI Service" as AIService
+}
+
+BusinessAPI --> AIService
+AIService --> ModelService
+
+' ============================================================
+' OBSERVABILITY
+' ============================================================
+
+rectangle "MLOps Observability" as Observability {
+
+    component "Prometheus" as Prometheus
+
+    component "Loki" as Loki
+
+    component "OpenTelemetry" as OTel
+
+    component "Grafana" as Grafana
+}
+
+TrainingJob ..> Prometheus : Training metrics
+ModelService ..> Prometheus : Runtime metrics
+AIService ..> Prometheus : Inference metrics
+
+TrainingJob ..> Loki : Logs
+ModelService ..> Loki : Logs
+AIService ..> Loki : Logs
+
+AIService ..> OTel : Inference traces
+ModelService ..> OTel : Model spans
+
+Prometheus --> Grafana
+Loki --> Grafana
+OTel --> Grafana : Trace visibility
+
+' ============================================================
+' RUNTIME QUALITY
+' ============================================================
+
+rectangle "Runtime Model Quality" as RuntimeQuality {
+
+    component "Prediction Quality" as PredictionQuality
+
+    component "Drift Detection\nFuture" as Drift
+
+    component "Business Outcome" as BusinessOutcome
+}
+
+ModelService ..> RuntimeQuality
+
+RuntimeQuality ..> MLflowTracking : Quality evidence
+
+' ============================================================
+' ROLLBACK
+' ============================================================
+
+rectangle "Rollback" as Rollback {
+
+    component "Previous Approved\nModel Version" as PreviousModel
+
+    component "Git Revert /\nVersion Change" as GitRevert
+}
+
+Registry --> PreviousModel
+
+RuntimeQuality ..> GitRevert : Regression / incident
+
+PreviousModel --> GitRevert
+
+GitRevert --> GitOpsRepo : Restore version
+
+' ============================================================
+' TRACEABILITY
+' ============================================================
+
+GitLab ..> MLflowTracking : Git SHA / source reference
+
+TrainingDataset ..> MLflowTracking : Dataset reference
+
+Registry ..> OpenMetadata : Model-data lineage\nfuture integration
+
+' ============================================================
+' NOTES
+' ============================================================
+
+note bottom of Airflow
+Airflow orchestrates the lifecycle.
+
+It does not replace MLflow,
+Git, or the runtime serving layer.
+end note
+
+note bottom of MLflowPlatform
+MLflow is authoritative for:
+
+Experiments
+Runs
+Metrics
+Artifacts
+Model versions
+Registry metadata
+end note
+
+note bottom of Gate
+Production promotion requires
+both technical evaluation
+and governance validation.
+end note
+
+note bottom of ModelService
+Model approval and deployment
+are separate lifecycle events.
+
+An approved model is not
+automatically active in production.
+end note
+
+note bottom of Rollback
+Rollback selects a previously
+approved model version and
+updates the GitOps desired state.
+end note
+
+@enduml

@@ -1,0 +1,316 @@
+@startuml 06-Application-Architecture
+
+title Enterprise AI Platform — Application Architecture
+
+left to right direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam ArrowThickness 1
+
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam component {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam database {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam cloud {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+' ============================================================
+' USERS
+' ============================================================
+
+actor "Business User" as BusinessUser
+actor "Platform / DevOps\nEngineer" as DevOps
+actor "Data / AI\nEngineer" as Engineer
+
+' ============================================================
+' ENTRY POINT
+' ============================================================
+
+rectangle "North-South Access" as Entry {
+    component "Internal DNS\n*.lab.local" as DNS
+    component "NGINX Ingress" as Ingress
+    component "cert-manager" as CertManager
+}
+
+' ============================================================
+' APPLICATION LAYER
+' ============================================================
+
+rectangle "Application Layer" as Apps {
+
+    component "Business Frontend /\nClient" as Frontend
+
+    component "Business API\nFastAPI" as BusinessAPI
+
+    component "AI Integration Service" as AIService
+
+    component "Background /\nApplication Jobs" as AppJobs
+}
+
+' ============================================================
+' CONFIGURATION / SECRETS
+' ============================================================
+
+rectangle "Application Configuration" as Config {
+    component "ConfigMaps" as ConfigMaps
+    component "Kubernetes Secrets" as Secrets
+    component "Future External\nSecret Management" as ExternalSecrets
+}
+
+' ============================================================
+' DATA LAYER
+' ============================================================
+
+rectangle "Data Services" as Data {
+
+    database "PostgreSQL" as PostgreSQL
+
+    rectangle "Logical Data Areas" as Schemas {
+        component "Operational /\nApplication Data" as OLTP
+        component "Analytics /\nCurated Data" as Analytics
+    }
+}
+
+' ============================================================
+' AI LAYER
+' ============================================================
+
+rectangle "AI Services" as AI {
+
+    component "Internal AI API /\nFuture AI Gateway" as AIGateway
+
+    component "RAG Service" as RAG
+
+    component "Ollama" as Ollama
+}
+
+node "Local AI Compute" as AIHost {
+    component "Qwen Model" as Qwen
+    component "NVIDIA GTX 1080\n8 GB VRAM" as GPU
+}
+
+cloud "External AI Provider\nGoverned Exception" as ExternalAI
+
+' ============================================================
+' PLATFORM SERVICES
+' ============================================================
+
+rectangle "Platform Services" as Platform {
+    component "Argo CD" as ArgoCD
+    component "Kubernetes" as Kubernetes
+    component "GitLab CI" as GitLabCI
+}
+
+' ============================================================
+' OBSERVABILITY
+' ============================================================
+
+rectangle "Observability" as Observability {
+    component "Prometheus" as Prometheus
+    component "Loki" as Loki
+    component "OpenTelemetry Collector" as OTel
+    component "Tempo" as Tempo
+    component "Grafana" as Grafana
+}
+
+' ============================================================
+' USER FLOW
+' ============================================================
+
+BusinessUser --> DNS : Resolve application
+DNS --> Ingress
+BusinessUser --> Ingress : HTTPS
+
+Ingress --> Frontend
+Ingress --> BusinessAPI
+Ingress --> AIService
+
+CertManager --> Ingress : TLS
+
+Frontend --> BusinessAPI : API requests
+
+' ============================================================
+' APPLICATION DATA ACCESS
+' ============================================================
+
+BusinessAPI --> PostgreSQL : Read / write
+
+AppJobs --> PostgreSQL : Batch / background work
+
+BusinessAPI --> Analytics : Curated reads
+
+PostgreSQL --> OLTP
+PostgreSQL --> Analytics
+
+' ============================================================
+' AI APPLICATION FLOW
+' ============================================================
+
+BusinessAPI --> AIService : AI-enhanced request
+
+AIService --> AIGateway
+
+AIGateway --> RAG : Governed retrieval flow
+
+RAG --> PostgreSQL : Governed context / metadata
+
+RAG --> Ollama : Prompt + context
+
+Ollama --> Qwen : Inference
+Qwen --> GPU : GPU acceleration
+
+AIGateway ..> ExternalAI : Explicit governed exception
+
+' ============================================================
+' GRACEFUL DEGRADATION
+' ============================================================
+
+BusinessAPI ..> AIService : Optional capability
+
+note on link
+Core business functionality should
+remain available where possible
+if AI services are unavailable.
+end note
+
+' ============================================================
+' CONFIGURATION
+' ============================================================
+
+ConfigMaps --> BusinessAPI : Non-sensitive config
+ConfigMaps --> AIService
+ConfigMaps --> AppJobs
+
+Secrets --> BusinessAPI : Credentials
+Secrets --> AIService
+Secrets --> AppJobs
+
+ExternalSecrets ..> Secrets : Future integration
+
+' ============================================================
+' PLATFORM DELIVERY
+' ============================================================
+
+Engineer --> GitLabCI : Application / AI code
+DevOps --> GitLabCI : Platform changes
+
+GitLabCI --> ArgoCD : Validated desired state
+
+ArgoCD --> Kubernetes : Reconcile
+
+Kubernetes --> Apps : Hosts
+Kubernetes --> Entry : Hosts
+Kubernetes --> Config : Provides runtime config
+
+' ============================================================
+' METRICS
+' ============================================================
+
+BusinessAPI ..> Prometheus : RED metrics
+AIService ..> Prometheus : AI metrics
+AppJobs ..> Prometheus : Job metrics
+Ingress ..> Prometheus : Traffic metrics
+
+' ============================================================
+' LOGGING
+' ============================================================
+
+BusinessAPI ..> Loki : Structured logs
+AIService ..> Loki : Structured logs
+AppJobs ..> Loki : Logs
+Ingress ..> Loki : Access / error logs
+
+' ============================================================
+' TRACING
+' ============================================================
+
+BusinessAPI ..> OTel : Traces
+AIService ..> OTel : Traces
+RAG ..> OTel : RAG spans
+
+OTel --> Tempo : OTLP traces
+
+Prometheus --> Grafana
+Loki --> Grafana
+Tempo --> Grafana
+
+' ============================================================
+' SECURITY / GOVERNANCE
+' ============================================================
+
+rectangle "Application Governance" as Gov {
+
+    component "Authentication /\nAuthorization" as Auth
+
+    component "Least Privilege" as LeastPrivilege
+
+    component "Policy as Code" as Policy
+
+    component "AI Governance" as AIGov
+}
+
+Auth ..> BusinessAPI
+Auth ..> AIService
+
+LeastPrivilege ..> Secrets
+LeastPrivilege ..> PostgreSQL
+
+Policy ..> Apps : Validate workload standards
+
+AIGov ..> AIGateway : AI policies
+AIGov ..> RAG : Data / prompt governance
+
+' ============================================================
+' NOTES
+' ============================================================
+
+note bottom of BusinessAPI
+Business services remain
+separate from AI inference.
+
+AI is an enhancement unless
+the business requirement
+explicitly makes it critical.
+end note
+
+note bottom of PostgreSQL
+Operational and analytical
+responsibilities remain logically
+separated even when PostgreSQL
+hosts both at the current scale.
+end note
+
+note bottom of AIGateway
+Target-state abstraction layer.
+
+Applications should not become
+permanently coupled directly
+to Ollama or an external provider.
+end note
+
+note bottom of ExternalAI
+External inference is not
+the default path.
+
+Usage requires security,
+privacy, and governance approval.
+end note
+
+@enduml

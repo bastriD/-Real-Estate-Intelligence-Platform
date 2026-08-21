@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="1691px" preserveAspectRatio="none" style="width:4122px;height:1691px;" version="1.1" viewBox="0 0 4122 1691" width="4122px" zoomAndPan="magnify"><defs/><g><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacingAndGlyphs" textLength="438" x="1848" y="16.708">Enterprise AI Platform — Application Architecture</text><!--MD5=[3e8a043c63405b77e6801ae81895ffe7]
+cluster Entry--><rect fill="#FFFFFF" height="211" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="425.5" x="1094.5" y="204.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="158" x="1228.25" y="219.9482">North-South Access</text><!--MD5=[d68d77d88e3ebde308af66aa51e75453]
+cluster Apps--><rect fill="#FFFFFF" height="249" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="1211" x="1764" y="1028.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="136" x="2301.5" y="1043.9482">Application Layer</text><!--MD5=[7fc138c4594c50e52424414d7476cb5f]
+cluster Config--><rect fill="#FFFFFF" height="211" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="638" x="1333" y="1469.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="199" x="1552.5" y="1484.9482">Application Configuration</text><!--MD5=[f21b1f164e99c6b37934f23ad048ad54]
+cluster Data--><rect fill="#FFFFFF" height="260" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="496" x="3292" y="1234.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="108" x="3486" y="1249.9482">Data Services</text><!--MD5=[2f6ca41fa2895b812fb6c919c5455437]
+cluster Schemas--><rect fill="#FFFFFF" height="193" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="163" x="3601" y="1277.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="146" x="3609.5" y="1292.9482">Logical Data Areas</text><!--MD5=[e140ffe9d520e7041a6e410e66d94b56]
+cluster AI--><rect fill="#FFFFFF" height="105" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="1181.5" x="2226" y="741.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="88" x="2772.75" y="756.9482">AI Services</text><!--MD5=[f885098c1f45d056c8f5343b57117eb3]
+cluster AIHost--><polygon fill="#FFFFFF" points="3613.5,746.9531,3623.5,736.9531,4100,736.9531,4100,836.9531,4090,846.9531,3613.5,846.9531,3613.5,746.9531" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="4090" x2="4099" y1="746.9531" y2="737.9531"/><line style="stroke: #000000; stroke-width: 1.5;" x1="3613.5" x2="4090" y1="746.9531" y2="746.9531"/><line style="stroke: #000000; stroke-width: 1.5;" x1="4090" x2="4090" y1="746.9531" y2="846.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="137" x="3784.25" y="762.9482">Local AI Compute</text><!--MD5=[46319df2d1c5fe27116f23a003a0a914]
+cluster Platform--><rect fill="#FFFFFF" height="103" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="622" x="307" y="354.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="139" x="548.5" y="369.9482">Platform Services</text><!--MD5=[31ba93973bc7c9d0a17e495fb2f93281]
+cluster Observability--><rect fill="#FFFFFF" height="229" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="821" x="3246.5" y="870.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="103" x="3605.5" y="885.9482">Observability</text><!--MD5=[49515d80200f6c89d7190fb63de505c4]
+cluster Gov--><rect fill="#FFFFFF" height="318" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="204" x="1335.5" y="1119.9531"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="188" x="1343.5" y="1134.9482">Application Governance</text><!--MD5=[60dbf8e8a50666c70dad943d5e023697]
+entity DNS--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="105" x="1122.5" y="248.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1117.5" y="253.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1117.5" y="291.0469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="85" x="1132.5" y="271.4482">Internal DNS</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="66" x="1142" y="287.7451">*.lab.local</text><!--MD5=[76135f9afc5f2b97af6996623fc8da30]
+entity Ingress--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="118" x="1378" y="272.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1373" y="277.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1373" y="299.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="98" x="1388" y="295.9482">NGINX Ingress</text><!--MD5=[9d913db2312b7d8a797dc2fd1242f377]
+entity CertManager--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="113" x="1118.5" y="336.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1113.5" y="341.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1113.5" y="363.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="93" x="1128.5" y="359.9482">cert-manager</text><!--MD5=[194a92f280a7d2c2f105939ff984a7cf]
+entity Frontend--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="160" x="1788" y="1091.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1783" y="1096.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1783" y="1134.0469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="140" x="1798" y="1114.4482">Business Frontend /</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="39" x="1848.5" y="1130.7451">Client</text><!--MD5=[91ea6bd7857376bba2349040f701efc1]
+entity BusinessAPI--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="109" x="2259.5" y="1200.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2254.5" y="1205.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2254.5" y="1243.0469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="89" x="2269.5" y="1223.4482">Business API</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="50" x="2289" y="1239.7451">FastAPI</text><!--MD5=[c9c2ce0dc7d05ee8d41595d3fe1c3c2d]
+entity AIService--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="164" x="2787" y="1079.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2782" y="1084.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2782" y="1106.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="144" x="2797" y="1102.9482">AI Integration Service</text><!--MD5=[928c87fa77b4fe079be27b82018eb15e]
+entity AppJobs--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="128" x="1804" y="1179.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1799" y="1184.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1799" y="1222.0469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="93" x="1821.5" y="1202.4482">Background /</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="108" x="1814" y="1218.7451">Application Jobs</text><!--MD5=[d74a376b9b800edf93e44bc6296143c7]
+entity ConfigMaps--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="101" x="1386.5" y="1512.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1381.5" y="1517.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1381.5" y="1539.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="81" x="1396.5" y="1535.9482">ConfigMaps</text><!--MD5=[ff05d055882b49e6d4ed94a42412f475]
+entity Secrets--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="158" x="1789" y="1551.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1784" y="1556.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1784" y="1578.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="138" x="1799" y="1574.9482">Kubernetes Secrets</text><!--MD5=[9db9a409cbd9bdb840be74c6c716a710]
+entity ExternalSecrets--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="160" x="1357" y="1584.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1352" y="1589.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1352" y="1627.0469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="104" x="1385" y="1607.4482">Future External</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="140" x="1367" y="1623.7451">Secret Management</text><!--MD5=[89112a84c8daddb34abf4f068893e892]
+entity PostgreSQL--><path d="M3308,1280.4531 C3308,1270.4531 3358.5,1270.4531 3358.5,1270.4531 C3358.5,1270.4531 3409,1270.4531 3409,1280.4531 L3409,1305.75 C3409,1315.75 3358.5,1315.75 3358.5,1315.75 C3358.5,1315.75 3308,1315.75 3308,1305.75 L3308,1280.4531 " fill="#FFFFFF" style="stroke: #333333; stroke-width: 1.5;"/><path d="M3308,1280.4531 C3308,1290.4531 3358.5,1290.4531 3358.5,1290.4531 C3358.5,1290.4531 3409,1290.4531 3409,1280.4531 " fill="none" style="stroke: #333333; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="81" x="3318" y="1307.4482">PostgreSQL</text><!--MD5=[71ef0b774ea0f74cbccb82591e8864e3]
+entity OLTP--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="131" x="3617" y="1313.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3612" y="1318.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3612" y="1356.0469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="88" x="3638.5" y="1336.4482">Operational /</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="111" x="3627" y="1352.7451">Application Data</text><!--MD5=[78444b0373532d6497ce4bf9dd597f37]
+entity Analytics--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="111" x="3627" y="1401.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3622" y="1406.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3622" y="1444.0469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="69" x="3648" y="1424.4482">Analytics /</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="91" x="3637" y="1440.7451">Curated Data</text><!--MD5=[e45ec8fd211da9437e3b72c014a9fe47]
+entity AIGateway--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="144" x="2242" y="777.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2237" y="782.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2237" y="820.0469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="101" x="2263.5" y="800.4482">Internal AI API /</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="124" x="2252" y="816.7451">Future AI Gateway</text><!--MD5=[d4c63efc849c138da47c28c0daf11e88]
+entity RAG--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="104" x="2817" y="794.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2812" y="799.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="2812" y="821.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="84" x="2827" y="817.9482">RAG Service</text><!--MD5=[d1d0d8266c4f5365d142423f17dea357]
+entity Ollama--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="66" x="3325.5" y="777.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3320.5" y="782.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3320.5" y="804.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="46" x="3335.5" y="800.9482">Ollama</text><!--MD5=[c2add934a11f6ab42f0a1f38b731793a]
+entity Qwen--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="106" x="3629.5" y="777.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3624.5" y="782.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3624.5" y="804.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="86" x="3639.5" y="800.9482">Qwen Model</text><!--MD5=[ab6cc78aeaa82ab42a1cfb89503913b6]
+entity GPU--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="138" x="3946" y="777.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3941" y="782.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3941" y="820.0469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="118" x="3956" y="800.4482">NVIDIA GTX 1080</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="78" x="3976" y="816.7451">8 GB VRAM</text><!--MD5=[0ff0fccefb57e46481a2840e66765fa8]
+entity ArgoCD--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="77" x="613" y="389.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="608" y="394.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="608" y="416.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="57" x="623" y="412.9482">Argo CD</text><!--MD5=[003bc8d3bcf70ea39831b7d42e34a0c6]
+entity Kubernetes--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="101" x="812" y="389.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="807" y="394.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="807" y="416.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="81" x="822" y="412.9482">Kubernetes</text><!--MD5=[4025ad403e52db021d2b9bec25f51e05]
+entity GitLabCI--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="80" x="323" y="389.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="318" y="394.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="318" y="416.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="60" x="333" y="412.9482">GitLab CI</text><!--MD5=[e4691f12f5fa5579288963399b8c83c6]
+entity Prometheus--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="105" x="3630" y="1047.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3625" y="1052.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3625" y="1074.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="85" x="3640" y="1070.9482">Prometheus</text><!--MD5=[331b67947ba2840a66d34c20f83daee9]
+entity Loki--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="47" x="3659" y="905.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3654" y="910.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3654" y="932.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="27" x="3669" y="928.9482">Loki</text><!--MD5=[c8912baf253427cbc40012a5a035d2d0]
+entity OTel--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="192" x="3262.5" y="937.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3257.5" y="942.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3257.5" y="964.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="172" x="3272.5" y="960.9482">OpenTelemetry Collector</text><!--MD5=[e98e32d5519b7a4ea87df1e6b173c71b]
+entity Tempo--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="69" x="3648" y="976.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3643" y="981.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3643" y="1003.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="49" x="3658" y="999.9482">Tempo</text><!--MD5=[1e38ee63cc23f89100e14039e3aadfb2]
+entity Grafana--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="73" x="3978.5" y="976.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3973.5" y="981.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="3973.5" y="1003.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="53" x="3988.5" y="999.9482">Grafana</text><!--MD5=[39222abbbfd087a4fdab60e627dc976f]
+entity Auth--><rect fill="#FFFFFF" height="52.5938" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="129" x="1372.5" y="1226.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1367.5" y="1231.4531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1367.5" y="1269.0469"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="109" x="1382.5" y="1249.4482">Authentication /</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="91" x="1391.5" y="1265.7451">Authorization</text><!--MD5=[30383a487bcaff7c8140655482fd2509]
+entity LeastPrivilege--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="118" x="1378" y="1385.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1373" y="1390.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1373" y="1412.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="98" x="1388" y="1408.9482">Least Privilege</text><!--MD5=[d5d09bea273937fb6514b978292e9a5f]
+entity Policy--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="120" x="1377" y="1314.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1372" y="1319.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1372" y="1341.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="100" x="1387" y="1337.9482">Policy as Code</text><!--MD5=[05d8e88d6bcbcee12e2cb9578864ceea]
+entity AIGov--><rect fill="#FFFFFF" height="36.2969" rx="5" ry="5" style="stroke: #333333; stroke-width: 1.5;" width="120" x="1377" y="1154.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1372" y="1159.9531"/><rect fill="#FFFFFF" height="5" style="stroke: #333333; stroke-width: 1.5;" width="10" x="1372" y="1181.25"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="100" x="1387" y="1177.9482">AI Governance</text><!--MD5=[49ac901ae12b1f9070d7c58942dfb008]
+entity BusinessUser--><ellipse cx="862.5" cy="38.4531" fill="#FEFECE" rx="8" ry="8" style="stroke: #A80036; stroke-width: 1.5;"/><path d="M862.5,46.4531 L862.5,73.4531 M849.5,54.4531 L875.5,54.4531 M862.5,73.4531 L849.5,88.4531 M862.5,73.4531 L875.5,88.4531 " fill="none" style="stroke: #A80036; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="100" x="812.5" y="103.9482">Business User</text><!--MD5=[9d1330f94e15b99f5c39504305aed57e]
+entity DevOps--><ellipse cx="68" cy="304.9531" fill="#FEFECE" rx="8" ry="8" style="stroke: #A80036; stroke-width: 1.5;"/><path d="M68,312.9531 L68,339.9531 M55,320.9531 L81,320.9531 M68,339.9531 L55,354.9531 M68,339.9531 L81,354.9531 " fill="none" style="stroke: #A80036; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="124" x="6" y="370.4482">Platform / DevOps</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="62" x="37" y="386.7451">Engineer</text><!--MD5=[03f1e8207d5170aea96e0523cfcc3d25]
+entity Engineer--><ellipse cx="68" cy="434.9531" fill="#FEFECE" rx="8" ry="8" style="stroke: #A80036; stroke-width: 1.5;"/><path d="M68,442.9531 L68,469.9531 M55,450.9531 L81,450.9531 M68,469.9531 L55,484.9531 M68,469.9531 L81,484.9531 " fill="none" style="stroke: #A80036; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="57" x="39.5" y="500.4482">Data / AI</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="62" x="37" y="516.7451">Engineer</text><!--MD5=[6ec230ae7026854bbbccaf5486984a19]
+entity ExternalAI--><path d="M2792.6544,478.8791 C2796.3287,472.5968 2800.9199,473.2278 2804.9324,478.5204 C2808.2501,472.8797 2813.4797,473.3766 2815.7925,479.4519 C2818.4778,474.8168 2822.6133,473.5361 2826.2361,478.4237 C2829.7191,474.3527 2832.7829,473.3165 2836.2778,478.4106 C2839.3173,473.0066 2844.6737,472.197 2848.6048,477.3716 C2852.6958,472.7347 2855.9061,473.5954 2858.8567,478.5859 C2862.3975,472.0202 2867.2413,473.0535 2870.9336,478.4327 C2873.495,472.3866 2878.5723,472.1002 2882.0455,477.5516 C2885.3865,472.9793 2888.2918,474.0918 2891.1735,478.0434 C2895.7163,473.5572 2899.4152,473.3256 2902.9652,479.1761 C2907.027,474.2599 2910.9726,474.5387 2914.7826,479.4781 C2918.1124,473.5057 2921.8778,474.3863 2925.5501,479.134 C2928.7945,473.5432 2934.4511,473.7718 2937.0414,479.7818 C2940.3497,474.7255 2943.8533,475.6273 2946.5776,480.3512 C2952.0412,481.1852 2954.1239,485.1345 2951.7496,490.1187 C2958.279,492.7038 2959.7844,498.1887 2953.6107,502.659 C2959.8326,507.3349 2957.6252,513.1594 2951.1881,515.4349 C2955.1886,520.009 2953.608,525.2502 2947.6116,526.6309 C2944.2645,532.4894 2938.6708,532.3916 2935.5788,526.3725 C2933.0931,532.5351 2929.4032,533.4173 2924.9,528.2791 C2922.3868,533.1628 2919.4115,534.8524 2914.9106,530.4076 C2911.3595,534.9444 2907.3731,535.7092 2903.8869,530.3355 C2901.4873,536.5729 2897.1462,537.3641 2892.4549,532.7498 C2889.2843,538.6833 2884.1531,538.3597 2881.3051,532.4462 C2878.0739,537.9897 2874.5091,538.7643 2869.9375,533.9119 C2865.9397,538.3679 2861.4507,539.0916 2858.7501,532.5878 C2855.9484,536.3725 2851.3106,536.884 2849.1376,531.8987 C2845.8095,537.6359 2839.8523,537.5818 2836.7766,531.6317 C2832.3947,537.0384 2827.436,536.4954 2825.1274,529.659 C2821.6483,533.9255 2817.1595,532.0478 2815.6443,527.5371 C2812.137,532.7626 2808.2966,532.8561 2804.8252,527.5004 C2800.2786,532.6853 2795.8938,531.4438 2792.841,525.841 C2787.6013,523.4062 2785.5104,518.7331 2791.0242,514.5656 C2785.3395,511.0406 2784.314,506.3721 2790.6258,502.4524 C2784.5176,498.7028 2784.6156,494.212 2790.9259,490.7818 C2785.6223,486.9508 2786.7923,481.0887 2792.6544,478.8791 " fill="#FFFFFF" style="stroke: #333333; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="131" x="2803.5" y="498.4482">External AI Provider</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="140" x="2799" y="514.7451">Governed Exception</text><path d="M2211.5,629.4531 L2211.5,720.25 A5,5 0 0 0 2216.5,725.25 L2411.5,725.25 A5,5 0 0 0 2416.5,720.25 L2416.5,634.4531 L2406.5,624.4531 L2216.5,624.4531 A5,5 0 0 0 2211.5,629.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2406.5,624.4531 L2406.5,631.9531 A2.5,2.5 0 0 0 2409,634.4531 L2416.5,634.4531 L2406.5,624.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="162" x="2217.5" y="641.52">Business services remain</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="174" x="2217.5" y="656.6528">separate from AI inference.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="2221.5" y="671.7856"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="184" x="2217.5" y="686.9185">AI is an enhancement unless</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="164" x="2217.5" y="702.0513">the business requirement</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="162" x="2217.5" y="717.1841">explicitly makes it critical.</text><path d="M3240,659.4531 L3240,719.9844 A5,5 0 0 0 3245,724.9844 L3472,724.9844 A5,5 0 0 0 3477,719.9844 L3477,664.4531 L3467,654.4531 L3245,654.4531 A5,5 0 0 0 3240,659.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M3467,654.4531 L3467,661.9531 A2.5,2.5 0 0 0 3469.5,664.4531 L3477,664.4531 L3467,654.4531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="166" x="3246" y="671.52">Operational and analytical</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="197" x="3246" y="686.6528">responsibilities remain logically</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="216" x="3246" y="701.7856">separated even when PostgreSQL</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="201" x="3246" y="716.9185">hosts both at the current scale.</text><path d="M2196,365.9531 L2196,441.6172 A5,5 0 0 0 2201,446.6172 L2427,446.6172 A5,5 0 0 0 2432,441.6172 L2432,370.9531 L2422,360.9531 L2201,360.9531 A5,5 0 0 0 2196,365.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2422,360.9531 L2422,368.4531 A2.5,2.5 0 0 0 2424.5,370.9531 L2432,370.9531 L2422,360.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="194" x="2202" y="378.02">Target-state abstraction layer.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="2206" y="393.1528"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="204" x="2202" y="408.2856">Applications should not become</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="185" x="2202" y="423.4185">permanently coupled directly</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="215" x="2202" y="438.5513">to Ollama or an external provider.</text><path d="M2749,573.9531 L2749,649.6172 A5,5 0 0 0 2754,654.6172 L2984,654.6172 A5,5 0 0 0 2989,649.6172 L2989,578.9531 L2979,568.9531 L2873,568.9531 L2869,533.4731 L2865,568.9531 L2754,568.9531 A5,5 0 0 0 2749,573.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2979,568.9531 L2979,576.4531 A2.5,2.5 0 0 0 2981.5,578.9531 L2989,578.9531 L2979,568.9531 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="154" x="2755" y="586.02">External inference is not</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="106" x="2755" y="601.1528">the default path.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="0" x="2759" y="616.2856"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="155" x="2755" y="631.4185">Usage requires security,</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="219" x="2755" y="646.5513">privacy, and governance approval.</text><!--MD5=[6708a8211cc69ecec24cce267e259b5b]
+link BusinessUser to DNS--><path d="M880,107.2831 C880,166.5631 880,271.9531 880,271.9531 C880,271.9531 1117.26,271.9531 1117.26,271.9531 " fill="none" id="BusinessUser-&gt;DNS" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1122.26,271.9531,1113.26,267.9531,1117.26,271.9531,1113.26,275.9531,1122.26,271.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="122" x="946" y="84.02">Resolve application</text><!--MD5=[9a6aa7b12d5e1eaf1cc509ad8de77e3c]
+link DNS to Ingress--><path d="M1227.7,287.2031 C1227.7,287.2031 1372.98,287.2031 1372.98,287.2031 " fill="none" id="DNS-&gt;Ingress" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1377.98,287.2031,1368.98,283.2031,1372.98,287.2031,1368.98,291.2031,1377.98,287.2031" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[20d02addae4dbdb54f0b3bba4b5b0361]
+link BusinessUser to Ingress--><path d="M846,107.1931 C846,174.2931 846,303.9531 846,303.9531 C846,303.9531 1372.9,303.9531 1372.9,303.9531 " fill="none" id="BusinessUser-&gt;Ingress" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1377.9,303.9531,1368.9,299.9531,1372.9,303.9531,1368.9,307.9531,1377.9,303.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="41" x="1154.5" y="44.02">HTTPS</text><!--MD5=[ac2b5523460b4b6fa4bcfd900f7253d1]
+link Ingress to Frontend--><path d="M1496.38,296.9531 C1605.77,296.9531 1828,296.9531 1828,296.9531 C1828,296.9531 1828,1086.1031 1828,1086.1031 " fill="none" id="Ingress-&gt;Frontend" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1828,1091.1031,1832,1082.1031,1828,1086.1031,1824,1082.1031,1828,1091.1031" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[a1e36bce072ed8d13acbe4daa6249a2c]
+link Ingress to BusinessAPI--><path d="M1496.19,284.9531 C1661.15,284.9531 2114,284.9531 2114,284.9531 C2114,284.9531 2114,1216.4531 2114,1216.4531 C2114,1216.4531 2254.35,1216.4531 2254.35,1216.4531 " fill="none" id="Ingress-&gt;BusinessAPI" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2259.35,1216.4531,2250.35,1212.4531,2254.35,1216.4531,2250.35,1220.4531,2259.35,1216.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[9f5e6d43edf8e24f18a9266277bad3fc]
+link Ingress to AIService--><path d="M1408,309.0931 C1408,427.6731 1408,1087.6231 1408,1087.6231 C1408,1087.6231 2781.79,1087.6231 2781.79,1087.6231 " fill="none" id="Ingress-&gt;AIService" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2786.79,1087.6231,2777.79,1083.6231,2781.79,1087.6231,2777.79,1091.6231,2786.79,1087.6231" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[106cc24de8179d40d6df4049030be85c]
+link CertManager to Ingress--><path d="M1175,336.8931 C1175,323.1031 1175,306.4531 1175,306.4531 C1175,306.4531 1372.88,306.4531 1372.88,306.4531 " fill="none" id="CertManager-&gt;Ingress" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1377.88,306.4531,1368.88,302.4531,1372.88,306.4531,1368.88,310.4531,1377.88,306.4531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="23" x="1289" y="318.02">TLS</text><!--MD5=[889af866c796cc87270dc638f5f664d2]
+link Frontend to BusinessAPI--><path d="M1942,1144.5531 C1942,1176.0931 1942,1224.4531 1942,1224.4531 C1942,1224.4531 2254.11,1224.4531 2254.11,1224.4531 " fill="none" id="Frontend-&gt;BusinessAPI" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2259.11,1224.4531,2250.11,1220.4531,2254.11,1224.4531,2250.11,1228.4531,2259.11,1224.4531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="80" x="2040.5" y="1152.02">API requests</text><!--MD5=[1fb11cb0db9aeb29cd29c1601da8f788]
+link BusinessAPI to PostgreSQL--><path d="M2342,1253.6931 C2342,1265.1131 2342,1275.8531 2342,1275.8531 C2342,1275.8531 3302.74,1275.8531 3302.74,1275.8531 " fill="none" id="BusinessAPI-&gt;PostgreSQL" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3307.74,1275.8531,3298.74,1271.8531,3302.74,1275.8531,3298.74,1279.8531,3307.74,1275.8531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="74" x="2832" y="1267.02">Read / write</text><!--MD5=[a51cb87ce6a3e80f44a12e9fcf2f0303]
+link AppJobs to PostgreSQL--><path d="M1900,1232.6531 C1900,1253.0331 1900,1277.6531 1900,1277.6531 C1900,1277.6531 3302.87,1277.6531 3302.87,1277.6531 " fill="none" id="AppJobs-&gt;PostgreSQL" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3307.87,1277.6531,3298.87,1273.6531,3302.87,1277.6531,3298.87,1281.6531,3307.87,1277.6531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="157" x="2512" y="1395.02">Batch / background work</text><!--MD5=[a226eadf71ce1c1bb85021c73dcf7864]
+link BusinessAPI to Analytics--><path d="M2314,1253.7531 C2314,1306.0931 2314,1416.8331 2314,1416.8331 C2314,1416.8331 3621.73,1416.8331 3621.73,1416.8331 " fill="none" id="BusinessAPI-&gt;Analytics" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3626.73,1416.8331,3617.73,1412.8331,3621.73,1416.8331,3617.73,1420.8331,3626.73,1416.8331" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="91" x="3069" y="1360.02">Curated reads</text><!--MD5=[9e6b4b92b057f84ae2b8bbdbd093e363]
+link PostgreSQL to OLTP--><path d="M3409.06,1291.9531 C3486.1,1291.9531 3624,1291.9531 3624,1291.9531 C3624,1291.9531 3624,1308.4231 3624,1308.4231 " fill="none" id="PostgreSQL-&gt;OLTP" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3624,1313.4231,3628,1304.4231,3624,1308.4231,3620,1304.4231,3624,1313.4231" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[2fc13331c3dda996555c263d32d0763d]
+link PostgreSQL to Analytics--><path d="M3376,1315.6731 C3376,1348.8331 3376,1406.5731 3376,1406.5731 C3376,1406.5731 3622,1406.5731 3622,1406.5731 " fill="none" id="PostgreSQL-&gt;Analytics" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3627,1406.5731,3618,1402.5731,3622,1406.5731,3618,1410.5731,3627,1406.5731" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[3244e00448faa6bf0bbb42899c1fde6d]
+link BusinessAPI to AIService--><path d="M2325,1200.2631 C2325,1162.9231 2325,1099.6231 2325,1099.6231 C2325,1099.6231 2781.97,1099.6231 2781.97,1099.6231 " fill="none" id="BusinessAPI-&gt;AIService" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2786.97,1099.6231,2777.97,1095.6231,2781.97,1099.6231,2777.97,1103.6231,2786.97,1099.6231" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="133" x="2524" y="1093.02">AI-enhanced request</text><!--MD5=[3244e00448faa6bf0bbb42899c1fde6d]
+link BusinessAPI to AIService--><path d="M2347,1200.2131 C2347,1165.0731 2347,1107.7831 2347,1107.7831 C2347,1107.7831 2781.86,1107.7831 2781.86,1107.7831 " fill="none" id="BusinessAPI-&gt;AIService-1" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2786.86,1107.7831,2777.86,1103.7831,2781.86,1107.7831,2777.86,1111.7831,2786.86,1107.7831" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="117" x="2532" y="1150.02">Optional capability</text><path d="M2467,1164.0859 L2467,1209.0859 A5,5 0 0 0 2472,1214.0859 L2709,1214.0859 A5,5 0 0 0 2714,1209.0859 L2714,1169.0859 L2704,1159.0859 L2472,1159.0859 A5,5 0 0 0 2467,1164.0859 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M2704,1159.0859 L2704,1166.5859 A2.5,2.5 0 0 0 2706.5,1169.0859 L2714,1169.0859 L2704,1159.0859 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="217" x="2482" y="1176.1528">Core business functionality should</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="203" x="2489" y="1191.2856">remain available where possible</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="184" x="2498.5" y="1206.4185">if AI services are unavailable.</text><!--MD5=[447dca633a261d9082a435ee7488dff1]
+link AIService to AIGateway--><path d="M2786.82,1083.7831 C2647.04,1083.7831 2378,1083.7831 2378,1083.7831 C2378,1083.7831 2378,835.5331 2378,835.5331 " fill="none" id="AIService-&gt;AIGateway" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2378,830.5331,2374,839.5331,2378,835.5331,2382,839.5331,2378,830.5331" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[08ae8097a7c5ac70898a760d09ccc385]
+link AIGateway to RAG--><path d="M2386.27,806.7831 C2386.27,806.7831 2811.66,806.7831 2811.66,806.7831 " fill="none" id="AIGateway-&gt;RAG" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2816.66,806.7831,2807.66,802.7831,2811.66,806.7831,2807.66,810.7831,2816.66,806.7831" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="146" x="2517.5" y="790.02">Governed retrieval flow</text><!--MD5=[ffb97e93255310ace2a35494decf0dd1]
+link RAG to PostgreSQL--><path d="M2921.28,824.9531 C2945.92,824.9531 2970,824.9531 2970,824.9531 C2970,824.9531 2970,1274.0531 2970,1274.0531 C2970,1274.0531 3302.71,1274.0531 3302.71,1274.0531 " fill="none" id="RAG-&gt;PostgreSQL" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3307.71,1274.0531,3298.71,1270.0531,3302.71,1274.0531,3298.71,1278.0531,3307.71,1274.0531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="189" x="3020" y="908.02">Governed context / metadata</text><!--MD5=[788041ffb8502320e7f59a12bf40aa44]
+link RAG to Ollama--><path d="M2921.39,804.4531 C2921.39,804.4531 3320.41,804.4531 3320.41,804.4531 " fill="none" id="RAG-&gt;Ollama" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3325.41,804.4531,3316.41,800.4531,3320.41,804.4531,3316.41,808.4531,3325.41,804.4531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="114" x="3057.5" y="792.02">Prompt + context</text><!--MD5=[41bc4cb8bae66c9ff344c686e3cdc1cd]
+link Ollama to Qwen--><path d="M3391.65,795.9531 C3391.65,795.9531 3624.37,795.9531 3624.37,795.9531 " fill="none" id="Ollama-&gt;Qwen" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3629.37,795.9531,3620.37,791.9531,3624.37,795.9531,3620.37,799.9531,3629.37,795.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="59" x="3516.5" y="792.02">Inference</text><!--MD5=[43eb001146713549643dfd8d15f72b46]
+link Qwen to GPU--><path d="M3735.55,795.9531 C3735.55,795.9531 3940.98,795.9531 3940.98,795.9531 " fill="none" id="Qwen-&gt;GPU" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3945.98,795.9531,3936.98,791.9531,3940.98,795.9531,3936.98,799.9531,3945.98,795.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="110" x="3805" y="792.02">GPU acceleration</text><!--MD5=[5bda83776310fb87baf1f2cbf3005e33]
+link AIGateway to ExternalAI--><path d="M2386.2,789.2831 C2408.35,789.2831 2427,789.2831 2427,789.2831 C2427,789.2831 2427,526.9531 2427,526.9531 C2427,526.9531 2778.78,526.9531 2778.78,526.9531 " fill="none" id="AIGateway-&gt;ExternalAI" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2783.78,526.9531,2774.78,522.9531,2778.78,526.9531,2774.78,530.9531,2783.78,526.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="174" x="2503.5" y="655.02">Explicit governed exception</text><!--MD5=[d0ac9f9b75c05f768d774226becfc93b]
+link ConfigMaps to BusinessAPI--><path d="M1487.63,1530.9531 C1670.62,1530.9531 2287,1530.9531 2287,1530.9531 C2287,1530.9531 2287,1258.6631 2287,1258.6631 " fill="none" id="ConfigMaps-&gt;BusinessAPI" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2287,1253.6631,2283,1262.6631,2287,1258.6631,2291,1262.6631,2287,1253.6631" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="129" x="1803.5" y="1636.02">Non-sensitive config</text><!--MD5=[fb8d84b9e99f1f0cb6d7846b6e4603e8]
+link ConfigMaps to AIService--><path d="M1487.55,1539.9531 C1741.82,1539.9531 2869,1539.9531 2869,1539.9531 C2869,1539.9531 2869,1121.1031 2869,1121.1031 " fill="none" id="ConfigMaps-&gt;AIService" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2869,1116.1031,2865,1125.1031,2869,1121.1031,2873,1125.1031,2869,1116.1031" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[447a3bf83ba4d873d61d5a129c8d3ee4]
+link ConfigMaps to AppJobs--><path d="M1487.53,1521.9531 C1594.9,1521.9531 1836,1521.9531 1836,1521.9531 C1836,1521.9531 1836,1237.6231 1836,1237.6231 " fill="none" id="ConfigMaps-&gt;AppJobs" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1836,1232.6231,1832,1241.6231,1836,1237.6231,1840,1241.6231,1836,1232.6231" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[266930c4aee8ac3ef4157983a9de583b]
+link Secrets to BusinessAPI--><path d="M1937,1551.6331 C1937,1483.2031 1937,1246.4531 1937,1246.4531 C1937,1246.4531 2254.18,1246.4531 2254.18,1246.4531 " fill="none" id="Secrets-&gt;BusinessAPI" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2259.18,1246.4531,2250.18,1242.4531,2254.18,1246.4531,2250.18,1250.4531,2259.18,1246.4531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="72" x="2044.5" y="1535.02">Credentials</text><!--MD5=[57740390385c57d1e7c2be990c3235dc]
+link Secrets to AIService--><path d="M1947.17,1569.9531 C2190.34,1569.9531 2910,1569.9531 2910,1569.9531 C2910,1569.9531 2910,1121.1631 2910,1121.1631 " fill="none" id="Secrets-&gt;AIService" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="2910,1116.1631,2906,1125.1631,2910,1121.1631,2914,1125.1631,2910,1116.1631" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[e5a1d50ef40abfd2e13996b4a0889b88]
+link Secrets to AppJobs--><path d="M1868,1551.9031 C1868,1551.9031 1868,1237.5931 1868,1237.5931 " fill="none" id="Secrets-&gt;AppJobs" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1868,1232.5931,1864,1241.5931,1868,1237.5931,1872,1241.5931,1868,1232.5931" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[41f328760fc27b1fece211a0b05caa2b]
+link ExternalSecrets to Secrets--><path d="M1512,1584.1231 C1512,1575.5331 1512,1568.2031 1512,1568.2031 C1512,1568.2031 1783.99,1568.2031 1783.99,1568.2031 " fill="none" id="ExternalSecrets-&gt;Secrets" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1788.99,1568.2031,1779.99,1564.2031,1783.99,1568.2031,1779.99,1572.2031,1788.99,1568.2031" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="114" x="1592" y="1572.02">Future integration</text><!--MD5=[6282826376584377f6a7a8f9f556c6ae]
+link Engineer to GitLabCI--><path d="M68,425.1931 C68,418.4631 68,413.7831 68,413.7831 C68,413.7831 317.91,413.7831 317.91,413.7831 " fill="none" id="Engineer-&gt;GitLabCI" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="322.91,413.7831,313.91,409.7831,317.91,413.7831,313.91,417.7831,322.91,413.7831" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="129" x="161" y="469.02">Application / AI code</text><!--MD5=[b73141e0f05cb3b6b561a707b0fbbb19]
+link DevOps to GitLabCI--><path d="M115,390.7131 C115,397.4431 115,402.1231 115,402.1231 C115,402.1231 317.88,402.1231 317.88,402.1231 " fill="none" id="DevOps-&gt;GitLabCI" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="322.88,402.1231,313.88,398.1231,317.88,402.1231,313.88,406.1231,322.88,402.1231" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="112" x="169.5" y="339.02">Platform changes</text><!--MD5=[60a1cfaac114225f21f11616c08004e8]
+link GitLabCI to ArgoCD--><path d="M403.11,407.9531 C403.11,407.9531 607.65,407.9531 607.65,407.9531 " fill="none" id="GitLabCI-&gt;ArgoCD" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="612.65,407.9531,603.65,403.9531,607.65,407.9531,603.65,411.9531,612.65,407.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="148" x="434" y="403.02">Validated desired state</text><!--MD5=[14734ed008c99164f72f78e78129726b]
+link ArgoCD to Kubernetes--><path d="M690.2,407.9531 C690.2,407.9531 806.7,407.9531 806.7,407.9531 " fill="none" id="ArgoCD-&gt;Kubernetes" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="811.7,407.9531,802.7,403.9531,806.7,407.9531,802.7,411.9531,811.7,407.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="60" x="721" y="403.02">Reconcile</text><!--MD5=[1058cc8b8ecc1facaa1243c214a3069a]
+link Kubernetes to Apps--><path d="M913.05,417.4531 C1116.95,417.4531 1868,417.4531 1868,417.4531 C1868,417.4531 1868,572.1281 1868,729.2206 C1868,807.7669 1868,886.9175 1868,947.6403 C1868,978.0017 1868,1003.7562 1868,1022.5246 C1868,1023.6977 1868,1024.8434 1868,1025.9613 C1868,1026.5202 1868,1027.0722 1868,1027.6171 " fill="none" id="Kubernetes-&gt;Apps" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1868,1027.6171,1872,1018.6171,1868,1022.6171,1864,1018.6171,1868,1027.6171" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="37" x="1282" y="142.02">Hosts</text><!--MD5=[bc9d0a75fa4b0b2c230a7e1fb6d4e251]
+link Kubernetes to Entry--><path d="M913.06,407.9531 C955.9,407.9531 1018.695,407.9531 1072.0625,407.9531 C1078.7334,407.9531 1085.2571,407.9531 1091.576,407.9531 C1092.3659,407.9531 1093.1525,407.9531 1093.9359,407.9531 " fill="none" id="Kubernetes-&gt;Entry" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1093.9359,407.9531,1084.9359,403.9531,1088.9359,407.9531,1084.9359,411.9531,1093.9359,407.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="37" x="988.5" y="404.02">Hosts</text><!--MD5=[b426d7a8114ed03dfa47465b44200314]
+link Kubernetes to Config--><path d="M863,426.3231 C863,581.8831 863,1672.9531 863,1672.9531 C863,1672.9531 1002.05,1672.9531 1143.2725,1672.9531 C1178.5781,1672.9531 1214.0195,1672.9531 1247.458,1672.9531 C1264.1772,1672.9531 1280.3958,1672.9531 1295.8462,1672.9531 C1303.5714,1672.9531 1311.1046,1672.9531 1318.4124,1672.9531 C1322.0662,1672.9531 1325.6638,1672.9531 1329.2008,1672.9531 C1330.085,1672.9531 1330.9655,1672.9531 1331.8421,1672.9531 " fill="none" id="Kubernetes-&gt;Config" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="1331.8421,1672.9531,1322.8421,1668.9531,1326.8421,1672.9531,1322.8421,1676.9531,1331.8421,1672.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="150" x="1100" y="1065.02">Provides runtime config</text><!--MD5=[526da8e9511474b6ea4a06afe599b460]
+link BusinessAPI to Prometheus--><path d="M2304,1200.1431 C2304,1154.0431 2304,1064.6231 2304,1064.6231 C2304,1064.6231 3624.73,1064.6231 3624.73,1064.6231 " fill="none" id="BusinessAPI-&gt;Prometheus" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3629.73,1064.6231,3620.73,1060.6231,3624.73,1064.6231,3620.73,1068.6231,3629.73,1064.6231" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="78" x="3075.5" y="1197.02">RED metrics</text><!--MD5=[7751c380d5fba20374b69240e290e8b1]
+link AIService to Prometheus--><path d="M2936,1079.8531 C2936,1075.6031 2936,1072.2831 2936,1072.2831 C2936,1072.2831 3624.71,1072.2831 3624.71,1072.2831 " fill="none" id="AIService-&gt;Prometheus" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3629.71,1072.2831,3620.71,1068.2831,3624.71,1072.2831,3620.71,1076.2831,3629.71,1072.2831" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="64" x="3326.5" y="1109.02">AI metrics</text><!--MD5=[aae9194a4b1c8650880c5a269cc67ce7]
+link AppJobs to Prometheus--><path d="M1932.06,1193.4531 C2254.35,1193.4531 3683,1193.4531 3683,1193.4531 C3683,1193.4531 3683,1089.2231 3683,1089.2231 " fill="none" id="AppJobs-&gt;Prometheus" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3683,1084.2231,3679,1093.2231,3683,1089.2231,3687,1093.2231,3683,1084.2231" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="71" x="2833.5" y="396.02">Job metrics</text><!--MD5=[d97da948d039974401c859ee2bac02e7]
+link Ingress to Prometheus--><path d="M1437,309.0031 C1437,424.1631 1437,1051.4531 1437,1051.4531 C1437,1051.4531 3624.75,1051.4531 3624.75,1051.4531 " fill="none" id="Ingress-&gt;Prometheus" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3629.75,1051.4531,3620.75,1047.4531,3624.75,1051.4531,3620.75,1055.4531,3629.75,1051.4531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="90" x="2545.5" y="168.02">Traffic metrics</text><!--MD5=[328142ad10fae66aca88a0ed8040516f]
+link BusinessAPI to Loki--><path d="M2282,1200.4331 C2282,1126.7931 2282,925.1531 2282,925.1531 C2282,925.1531 3653.78,925.1531 3653.78,925.1531 " fill="none" id="BusinessAPI-&gt;Loki" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3658.78,925.1531,3649.78,921.1531,3653.78,925.1531,3649.78,929.1531,3658.78,925.1531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="98" x="3065.5" y="642.02">Structured logs</text><!--MD5=[8f4a981cb379c60d7930e928f38d2aa4]
+link AIService to Loki--><path d="M2929,1079.8331 C2929,1036.7031 2929,931.5531 2929,931.5531 C2929,931.5531 3653.7,931.5531 3653.7,931.5531 " fill="none" id="AIService-&gt;Loki" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3658.7,931.5531,3649.7,927.5531,3653.7,931.5531,3649.7,935.5531,3658.7,931.5531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="98" x="3309.5" y="1022.02">Structured logs</text><!--MD5=[f5c47b1607d9ccc2f90e8433edd391ca]
+link AppJobs to Loki--><path d="M1932.42,1186.4531 C1977.98,1186.4531 2031,1186.4531 2031,1186.4531 C2031,1186.4531 2031,918.7531 2031,918.7531 C2031,918.7531 3653.84,918.7531 3653.84,918.7531 " fill="none" id="AppJobs-&gt;Loki" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3658.84,918.7531,3649.84,914.7531,3653.84,918.7531,3649.84,922.7531,3658.84,918.7531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="30" x="2854" y="309.02">Logs</text><!--MD5=[c5e994d2e8542c9fc885374440eaf6fc]
+link Ingress to Loki--><path d="M1467,309.2131 C1467,411.8531 1467,912.3531 1467,912.3531 C1467,912.3531 3653.75,912.3531 3653.75,912.3531 " fill="none" id="Ingress-&gt;Loki" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3658.75,912.3531,3649.75,908.3531,3653.75,912.3531,3649.75,916.3531,3658.75,912.3531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="118" x="2531.5" y="239.02">Access / error logs</text><!--MD5=[42b58bef244194e0689c90401e3ad7aa]
+link BusinessAPI to OTel--><path d="M2368.69,1226.9531 C2573.85,1226.9531 3286,1226.9531 3286,1226.9531 C3286,1226.9531 3286,979.1531 3286,979.1531 " fill="none" id="BusinessAPI-&gt;OTel" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3286,974.1531,3282,983.1531,3286,979.1531,3290,983.1531,3286,974.1531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="42" x="2848" y="988.02">Traces</text><!--MD5=[956956a4ce3e390785f99fa39a37cf13]
+link AIService to OTel--><path d="M2944,1079.6831 C2944,1041.3231 2944,955.9531 2944,955.9531 C2944,955.9531 3257.36,955.9531 3257.36,955.9531 " fill="none" id="AIService-&gt;OTel" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3262.36,955.9531,3253.36,951.9531,3257.36,955.9531,3253.36,959.9531,3262.36,955.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="42" x="3093.5" y="1007.02">Traces</text><!--MD5=[e745d0744ce12afe182ed972f625e21c]
+link RAG to OTel--><path d="M2921.11,819.4531 C3034.6,819.4531 3294,819.4531 3294,819.4531 C3294,819.4531 3294,932.8231 3294,932.8231 " fill="none" id="RAG-&gt;OTel" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3294,937.8231,3298,928.8231,3294,932.8231,3290,928.8231,3294,937.8231" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="69" x="3080" y="850.02">RAG spans</text><!--MD5=[f007567d4498269cf30d05b33163be64]
+link OTel to Tempo--><path d="M3454.85,957.9531 C3541.08,957.9531 3654,957.9531 3654,957.9531 C3654,957.9531 3654,971.8831 3654,971.8831 " fill="none" id="OTel-&gt;Tempo" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3654,976.8831,3658,967.8831,3654,971.8831,3650,967.8831,3654,976.8831" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76" x="3508" y="958.02">OTLP traces</text><!--MD5=[cc5bb479812f7763a19c9b64f3173319]
+link Prometheus to Grafana--><path d="M3726,1047.8431 C3726,1028.6131 3726,1000.9531 3726,1000.9531 C3726,1000.9531 3973.4,1000.9531 3973.4,1000.9531 " fill="none" id="Prometheus-&gt;Grafana" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3978.4,1000.9531,3969.4,996.9531,3973.4,1000.9531,3969.4,1004.9531,3978.4,1000.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[2678cfc309838449c02af64f63828469]
+link Loki to Grafana--><path d="M3706.15,923.9531 C3782.11,923.9531 4015,923.9531 4015,923.9531 C4015,923.9531 4015,971.6731 4015,971.6731 " fill="none" id="Loki-&gt;Grafana" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="4015,976.6731,4019,967.6731,4015,971.6731,4011,967.6731,4015,976.6731" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[3afe6a590278a3939abd9ee437c36e95]
+link Tempo to Grafana--><path d="M3717.14,988.9531 C3717.14,988.9531 3973.42,988.9531 3973.42,988.9531 " fill="none" id="Tempo-&gt;Grafana" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="3978.42,988.9531,3969.42,984.9531,3973.42,988.9531,3969.42,992.9531,3978.42,988.9531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[49331c2eb29bebc08a4d34f4c15136a4]
+link Auth to BusinessAPI--><path d="M1501.84,1239.4531 C1501.84,1239.4531 2254.23,1239.4531 2254.23,1239.4531 " fill="none" id="Auth-&gt;BusinessAPI" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2259.23,1239.4531,2250.23,1235.4531,2254.23,1239.4531,2250.23,1243.4531,2259.23,1239.4531" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[f32aba078f2fadb135689a4bf091d76e]
+link Auth to AIService--><path d="M1501.76,1261.9531 C1776.05,1261.9531 2828,1261.9531 2828,1261.9531 C2828,1261.9531 2828,1121.1331 2828,1121.1331 " fill="none" id="Auth-&gt;AIService" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2828,1116.1331,2824,1125.1331,2828,1121.1331,2832,1125.1331,2828,1116.1331" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[908a8822bb873adb7949986f90ca8d10]
+link LeastPrivilege to Secrets--><path d="M1496.04,1411.7031 C1598.17,1411.7031 1797,1411.7031 1797,1411.7031 C1797,1411.7031 1797,1546.8031 1797,1546.8031 " fill="none" id="LeastPrivilege-&gt;Secrets" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1797,1551.8031,1801,1542.8031,1797,1546.8031,1793,1542.8031,1797,1551.8031" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[bbac2950ffd12155c85b0daeaef6af54]
+link LeastPrivilege to PostgreSQL--><path d="M1496.1,1393.7031 C1817.65,1393.7031 3342,1393.7031 3342,1393.7031 C3342,1393.7031 3342,1320.5631 3342,1320.5631 " fill="none" id="LeastPrivilege-&gt;PostgreSQL" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="3342,1315.5631,3338,1324.5631,3342,1320.5631,3346,1324.5631,3342,1315.5631" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[11becd01ca77994de18ef504bb91c718]
+link Policy to Apps--><path d="M1497.27,1333.2031 C1503.15,1333.2031 1507,1333.2031 1507,1333.2031 C1507,1333.2031 1507,1055.9531 1507,1055.9531 C1507,1055.9531 1593.07,1055.9531 1681.1563,1055.9531 C1703.1778,1055.9531 1725.3254,1055.9531 1746.2856,1055.9531 C1751.5257,1055.9531 1756.6916,1055.9531 1761.7627,1055.9531 C1762.3966,1055.9531 1763.029,1055.9531 1763.6599,1055.9531 " fill="none" id="Policy-&gt;Apps" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="1763.6599,1055.9531,1754.6599,1051.9531,1758.6599,1055.9531,1754.6599,1059.9531,1763.6599,1055.9531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="180" x="1559" y="1346.02">Validate workload standards</text><!--MD5=[54542b6965bc7f4ea5638ab1f9ff85dd]
+link AIGov to AIGateway--><path d="M1497.19,1163.1231 C1685.5,1163.1231 2251,1163.1231 2251,1163.1231 C2251,1163.1231 2251,835.6531 2251,835.6531 " fill="none" id="AIGov-&gt;AIGateway" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2251,830.6531,2247,839.6531,2251,835.6531,2255,839.6531,2251,830.6531" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="63" x="1836.5" y="840.02">AI policies</text><!--MD5=[d604486d1a54204bb7b380e9165395c2]
+link AIGov to RAG--><path d="M1497.02,1171.2831 C1733.89,1171.2831 2591,1171.2831 2591,1171.2831 C2591,1171.2831 2591,818.6231 2591,818.6231 C2591,818.6231 2811.71,818.6231 2811.71,818.6231 " fill="none" id="AIGov-&gt;RAG" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#A80036" points="2816.71,818.6231,2807.71,814.6231,2811.71,818.6231,2807.71,822.6231,2816.71,818.6231" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="169" x="1996" y="935.02">Data / prompt governance</text><!--MD5=[65cd51bb1da18f0b9cd584af12a3d46d]
+link BusinessAPI to GMN104--><path d="M2259.4,1208.4531 C2241.92,1208.4531 2227,1208.4531 2227,1208.4531 C2227,1208.4531 2227,858.7931 2227,725.6231 " fill="none" id="BusinessAPI-GMN104" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[5239cb80268f2c2c688ce5adf82ec4d7]
+link PostgreSQL to GMN107--><path d="M3307.75,1272.2531 C3280.32,1272.2531 3252,1272.2531 3252,1272.2531 C3252,1272.2531 3252,851.9231 3252,725.5031 " fill="none" id="PostgreSQL-GMN107" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[295ed94625c09c88665ed62f9b1e5b00]
+link AIGateway to GMN110--><path d="M2386.04,783.6231 C2405.85,783.6231 2422,783.6231 2422,783.6231 C2422,783.6231 2422,546.6431 2422,447.1331 " fill="none" id="AIGateway-GMN110" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><!--MD5=[e1efdfc2134b8bdb552ae67c5df03da0]
+@startuml 06-Application-Architecture
+
+title Enterprise AI Platform — Application Architecture
+
+left to right direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam ArrowThickness 1
+
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam component {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam database {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam cloud {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+
+actor "Business User" as BusinessUser
+actor "Platform / DevOps\nEngineer" as DevOps
+actor "Data / AI\nEngineer" as Engineer
+
+
+rectangle "North-South Access" as Entry {
+    component "Internal DNS\n*.lab.local" as DNS
+    component "NGINX Ingress" as Ingress
+    component "cert-manager" as CertManager
+}
+
+
+rectangle "Application Layer" as Apps {
+
+    component "Business Frontend /\nClient" as Frontend
+
+    component "Business API\nFastAPI" as BusinessAPI
+
+    component "AI Integration Service" as AIService
+
+    component "Background /\nApplication Jobs" as AppJobs
+}
+
+
+rectangle "Application Configuration" as Config {
+    component "ConfigMaps" as ConfigMaps
+    component "Kubernetes Secrets" as Secrets
+    component "Future External\nSecret Management" as ExternalSecrets
+}
+
+
+rectangle "Data Services" as Data {
+
+    database "PostgreSQL" as PostgreSQL
+
+    rectangle "Logical Data Areas" as Schemas {
+        component "Operational /\nApplication Data" as OLTP
+        component "Analytics /\nCurated Data" as Analytics
+    }
+}
+
+
+rectangle "AI Services" as AI {
+
+    component "Internal AI API /\nFuture AI Gateway" as AIGateway
+
+    component "RAG Service" as RAG
+
+    component "Ollama" as Ollama
+}
+
+node "Local AI Compute" as AIHost {
+    component "Qwen Model" as Qwen
+    component "NVIDIA GTX 1080\n8 GB VRAM" as GPU
+}
+
+cloud "External AI Provider\nGoverned Exception" as ExternalAI
+
+
+rectangle "Platform Services" as Platform {
+    component "Argo CD" as ArgoCD
+    component "Kubernetes" as Kubernetes
+    component "GitLab CI" as GitLabCI
+}
+
+
+rectangle "Observability" as Observability {
+    component "Prometheus" as Prometheus
+    component "Loki" as Loki
+    component "OpenTelemetry Collector" as OTel
+    component "Tempo" as Tempo
+    component "Grafana" as Grafana
+}
+
+
+BusinessUser - -> DNS : Resolve application
+DNS - -> Ingress
+BusinessUser - -> Ingress : HTTPS
+
+Ingress - -> Frontend
+Ingress - -> BusinessAPI
+Ingress - -> AIService
+
+CertManager - -> Ingress : TLS
+
+Frontend - -> BusinessAPI : API requests
+
+
+BusinessAPI - -> PostgreSQL : Read / write
+
+AppJobs - -> PostgreSQL : Batch / background work
+
+BusinessAPI - -> Analytics : Curated reads
+
+PostgreSQL - -> OLTP
+PostgreSQL - -> Analytics
+
+
+BusinessAPI - -> AIService : AI-enhanced request
+
+AIService - -> AIGateway
+
+AIGateway - -> RAG : Governed retrieval flow
+
+RAG - -> PostgreSQL : Governed context / metadata
+
+RAG - -> Ollama : Prompt + context
+
+Ollama - -> Qwen : Inference
+Qwen - -> GPU : GPU acceleration
+
+AIGateway ..> ExternalAI : Explicit governed exception
+
+
+BusinessAPI ..> AIService : Optional capability
+
+note on link
+Core business functionality should
+remain available where possible
+if AI services are unavailable.
+end note
+
+
+ConfigMaps - -> BusinessAPI : Non-sensitive config
+ConfigMaps - -> AIService
+ConfigMaps - -> AppJobs
+
+Secrets - -> BusinessAPI : Credentials
+Secrets - -> AIService
+Secrets - -> AppJobs
+
+ExternalSecrets ..> Secrets : Future integration
+
+
+Engineer - -> GitLabCI : Application / AI code
+DevOps - -> GitLabCI : Platform changes
+
+GitLabCI - -> ArgoCD : Validated desired state
+
+ArgoCD - -> Kubernetes : Reconcile
+
+Kubernetes - -> Apps : Hosts
+Kubernetes - -> Entry : Hosts
+Kubernetes - -> Config : Provides runtime config
+
+
+BusinessAPI ..> Prometheus : RED metrics
+AIService ..> Prometheus : AI metrics
+AppJobs ..> Prometheus : Job metrics
+Ingress ..> Prometheus : Traffic metrics
+
+
+BusinessAPI ..> Loki : Structured logs
+AIService ..> Loki : Structured logs
+AppJobs ..> Loki : Logs
+Ingress ..> Loki : Access / error logs
+
+
+BusinessAPI ..> OTel : Traces
+AIService ..> OTel : Traces
+RAG ..> OTel : RAG spans
+
+OTel - -> Tempo : OTLP traces
+
+Prometheus - -> Grafana
+Loki - -> Grafana
+Tempo - -> Grafana
+
+
+rectangle "Application Governance" as Gov {
+
+    component "Authentication /\nAuthorization" as Auth
+
+    component "Least Privilege" as LeastPrivilege
+
+    component "Policy as Code" as Policy
+
+    component "AI Governance" as AIGov
+}
+
+Auth ..> BusinessAPI
+Auth ..> AIService
+
+LeastPrivilege ..> Secrets
+LeastPrivilege ..> PostgreSQL
+
+Policy ..> Apps : Validate workload standards
+
+AIGov ..> AIGateway : AI policies
+AIGov ..> RAG : Data / prompt governance
+
+
+note bottom of BusinessAPI
+Business services remain
+separate from AI inference.
+
+AI is an enhancement unless
+the business requirement
+explicitly makes it critical.
+end note
+
+note bottom of PostgreSQL
+Operational and analytical
+responsibilities remain logically
+separated even when PostgreSQL
+hosts both at the current scale.
+end note
+
+note bottom of AIGateway
+Target-state abstraction layer.
+
+Applications should not become
+permanently coupled directly
+to Ollama or an external provider.
+end note
+
+note bottom of ExternalAI
+External inference is not
+the default path.
+
+Usage requires security,
+privacy, and governance approval.
+end note
+
+@enduml
+
+PlantUML version 1.2020.02(Sun Mar 01 11:22:07 CET 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 11.0.31+11-post-1ubuntu1-22.04.2-Ubuntu
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: null
+--></g></svg>

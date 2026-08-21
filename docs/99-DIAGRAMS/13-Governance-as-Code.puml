@@ -1,0 +1,395 @@
+@startuml 13-Governance-as-Code
+
+title Enterprise AI Platform — Governance as Code Architecture
+
+left to right direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam ArrowThickness 1
+
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam component {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam database {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+' ============================================================
+' GOVERNANCE INPUTS
+' ============================================================
+
+rectangle "Governance Inputs" as Inputs {
+
+    component "Business Requirements" as BusinessReq
+    component "Architecture Standards" as ArchitectureReq
+    component "Security Requirements" as SecurityReq
+    component "Compliance / GDPR" as ComplianceReq
+    component "AI Governance Requirements" as AIReq
+    component "Operational / SRE Requirements" as OpsReq
+}
+
+' ============================================================
+' GOVERNANCE MODEL
+' ============================================================
+
+rectangle "Governance Model" as GovernanceModel {
+
+    component "Requirements" as Requirements
+    component "Controls" as Controls
+    component "Policies" as Policies
+
+    component "Risks" as Risks
+    component "Exceptions" as Exceptions
+    component "ADRs" as ADRs
+    component "Technology Catalog" as Technology
+    component "Technical Debt" as Debt
+    component "SLOs" as SLOs
+}
+
+BusinessReq --> Requirements
+ArchitectureReq --> Requirements
+SecurityReq --> Requirements
+ComplianceReq --> Requirements
+AIReq --> Requirements
+OpsReq --> Requirements
+
+Requirements --> Controls
+Controls --> Policies
+
+Controls --> Risks
+Controls --> Exceptions
+Requirements --> ADRs
+ADRs --> Technology
+Risks --> Debt
+Controls --> SLOs
+
+' ============================================================
+' MACHINE-READABLE GOVERNANCE
+' ============================================================
+
+rectangle "Machine-Readable Governance" as MachineReadable {
+
+    component "YAML / JSON" as YAML
+    component "Markdown Front Matter" as FrontMatter
+    component "JSON Schema" as Schema
+    component "Stable IDs" as StableIDs
+}
+
+GovernanceModel --> YAML
+GovernanceModel --> FrontMatter
+
+Schema ..> YAML : Validate structure
+Schema ..> FrontMatter : Validate metadata
+StableIDs ..> GovernanceModel : Cross-reference IDs
+
+' ============================================================
+' GIT SOURCE OF TRUTH
+' ============================================================
+
+rectangle "Git Governance Repository" as GitLayer {
+
+    component "GitLab" as GitLab
+    component "Protected Branches" as ProtectedBranches
+    component "Merge Requests" as MergeRequests
+    component "Review / Approval" as Review
+}
+
+YAML --> GitLab
+FrontMatter --> GitLab
+
+ProtectedBranches ..> GitLab
+MergeRequests --> Review
+GitLab --> MergeRequests
+
+' ============================================================
+' CI VALIDATION
+' ============================================================
+
+rectangle "Governance CI" as CI {
+
+    component "Schema Validation" as SchemaValidation
+    component "ID / Reference Validation" as ReferenceValidation
+    component "Ownership Validation" as OwnershipValidation
+    component "Expiration Validation" as ExpirationValidation
+    component "Policy Validation" as PolicyValidation
+    component "Documentation Validation" as DocValidation
+    component "Security Validation" as SecurityValidation
+}
+
+Review --> CI
+
+CI --> SchemaValidation
+CI --> ReferenceValidation
+CI --> OwnershipValidation
+CI --> ExpirationValidation
+CI --> PolicyValidation
+CI --> DocValidation
+CI --> SecurityValidation
+
+' ============================================================
+' APPROVED GOVERNANCE STATE
+' ============================================================
+
+rectangle "Approved Governance State" as ApprovedState {
+
+    component "Approved Policies" as ApprovedPolicies
+    component "Approved Controls" as ApprovedControls
+    component "Approved Risks" as ApprovedRisks
+    component "Approved SLOs" as ApprovedSLOs
+    component "Approved Metadata" as ApprovedMetadata
+}
+
+CI --> ApprovedState : PASS
+
+' ============================================================
+' ENFORCEMENT LAYERS
+' ============================================================
+
+rectangle "Runtime Enforcement & Application" as Enforcement {
+
+    rectangle "GitOps" as GitOps {
+        component "Argo CD" as ArgoCD
+    }
+
+    rectangle "Kubernetes Policy" as KubernetesPolicy {
+        component "Policy Engine\nKyverno / OPA\nTarget State" as PolicyEngine
+    }
+
+    rectangle "Data Governance" as DataGov {
+        component "OpenMetadata API" as OpenMetadata
+    }
+
+    rectangle "Observability / SRE" as SRE {
+        component "Prometheus Rules" as PrometheusRules
+        component "Alertmanager" as Alertmanager
+    }
+
+    rectangle "AI Governance" as AIGov {
+        component "AI Asset Registry" as AIAssets
+        component "Promotion / Evaluation Gates" as AIGates
+    }
+}
+
+ApprovedPolicies --> PolicyEngine
+ApprovedPolicies --> ArgoCD
+
+ApprovedControls --> OpenMetadata
+ApprovedMetadata --> OpenMetadata
+
+ApprovedSLOs --> PrometheusRules
+
+ApprovedControls --> AIAssets
+ApprovedControls --> AIGates
+
+' ============================================================
+' RUNTIME SYSTEMS
+' ============================================================
+
+rectangle "Runtime Platform" as Runtime {
+
+    component "Kubernetes Workloads" as Kubernetes
+    component "Data Platform" as DataPlatform
+    component "AI / ML Platform" as AIPlatform
+    component "Applications" as Applications
+}
+
+ArgoCD --> Kubernetes : Desired-state reconciliation
+
+PolicyEngine --> Kubernetes : Admission allow / deny
+
+OpenMetadata --> DataPlatform : Governance metadata
+
+PrometheusRules ..> Runtime : Monitor runtime state
+
+AIGates --> AIPlatform : Promotion / execution controls
+
+' ============================================================
+' EVIDENCE
+' ============================================================
+
+rectangle "Continuous Evidence" as Evidence {
+
+    component "Git History" as GitEvidence
+    component "CI Results" as CIEvidence
+    component "Argo CD State" as ArgoEvidence
+    component "Policy Reports" as PolicyEvidence
+    component "OpenMetadata Evidence" as MetadataEvidence
+    component "Prometheus Metrics" as MetricsEvidence
+    component "MLflow Evidence" as MLflowEvidence
+    component "Backup / Restore Results" as RestoreEvidence
+}
+
+GitLab --> GitEvidence
+CI --> CIEvidence
+
+ArgoCD --> ArgoEvidence
+PolicyEngine --> PolicyEvidence
+OpenMetadata --> MetadataEvidence
+PrometheusRules --> MetricsEvidence
+AIPlatform ..> MLflowEvidence
+
+Runtime ..> RestoreEvidence : Recovery validation
+
+' ============================================================
+' CONTINUOUS EVALUATION
+' ============================================================
+
+rectangle "Continuous Governance Evaluation" as Continuous {
+
+    component "Compliance Status" as ComplianceStatus
+    component "Risk Indicators" as RiskIndicators
+    component "SLO Status" as SLOStatus
+    component "Policy Violations" as Violations
+    component "Technical Debt Signals" as DebtSignals
+    component "Maturity Indicators" as Maturity
+}
+
+GitEvidence --> Continuous
+CIEvidence --> Continuous
+ArgoEvidence --> Continuous
+PolicyEvidence --> Continuous
+MetadataEvidence --> Continuous
+MetricsEvidence --> Continuous
+MLflowEvidence --> Continuous
+RestoreEvidence --> Continuous
+
+Continuous --> ComplianceStatus
+Continuous --> RiskIndicators
+Continuous --> SLOStatus
+Continuous --> Violations
+Continuous --> DebtSignals
+Continuous --> Maturity
+
+' ============================================================
+' GOVERNANCE DASHBOARD
+' ============================================================
+
+rectangle "Governance Reporting" as Reporting {
+
+    component "Governance Dashboard" as Dashboard
+
+    component "Risk Register View" as RiskView
+    component "Compliance Matrix" as ComplianceView
+    component "Technology Radar" as Radar
+    component "Debt Report" as DebtView
+    component "SLO Coverage" as SLOView
+    component "Documentation Status" as DocStatus
+}
+
+Continuous --> Dashboard
+
+Dashboard --> RiskView
+Dashboard --> ComplianceView
+Dashboard --> Radar
+Dashboard --> DebtView
+Dashboard --> SLOView
+Dashboard --> DocStatus
+
+' ============================================================
+' HUMAN GOVERNANCE
+' ============================================================
+
+actor "Architecture /\nGovernance Review" as GovernanceUser
+actor "Security /\nCompliance Review" as SecurityUser
+actor "Platform / DevOps\nEngineer" as DevOps
+
+GovernanceUser --> Dashboard
+SecurityUser --> Dashboard
+DevOps --> Dashboard
+
+GovernanceUser --> ADRs : Strategic decisions
+GovernanceUser --> Risks : Risk acceptance
+SecurityUser --> Exceptions : Exception approval
+
+' ============================================================
+' FEEDBACK LOOP
+' ============================================================
+
+RiskIndicators ..> Risks : Reassess risk
+Violations ..> Controls : Improve controls
+DebtSignals ..> Debt : Create / update debt
+Maturity ..> ArchitectureReq : Improve standards
+ComplianceStatus ..> ComplianceReq : Review gaps
+SLOStatus ..> OpsReq : Reliability improvement
+
+' ============================================================
+' NOTES
+' ============================================================
+
+note bottom of GovernanceModel
+Governance domains remain
+separate but cross-referenced.
+
+A risk is not a policy.
+An ADR is not a control.
+A debt item is not a risk.
+end note
+
+note bottom of GitLayer
+Git is the governance
+system of record.
+
+History, review, ownership,
+and approval remain auditable.
+end note
+
+note bottom of CI
+Deterministic governance
+checks are automated.
+
+Invalid or incomplete
+governance changes should
+not silently become authoritative.
+end note
+
+note bottom of Enforcement
+Governance is not complete
+until approved rules affect
+real platform behavior.
+
+CI + GitOps + runtime policy
+provide defense in depth.
+end note
+
+note bottom of Evidence
+Evidence over declaration.
+
+Operational systems should
+prove that controls are working
+where automation is possible.
+end note
+
+note bottom of Continuous
+Runtime evidence feeds back
+into risks, compliance,
+technical debt, SLOs,
+and maturity assessment.
+end note
+
+note bottom of Reporting
+Dashboards visualize governance.
+
+They are NOT the
+authoritative source of truth.
+end note
+
+note bottom of GovernanceUser
+Human judgment remains required
+for architecture trade-offs,
+risk acceptance, legal interpretation,
+and high-impact AI decisions.
+end note
+
+@enduml

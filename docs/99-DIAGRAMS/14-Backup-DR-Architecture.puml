@@ -1,0 +1,481 @@
+@startuml 14-Backup-DR-Architecture
+
+title Enterprise AI Platform — Backup & Disaster Recovery Architecture
+
+left to right direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam ArrowThickness 1
+
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam component {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam database {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam node {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+' ============================================================
+' PROTECTED SOURCES
+' ============================================================
+
+rectangle "Protected Platform State" as ProtectedState {
+
+    component "GitLab Repositories" as GitRepos
+
+    component "GitOps Desired State" as GitOpsState
+
+    database "PostgreSQL Databases" as PostgreSQL
+
+    component "Kubernetes Resources" as K8sResources
+
+    component "Persistent Volumes" as PVs
+
+    component "OpenMetadata Governance State" as MetadataState
+
+    component "MLflow Metadata" as MLflowMetadata
+
+    component "MinIO Artifacts" as MinIOArtifacts
+
+    component "Configuration /\nSecrets References" as Configuration
+
+    component "AI Model Definitions" as AIModels
+}
+
+' ============================================================
+' BACKUP MECHANISMS
+' ============================================================
+
+rectangle "Backup Mechanisms" as BackupMechanisms {
+
+    component "Git Repository Backup /\nMirror" as GitBackup
+
+    component "PostgreSQL Backup" as PGBackup
+
+    component "Velero" as Velero
+
+    component "Persistent Data Backup" as PVBackup
+
+    component "MinIO / Object\nStorage Backup" as ObjectBackup
+
+    component "Configuration Export" as ConfigBackup
+}
+
+GitRepos --> GitBackup
+GitOpsState --> GitBackup
+
+PostgreSQL --> PGBackup
+
+K8sResources --> Velero
+PVs --> PVBackup
+
+MinIOArtifacts --> ObjectBackup
+
+Configuration --> ConfigBackup
+
+MetadataState --> PGBackup
+MLflowMetadata --> PGBackup
+
+AIModels --> GitBackup : Definitions / versions
+
+' ============================================================
+' BACKUP STORAGE
+' ============================================================
+
+rectangle "Recovery Storage" as RecoveryStorage {
+
+    database "Backup Repository" as BackupRepo
+
+    database "Database Backup Storage" as DBBackupStorage
+
+    database "Object / Artifact Backup" as ObjectBackupStorage
+
+    database "Velero Backup Storage" as VeleroStorage
+}
+
+GitBackup --> BackupRepo
+
+PGBackup --> DBBackupStorage
+
+ObjectBackup --> ObjectBackupStorage
+
+Velero --> VeleroStorage
+PVBackup --> VeleroStorage
+
+ConfigBackup --> BackupRepo
+
+' ============================================================
+' DR EVENT
+' ============================================================
+
+rectangle "Disaster / Major Failure" as Disaster {
+
+    component "Host Failure" as HostFailure
+    component "Kubernetes Failure" as ClusterFailure
+    component "Database Failure" as DBFailure
+    component "Storage Failure" as StorageFailure
+    component "Configuration Loss" as ConfigFailure
+}
+
+' ============================================================
+' RECOVERY ORCHESTRATION
+' ============================================================
+
+rectangle "Recovery Process" as RecoveryProcess {
+
+    component "1. Restore Infrastructure" as RestoreInfra
+
+    component "2. Restore Kubernetes" as RestoreK8s
+
+    component "3. Restore Git / GitOps" as RestoreGit
+
+    component "4. Restore Data" as RestoreData
+
+    component "5. Restore Platform Services" as RestorePlatform
+
+    component "6. Restore Applications" as RestoreApps
+
+    component "7. Restore AI Services" as RestoreAI
+
+    component "8. Validate Platform" as Validate
+}
+
+Disaster --> RestoreInfra
+
+RestoreInfra --> RestoreK8s
+RestoreK8s --> RestoreGit
+RestoreGit --> RestoreData
+RestoreData --> RestorePlatform
+RestorePlatform --> RestoreApps
+RestoreApps --> RestoreAI
+RestoreAI --> Validate
+
+' ============================================================
+' INFRASTRUCTURE RECOVERY
+' ============================================================
+
+rectangle "Infrastructure Recovery" as InfraRecovery {
+
+    node "Proxmox / Linux Hosts" as Proxmox
+
+    node "Kubernetes Control Plane" as ControlPlane
+
+    node "Worker Nodes" as Workers
+
+    component "Networking / DNS" as Networking
+}
+
+RestoreInfra --> Proxmox
+RestoreInfra --> Networking
+
+RestoreK8s --> ControlPlane
+RestoreK8s --> Workers
+
+' ============================================================
+' GITOPS RECOVERY
+' ============================================================
+
+rectangle "GitOps Recovery" as GitOpsRecovery {
+
+    component "GitLab" as GitLab
+
+    component "Argo CD" as ArgoCD
+
+    component "Root Application" as RootApp
+}
+
+BackupRepo --> GitLab : Restore repositories
+
+RestoreGit --> GitLab
+
+GitLab --> ArgoCD : Desired state
+ArgoCD --> RootApp
+
+RootApp --> ControlPlane : Reconcile platform
+
+' ============================================================
+' DATA RECOVERY
+' ============================================================
+
+rectangle "Data Recovery" as DataRecovery {
+
+    database "Restored PostgreSQL" as RestoredPG
+
+    component "Schema Validation" as SchemaValidation
+
+    component "Data Integrity Validation" as DataValidation
+
+    component "Data Quality Validation" as DQValidation
+}
+
+DBBackupStorage --> RestoredPG
+
+RestoreData --> RestoredPG
+
+RestoredPG --> SchemaValidation
+SchemaValidation --> DataValidation
+DataValidation --> DQValidation
+
+' ============================================================
+' PLATFORM SERVICES RECOVERY
+' ============================================================
+
+rectangle "Platform Services Recovery" as PlatformRecovery {
+
+    component "Airflow" as Airflow
+
+    component "MLflow" as MLflow
+
+    component "OpenMetadata" as OpenMetadata
+
+    component "Prometheus / Grafana" as Monitoring
+
+    component "Loki / Tempo /\nOpenTelemetry" as Observability
+
+    component "NGINX Ingress /\ncert-manager" as Ingress
+}
+
+RestorePlatform --> Airflow
+RestorePlatform --> MLflow
+RestorePlatform --> OpenMetadata
+RestorePlatform --> Monitoring
+RestorePlatform --> Observability
+RestorePlatform --> Ingress
+
+RestoredPG --> Airflow
+RestoredPG --> MLflow
+RestoredPG --> OpenMetadata
+
+ObjectBackupStorage --> MLflow : Restore artifacts
+
+VeleroStorage ..> PlatformRecovery : Kubernetes state
+
+' ============================================================
+' APPLICATION RECOVERY
+' ============================================================
+
+rectangle "Application Recovery" as ApplicationRecovery {
+
+    component "Business APIs" as BusinessAPI
+
+    component "Data Pipelines" as DataPipelines
+
+    component "Analytics Services" as Analytics
+}
+
+RestoreApps --> BusinessAPI
+RestoreApps --> DataPipelines
+RestoreApps --> Analytics
+
+RestoredPG --> BusinessAPI
+RestoredPG --> DataPipelines
+RestoredPG --> Analytics
+
+' ============================================================
+' AI RECOVERY
+' ============================================================
+
+rectangle "AI Recovery" as AIRecovery {
+
+    node "AI Host" as AIHost
+
+    component "NVIDIA Driver / CUDA" as NVIDIA
+
+    component "Ollama" as Ollama
+
+    component "Approved Models" as Models
+
+    component "RAG / AI Services" as RAG
+}
+
+RestoreAI --> AIHost
+
+AIHost --> NVIDIA
+NVIDIA --> Ollama
+Ollama --> Models
+Models --> RAG
+
+BackupRepo ..> Models : Model definitions /\nversion metadata
+
+BusinessAPI --> RAG
+
+' ============================================================
+' RESTORE VALIDATION
+' ============================================================
+
+rectangle "Recovery Validation" as Validation {
+
+    component "Infrastructure Health" as InfraHealth
+
+    component "Kubernetes Health" as K8sHealth
+
+    component "Database Integrity" as DBHealth
+
+    component "GitOps Sync Status" as GitOpsHealth
+
+    component "Application Smoke Tests" as AppHealth
+
+    component "Data Quality Checks" as DataHealth
+
+    component "AI Inference Test" as AIHealth
+}
+
+Validate --> InfraHealth
+Validate --> K8sHealth
+Validate --> DBHealth
+Validate --> GitOpsHealth
+Validate --> AppHealth
+Validate --> DataHealth
+Validate --> AIHealth
+
+ControlPlane ..> K8sHealth
+RestoredPG ..> DBHealth
+ArgoCD ..> GitOpsHealth
+BusinessAPI ..> AppHealth
+DQValidation ..> DataHealth
+RAG ..> AIHealth
+
+' ============================================================
+' RPO / RTO
+' ============================================================
+
+rectangle "Recovery Objectives & Evidence" as Objectives {
+
+    component "RPO" as RPO
+
+    component "RTO" as RTO
+
+    component "Actual Recovery Time" as ActualRTO
+
+    component "Actual Data Loss" as ActualRPO
+
+    component "Restore Test Evidence" as TestEvidence
+}
+
+Validation --> ActualRTO
+Validation --> ActualRPO
+
+ActualRTO --> TestEvidence
+ActualRPO --> TestEvidence
+
+RPO ..> TestEvidence : Compare target
+RTO ..> TestEvidence : Compare target
+
+' ============================================================
+' OBSERVABILITY / GOVERNANCE
+' ============================================================
+
+rectangle "DR Governance" as DRGovernance {
+
+    component "Prometheus Metrics" as Prometheus
+
+    component "Backup Success" as BackupSuccess
+
+    component "Restore Test Age" as RestoreAge
+
+    component "Risk Register" as Risks
+
+    component "Compliance Evidence" as Compliance
+}
+
+BackupMechanisms ..> BackupSuccess
+
+TestEvidence --> RestoreAge
+
+BackupSuccess --> Prometheus
+RestoreAge --> Prometheus
+
+Prometheus --> Risks
+Prometheus --> Compliance
+
+' ============================================================
+' FAILURE PATHS
+' ============================================================
+
+HostFailure ..> RestoreInfra
+ClusterFailure ..> RestoreK8s
+DBFailure ..> RestoreData
+StorageFailure ..> RestoreData
+ConfigFailure ..> RestoreGit
+
+' ============================================================
+' NOTES
+' ============================================================
+
+note bottom of GitBackup
+Git protects reconstructable
+desired state:
+
+Code
+Configuration
+ADRs
+Governance
+GitOps manifests
+end note
+
+note bottom of PGBackup
+Database backups protect
+state that Git cannot rebuild.
+
+Backup success alone is
+not sufficient evidence.
+end note
+
+note bottom of Velero
+Velero protects Kubernetes
+resources and selected
+persistent state.
+
+It complements, rather than
+replaces, application-aware
+database backup.
+end note
+
+note bottom of RecoveryProcess
+Recovery order is deliberate.
+
+Infrastructure and control-plane
+capabilities are restored before
+higher-level applications.
+end note
+
+note bottom of Validation
+Recovery is incomplete until
+the restored platform has
+been functionally validated.
+end note
+
+note bottom of Objectives
+RPO and RTO become meaningful
+only when measured during
+real restore exercises.
+end note
+
+note bottom of DRGovernance
+Target maturity:
+
+Backup
+→ Restore
+→ Validate
+→ Measure
+→ Evidence
+→ Improve
+end note
+
+@enduml

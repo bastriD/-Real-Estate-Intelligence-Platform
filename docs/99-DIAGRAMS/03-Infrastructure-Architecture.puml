@@ -1,0 +1,261 @@
+@startuml 03-Infrastructure-Architecture
+
+title Enterprise AI Platform — Infrastructure Architecture
+
+top to bottom direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam ArrowThickness 1
+
+skinparam node {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam database {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam cloud {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+' ============================================================
+' USERS / ADMIN ACCESS
+' ============================================================
+
+actor "Platform / DevOps\nEngineer" as DevOps
+
+' ============================================================
+' PHYSICAL INFRASTRUCTURE
+' ============================================================
+
+rectangle "Physical Infrastructure" as Physical {
+
+    node "Primary Proxmox Host" as Proxmox {
+
+        rectangle "Virtualized Kubernetes Infrastructure" as K8sVMs {
+
+            node "k8s-cp-01\nControl Plane" as CP1
+            node "k8s-cp-02\nControl Plane" as CP2
+            node "k8s-cp-03\nControl Plane" as CP3
+
+            node "k8s-wk-01\nWorker" as WK1
+            node "k8s-wk-02\nWorker" as WK2
+            node "k8s-wk-03\nWorker" as WK3
+        }
+
+        database "Virtualized Storage" as VMStorage
+    }
+
+    rectangle "Additional Kubernetes Workers" as AdditionalWorkers {
+
+        node "k8s-wk-04\nWorker" as WK4
+        node "k8s-wk-05\nWorker" as WK5
+        node "k8s-wk-06\nWorker" as WK6
+    }
+
+    rectangle "AI Compute Infrastructure" as AIInfra {
+
+        node "AI Host 1" as AI1 {
+            component "NVIDIA GTX 1080\n8 GB VRAM" as GPU1
+            component "Ollama" as Ollama1
+        }
+
+        node "AI Host 2" as AI2 {
+            component "NVIDIA GTX 1080\n8 GB VRAM" as GPU2
+            component "Ollama / AI Capacity" as Ollama2
+        }
+    }
+
+    rectangle "Network Infrastructure" as Network {
+        component "LAN / Routing" as LAN
+        component "DNS" as DNS
+    }
+}
+
+' ============================================================
+' KUBERNETES CLUSTER LOGICAL BOUNDARY
+' ============================================================
+
+rectangle "Kubernetes Cluster" as Cluster {
+
+    rectangle "Control Plane" as ControlPlane {
+        component "API Server" as APIServer
+        component "Scheduler" as Scheduler
+        component "Controller Manager" as ControllerManager
+        database "etcd" as Etcd
+    }
+
+    rectangle "Worker Runtime" as WorkerRuntime {
+        component "kubelet" as Kubelet
+        component "Container Runtime" as Runtime
+        component "Pod Workloads" as Pods
+    }
+}
+
+' ============================================================
+' PLATFORM SERVICES
+' ============================================================
+
+rectangle "Core Platform Services" as PlatformServices {
+    component "Argo CD" as ArgoCD
+    component "NGINX Ingress" as Ingress
+    component "cert-manager" as CertManager
+    component "Observability Stack" as Observability
+}
+
+' ============================================================
+' EXTERNAL STORAGE / BACKUP
+' ============================================================
+
+rectangle "Backup / Recovery" as Recovery {
+    component "Velero" as Velero
+    component "Database Backups" as DBBackups
+}
+
+' ============================================================
+' ADMIN FLOW
+' ============================================================
+
+DevOps --> Proxmox : Infrastructure administration
+DevOps --> Cluster : Kubernetes administration
+
+' ============================================================
+' PHYSICAL TO LOGICAL K8S MAPPING
+' ============================================================
+
+CP1 --> ControlPlane
+CP2 --> ControlPlane
+CP3 --> ControlPlane
+
+WK1 --> WorkerRuntime
+WK2 --> WorkerRuntime
+WK3 --> WorkerRuntime
+WK4 --> WorkerRuntime
+WK5 --> WorkerRuntime
+WK6 --> WorkerRuntime
+
+' ============================================================
+' CONTROL PLANE INTERNAL RELATIONSHIPS
+' ============================================================
+
+APIServer --> Etcd
+Scheduler --> APIServer
+ControllerManager --> APIServer
+
+Kubelet --> APIServer
+Runtime --> Kubelet
+Pods --> Runtime
+
+' ============================================================
+' PLATFORM SERVICES
+' ============================================================
+
+Cluster --> PlatformServices : Hosts
+
+ArgoCD --> APIServer : GitOps reconciliation
+Ingress --> Pods : Routes application traffic
+CertManager --> Ingress : TLS certificates
+Observability ..> Cluster : Metrics / logs / traces
+
+' ============================================================
+' NETWORK
+' ============================================================
+
+LAN --> CP1
+LAN --> CP2
+LAN --> CP3
+
+LAN --> WK1
+LAN --> WK2
+LAN --> WK3
+LAN --> WK4
+LAN --> WK5
+LAN --> WK6
+
+LAN --> AI1
+LAN --> AI2
+
+DNS ..> Ingress : Internal service names
+
+' ============================================================
+' AI INFRASTRUCTURE
+' ============================================================
+
+Ollama1 --> GPU1 : GPU inference
+Ollama2 --> GPU2 : GPU inference
+
+Pods --> Ollama1 : Internal AI API
+Pods ..> Ollama2 : Additional / future capacity
+
+' ============================================================
+' STORAGE
+' ============================================================
+
+VMStorage --> CP1
+VMStorage --> CP2
+VMStorage --> CP3
+VMStorage --> WK1
+VMStorage --> WK2
+VMStorage --> WK3
+
+' ============================================================
+' BACKUP / RECOVERY
+' ============================================================
+
+Velero ..> Cluster : Kubernetes backup
+DBBackups ..> Pods : Stateful application backups
+
+Recovery ..> VMStorage : Recovery data
+
+' ============================================================
+' NOTES
+' ============================================================
+
+note right of ControlPlane
+Three control-plane nodes
+provide Kubernetes control-plane
+high availability.
+
+Logical HA does not eliminate
+physical host failure domains.
+end note
+
+note right of AdditionalWorkers
+Additional workers extend
+Kubernetes compute capacity.
+
+Network routing between all
+node subnets must remain valid.
+end note
+
+note right of AIInfra
+AI compute remains outside
+the main Kubernetes VM pool.
+
+Local AI inference is accessed
+over the internal network.
+end note
+
+note bottom of Physical
+Physical infrastructure is fixed.
+
+Architecture maturity is improved
+through automation, governance,
+observability, and recoverability
+rather than hardware sprawl.
+end note
+
+@enduml

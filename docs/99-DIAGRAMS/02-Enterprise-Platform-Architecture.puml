@@ -1,0 +1,253 @@
+@startuml 02-Enterprise-Platform-Architecture
+
+title Enterprise AI Platform — Platform Architecture
+
+left to right direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam ArrowThickness 1
+
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam database {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+skinparam component {
+    BackgroundColor white
+    BorderColor #333333
+}
+
+' ============================================================
+' USERS
+' ============================================================
+
+actor "Business\nUsers" as Business
+actor "Data / AI\nEngineers" as DataEngineer
+actor "Platform / DevOps\nEngineer" as DevOps
+
+' ============================================================
+' SOURCE SYSTEMS
+' ============================================================
+
+rectangle "Enterprise Sources" as Sources {
+    component "Business Data" as BusinessData
+    component "Documents /\nKnowledge" as Documents
+}
+
+' ============================================================
+' ENGINEERING / DELIVERY
+' ============================================================
+
+rectangle "Engineering & Delivery" as Delivery {
+
+    component "GitLab CE\nSource Control" as GitLab
+
+    component "GitLab Runner\nCI" as Runner
+
+    component "Argo CD\nGitOps" as ArgoCD
+}
+
+GitLab --> Runner : CI pipelines
+GitLab --> ArgoCD : Desired state
+
+' ============================================================
+' KUBERNETES PLATFORM
+' ============================================================
+
+rectangle "Kubernetes Platform" as Kubernetes {
+
+    component "NGINX Ingress" as Ingress
+
+    rectangle "Application Services" as Applications {
+        component "Business APIs /\nApplications" as APIs
+    }
+
+    rectangle "Data Platform" as DataPlatform {
+
+        component "Apache Airflow\nOrchestration" as Airflow
+
+        component "dbt\nTransformations" as DBT
+
+        database "PostgreSQL" as PostgreSQL
+
+        component "OpenMetadata\nCatalog & Governance" as OpenMetadata
+    }
+
+    rectangle "AI / ML Platform" as AIPlatform {
+
+        component "MLflow\nML Lifecycle" as MLflow
+
+        component "RAG / AI Services" as RAG
+
+        component "Ollama\nLocal AI Inference" as Ollama
+    }
+
+    rectangle "Observability Platform" as ObsPlatform {
+
+        component "Prometheus\nMetrics" as Prometheus
+
+        component "Grafana\nVisualization" as Grafana
+
+        component "Loki\nLogs" as Loki
+
+        component "Tempo\nTraces" as Tempo
+
+        component "OpenTelemetry\nCollector" as OTel
+    }
+}
+
+' ============================================================
+' EXTERNAL / PHYSICAL AI
+' ============================================================
+
+node "AI Compute Node\nGTX 1080 GPU" as AINode
+
+' ============================================================
+' USER ACCESS
+' ============================================================
+
+Business --> Ingress : HTTPS
+DataEngineer --> GitLab : Code / Data / AI
+DevOps --> GitLab : Platform configuration
+DevOps --> Grafana : Operations
+
+Ingress --> APIs
+Ingress --> Airflow
+Ingress --> MLflow
+Ingress --> OpenMetadata
+Ingress --> Grafana
+
+' ============================================================
+' DATA FLOW
+' ============================================================
+
+BusinessData --> Airflow : Ingestion
+
+Airflow --> PostgreSQL : Load / orchestrate
+
+Airflow --> DBT : Execute transformations
+
+DBT --> PostgreSQL : Transform data
+
+PostgreSQL --> APIs : Curated data
+
+PostgreSQL --> MLflow : Training datasets
+
+PostgreSQL --> RAG : Governed context
+
+Documents --> RAG : Knowledge sources
+
+' ============================================================
+' DATA GOVERNANCE
+' ============================================================
+
+OpenMetadata ..> PostgreSQL : Metadata / profiling
+
+OpenMetadata ..> Airflow : Pipeline metadata
+
+OpenMetadata ..> DBT : Models / lineage
+
+' ============================================================
+' AI FLOW
+' ============================================================
+
+MLflow --> Ollama : AI / model workflows
+
+RAG --> Ollama : Inference
+
+Ollama --> AINode : GPU inference
+
+' ============================================================
+' GITOPS
+' ============================================================
+
+ArgoCD --> Kubernetes : Reconcile desired state
+
+Runner ..> GitLab : Build / test /\nvalidation results
+
+' ============================================================
+' OBSERVABILITY
+' ============================================================
+
+Applications ..> Prometheus : Metrics
+DataPlatform ..> Prometheus : Metrics
+AIPlatform ..> Prometheus : Metrics
+Kubernetes ..> Prometheus : Platform metrics
+
+Applications ..> Loki : Logs
+DataPlatform ..> Loki : Logs
+AIPlatform ..> Loki : Logs
+
+Applications ..> OTel : Traces
+AIPlatform ..> OTel : Traces
+
+OTel --> Tempo : OTLP traces
+
+Prometheus --> Grafana
+Loki --> Grafana
+Tempo --> Grafana
+
+' ============================================================
+' GOVERNANCE-AS-CODE
+' ============================================================
+
+rectangle "Governance as Code" as Governance {
+    component "Policies" as Policies
+    component "Risks" as Risks
+    component "Controls" as Controls
+    component "SLOs" as SLO
+}
+
+GitLab --> Governance : Version controlled
+
+Governance ..> Runner : CI validation
+Governance ..> ArgoCD : Approved configuration
+Governance ..> OpenMetadata : Data governance
+Governance ..> Prometheus : Evidence / KRIs / SLOs
+
+' ============================================================
+' ARCHITECTURE NOTES
+' ============================================================
+
+note bottom of ArgoCD
+GitLab CI validates and builds.
+
+Argo CD performs
+continuous deployment
+and reconciliation.
+end note
+
+note bottom of PostgreSQL
+Logical data layers:
+
+raw
+staging
+warehouse
+analytics
+end note
+
+note bottom of Ollama
+Local-first AI inference.
+
+GPU capacity is treated
+as a governed platform
+resource.
+end note
+
+note bottom of Governance
+Governance artifacts are
+version-controlled and
+progressively validated
+and enforced as code.
+end note
+
+@enduml
