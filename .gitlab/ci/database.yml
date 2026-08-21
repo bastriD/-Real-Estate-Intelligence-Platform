@@ -1,5 +1,7 @@
 database:validate:
   stage: validate
+  tags:
+    - docker
   image: postgres:16
   script:
     - test -f database/migrations/001_initial_schema.sql
@@ -13,7 +15,8 @@ database:validate:
 
 database:migrate:
   stage: database
-  image: bitnami/kubectl:latest
+  tags:
+    - shell
   needs:
     - database:validate
   script:
