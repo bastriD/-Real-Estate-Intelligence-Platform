@@ -163,10 +163,52 @@ with DAG(
         python_callable=load_raw,
     )
 
-    validate_raw_task = PythonOperator(
-        task_id="validate_raw",
-        python_callable=validate_raw,
-    )
+    load_raw_task = KubernetesPodOperator(
+    task_id="load_raw",
+    name="real-estate-load-raw",
+    namespace="airflow",
+    image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
+
+    image_pull_secrets=[
+        k8s.V1LocalObjectReference(
+            name="gitlab-registry"
+        )
+    ],
+
+    cmds=["/bin/sh", "-c"],
+
+    arguments=[
+        """
+        set -e
+
+        export INGESTION_BATCH="generated-{{ ts_nodash }}"
+
+        echo "Downloading generated CSVs from MinIO..."
+        python /app/database/seeds/download_generated_from_s3.py
+
+        echo "Loading RAW PostgreSQL tables..."
+        python /app/database/seeds/load_raw_generated_data.py
+
+        echo "RAW load completed."
+        """
+    ],
+
+    env_from=[
+        k8s.V1EnvFromSource(
+            secret_ref=k8s.V1SecretEnvSource(
+                name="real-estate-s3"
+            )
+        ),
+        k8s.V1EnvFromSource(
+            secret_ref=k8s.V1SecretEnvSource(
+                name="real-estate-postgresql-secret"
+            )
+        ),
+    ],
+
+    get_logs=True,
+    is_delete_operator_pod=True,
+)
 
     transform_staging_task = PythonOperator(
         task_id="transform_staging",
