@@ -1,0 +1,20 @@
+runner:docker-smoke:
+  stage: validate
+  tags:
+    - docker
+  image: alpine:3.20
+  script:
+    - echo "Docker runner picked up this job"
+    - uname -a
+    - echo "CI_PROJECT_PATH=$CI_PROJECT_PATH"
+    - echo "CI_COMMIT_BRANCH=$CI_COMMIT_BRANCH"
+
+runner:shell-smoke:
+  stage: validate
+  tags:
+    - shell
+  script:
+    - echo "Shell runner picked up this job"
+    - hostname
+    - whoami
+    - uname -a
