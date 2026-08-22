@@ -1,0 +1,30 @@
+{
+  "id": "70841227-0eb2-4ac2-8dbc-38706b2f1795",
+  "reference": "AN-0CO92UVY",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial de standing à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-03-31T20:07:45",
+  "prix": 384557,
+  "surface": 258,
+  "nb_pieces": 5,
+  "nb_chambres": 4,
+  "etage": 5,
+  "dpe": "A",
+  "annee_construction": 1906,
+  "adresse": "171 rue Jean Jaurès",
+  "latitude": 48.888439,
+  "longitude": 2.318263,
+  "description": "Local commercial en excellent état de 258 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Nadia Girard",
+    "telephone": "0577700016"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-0CO92UVY/1.jpg",
+    "https://exemple-images.test/AN-0CO92UVY/2.jpg",
+    "https://exemple-images.test/AN-0CO92UVY/3.jpg"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "07f4ccf9-7164-4d5a-a688-41428a36a390",
+  "reference": "AN-L0TGOR4S",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial de standing à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-11-27",
+  "prix": 281962,
+  "surface": 253,
+  "nb_pieces": 2,
+  "nb_chambres": 0,
+  "dpe": "C",
+  "adresse": "161 chemin des Vignes",
+  "latitude": 48.894545,
+  "longitude": 2.373264,
+  "description": "Local commercial de standing de 253 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "email": "contact32@example.com",
+    "agence": "Century Habitat"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-L0TGOR4S/1.jpg"
+  ],
+  "exclusivite": false
+}

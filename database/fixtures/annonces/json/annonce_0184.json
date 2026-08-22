@@ -1,0 +1,27 @@
+{
+  "id": "55f49f63-46fd-4f4a-be64-0c637a93189f",
+  "reference": "AN-1JHNHG0S",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1758911865,
+  "prix": 129991,
+  "surface": 124,
+  "nb_pieces": 5,
+  "etage": 4,
+  "dpe": "C",
+  "adresse": "170 impasse des Lilas",
+  "description": "Studio rénové de 124 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Lefevre",
+    "telephone": "0002658734",
+    "email": "karim.lefevre59@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-1JHNHG0S/1.jpg"
+  ]
+}

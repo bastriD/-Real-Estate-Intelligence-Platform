@@ -1,0 +1,25 @@
+{
+  "id": "0817ed6f-268d-4537-affb-30393d29bb62",
+  "reference": "AN-0UWFEA2B",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "09-01-2024",
+  "prix": 83826,
+  "surface": 91,
+  "nb_pieces": 4,
+  "etage": 3,
+  "meuble": true,
+  "dpe": "A",
+  "annee_construction": 1935,
+  "description": "Château rénové de 91 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "email": "contact79@example.com",
+    "agence": "ImmoPlus"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "c7e4e960-1920-470a-9f70-2f7673039223",
+  "reference": "AN-GNLP8N8Z",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "11-10-2025",
+  "prix": 118508,
+  "surface": 34,
+  "nb_pieces": 6,
+  "nb_chambres": 2,
+  "dpe": "G",
+  "jardin": true,
+  "vue": true,
+  "contact": {
+    "telephone": "0298874957"
+  },
+  "exclusivite": true
+}

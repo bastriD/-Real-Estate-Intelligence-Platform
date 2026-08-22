@@ -1,0 +1,24 @@
+{
+  "id": "8ff0303e-9605-4f9d-87f6-e89096ede7ae",
+  "reference": "AN-TV0VSO2G",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "11-03-2025",
+  "prix": 124430,
+  "charges_mensuelles": 270.39,
+  "surface": 147,
+  "nb_pieces": 8,
+  "etage": "dernier étage",
+  "meuble": true,
+  "dpe": "A",
+  "adresse": "82 place de la Mairie",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "email": "contact39@example.com"
+  }
+}

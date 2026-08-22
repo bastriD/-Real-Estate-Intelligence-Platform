@@ -1,0 +1,21 @@
+{
+  "id": "d44fd060-b759-420b-bf2d-a934ef726869",
+  "reference": "AN-DX0WHJMT",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain spacieux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-12-28T22:21:45",
+  "prix": "1270636 €",
+  "surface": 229,
+  "adresse": "112 rue Pasteur",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Girard",
+    "telephone": "0518915350",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": true
+}

@@ -1,0 +1,17 @@
+{
+  "id": "6a8a4ee4-a717-47ed-87d4-07af5d192731",
+  "reference": "AN-6JRJXTRU",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain rénové à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "01-01-2026",
+  "prix": 1118736,
+  "surface": 135,
+  "adresse": "160 boulevard Gambetta",
+  "description": "Terrain spacieux de 135 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "exclusivite": false
+}

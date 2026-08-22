@@ -1,0 +1,23 @@
+{
+  "id": "4d5545e1-ab71-4e01-b695-1a5c9553a27d",
+  "reference": "AN-LB4KH426",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-02-24T12:39:45",
+  "prix": 258117,
+  "surface": 143,
+  "nb_pieces": 2,
+  "dpe": "A",
+  "description": "Local commercial en excellent état de 143 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Ahmed Girard",
+    "telephone": "0956691667"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-LB4KH426/1.jpg"
+  ],
+  "particulier": true
+}

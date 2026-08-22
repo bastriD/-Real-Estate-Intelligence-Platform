@@ -1,0 +1,23 @@
+{
+  "id": "31316add-70da-429f-9313-5166f75391f1",
+  "reference": "AN-1FCASKVO",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2 avril 2026",
+  "prix": 212514,
+  "surface": 140,
+  "nb_pieces": 2,
+  "nb_chambres": 7,
+  "etage": "dernier étage",
+  "adresse": "181 allée des Platanes",
+  "description": "Appartement atypique de 140 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0880590123",
+    "email": "contact73@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "exclusivite": true
+}

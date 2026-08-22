@@ -1,0 +1,25 @@
+{
+  "id": "9af89b23-aa1d-40f3-b058-6a6bfb9ee0cd",
+  "reference": "AN-ULL4SLL1",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "21/04/2026",
+  "prix": 136256,
+  "surface_m2": 31,
+  "nb_pieces": 5,
+  "nb_chambres": 2,
+  "latitude": 43.322866,
+  "longitude": 5.330278,
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Perrin",
+    "telephone": "0844989359",
+    "email": "claire.perrin92@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "exclusivite": true
+}

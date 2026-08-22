@@ -1,0 +1,23 @@
+{
+  "id": "7cdce22c-bce8-4726-863c-ce17684ad83d",
+  "reference": "AN-J24RWPG2",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-02-14T06:16:45",
+  "prix": 192524,
+  "surface_m2": 125,
+  "nb_pieces": 6,
+  "etage": 0,
+  "dpe": "F",
+  "description": "Studio lumineux de 125 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Moreau",
+    "telephone": "0482472128",
+    "agence": "Century Habitat"
+  }
+}

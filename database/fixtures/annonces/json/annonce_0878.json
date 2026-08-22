@@ -1,0 +1,18 @@
+{
+  "id": "43b61092-263a-4643-9ef0-1f3412b3fdf5",
+  "reference": "AN-GCNFBY5N",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2 mai 2026",
+  "prix": 96967,
+  "surface": 116,
+  "nb_pieces": 4,
+  "etage": 5,
+  "meuble": true,
+  "dpe": "A",
+  "adresse": "42 place de la Mairie",
+  "jardin": true
+}

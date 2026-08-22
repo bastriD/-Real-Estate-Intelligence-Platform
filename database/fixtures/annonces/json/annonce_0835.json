@@ -1,0 +1,32 @@
+{
+  "id": "3998bf99-d57e-41b3-8143-5fa7bdc41dfa",
+  "reference": "AN-EVH972NN",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "09-15-2024",
+  "prix": 137161,
+  "surface": 108,
+  "nb_pieces": 6,
+  "nb_chambres": 3,
+  "etage": 5,
+  "dpe": "A",
+  "annee_construction": 1872,
+  "adresse": "109 rue du Commerce",
+  "description": "Château atypique de 108 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Fontaine",
+    "telephone": "0299192839"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-EVH972NN/1.jpg",
+    "https://exemple-images.test/AN-EVH972NN/2.jpg",
+    "https://exemple-images.test/AN-EVH972NN/3.jpg",
+    "https://exemple-images.test/AN-EVH972NN/4.jpg",
+    "https://exemple-images.test/AN-EVH972NN/5.jpg"
+  ]
+}

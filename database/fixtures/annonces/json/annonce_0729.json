@@ -1,0 +1,27 @@
+{
+  "id": "5f3177fb-5b76-4798-812b-e6b96a704085",
+  "reference": "AN-FSBE03OQ",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial spacieux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-07-05T11:07:45",
+  "prix": 376015,
+  "charges_mensuelles": 264.45,
+  "surface": 234,
+  "nb_pieces": 4,
+  "meuble": true,
+  "dpe": "D",
+  "annee_construction": 1877,
+  "adresse": "104 place de la Mairie",
+  "latitude": 48.884001,
+  "longitude": 2.32182,
+  "description": "Local commercial avec vue dégagée de 234 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marc Bernard",
+    "telephone": "0226365187",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": true
+}

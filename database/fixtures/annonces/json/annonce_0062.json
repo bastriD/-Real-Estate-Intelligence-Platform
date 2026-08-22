@@ -1,0 +1,23 @@
+{
+  "id": "c76dda72-b76a-468b-98c7-661a2a7c89a4",
+  "reference": "AN-BIKGCSNA",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-09-15",
+  "prix": 140874,
+  "surface": 198,
+  "dpe": "D",
+  "adresse": "52 chemin des Vignes",
+  "latitude": 43.278818,
+  "longitude": 5.413872,
+  "description": "Studio à rafraîchir de 198 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0299531916"
+  },
+  "particulier": true
+}

@@ -1,0 +1,24 @@
+{
+  "id": "b0541d15-659b-4f96-ba18-2535a1e2b681",
+  "reference": "AN-W3PWTOPX",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1750684725,
+  "prix": 109676,
+  "charges_mensuelles": 187.63,
+  "surface": 172,
+  "nb_pieces": 8,
+  "adresse": "29 rue Jean Jaurès",
+  "description": "Château en excellent état de 172 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Dubois",
+    "agence": "Nid Doré"
+  },
+  "particulier": true
+}

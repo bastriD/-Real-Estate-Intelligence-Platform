@@ -1,0 +1,18 @@
+{
+  "id": "99d0698d-bcf6-4699-b116-fbf407cc2d2c",
+  "reference": "AN-PZPQ1LRP",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "7 septembre 2025",
+  "prix": 1195666,
+  "surface": 145,
+  "description": "Terrain à rafraîchir de 145 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0198859429"
+  }
+}

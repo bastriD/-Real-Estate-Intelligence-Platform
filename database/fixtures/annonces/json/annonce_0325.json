@@ -1,0 +1,21 @@
+{
+  "id": "0b83a111-61e6-4c59-9202-5c523cf699ce",
+  "reference": "AN-734RBE7R",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement atypique à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1767898125,
+  "prix": 215924,
+  "surface": 72,
+  "nb_pieces": 1,
+  "nb_chambres": 4,
+  "meuble": true,
+  "annee_construction": 1944,
+  "adresse": "65 rue Jean Jaurès",
+  "description": "Appartement avec vue dégagée de 72 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Faure"
+  }
+}

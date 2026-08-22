@@ -1,0 +1,28 @@
+{
+  "id": "be55a45d-b54e-44e2-8463-ecc5d28e38bb",
+  "reference": "AN-EK34YU8J",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-11-11T16:31:45",
+  "prix": 98818,
+  "charges_mensuelles": 252.41,
+  "surface": 42,
+  "nb_pieces": 7,
+  "dpe": "A",
+  "adresse": "189 impasse des Lilas",
+  "latitude": 43.254754,
+  "longitude": 5.323027,
+  "description": "Château lumineux de 42 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0813698470",
+    "email": "contact76@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "exclusivite": false
+}

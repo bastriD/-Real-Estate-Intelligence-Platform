@@ -1,0 +1,22 @@
+{
+  "id": "9b18fc80-a590-49ca-af8e-767ed61020ff",
+  "reference": "AN-CXXNMARH",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement atypique à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-03-02",
+  "prix": "242406 €",
+  "surface": 156,
+  "nb_pieces": 3,
+  "nb_chambres": 6,
+  "meuble": false,
+  "annee_construction": 1909,
+  "description": "Appartement spacieux de 156 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marie Moreau",
+    "telephone": "0684272827"
+  },
+  "exclusivite": true
+}

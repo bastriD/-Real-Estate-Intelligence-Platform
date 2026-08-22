@@ -1,0 +1,25 @@
+{
+  "id": "35144342-96b8-4c81-bae9-10c0cfd6debd",
+  "reference": "AN-YGI5OD7Y",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "22 juillet 2026",
+  "prix": 176669,
+  "charges_mensuelles": 263.42,
+  "surface": 106,
+  "nb_chambres": 0,
+  "adresse": "110 avenue des Champs",
+  "latitude": 43.249964,
+  "longitude": 5.35704,
+  "description": "Studio spacieux de 106 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0183229658",
+    "email": "contact58@example.com",
+    "agence": "Toit & Vous"
+  }
+}

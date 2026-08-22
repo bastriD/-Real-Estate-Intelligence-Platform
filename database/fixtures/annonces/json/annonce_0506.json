@@ -1,0 +1,28 @@
+{
+  "id": "e5477332-2716-4b6b-a85d-7c2acfbe9a9f",
+  "reference": "AN-2RUWRGWX",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain lumineux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "03/11/2024",
+  "prix": 1150496,
+  "surface_m2": 168,
+  "latitude": 43.739896,
+  "longitude": 7.306062,
+  "description": "Terrain de standing de 168 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Roche",
+    "telephone": "0548884256",
+    "agence": "Toit & Vous"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-2RUWRGWX/1.jpg",
+    "https://exemple-images.test/AN-2RUWRGWX/2.jpg",
+    "https://exemple-images.test/AN-2RUWRGWX/3.jpg",
+    "https://exemple-images.test/AN-2RUWRGWX/4.jpg"
+  ]
+}

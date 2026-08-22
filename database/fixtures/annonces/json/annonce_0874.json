@@ -1,0 +1,24 @@
+{
+  "id": "1a2225e1-035e-46c9-9e9d-88557dea9086",
+  "reference": "AN-ZU38SR79",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-12-05",
+  "prix": 104735,
+  "surface": 153,
+  "nb_pieces": 8,
+  "dpe": "A",
+  "annee_construction": 1885,
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "photos": [
+    "https://exemple-images.test/AN-ZU38SR79/1.jpg",
+    "https://exemple-images.test/AN-ZU38SR79/2.jpg",
+    "https://exemple-images.test/AN-ZU38SR79/3.jpg",
+    "https://exemple-images.test/AN-ZU38SR79/4.jpg"
+  ]
+}

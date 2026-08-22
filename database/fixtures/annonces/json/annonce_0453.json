@@ -1,0 +1,19 @@
+{
+  "id": "66fcbf48-3236-4d5d-bcec-42ed61727ce0",
+  "reference": "AN-JDVM687U",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "06/12/2024",
+  "prix": 931122,
+  "surface": 234,
+  "adresse": "134 avenue des Champs",
+  "description": "Terrain de standing de 234 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0104591474",
+    "email": "contact15@example.com"
+  },
+  "particulier": true
+}

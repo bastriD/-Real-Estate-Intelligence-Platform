@@ -1,0 +1,26 @@
+{
+  "id": "6a7733f8-eb8b-4149-9f87-813b64613b4a",
+  "reference": "AN-V5KOEMQ0",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-07-29",
+  "prix": 183176,
+  "surface": 85,
+  "nb_pieces": 1,
+  "meuble": true,
+  "description": "Studio à rafraîchir de 85 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "contact": {
+    "nom": "Julie Dubois",
+    "telephone": "0051162006",
+    "agence": "Provence Immobilier"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-V5KOEMQ0/1.jpg",
+    "https://exemple-images.test/AN-V5KOEMQ0/2.jpg"
+  ],
+  "exclusivite": false
+}

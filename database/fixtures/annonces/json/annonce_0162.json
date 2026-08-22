@@ -1,0 +1,22 @@
+{
+  "id": "a6c61ebc-9f1c-4c25-9e54-d0df084fec34",
+  "reference": "AN-XDC0KA6U",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1748352645,
+  "prix": 154658,
+  "surface": 169,
+  "nb_pieces": 3,
+  "etage": 0,
+  "meuble": false,
+  "latitude": 43.306982,
+  "longitude": 5.397306,
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "agence": "Nid Doré"
+  }
+}

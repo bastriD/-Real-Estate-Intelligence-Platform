@@ -1,0 +1,24 @@
+{
+  "id": "1a5e72d3-5a34-43b5-a311-3a3a976b63e8",
+  "reference": "AN-5I3V0XMG",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "20 avril 2025",
+  "prix": 221523,
+  "surface": 141,
+  "nb_pieces": 4,
+  "nb_chambres": 7,
+  "etage": 4,
+  "dpe": "B",
+  "description": "Appartement avec vue dégagée de 141 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Sophie Girard",
+    "telephone": "0702799603",
+    "email": "sophie.girard5@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "exclusivite": true
+}

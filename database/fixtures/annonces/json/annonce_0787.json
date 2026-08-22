@@ -1,0 +1,25 @@
+{
+  "id": "f8cd7c78-2873-471d-9e59-3588c741aed4",
+  "reference": "AN-LW68CEWB",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial charmant à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1728047865,
+  "prix": 370592,
+  "surface": 218,
+  "nb_pieces": 5,
+  "nb_chambres": 4,
+  "etage": 0,
+  "adresse": "102 rue Pasteur",
+  "latitude": 48.838047,
+  "longitude": 2.36761,
+  "description": "Local commercial charmant de 218 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "photos": [
+    "https://exemple-images.test/AN-LW68CEWB/1.jpg",
+    "https://exemple-images.test/AN-LW68CEWB/2.jpg",
+    "https://exemple-images.test/AN-LW68CEWB/3.jpg"
+  ],
+  "exclusivite": true
+}

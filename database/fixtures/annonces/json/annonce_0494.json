@@ -1,0 +1,27 @@
+{
+  "id": "41d37878-4206-4da2-868b-c5e4c7de095f",
+  "reference": "AN-KP4VCPHU",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain au calme à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-11-19",
+  "prix": "945962 €",
+  "surface": 206,
+  "adresse": "91 place de la Mairie",
+  "description": "Terrain atypique de 206 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Girard",
+    "telephone": "0096645428",
+    "email": "marc.girard27@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-KP4VCPHU/1.jpg",
+    "https://exemple-images.test/AN-KP4VCPHU/2.jpg",
+    "https://exemple-images.test/AN-KP4VCPHU/3.jpg",
+    "https://exemple-images.test/AN-KP4VCPHU/4.jpg"
+  ]
+}

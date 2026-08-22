@@ -1,0 +1,24 @@
+{
+  "id": "6fe51c4f-fe37-40a8-be88-081aaec89c35",
+  "reference": "AN-5PSMF9JR",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement lumineux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-11-22",
+  "prix": 206323,
+  "surface_m2": 98,
+  "nb_pieces": 2,
+  "nb_chambres": 6,
+  "etage": 5,
+  "meuble": false,
+  "adresse": "58 rue Jean Jaurès",
+  "latitude": 47.353997,
+  "longitude": 5.086053,
+  "description": "Appartement spacieux de 98 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "email": "contact30@example.com"
+  },
+  "exclusivite": true
+}

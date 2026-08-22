@@ -1,0 +1,26 @@
+{
+  "id": "3cde4e75-d902-4a9a-88a1-a85620ebc49e",
+  "reference": "AN-0CW0IPED",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial charmant à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1739781585,
+  "prix": 391102,
+  "charges_mensuelles": 337.51,
+  "surface": 181,
+  "nb_pieces": 4,
+  "nb_chambres": 4,
+  "etage": 3,
+  "meuble": true,
+  "dpe": "F",
+  "annee_construction": 1959,
+  "adresse": "93 rue Jean Jaurès",
+  "description": "Local commercial à rafraîchir de 181 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Jean Lefevre",
+    "telephone": "0285610878",
+    "agence": "Toit & Vous"
+  }
+}

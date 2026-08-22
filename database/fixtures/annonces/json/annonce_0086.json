@@ -1,0 +1,26 @@
+{
+  "id": "2eb264e9-03a0-42e2-90c4-83e0feb34d2e",
+  "reference": "AN-MJLR9ASX",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1736515125,
+  "prix": 175720,
+  "charges_mensuelles": 269.08,
+  "surface": 145,
+  "nb_pieces": 5,
+  "nb_chambres": 4,
+  "etage": 4,
+  "adresse": "178 rue Jean Jaurès",
+  "latitude": 43.33682,
+  "longitude": 5.33863,
+  "description": "Studio rénové de 145 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0114897414",
+    "email": "contact95@example.com"
+  }
+}

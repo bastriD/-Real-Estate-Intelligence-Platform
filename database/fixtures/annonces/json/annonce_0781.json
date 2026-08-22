@@ -1,0 +1,29 @@
+{
+  "id": "275972de-150f-44a0-acd3-2ea9c9de1307",
+  "reference": "AN-QVLYOPNQ",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2026-03-01T16:22:45",
+  "prix": 403061,
+  "charges_mensuelles": 340.29,
+  "surface": 195,
+  "nb_pieces": 4,
+  "nb_chambres": 2,
+  "etage": 1,
+  "adresse": "195 avenue des Champs",
+  "latitude": 48.850528,
+  "longitude": 2.325186,
+  "contact": {
+    "nom": "Nadia Moreau",
+    "telephone": "0355697765"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-QVLYOPNQ/1.jpg",
+    "https://exemple-images.test/AN-QVLYOPNQ/2.jpg",
+    "https://exemple-images.test/AN-QVLYOPNQ/3.jpg"
+  ],
+  "particulier": true
+}

@@ -1,0 +1,23 @@
+{
+  "id": "fc21dcce-1491-4573-a762-fdd0e360cc75",
+  "reference": "AN-YVY8PGJM",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "18/04/2025",
+  "prix": 75944,
+  "surface": 75,
+  "nb_pieces": 7,
+  "etage": 2,
+  "meuble": true,
+  "description": "Château spacieux de 75 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Lefevre",
+    "email": "ahmed.lefevre7@example.com",
+    "agence": "Century Habitat"
+  }
+}

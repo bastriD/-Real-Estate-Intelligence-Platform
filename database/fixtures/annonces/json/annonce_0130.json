@@ -1,0 +1,25 @@
+{
+  "id": "0de63fc2-f968-4425-859c-1fc9ad41cefb",
+  "reference": "AN-OTXS4KH1",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "24 juin 2026",
+  "prix": 124142,
+  "surface": 129,
+  "nb_pieces": 2,
+  "nb_chambres": 2,
+  "adresse": "138 impasse des Lilas",
+  "description": "Studio charmant de 129 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "photos": [
+    "https://exemple-images.test/AN-OTXS4KH1/1.jpg",
+    "https://exemple-images.test/AN-OTXS4KH1/2.jpg",
+    "https://exemple-images.test/AN-OTXS4KH1/3.jpg",
+    "https://exemple-images.test/AN-OTXS4KH1/4.jpg"
+  ],
+  "exclusivite": true
+}

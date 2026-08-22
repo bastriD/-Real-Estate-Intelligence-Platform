@@ -1,0 +1,22 @@
+{
+  "id": "4828f2f8-07c6-4c2a-9282-705dc3b30aba",
+  "reference": "AN-OWZPEHAV",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain charmant à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "12 juin 2026",
+  "prix": 1289056,
+  "surface": 121,
+  "adresse": "127 rue Pasteur",
+  "latitude": 43.684844,
+  "longitude": 7.294381,
+  "description": "Terrain lumineux de 121 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0221582390"
+  },
+  "particulier": true
+}

@@ -1,0 +1,25 @@
+{
+  "id": "8a83035d-9d07-4a07-b018-205b90ed12f4",
+  "reference": "AN-6J1DYMBU",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "06-22-2026",
+  "prix": 324367,
+  "surface": 100,
+  "nb_pieces": 5,
+  "nb_chambres": 5,
+  "meuble": false,
+  "adresse": "112 rue Pasteur",
+  "latitude": 47.345895,
+  "longitude": 5.0611,
+  "description": "Appartement rénové de 100 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Girard",
+    "telephone": "0723415731",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": true
+}

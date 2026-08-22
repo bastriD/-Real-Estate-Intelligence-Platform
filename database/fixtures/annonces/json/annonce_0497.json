@@ -1,0 +1,22 @@
+{
+  "id": "9d82863e-d05f-4b33-aa95-6d0de8a22274",
+  "reference": "AN-GO80H69D",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain charmant à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "20 janvier 2026",
+  "prix": 1120482,
+  "surface": 152,
+  "adresse": "116 avenue des Champs",
+  "description": "Terrain à rafraîchir de 152 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Moreau",
+    "telephone": "0252096765",
+    "email": "claire.moreau90@example.com"
+  },
+  "exclusivite": true
+}

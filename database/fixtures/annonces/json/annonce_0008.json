@@ -1,0 +1,27 @@
+{
+  "id": "97866484-29c9-4653-8ab6-97c1b12ca8fc",
+  "reference": "AN-F52MUVSR",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "13 août 2026",
+  "prix": 190228,
+  "surface": 189,
+  "nb_chambres": 3,
+  "dpe": "F",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0753123099",
+    "email": "contact99@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-F52MUVSR/1.jpg",
+    "https://exemple-images.test/AN-F52MUVSR/2.jpg",
+    "https://exemple-images.test/AN-F52MUVSR/3.jpg",
+    "https://exemple-images.test/AN-F52MUVSR/4.jpg"
+  ],
+  "exclusivite": true
+}

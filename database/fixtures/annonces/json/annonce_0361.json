@@ -1,0 +1,22 @@
+{
+  "id": "ece461d5-5b11-48bc-9613-44214a165e15",
+  "reference": "AN-HRPQZ2BC",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "08-13-2026",
+  "prix": 388015,
+  "surface": 97,
+  "nb_pieces": 2,
+  "nb_chambres": 4,
+  "meuble": true,
+  "dpe": "D",
+  "annee_construction": 1961,
+  "latitude": 47.349978,
+  "longitude": 5.07337,
+  "contact": {
+    "agence": "ImmoPlus"
+  }
+}

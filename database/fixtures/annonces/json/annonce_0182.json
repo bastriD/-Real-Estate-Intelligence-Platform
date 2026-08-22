@@ -1,0 +1,23 @@
+{
+  "id": "aa4bf006-18a8-4a4c-8496-5e455e5e690f",
+  "reference": "AN-YZVWB855",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "18/10/2025",
+  "prix": 151903,
+  "charges_mensuelles": 257.63,
+  "surface": 141,
+  "nb_pieces": 8,
+  "nb_chambres": 4,
+  "meuble": true,
+  "adresse": "20 rue Victor Hugo",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Fontaine",
+    "email": "ahmed.fontaine18@example.com"
+  }
+}

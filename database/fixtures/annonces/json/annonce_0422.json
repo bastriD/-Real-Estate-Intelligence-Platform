@@ -1,0 +1,21 @@
+{
+  "id": "f44d4f87-64bc-4c3d-868d-a1c9e11d00e9",
+  "reference": "AN-3C7L2JRL",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1769799465,
+  "prix": 1201524,
+  "surface": 246,
+  "adresse": "80 rue Pasteur",
+  "description": "Terrain avec vue dégagée de 246 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Faure",
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": true
+}

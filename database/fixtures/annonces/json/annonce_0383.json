@@ -1,0 +1,24 @@
+{
+  "id": "8f26aca2-a104-4ccb-8c9d-9b24f10d7429",
+  "reference": "AN-GVIH9BO3",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "10-28-2025",
+  "prix": "201221 €",
+  "surface_m2": 215,
+  "nb_pieces": 2,
+  "nb_chambres": 7,
+  "description": "Appartement avec vue dégagée de 215 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Sophie Moreau",
+    "agence": "Century Habitat"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-GVIH9BO3/1.jpg",
+    "https://exemple-images.test/AN-GVIH9BO3/2.jpg"
+  ],
+  "particulier": true
+}

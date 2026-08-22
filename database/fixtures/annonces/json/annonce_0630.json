@@ -1,0 +1,21 @@
+{
+  "id": "bd1ac8ac-5185-4fd0-b279-5ff53471dd69",
+  "reference": "AN-SES3NHV2",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial rénové à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2024-11-11",
+  "prix": 397744,
+  "surface": 268,
+  "nb_pieces": 4,
+  "nb_chambres": 4,
+  "meuble": false,
+  "annee_construction": 1879,
+  "adresse": "19 quai de la Loire",
+  "contact": {
+    "nom": "Karim Fontaine",
+    "telephone": "0751263043"
+  }
+}

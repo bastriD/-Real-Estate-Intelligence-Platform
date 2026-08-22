@@ -1,0 +1,21 @@
+{
+  "id": "665b116c-aa45-4f6b-8263-493e44a34342",
+  "reference": "AN-F2AVNXBU",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "05-20-2025",
+  "prix": 261400,
+  "surface": 259,
+  "nb_pieces": 2,
+  "meuble": true,
+  "dpe": "E",
+  "annee_construction": 2008,
+  "description": "Local commercial rénové de 259 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "telephone": "0758424967"
+  },
+  "exclusivite": true
+}

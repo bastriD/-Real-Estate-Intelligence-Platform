@@ -1,0 +1,21 @@
+{
+  "id": "e52e40c7-ea66-429b-b2f7-38ca6aa1501e",
+  "reference": "AN-9090B25D",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "25/05/2025",
+  "prix": 1554484,
+  "charges_mensuelles": 275.04,
+  "surface": 198,
+  "adresse": "76 rue de la République",
+  "description": "Terrain atypique de 198 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "contact": {
+    "nom": "Sophie Lefevre",
+    "telephone": "0966147195",
+    "email": "sophie.lefevre98@example.com"
+  }
+}

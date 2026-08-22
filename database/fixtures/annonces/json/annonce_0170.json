@@ -1,0 +1,29 @@
+{
+  "id": "0fd58720-c915-4c8f-84c6-d08c8db47cb9",
+  "reference": "AN-XP5BLD5P",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-11-02",
+  "prix": 127123,
+  "surface": 145,
+  "nb_pieces": 4,
+  "nb_chambres": 4,
+  "etage": 5,
+  "dpe": "B",
+  "annee_construction": 1857,
+  "latitude": 43.276553,
+  "longitude": 5.377335,
+  "terrasse": true,
+  "contact": {
+    "nom": "Luc Dubois",
+    "telephone": "0048247465"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-XP5BLD5P/1.jpg",
+    "https://exemple-images.test/AN-XP5BLD5P/2.jpg"
+  ],
+  "particulier": true
+}

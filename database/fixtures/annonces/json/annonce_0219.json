@@ -1,0 +1,23 @@
+{
+  "id": "8bbacd07-9fc9-464f-9f64-7cba8d9deb03",
+  "reference": "AN-70P8TIK0",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement en excellent état à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "07-14-2025",
+  "prix": 351337,
+  "surface": 184,
+  "nb_pieces": 4,
+  "nb_chambres": 6,
+  "etage": 1,
+  "adresse": "151 avenue des Champs",
+  "latitude": 47.354088,
+  "longitude": 5.039123,
+  "contact": {
+    "telephone": "0188793140",
+    "email": "contact44@example.com"
+  },
+  "particulier": true
+}

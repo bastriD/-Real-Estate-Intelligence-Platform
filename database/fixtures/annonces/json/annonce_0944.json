@@ -1,0 +1,25 @@
+{
+  "id": "c9afbee4-17c4-4dec-b03f-4c80d148e1dd",
+  "reference": "AN-COQK58CZ",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1755302985,
+  "prix": 127108,
+  "surface": 94,
+  "nb_pieces": 5,
+  "nb_chambres": 0,
+  "adresse": "86 quai de la Loire",
+  "description": "Château rénové de 94 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Lefevre",
+    "email": "marie.lefevre87@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "exclusivite": true
+}

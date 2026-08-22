@@ -1,0 +1,26 @@
+{
+  "id": "27c48f6b-76f4-499e-be1d-06264b3253dd",
+  "reference": "AN-SSVLT5OD",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain rénové à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2024-10-11",
+  "prix": 1585036,
+  "surface": 215,
+  "adresse": "67 allée des Platanes",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Faure",
+    "telephone": "0413065016",
+    "email": "karim.faure88@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-SSVLT5OD/1.jpg",
+    "https://exemple-images.test/AN-SSVLT5OD/2.jpg",
+    "https://exemple-images.test/AN-SSVLT5OD/3.jpg"
+  ],
+  "exclusivite": false
+}

@@ -1,0 +1,31 @@
+{
+  "id": "06f7d9e2-c765-49bd-b266-adad90ae8df1",
+  "reference": "AN-UVZRO54Q",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "09-08-2024",
+  "prix": 178853,
+  "surface_m2": 226,
+  "nb_pieces": 1,
+  "adresse": "142 place de la Mairie",
+  "latitude": 43.273726,
+  "longitude": 5.371883,
+  "description": "Studio avec vue dégagée de 226 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Girard",
+    "email": "luc.girard13@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-UVZRO54Q/1.jpg",
+    "https://exemple-images.test/AN-UVZRO54Q/2.jpg",
+    "https://exemple-images.test/AN-UVZRO54Q/3.jpg",
+    "https://exemple-images.test/AN-UVZRO54Q/4.jpg",
+    "https://exemple-images.test/AN-UVZRO54Q/5.jpg"
+  ],
+  "particulier": true
+}

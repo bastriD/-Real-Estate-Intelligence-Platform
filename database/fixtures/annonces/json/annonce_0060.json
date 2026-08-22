@@ -1,0 +1,26 @@
+{
+  "id": "2723f163-f77f-4110-99e0-d8304e309c9c",
+  "reference": "AN-PLS0FZAZ",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "21/10/2025",
+  "prix": "128364 €",
+  "charges_mensuelles": 326.43,
+  "surface": 194,
+  "nb_pieces": 4,
+  "etage": 3,
+  "dpe": "B",
+  "annee_construction": 1994,
+  "adresse": "86 boulevard Gambetta",
+  "description": "Studio avec vue dégagée de 194 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "email": "contact26@example.com"
+  },
+  "photos": [],
+  "exclusivite": true
+}

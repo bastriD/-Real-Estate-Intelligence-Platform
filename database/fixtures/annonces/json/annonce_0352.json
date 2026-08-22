@@ -1,0 +1,30 @@
+{
+  "id": "0cdf35ea-c214-4c44-99eb-631725863f18",
+  "reference": "AN-0FJXJ986",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2026-02-24T05:05:45",
+  "prix": 270093,
+  "charges_mensuelles": 141.03,
+  "surface": 92,
+  "nb_pieces": 1,
+  "nb_chambres": 5,
+  "meuble": true,
+  "dpe": "C",
+  "adresse": "174 quai de la Loire",
+  "description": "Appartement atypique de 92 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0218653614"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-0FJXJ986/1.jpg",
+    "https://exemple-images.test/AN-0FJXJ986/2.jpg",
+    "https://exemple-images.test/AN-0FJXJ986/3.jpg",
+    "https://exemple-images.test/AN-0FJXJ986/4.jpg",
+    "https://exemple-images.test/AN-0FJXJ986/5.jpg"
+  ],
+  "exclusivite": true
+}

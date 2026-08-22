@@ -1,0 +1,25 @@
+{
+  "id": "9469d494-d317-4e71-87ed-e74fca354cd1",
+  "reference": "AN-Y59KLHOO",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "09-12-2024",
+  "prix": "78855 €",
+  "surface": 128,
+  "nb_pieces": 7,
+  "dpe": "A",
+  "adresse": "18 rue de la République",
+  "latitude": 43.319728,
+  "longitude": 5.341809,
+  "description": "Château rénové de 128 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Faure",
+    "telephone": "0346387715",
+    "email": "claire.faure2@example.com"
+  }
+}

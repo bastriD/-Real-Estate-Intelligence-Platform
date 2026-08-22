@@ -1,0 +1,32 @@
+{
+  "id": "b14b8a87-5cb3-4dc5-8b24-41119bcfb611",
+  "reference": "AN-DFZS5TBW",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "02-11-2025",
+  "prix": 240240,
+  "surface_m2": 104,
+  "nb_pieces": 4,
+  "nb_chambres": 4,
+  "etage": 1,
+  "dpe": "D",
+  "adresse": "179 chemin des Vignes",
+  "latitude": 47.316994,
+  "longitude": 5.006679,
+  "description": "Appartement avec vue dégagée de 104 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Jean Perrin",
+    "telephone": "0223395578",
+    "email": "jean.perrin37@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-DFZS5TBW/1.jpg",
+    "https://exemple-images.test/AN-DFZS5TBW/2.jpg",
+    "https://exemple-images.test/AN-DFZS5TBW/3.jpg",
+    "https://exemple-images.test/AN-DFZS5TBW/4.jpg",
+    "https://exemple-images.test/AN-DFZS5TBW/5.jpg"
+  ]
+}

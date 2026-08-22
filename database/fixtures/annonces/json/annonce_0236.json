@@ -1,0 +1,23 @@
+{
+  "id": "4530eee3-a093-4459-b847-fb9230bbcb5d",
+  "reference": "AN-9A5Z7YMG",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement en excellent état à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-06-28T06:51:45",
+  "prix": 353977,
+  "surface": 189,
+  "nb_pieces": 4,
+  "nb_chambres": 7,
+  "annee_construction": 2004,
+  "adresse": "94 impasse des Lilas",
+  "description": "Appartement atypique de 189 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marie Lefevre",
+    "telephone": "0681914126",
+    "email": "marie.lefevre69@example.com"
+  },
+  "exclusivite": true
+}

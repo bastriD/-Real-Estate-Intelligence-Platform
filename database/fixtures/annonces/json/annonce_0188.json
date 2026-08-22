@@ -1,0 +1,27 @@
+{
+  "id": "98611697-383b-4e45-9ecf-c1bf8bbe5af3",
+  "reference": "AN-5C4NBDII",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1743040665,
+  "prix": 188736,
+  "surface": 136,
+  "nb_pieces": 5,
+  "nb_chambres": 1,
+  "etage": "RDC",
+  "dpe": "D",
+  "annee_construction": 1994,
+  "latitude": 43.286686,
+  "longitude": 5.361134,
+  "description": "Studio lumineux de 136 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Girard",
+    "telephone": "0261549656"
+  },
+  "exclusivite": false
+}

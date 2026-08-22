@@ -1,0 +1,25 @@
+{
+  "id": "4c69d906-9d67-4334-b1fa-132d777d6007",
+  "reference": "AN-4QKD9O5Q",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial avec vue dégagée à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1750699545,
+  "prix": "254852 €",
+  "surface": 150,
+  "nb_pieces": 2,
+  "etage": 0,
+  "meuble": true,
+  "latitude": 48.850751,
+  "longitude": 2.316737,
+  "description": "Local commercial atypique de 150 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Jean Roche",
+    "telephone": "0594245655",
+    "email": "jean.roche55@example.com"
+  },
+  "photos": [],
+  "exclusivite": true
+}

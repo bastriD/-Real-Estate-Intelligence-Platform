@@ -1,0 +1,23 @@
+{
+  "id": "1f1c7226-9b49-4fa9-be59-23fd3629db96",
+  "reference": "AN-U8KXZHU6",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "02-27-2025",
+  "prix": 352901,
+  "surface": 199,
+  "nb_pieces": 1,
+  "nb_chambres": 6,
+  "adresse": "39 rue de la République",
+  "latitude": 47.327419,
+  "longitude": 5.091079,
+  "description": "Appartement à rafraîchir de 199 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0651900231",
+    "email": "contact23@example.com"
+  },
+  "exclusivite": false
+}

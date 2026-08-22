@@ -1,0 +1,22 @@
+{
+  "id": "a6268092-9de7-49a0-89d8-045afbc064b3",
+  "reference": "AN-E1DZLO8T",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "29/11/2025",
+  "prix": 1174072,
+  "surface": 197,
+  "latitude": 43.729025,
+  "longitude": 7.24337,
+  "description": "Terrain de standing de 197 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0333938315",
+    "email": "contact71@example.com"
+  },
+  "exclusivite": false
+}

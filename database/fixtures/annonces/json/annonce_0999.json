@@ -1,0 +1,24 @@
+{
+  "id": "f35449d7-b2ad-496b-a4f7-432f58f468b3",
+  "reference": "AN-5N8NMSC7",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "07-02-2026",
+  "prix": 72434,
+  "surface": 69,
+  "nb_pieces": 4,
+  "dpe": "A",
+  "description": "Château avec vue dégagée de 69 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Dubois",
+    "telephone": "0966370336"
+  },
+  "photos": [],
+  "exclusivite": false
+}

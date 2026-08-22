@@ -1,0 +1,24 @@
+{
+  "id": "bcb657ad-4ac0-4f2d-be26-fa6eb3b83d43",
+  "reference": "AN-MN549U8I",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-03-13T08:01:45",
+  "prix": 115557,
+  "charges_mensuelles": 90.3,
+  "surface": 96,
+  "nb_pieces": 7,
+  "nb_chambres": 3,
+  "latitude": 43.313637,
+  "longitude": 5.391834,
+  "description": "Château lumineux de 96 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0671046473"
+  }
+}

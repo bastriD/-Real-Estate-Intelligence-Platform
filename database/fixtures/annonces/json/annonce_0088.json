@@ -1,0 +1,22 @@
+{
+  "id": "ff780803-c242-4134-a99e-2053e506f03e",
+  "reference": "AN-ZVA94NHJ",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "19 août 2025",
+  "prix": 217201,
+  "surface_m2": 186,
+  "nb_pieces": 1,
+  "latitude": 43.259107,
+  "longitude": 5.363791,
+  "description": "Studio à rafraîchir de 186 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "email": "contact15@example.com",
+    "agence": "Toit & Vous"
+  }
+}

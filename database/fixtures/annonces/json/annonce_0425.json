@@ -1,0 +1,24 @@
+{
+  "id": "e0075990-8ab7-4088-bce7-91e8a6e96dde",
+  "reference": "AN-83HVMVE9",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain avec vue dégagée à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-10-01T15:52:45",
+  "prix": 1774362,
+  "surface": 257,
+  "description": "Terrain rénové de 257 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Roche",
+    "telephone": "0285665723"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-83HVMVE9/1.jpg",
+    "https://exemple-images.test/AN-83HVMVE9/2.jpg"
+  ],
+  "particulier": true
+}

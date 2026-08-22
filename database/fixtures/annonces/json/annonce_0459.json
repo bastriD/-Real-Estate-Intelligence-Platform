@@ -1,0 +1,20 @@
+{
+  "id": "e2e364b4-0a27-4d09-86af-a1221db3406b",
+  "reference": "AN-I0AT0QAO",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain rénové à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2026-04-15",
+  "prix": 1217254,
+  "surface": 164,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Dubois",
+    "telephone": "0903675150",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": false
+}

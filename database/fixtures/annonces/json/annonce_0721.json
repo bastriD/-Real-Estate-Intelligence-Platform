@@ -1,0 +1,22 @@
+{
+  "id": "fae7b8f8-d0a8-4f21-921d-da5bb413815d",
+  "reference": "AN-YAWSJAWR",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1783369065,
+  "prix": 260844,
+  "surface_m2": 156,
+  "nb_pieces": 5,
+  "latitude": 48.895822,
+  "longitude": 2.378469,
+  "description": "Local commercial avec vue dégagée de 156 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Julie Lefevre",
+    "email": "julie.lefevre15@example.com",
+    "agence": "Toit & Vous"
+  },
+  "photos": []
+}

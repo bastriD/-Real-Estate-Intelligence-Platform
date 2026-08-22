@@ -1,0 +1,21 @@
+{
+  "id": "670f8685-e480-4597-9dab-4856b4ab6ba0",
+  "reference": "AN-WWR9X995",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "17/06/2026",
+  "prix": 120880,
+  "surface": 87,
+  "nb_pieces": 6,
+  "etage": 0,
+  "dpe": "A",
+  "adresse": "31 boulevard Gambetta",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Roche"
+  }
+}

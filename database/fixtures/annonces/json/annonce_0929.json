@@ -1,0 +1,29 @@
+{
+  "id": "03c70d5e-b68c-43e5-88fc-25b71c8369f4",
+  "reference": "AN-E4U2SDVJ",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1758989745,
+  "prix": 81646,
+  "surface": 133,
+  "nb_pieces": 6,
+  "nb_chambres": 1,
+  "etage": 4,
+  "dpe": "A",
+  "adresse": "119 boulevard Gambetta",
+  "description": "Château charmant de 133 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Lefevre",
+    "telephone": "0100491233",
+    "email": "julie.lefevre6@example.com",
+    "agence": "Toit & Vous"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-E4U2SDVJ/1.jpg"
+  ]
+}

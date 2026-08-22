@@ -1,0 +1,19 @@
+{
+  "id": "6da8702b-fcbc-4f8d-ab57-414409b094d2",
+  "reference": "AN-5W9QXQ6T",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "14/04/2025",
+  "prix": 145933,
+  "surface": 152,
+  "nb_pieces": 8,
+  "description": "Studio lumineux de 152 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Lefevre"
+  }
+}

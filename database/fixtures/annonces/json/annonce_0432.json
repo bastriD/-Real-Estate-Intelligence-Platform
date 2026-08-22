@@ -1,0 +1,21 @@
+{
+  "id": "fc5de103-ba3b-4158-a34f-e8ac6af0fd02",
+  "reference": "AN-BBMPXTMS",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain rénové à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "02-08-2025",
+  "prix": "1521950 €",
+  "surface": 206,
+  "adresse": "168 rue Victor Hugo",
+  "description": "Terrain rénové de 206 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Martin",
+    "telephone": "0618684381"
+  },
+  "exclusivite": false
+}

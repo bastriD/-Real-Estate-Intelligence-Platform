@@ -1,0 +1,29 @@
+{
+  "id": "731710ff-22be-4d26-8dd7-0171e3dc7ade",
+  "reference": "AN-7WLHWFA0",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "28 juillet 2025",
+  "prix": 143758,
+  "surface": 111,
+  "nb_pieces": 4,
+  "nb_chambres": 2,
+  "etage": "RDC",
+  "adresse": "37 allée des Platanes",
+  "description": "Studio lumineux de 111 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Claire Fontaine",
+    "agence": "Provence Immobilier"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-7WLHWFA0/1.jpg",
+    "https://exemple-images.test/AN-7WLHWFA0/2.jpg",
+    "https://exemple-images.test/AN-7WLHWFA0/3.jpg",
+    "https://exemple-images.test/AN-7WLHWFA0/4.jpg",
+    "https://exemple-images.test/AN-7WLHWFA0/5.jpg"
+  ]
+}

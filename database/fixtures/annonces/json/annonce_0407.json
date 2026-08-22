@@ -1,0 +1,19 @@
+{
+  "id": "cb4df3f8-77be-4cac-af50-de37d00d6f89",
+  "reference": "AN-96FTP8WJ",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "18 novembre 2025",
+  "prix": 1712020,
+  "surface": 207,
+  "vue": true,
+  "contact": {
+    "nom": "Ahmed Lefevre",
+    "telephone": "0962240039",
+    "email": "ahmed.lefevre54@example.com"
+  },
+  "exclusivite": false
+}

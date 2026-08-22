@@ -1,0 +1,27 @@
+{
+  "id": "ae53fd68-a908-4c73-94a8-671d84272557",
+  "reference": "AN-VRAF5SD7",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-01-25T08:17:45",
+  "prix": 134975,
+  "surface": 60,
+  "nb_pieces": 8,
+  "nb_chambres": 4,
+  "dpe": "A",
+  "adresse": "73 rue Pasteur",
+  "latitude": 43.298996,
+  "longitude": 5.363499,
+  "description": "Château charmant de 60 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Girard",
+    "telephone": "0682642258",
+    "email": "marc.girard44@example.com"
+  }
+}

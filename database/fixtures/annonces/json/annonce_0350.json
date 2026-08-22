@@ -1,0 +1,27 @@
+{
+  "id": "307c6f48-8969-445c-863f-f7e93f901480",
+  "reference": "AN-A1QEBRUF",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement charmant à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "5 janvier 2026",
+  "prix": 224117,
+  "charges_mensuelles": 141.9,
+  "surface": 140,
+  "nb_pieces": 5,
+  "nb_chambres": 7,
+  "etage": "RDC",
+  "annee_construction": 1980,
+  "adresse": "187 rue du Commerce",
+  "latitude": 47.326787,
+  "longitude": 5.012962,
+  "description": "Appartement avec vue dégagée de 140 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Moreau",
+    "email": "karim.moreau97@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": false
+}

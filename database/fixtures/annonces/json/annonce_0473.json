@@ -1,0 +1,21 @@
+{
+  "id": "bd1d6376-2212-4c72-9449-5019b5981412",
+  "reference": "AN-FYNXDASZ",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain lumineux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1731692265,
+  "prix": 1423251,
+  "surface": 147,
+  "latitude": 43.740178,
+  "longitude": 7.237994,
+  "description": "Terrain lumineux de 147 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0570481243",
+    "email": "contact53@example.com"
+  }
+}

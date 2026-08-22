@@ -1,0 +1,23 @@
+{
+  "id": "896aad6f-141e-448c-a249-a002bf35c5f2",
+  "reference": "AN-YY4VX9VB",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "13/09/2024",
+  "prix": 191727,
+  "surface": 170,
+  "nb_pieces": 2,
+  "nb_chambres": 2,
+  "adresse": "63 rue Pasteur",
+  "description": "Studio de standing de 170 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Fontaine",
+    "telephone": "0696431455",
+    "email": "ahmed.fontaine59@example.com"
+  }
+}

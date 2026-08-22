@@ -1,0 +1,28 @@
+{
+  "id": "6d1dd8f8-9f2b-4e83-9a13-df402ccb2e10",
+  "reference": "AN-2SW9X1EX",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1769198145,
+  "prix": 122604,
+  "charges_mensuelles": 365.56,
+  "surface": 83,
+  "nb_pieces": 7,
+  "nb_chambres": 3,
+  "etage": 0,
+  "meuble": false,
+  "dpe": "A",
+  "latitude": 43.330279,
+  "longitude": 5.338539,
+  "description": "Château lumineux de 83 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Perrin",
+    "telephone": "0237266557",
+    "agence": "Clé en Main Immo"
+  }
+}

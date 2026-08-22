@@ -1,0 +1,27 @@
+{
+  "id": "2c6ed5a7-18d3-4c90-a9c7-33d558e32298",
+  "reference": "AN-36WAYMSU",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "09/11/2025",
+  "prix": "146622 €",
+  "charges_mensuelles": 359.67,
+  "surface": 196,
+  "nb_pieces": 3,
+  "etage": 0,
+  "meuble": true,
+  "dpe": "G",
+  "description": "Studio rénové de 196 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Girard",
+    "telephone": "0156019499",
+    "email": "marc.girard89@example.com",
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": false
+}

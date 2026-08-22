@@ -1,0 +1,25 @@
+{
+  "id": "f1b1947a-2dcb-4127-9aea-bb8996882b77",
+  "reference": "AN-7NO3Z8KS",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "12-07-2024",
+  "prix": 128852,
+  "surface": 173,
+  "nb_pieces": 8,
+  "nb_chambres": 2,
+  "meuble": true,
+  "dpe": "E",
+  "adresse": "161 rue de la République",
+  "description": "Studio à rafraîchir de 173 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Perrin",
+    "telephone": "0963854374",
+    "email": "ahmed.perrin35@example.com"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "2416ecd3-a388-4175-ba3e-be05c4770ab2",
+  "reference": "AN-Z2XRQ3FE",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2026-01-27T14:57:45",
+  "prix": 386851,
+  "surface": 198,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "meuble": false,
+  "latitude": 47.304204,
+  "longitude": 5.02507,
+  "description": "Appartement spacieux de 198 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Dubois",
+    "telephone": "0634616194",
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": false
+}

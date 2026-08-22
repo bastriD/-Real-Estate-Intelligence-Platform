@@ -1,0 +1,28 @@
+{
+  "id": "345089f9-2a64-4ead-be3c-a072060ba941",
+  "reference": "AN-JU4ZT97Z",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "04-25-2026",
+  "prix": 207469,
+  "charges_mensuelles": 127.45,
+  "surface": 121,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "annee_construction": 1993,
+  "adresse": "33 allée des Platanes",
+  "description": "Appartement spacieux de 121 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marc Roche",
+    "telephone": "0086681590"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-JU4ZT97Z/1.jpg",
+    "https://exemple-images.test/AN-JU4ZT97Z/2.jpg",
+    "https://exemple-images.test/AN-JU4ZT97Z/3.jpg",
+    "https://exemple-images.test/AN-JU4ZT97Z/4.jpg"
+  ]
+}

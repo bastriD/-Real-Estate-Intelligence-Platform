@@ -1,0 +1,22 @@
+{
+  "id": "2bed0782-0431-482c-bca9-893edab911d9",
+  "reference": "AN-RYY17LAA",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement en excellent état à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1775010465,
+  "prix": 303127,
+  "surface": 97,
+  "nb_pieces": 4,
+  "nb_chambres": 6,
+  "etage": 1,
+  "dpe": "G",
+  "contact": {
+    "telephone": "0683159603",
+    "agence": "Provence Immobilier"
+  },
+  "photos": [],
+  "exclusivite": false
+}

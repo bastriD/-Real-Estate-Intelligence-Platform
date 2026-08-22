@@ -1,0 +1,21 @@
+{
+  "id": "24c22102-9f33-48c2-96ab-1a74920dc8db",
+  "reference": "AN-XZYPS5VW",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain spacieux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2026-08-21",
+  "prix": 1503153,
+  "surface": 228,
+  "latitude": 43.688427,
+  "longitude": 7.309247,
+  "vue": true,
+  "contact": {
+    "email": "contact59@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-XZYPS5VW/1.jpg"
+  ]
+}

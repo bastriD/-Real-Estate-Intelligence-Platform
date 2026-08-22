@@ -1,0 +1,18 @@
+{
+  "id": "ff91581d-36bd-457e-b16a-a692a37a9a6d",
+  "reference": "AN-E8RRF1OX",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain lumineux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "8 mars 2025",
+  "prix": 1434862,
+  "surface": 265,
+  "description": "Terrain en excellent état de 265 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "contact": {
+    "nom": "Sophie Fontaine"
+  },
+  "exclusivite": false
+}

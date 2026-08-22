@@ -1,0 +1,24 @@
+{
+  "id": "71e863e2-77c6-426a-8c05-4a4bc9f7d0a8",
+  "reference": "AN-PF2SS1NT",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial atypique à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "12 octobre 2024",
+  "prix": 251336,
+  "charges_mensuelles": 105.44,
+  "surface": 254,
+  "nb_pieces": 4,
+  "nb_chambres": 3,
+  "etage": "RDC",
+  "meuble": true,
+  "adresse": "86 rue Pasteur",
+  "latitude": 48.807803,
+  "longitude": 2.391818,
+  "description": "Local commercial de standing de 254 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Jean Moreau"
+  }
+}

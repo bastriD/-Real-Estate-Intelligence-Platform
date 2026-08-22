@@ -1,0 +1,29 @@
+{
+  "id": "16d5d7dd-9d71-40d2-9666-7829b2a761e1",
+  "reference": "AN-4DQ5YFE4",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement en excellent état à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2024-08-24T15:02:45",
+  "prix": 390089,
+  "charges_mensuelles": 213.29,
+  "surface": 170,
+  "nb_pieces": 2,
+  "nb_chambres": 5,
+  "etage": 5,
+  "dpe": "G",
+  "description": "Appartement avec vue dégagée de 170 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "agence": "Toit & Vous"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-4DQ5YFE4/1.jpg",
+    "https://exemple-images.test/AN-4DQ5YFE4/2.jpg",
+    "https://exemple-images.test/AN-4DQ5YFE4/3.jpg",
+    "https://exemple-images.test/AN-4DQ5YFE4/4.jpg",
+    "https://exemple-images.test/AN-4DQ5YFE4/5.jpg"
+  ],
+  "exclusivite": true
+}

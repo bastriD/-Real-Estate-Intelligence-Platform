@@ -1,0 +1,27 @@
+{
+  "id": "d76d6db4-df09-4d0b-9ba9-e55dceeb060f",
+  "reference": "AN-QOY70C6Y",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-01-18T08:01:45",
+  "prix": 207323,
+  "surface": 195,
+  "nb_pieces": 4,
+  "etage": "RDC",
+  "annee_construction": 1862,
+  "adresse": "33 place de la Mairie",
+  "latitude": 43.255223,
+  "longitude": 5.362595,
+  "description": "Studio en excellent état de 195 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Bernard",
+    "telephone": "0747545177",
+    "email": "luc.bernard34@example.com",
+    "agence": "Nid Doré"
+  }
+}

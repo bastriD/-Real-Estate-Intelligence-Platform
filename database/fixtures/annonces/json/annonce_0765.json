@@ -1,0 +1,25 @@
+{
+  "id": "05ff7873-3ecb-4a01-af08-f95d0e6fb4a8",
+  "reference": "AN-J1JPS98J",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial atypique à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "02-07-2025",
+  "prix": 271458,
+  "charges_mensuelles": 225.7,
+  "surface": 149,
+  "nb_pieces": 3,
+  "nb_chambres": 5,
+  "dpe": "B",
+  "adresse": "94 place de la Mairie",
+  "latitude": 48.878997,
+  "longitude": 2.38464,
+  "description": "Local commercial atypique de 149 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Jean Dubois",
+    "telephone": "0014112106"
+  },
+  "exclusivite": false
+}

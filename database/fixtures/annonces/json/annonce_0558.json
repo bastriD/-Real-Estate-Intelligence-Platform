@@ -1,0 +1,19 @@
+{
+  "id": "90de018d-d852-45c4-be4f-ca195b5a7ae6",
+  "reference": "AN-79ZXHHV7",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain rénové à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "15 janvier 2025",
+  "prix": 1772326,
+  "surface": 242,
+  "description": "Terrain rénové de 242 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0066334255"
+  },
+  "exclusivite": true
+}

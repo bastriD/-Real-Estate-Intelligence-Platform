@@ -1,0 +1,31 @@
+{
+  "id": "fbda3f32-8312-4a04-b15d-88e56bceb103",
+  "reference": "AN-MSTF0GSA",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "20 février 2025",
+  "prix": 178258,
+  "surface": 170,
+  "nb_pieces": 4,
+  "adresse": "163 rue Jean Jaurès",
+  "latitude": 43.315244,
+  "longitude": 5.385947,
+  "description": "Studio avec vue dégagée de 170 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Moreau",
+    "telephone": "0096828544",
+    "email": "luc.moreau24@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-MSTF0GSA/1.jpg",
+    "https://exemple-images.test/AN-MSTF0GSA/2.jpg",
+    "https://exemple-images.test/AN-MSTF0GSA/3.jpg",
+    "https://exemple-images.test/AN-MSTF0GSA/4.jpg",
+    "https://exemple-images.test/AN-MSTF0GSA/5.jpg"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": "909a8be5-6cb8-45ec-83d6-02c2f34d24aa",
+  "reference": "AN-ISQH9ZNO",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement charmant à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "20/12/2024",
+  "prix": 340427,
+  "surface": 118,
+  "nb_pieces": 2,
+  "nb_chambres": 6,
+  "etage": 5,
+  "dpe": "D",
+  "adresse": "8 rue de la République",
+  "latitude": 47.293128,
+  "longitude": 5.070221,
+  "description": "Appartement charmant de 118 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Claire Girard",
+    "email": "claire.girard3@example.com",
+    "agence": "Toit & Vous"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-ISQH9ZNO/1.jpg"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "id": "be926a20-a338-417a-8ca8-c5f9eb195a2e",
+  "reference": "AN-MR81CBOY",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "12-17-2024",
+  "prix": 215119,
+  "surface": 163,
+  "nb_pieces": 3,
+  "nb_chambres": 4,
+  "adresse": "101 rue Jean Jaurès",
+  "latitude": 43.248962,
+  "longitude": 5.418445,
+  "description": "Studio spacieux de 163 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Roche",
+    "telephone": "0006874342",
+    "email": "marie.roche20@example.com",
+    "agence": "Nid Doré"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-MR81CBOY/1.jpg",
+    "https://exemple-images.test/AN-MR81CBOY/2.jpg",
+    "https://exemple-images.test/AN-MR81CBOY/3.jpg",
+    "https://exemple-images.test/AN-MR81CBOY/4.jpg"
+  ],
+  "exclusivite": true
+}

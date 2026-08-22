@@ -1,0 +1,24 @@
+{
+  "id": "2a2b4bfe-a798-4176-9306-2e891a614dc1",
+  "reference": "AN-2WQN2GIS",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2026-03-30",
+  "prix": "1018285 €",
+  "surface": 267,
+  "adresse": "84 rue Victor Hugo",
+  "latitude": 43.715636,
+  "longitude": 7.22402,
+  "description": "Terrain en excellent état de 267 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0622319953",
+    "email": "contact77@example.com",
+    "agence": "Toit & Vous"
+  },
+  "exclusivite": false
+}

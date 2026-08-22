@@ -1,0 +1,20 @@
+{
+  "id": "e324f9f8-60ea-49e5-81e8-b88256bd2ec2",
+  "reference": "AN-HU9HV6RU",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-05-18",
+  "prix": 1377470,
+  "surface": 170,
+  "adresse": "155 rue Pasteur",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "email": "contact7@example.com",
+    "agence": "Nid Doré"
+  },
+  "particulier": true
+}

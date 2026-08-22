@@ -1,0 +1,23 @@
+{
+  "id": "e95a5ffe-7e45-488b-b94c-6a03b85615b4",
+  "reference": "AN-V46IE285",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial de standing à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "11 mai 2025",
+  "prix": 231434,
+  "surface_m2": 194,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "dpe": "A",
+  "latitude": 48.90424,
+  "longitude": 2.351285,
+  "contact": {
+    "nom": "Luc Fontaine",
+    "telephone": "0537937646",
+    "email": "luc.fontaine46@example.com",
+    "agence": "Century Habitat"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "id": "0533e928-2610-40ae-980a-ba7687d15e36",
+  "reference": "AN-S3CHUC36",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "12-15-2025",
+  "prix": 81569,
+  "surface": 143,
+  "nb_pieces": 7,
+  "etage": 0,
+  "meuble": true,
+  "dpe": "A",
+  "annee_construction": 1914,
+  "latitude": 43.289657,
+  "longitude": 5.361778,
+  "description": "Château rénové de 143 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Perrin",
+    "email": "marc.perrin85@example.com",
+    "agence": "Century Habitat"
+  },
+  "particulier": true
+}

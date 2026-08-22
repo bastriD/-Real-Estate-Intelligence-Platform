@@ -1,0 +1,22 @@
+{
+  "id": "c5d01831-bcf6-4c42-8a5d-3c53fc4e29db",
+  "reference": "AN-U61CGZFA",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement en excellent état à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "01-31-2025",
+  "prix": 198310,
+  "surface": 86,
+  "nb_pieces": 1,
+  "nb_chambres": 5,
+  "etage": 4,
+  "latitude": 47.290217,
+  "longitude": 5.012434,
+  "contact": {
+    "telephone": "0626898883",
+    "email": "contact9@example.com",
+    "agence": "Century Habitat"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "44eae256-ba92-41c7-a1f5-757e41a4ff1a",
+  "reference": "AN-ZAZEIFDK",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-11-15",
+  "prix": 77003,
+  "charges_mensuelles": 219.5,
+  "surface": 114,
+  "nb_pieces": 6,
+  "nb_chambres": 1,
+  "etage": 1,
+  "dpe": "A",
+  "adresse": "125 rue de la République",
+  "description": "Château à rafraîchir de 114 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Sophie Martin",
+    "telephone": "0070294172",
+    "email": "sophie.martin89@example.com"
+  },
+  "exclusivite": false
+}

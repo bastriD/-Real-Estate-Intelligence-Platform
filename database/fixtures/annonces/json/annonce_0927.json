@@ -1,0 +1,20 @@
+{
+  "id": "7a7c981d-312f-4344-8d5d-61d7f31e6c75",
+  "reference": "AN-T02WNPZW",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1776457785,
+  "prix": 98887,
+  "surface": 133,
+  "nb_pieces": 4,
+  "nb_chambres": 3,
+  "etage": "RDC",
+  "dpe": "A",
+  "adresse": "117 boulevard Gambetta",
+  "description": "Château lumineux de 133 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true
+}

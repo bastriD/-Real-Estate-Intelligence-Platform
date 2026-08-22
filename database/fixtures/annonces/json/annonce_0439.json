@@ -1,0 +1,19 @@
+{
+  "id": "718bff87-da6b-4f32-87e3-94302adf0e66",
+  "reference": "AN-A1B6R2AU",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain spacieux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "05-23-2026",
+  "prix": 929691,
+  "surface": 267,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0751578679",
+    "agence": "Century Habitat"
+  },
+  "particulier": true
+}

@@ -1,0 +1,28 @@
+{
+  "id": "f80aae00-c838-4ae6-ae54-7f9ed5e5dc18",
+  "reference": "AN-NI6GQ17O",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-08-10T18:50:45",
+  "prix": 78142,
+  "charges_mensuelles": 95.72,
+  "surface": 149,
+  "nb_pieces": 6,
+  "nb_chambres": 4,
+  "dpe": "A",
+  "annee_construction": 1852,
+  "adresse": "76 allée des Platanes",
+  "latitude": 43.322387,
+  "longitude": 5.344997,
+  "description": "Château en excellent état de 149 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "contact": {
+    "nom": "Sophie Moreau",
+    "telephone": "0980865106",
+    "email": "sophie.moreau22@example.com"
+  }
+}

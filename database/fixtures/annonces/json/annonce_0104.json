@@ -1,0 +1,23 @@
+{
+  "id": "1f057286-bc20-4286-8028-af1684230a16",
+  "reference": "AN-G70IUQ2Y",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-10-17T19:28:45",
+  "prix": 212086,
+  "charges_mensuelles": 220.23,
+  "surface": 169,
+  "nb_chambres": 4,
+  "etage": "RDC",
+  "adresse": "17 place de la Mairie",
+  "description": "Studio au calme de 169 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Julie Dubois",
+    "email": "julie.dubois40@example.com",
+    "agence": "Toit & Vous"
+  },
+  "particulier": true
+}

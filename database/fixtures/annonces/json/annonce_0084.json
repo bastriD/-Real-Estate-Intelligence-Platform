@@ -1,0 +1,22 @@
+{
+  "id": "3171bd02-88c7-4353-9245-1b48aa6e2187",
+  "reference": "AN-VSWTA8NM",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "10/01/2026",
+  "prix": 183711,
+  "charges_mensuelles": 298.3,
+  "surface": 155,
+  "nb_pieces": 5,
+  "adresse": "195 place de la Mairie",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0457872763",
+    "email": "contact45@example.com"
+  },
+  "exclusivite": true
+}

@@ -1,0 +1,20 @@
+{
+  "id": "faf5325d-944c-40b5-b73c-80c67be54540",
+  "reference": "AN-D6UR4CZK",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement lumineux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1782573285,
+  "prix": "234997 €",
+  "surface_m2": 73,
+  "nb_pieces": 3,
+  "nb_chambres": 7,
+  "latitude": 47.347776,
+  "longitude": 5.018828,
+  "contact": {
+    "telephone": "0045674457"
+  },
+  "exclusivite": true
+}

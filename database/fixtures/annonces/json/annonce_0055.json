@@ -1,0 +1,26 @@
+{
+  "id": "745d60fb-589d-4126-b015-0851163d0526",
+  "reference": "AN-IQ76W7W3",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-10-01",
+  "prix": 117742,
+  "surface": 188,
+  "nb_pieces": 6,
+  "nb_chambres": 5,
+  "meuble": true,
+  "adresse": "151 rue Victor Hugo",
+  "latitude": 43.288033,
+  "longitude": 5.388505,
+  "description": "Studio avec vue dégagée de 188 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Marie Dubois",
+    "telephone": "0461957007",
+    "email": "marie.dubois27@example.com"
+  },
+  "particulier": true
+}

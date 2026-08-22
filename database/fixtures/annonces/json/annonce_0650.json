@@ -1,0 +1,22 @@
+{
+  "id": "7f2e1c12-8c63-4d6a-9de4-806a690ce163",
+  "reference": "AN-6KD2P2ON",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial avec vue dégagée à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1770971865,
+  "prix": 325650,
+  "surface": 227,
+  "nb_pieces": 6,
+  "etage": 5,
+  "latitude": 48.829169,
+  "longitude": 2.347984,
+  "description": "Local commercial atypique de 227 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Jean Perrin",
+    "email": "jean.perrin64@example.com"
+  },
+  "exclusivite": false
+}

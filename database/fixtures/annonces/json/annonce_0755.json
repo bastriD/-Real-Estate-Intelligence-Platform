@@ -1,0 +1,26 @@
+{
+  "id": "eb0263c1-5d69-4298-acb9-23eccdeec00d",
+  "reference": "AN-LVWH9IH2",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial atypique à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "06/08/2025",
+  "prix": 273782,
+  "charges_mensuelles": 276.71,
+  "surface": 153,
+  "nb_pieces": 4,
+  "description": "Local commercial au calme de 153 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Claire Fontaine",
+    "telephone": "0653519604",
+    "email": "claire.fontaine60@example.com",
+    "agence": "Nid Doré"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-LVWH9IH2/1.jpg",
+    "https://exemple-images.test/AN-LVWH9IH2/2.jpg"
+  ],
+  "exclusivite": false
+}

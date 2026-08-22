@@ -1,0 +1,31 @@
+{
+  "id": "f708dd9f-8525-46b8-ba79-ed54b40593fa",
+  "reference": "AN-VLDM0YFC",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1737366765,
+  "prix": 81853,
+  "surface": 52,
+  "nb_pieces": 6,
+  "etage": "RDC",
+  "dpe": "A",
+  "annee_construction": 1903,
+  "description": "Château de standing de 52 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0279644197",
+    "email": "contact24@example.com",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-VLDM0YFC/1.jpg",
+    "https://exemple-images.test/AN-VLDM0YFC/2.jpg",
+    "https://exemple-images.test/AN-VLDM0YFC/3.jpg"
+  ],
+  "exclusivite": true
+}

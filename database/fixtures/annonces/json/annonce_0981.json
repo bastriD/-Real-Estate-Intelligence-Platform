@@ -1,0 +1,35 @@
+{
+  "id": "7d9d50be-e89b-4af6-b770-eaa5657cc1d1",
+  "reference": "AN-FYXZL2GI",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "27/05/2025",
+  "prix": 103218,
+  "surface": 44,
+  "nb_pieces": 8,
+  "nb_chambres": 2,
+  "etage": 1,
+  "dpe": "B",
+  "adresse": "68 rue du Commerce",
+  "latitude": 43.291488,
+  "longitude": 5.395393,
+  "description": "Château de standing de 44 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Roche",
+    "telephone": "0692567629"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-FYXZL2GI/1.jpg",
+    "https://exemple-images.test/AN-FYXZL2GI/2.jpg",
+    "https://exemple-images.test/AN-FYXZL2GI/3.jpg",
+    "https://exemple-images.test/AN-FYXZL2GI/4.jpg",
+    "https://exemple-images.test/AN-FYXZL2GI/5.jpg"
+  ],
+  "exclusivite": true
+}

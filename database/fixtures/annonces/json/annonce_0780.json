@@ -1,0 +1,22 @@
+{
+  "id": "b1db0cc1-3a65-4691-8491-2a43e78a8edd",
+  "reference": "AN-9A8KNGG8",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-07-08T03:06:45",
+  "prix": 415438,
+  "surface": 192,
+  "nb_pieces": 2,
+  "meuble": true,
+  "adresse": "138 quai de la Loire",
+  "latitude": 48.896639,
+  "longitude": 2.38732,
+  "description": "Local commercial à rafraîchir de 192 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "email": "contact59@example.com"
+  },
+  "particulier": true
+}

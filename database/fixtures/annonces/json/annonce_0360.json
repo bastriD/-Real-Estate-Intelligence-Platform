@@ -1,0 +1,23 @@
+{
+  "id": "be4bddac-9e50-4a2f-a25b-e6147d52b02f",
+  "reference": "AN-2V60D7JS",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "11-25-2024",
+  "prix": 306648,
+  "surface": 160,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "dpe": "G",
+  "adresse": "80 boulevard Gambetta",
+  "latitude": 47.275982,
+  "longitude": 5.028721,
+  "description": "Appartement de standing de 160 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0284068546"
+  },
+  "exclusivite": true
+}

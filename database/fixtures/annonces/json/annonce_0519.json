@@ -1,0 +1,22 @@
+{
+  "id": "a9e8a5d8-d08e-405c-9876-aa6e531730e5",
+  "reference": "AN-A0RPZ6J3",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "07-13-2025",
+  "prix": 1420668,
+  "surface": 259,
+  "latitude": 43.664372,
+  "longitude": 7.248535,
+  "description": "Terrain rénové de 259 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Roche",
+    "agence": "Toit & Vous"
+  },
+  "exclusivite": false
+}

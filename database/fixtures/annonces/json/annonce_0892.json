@@ -1,0 +1,25 @@
+{
+  "id": "a35fb6d2-67fb-42aa-b6db-aefa9813b67e",
+  "reference": "AN-IRIQJMHE",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "07-10-2025",
+  "prix": 128375,
+  "surface_m2": 79,
+  "nb_pieces": 6,
+  "dpe": "A",
+  "annee_construction": 1923,
+  "adresse": "61 rue Victor Hugo",
+  "description": "Château spacieux de 79 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "photos": [
+    "https://exemple-images.test/AN-IRIQJMHE/1.jpg",
+    "https://exemple-images.test/AN-IRIQJMHE/2.jpg",
+    "https://exemple-images.test/AN-IRIQJMHE/3.jpg"
+  ]
+}

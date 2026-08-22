@@ -1,0 +1,20 @@
+{
+  "id": "7957445f-dfb1-4a36-9773-6f292c7adb88",
+  "reference": "AN-VX3Q5BVZ",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-11-13",
+  "prix": 77005,
+  "surface": 147,
+  "nb_pieces": 8,
+  "description": "Château à rafraîchir de 147 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "agence": "Toit & Vous"
+  },
+  "particulier": true
+}

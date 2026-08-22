@@ -1,0 +1,21 @@
+{
+  "id": "b2bf8a77-03e9-4537-b4ad-b237d5e80950",
+  "reference": "AN-DRKS1IDG",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "03-17-2025",
+  "prix": 138083,
+  "charges_mensuelles": 189.1,
+  "surface": 154,
+  "nb_pieces": 5,
+  "dpe": "A",
+  "adresse": "125 place de la Mairie",
+  "description": "Château en excellent état de 154 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "exclusivite": true
+}

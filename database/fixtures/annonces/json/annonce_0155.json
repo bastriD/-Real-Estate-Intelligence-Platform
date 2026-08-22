@@ -1,0 +1,20 @@
+{
+  "id": "35efe110-9d3a-46b3-b895-7b3bf1997b5c",
+  "reference": "AN-45EFNPEC",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "04-13-2025",
+  "prix": 199577,
+  "charges_mensuelles": 190.21,
+  "surface": 87,
+  "nb_chambres": 0,
+  "dpe": "F",
+  "adresse": "17 quai de la Loire",
+  "latitude": 43.33296,
+  "longitude": 5.331563,
+  "description": "Studio de standing de 87 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true
+}

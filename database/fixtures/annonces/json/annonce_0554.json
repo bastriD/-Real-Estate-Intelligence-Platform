@@ -1,0 +1,21 @@
+{
+  "id": "70d3b5d4-ede8-490b-ab77-5c2f9c74d860",
+  "reference": "AN-C4R1REHB",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain au calme à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "3 janvier 2026",
+  "prix": 1025563,
+  "surface": 141,
+  "latitude": 43.67431,
+  "longitude": 7.276169,
+  "description": "Terrain atypique de 141 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "contact": {
+    "nom": "Nadia Fontaine",
+    "telephone": "0316482401"
+  },
+  "particulier": true
+}

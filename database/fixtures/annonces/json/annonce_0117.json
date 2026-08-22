@@ -1,0 +1,28 @@
+{
+  "id": "2354af41-2ff7-4d33-ae04-efe6437a0525",
+  "reference": "AN-VNPFQX2S",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-04-04T11:40:45",
+  "prix": 124776,
+  "surface": 160,
+  "nb_pieces": 2,
+  "dpe": "B",
+  "adresse": "106 rue Pasteur",
+  "latitude": 43.340992,
+  "longitude": 5.342969,
+  "terrasse": true,
+  "contact": {
+    "nom": "Marc Bernard",
+    "telephone": "0878107411",
+    "email": "marc.bernard85@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-VNPFQX2S/1.jpg",
+    "https://exemple-images.test/AN-VNPFQX2S/2.jpg"
+  ],
+  "exclusivite": false
+}

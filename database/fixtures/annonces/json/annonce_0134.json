@@ -1,0 +1,21 @@
+{
+  "id": "420fe19b-e63c-49b3-8c53-eb27ac5edba2",
+  "reference": "AN-E8TMNE30",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-05-31T22:26:45",
+  "prix": "129524 €",
+  "surface": 194,
+  "nb_pieces": 2,
+  "nb_chambres": 3,
+  "description": "Studio spacieux de 194 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0064893285",
+    "agence": "Toit & Vous"
+  }
+}

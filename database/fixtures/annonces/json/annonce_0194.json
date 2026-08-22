@@ -1,0 +1,24 @@
+{
+  "id": "1384dd19-8d94-424e-b884-bbbc71c42972",
+  "reference": "AN-S3PE3BSM",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-05-22T08:36:45",
+  "prix": 175890,
+  "surface": 111,
+  "etage": "dernier étage",
+  "latitude": 43.331338,
+  "longitude": 5.328182,
+  "description": "Studio spacieux de 111 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Bernard",
+    "telephone": "0338649997",
+    "agence": "Century Habitat"
+  },
+  "exclusivite": false
+}

@@ -1,0 +1,22 @@
+{
+  "id": "04e03adf-db10-49ed-8379-5c7833370281",
+  "reference": "AN-FHMQVN3B",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-11-13",
+  "prix": 212073,
+  "surface": 210,
+  "nb_pieces": 8,
+  "nb_chambres": 1,
+  "dpe": "F",
+  "description": "Studio en excellent état de 210 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "contact": {
+    "telephone": "0214844563",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": false
+}

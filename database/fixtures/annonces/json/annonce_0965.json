@@ -1,0 +1,23 @@
+{
+  "id": "e8b8cd08-d6d9-49b9-bd0a-544fb7e1a06f",
+  "reference": "AN-9WZLI0YI",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "01-15-2025",
+  "prix": 114063,
+  "surface": 127,
+  "nb_pieces": 7,
+  "latitude": 43.327496,
+  "longitude": 5.354666,
+  "description": "Château au calme de 127 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0180682853",
+    "agence": "Clé en Main Immo"
+  }
+}

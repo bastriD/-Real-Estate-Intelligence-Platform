@@ -1,0 +1,22 @@
+{
+  "id": "7fd47e31-79e1-4a2d-b9ae-9684b5087499",
+  "reference": "AN-PLFNX6ZJ",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain au calme à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "02-02-2025",
+  "prix": 1647187,
+  "surface": 155,
+  "adresse": "34 boulevard Gambetta",
+  "latitude": 43.691515,
+  "longitude": 7.247182,
+  "description": "Terrain de standing de 155 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Marie Martin",
+    "agence": "Toit & Vous"
+  },
+  "particulier": true
+}

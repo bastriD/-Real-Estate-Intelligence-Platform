@@ -1,0 +1,19 @@
+{
+  "id": "01a55831-c5ca-4820-9842-3be0d8517234",
+  "reference": "AN-3ACF6JV3",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain avec vue dégagée à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "08-27-2025",
+  "prix": 1297069,
+  "surface": 254,
+  "latitude": 43.698746,
+  "longitude": 7.26767,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Fontaine"
+  },
+  "exclusivite": true
+}

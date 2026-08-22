@@ -1,0 +1,22 @@
+{
+  "id": "c4e6b4a2-50f4-4078-9cc5-d48577b436e4",
+  "reference": "AN-DNVSMK9M",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement atypique à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "06-08-2026",
+  "prix": 308238,
+  "surface": 89,
+  "nb_pieces": 5,
+  "nb_chambres": 6,
+  "adresse": "3 rue Jean Jaurès",
+  "latitude": 47.355281,
+  "longitude": 5.022856,
+  "contact": {
+    "nom": "Luc Bernard",
+    "telephone": "0070390946",
+    "email": "luc.bernard21@example.com"
+  }
+}

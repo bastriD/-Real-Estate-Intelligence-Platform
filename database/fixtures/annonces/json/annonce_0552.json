@@ -1,0 +1,26 @@
+{
+  "id": "f1bfd47e-ba00-4886-9163-0c7047ab0d8f",
+  "reference": "AN-F9GYGCJB",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain charmant à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2024-11-18T06:22:45",
+  "prix": 1801669,
+  "charges_mensuelles": 156.8,
+  "surface": 168,
+  "adresse": "134 boulevard Gambetta",
+  "latitude": 43.706015,
+  "longitude": 7.251677,
+  "description": "Terrain à rafraîchir de 168 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Dubois",
+    "telephone": "0064091446",
+    "email": "nadia.dubois4@example.com",
+    "agence": "ImmoPlus"
+  },
+  "particulier": true
+}

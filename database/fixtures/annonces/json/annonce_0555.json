@@ -1,0 +1,20 @@
+{
+  "id": "d26214ae-8965-4dbc-8a0f-c5915bbdeb44",
+  "reference": "AN-GLV0Y70C",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain rénové à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "1 avril 2026",
+  "prix": 1616201,
+  "surface": 180,
+  "latitude": 43.754099,
+  "longitude": 7.244962,
+  "description": "Terrain au calme de 180 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Marie Lefevre"
+  },
+  "particulier": true
+}

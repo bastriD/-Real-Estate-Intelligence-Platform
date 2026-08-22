@@ -1,0 +1,27 @@
+{
+  "id": "061ecf5b-8dbf-400c-a5a4-fbf7b6fb66fb",
+  "reference": "AN-XHEVNV7T",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-01-19T03:03:45",
+  "prix": 195358,
+  "surface": 115,
+  "nb_pieces": 8,
+  "nb_chambres": 0,
+  "annee_construction": 2000,
+  "adresse": "24 quai de la Loire",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Lefevre",
+    "telephone": "0917644000",
+    "email": "marie.lefevre21@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-XHEVNV7T/1.jpg"
+  ],
+  "exclusivite": true
+}

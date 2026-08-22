@@ -1,0 +1,22 @@
+{
+  "id": "15281b7b-2bcc-4a3c-bdc2-7053cafbcd24",
+  "reference": "AN-BUDX5FTN",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-06-10",
+  "prix": 121616,
+  "surface": 73,
+  "nb_pieces": 4,
+  "dpe": "A",
+  "adresse": "129 boulevard Gambetta",
+  "description": "Château avec vue dégagée de 73 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "email": "contact33@example.com"
+  },
+  "particulier": true
+}

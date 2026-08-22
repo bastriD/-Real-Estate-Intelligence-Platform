@@ -1,0 +1,29 @@
+{
+  "id": "2a4810a4-9bce-4398-abbf-4d7f88f31e7b",
+  "reference": "AN-FP0TTP85",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "16/12/2024",
+  "prix": 109685,
+  "surface": 104,
+  "nb_pieces": 7,
+  "annee_construction": 2009,
+  "adresse": "200 rue de la République",
+  "description": "Studio avec vue dégagée de 104 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Moreau",
+    "telephone": "0632720895",
+    "email": "luc.moreau70@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-FP0TTP85/1.jpg",
+    "https://exemple-images.test/AN-FP0TTP85/2.jpg",
+    "https://exemple-images.test/AN-FP0TTP85/3.jpg",
+    "https://exemple-images.test/AN-FP0TTP85/4.jpg"
+  ]
+}

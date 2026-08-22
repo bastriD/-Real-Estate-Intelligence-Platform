@@ -1,0 +1,23 @@
+{
+  "id": "9d378804-b573-4fd2-9c54-013807f0cc9a",
+  "reference": "AN-EDYN3NVM",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement charmant à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-03-13",
+  "prix": 343700,
+  "surface_m2": 204,
+  "nb_pieces": 2,
+  "nb_chambres": 6,
+  "etage": 4,
+  "dpe": "D",
+  "adresse": "87 quai de la Loire",
+  "latitude": 47.329997,
+  "longitude": 4.996226,
+  "contact": {
+    "agence": "Nid Doré"
+  },
+  "exclusivite": true
+}

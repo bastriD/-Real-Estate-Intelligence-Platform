@@ -1,0 +1,25 @@
+{
+  "id": "1c7dc054-0895-4dd1-8385-5ca604391546",
+  "reference": "AN-7S4VJFW2",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "11-03-2025",
+  "prix": 141113,
+  "charges_mensuelles": 191.36,
+  "surface_m2": 91,
+  "nb_pieces": 6,
+  "nb_chambres": 0,
+  "etage": 0,
+  "dpe": "A",
+  "description": "Château rénové de 91 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0409601173",
+    "email": "contact43@example.com"
+  }
+}

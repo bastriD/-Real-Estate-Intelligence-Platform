@@ -1,0 +1,27 @@
+{
+  "id": "955d5c18-184b-447d-a11d-109d130aa6b6",
+  "reference": "AN-SLE7Q7CP",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "6 septembre 2025",
+  "prix": 1578063,
+  "surface": 219,
+  "latitude": 43.73044,
+  "longitude": 7.247875,
+  "description": "Terrain spacieux de 219 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "contact": {
+    "telephone": "0229195588",
+    "email": "contact81@example.com",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-SLE7Q7CP/1.jpg",
+    "https://exemple-images.test/AN-SLE7Q7CP/2.jpg",
+    "https://exemple-images.test/AN-SLE7Q7CP/3.jpg"
+  ],
+  "exclusivite": true
+}

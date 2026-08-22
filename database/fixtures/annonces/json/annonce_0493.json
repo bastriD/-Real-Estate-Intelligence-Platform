@@ -1,0 +1,20 @@
+{
+  "id": "a972912b-c369-4dc6-a91e-41ee8406f7ed",
+  "reference": "AN-G5QUZDA7",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2026-08-04",
+  "prix": 1737854,
+  "surface": 192,
+  "latitude": 43.698557,
+  "longitude": 7.257015,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Fontaine",
+    "telephone": "0134114105"
+  }
+}

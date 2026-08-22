@@ -1,0 +1,21 @@
+{
+  "id": "dd2d5df0-a05f-4213-826a-12948f92d8da",
+  "reference": "AN-A0L14FTD",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-01-20",
+  "prix": 1533752,
+  "surface": 140,
+  "adresse": "44 chemin des Vignes",
+  "description": "Terrain spacieux de 140 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Bernard",
+    "telephone": "0173651666",
+    "email": "julie.bernard71@example.com"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "bcf436b0-951a-4818-9eaa-93879ab33abc",
+  "reference": "AN-YGHSGI9N",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1750459905,
+  "prix": "1348786 €",
+  "surface": 237,
+  "description": "Terrain charmant de 237 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "contact": {
+    "email": "contact27@example.com"
+  }
+}

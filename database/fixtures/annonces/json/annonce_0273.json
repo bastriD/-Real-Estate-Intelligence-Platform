@@ -1,0 +1,25 @@
+{
+  "id": "ffe3128b-75b4-4076-bea3-32bcd943f86b",
+  "reference": "AN-6G8KHZCT",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement lumineux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "19 septembre 2025",
+  "prix": 333442,
+  "surface": 112,
+  "nb_pieces": 1,
+  "nb_chambres": 7,
+  "etage": 3,
+  "annee_construction": 1942,
+  "adresse": "191 rue de la République",
+  "latitude": 47.362509,
+  "longitude": 5.009856,
+  "description": "Appartement au calme de 112 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Girard",
+    "telephone": "0485756968",
+    "email": "karim.girard46@example.com"
+  }
+}

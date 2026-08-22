@@ -1,0 +1,21 @@
+{
+  "id": "3a85be4a-ef60-4f79-8ee9-c03be16e6538",
+  "reference": "AN-TTHBRRTD",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2026-02-11",
+  "prix": "348699 €",
+  "surface": 137,
+  "nb_pieces": 1,
+  "nb_chambres": 5,
+  "annee_construction": 1952,
+  "adresse": "175 chemin des Vignes",
+  "contact": {
+    "nom": "Marc Fontaine",
+    "telephone": "0807598303"
+  },
+  "exclusivite": true
+}

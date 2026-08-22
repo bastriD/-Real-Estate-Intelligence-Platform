@@ -1,0 +1,22 @@
+{
+  "id": "3fe0b8a3-2132-4bbf-b3b1-70e6247ae954",
+  "reference": "AN-9GB9I3QO",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "09-28-2025",
+  "prix": 377114,
+  "surface": 104,
+  "nb_pieces": 5,
+  "nb_chambres": 7,
+  "etage": 0,
+  "dpe": "G",
+  "annee_construction": 1920,
+  "adresse": "186 chemin des Vignes",
+  "description": "Appartement à rafraîchir de 104 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0445460546"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "67a3504d-9ad5-475a-b836-02e3539fbece",
+  "reference": "AN-377YWDY9",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain charmant à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "06/11/2025",
+  "prix": 1182384,
+  "surface": 206,
+  "adresse": "7 avenue des Champs",
+  "latitude": 43.727184,
+  "longitude": 7.216663,
+  "description": "Terrain à rafraîchir de 206 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Perrin",
+    "email": "luc.perrin27@example.com"
+  },
+  "exclusivite": false
+}

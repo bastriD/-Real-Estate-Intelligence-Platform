@@ -1,0 +1,25 @@
+{
+  "id": "887389a2-dede-4f3b-adc8-762f9d1cb324",
+  "reference": "AN-JXUSHN5I",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "12-15-2025",
+  "prix": 176217,
+  "charges_mensuelles": 225.74,
+  "surface": 224,
+  "nb_pieces": 3,
+  "dpe": "A",
+  "adresse": "76 allée des Platanes",
+  "latitude": 43.28116,
+  "longitude": 5.352552,
+  "description": "Studio lumineux de 224 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Girard",
+    "telephone": "0476246266",
+    "agence": "Provence Immobilier"
+  }
+}

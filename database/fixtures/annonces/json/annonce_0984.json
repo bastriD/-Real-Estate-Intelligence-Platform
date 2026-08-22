@@ -1,0 +1,24 @@
+{
+  "id": "dca62a14-d1ff-49f9-a2eb-1041f1f31e8e",
+  "reference": "AN-70ROV30F",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1763951265,
+  "prix": 135528,
+  "surface": 123,
+  "nb_pieces": 8,
+  "nb_chambres": 5,
+  "etage": 0,
+  "dpe": "A",
+  "adresse": "104 impasse des Lilas",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0068868182"
+  },
+  "exclusivite": true
+}

@@ -1,0 +1,24 @@
+{
+  "id": "2a47a97e-fe0c-42a0-a73e-7c9109fa182f",
+  "reference": "AN-SMRJPWE9",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "25 octobre 2024",
+  "prix": 99396,
+  "surface": 105,
+  "nb_pieces": 6,
+  "etage": "RDC",
+  "dpe": "A",
+  "adresse": "125 place de la Mairie",
+  "description": "Château lumineux de 105 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0736272577",
+    "agence": "Toit & Vous"
+  }
+}

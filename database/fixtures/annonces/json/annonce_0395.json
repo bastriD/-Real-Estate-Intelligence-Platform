@@ -1,0 +1,23 @@
+{
+  "id": "a0ed5655-52c1-4540-aa63-052a84fc84ca",
+  "reference": "AN-OQV8F3N5",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement en excellent état à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "11 octobre 2025",
+  "prix": 215523,
+  "surface": 76,
+  "nb_pieces": 3,
+  "nb_chambres": 5,
+  "annee_construction": 2019,
+  "adresse": "149 place de la Mairie",
+  "contact": {
+    "nom": "Julie Dubois"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-OQV8F3N5/1.jpg"
+  ],
+  "particulier": true
+}

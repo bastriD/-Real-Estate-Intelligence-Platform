@@ -1,0 +1,20 @@
+{
+  "id": "af764164-dcca-4521-b8ae-0f03876d8ff9",
+  "reference": "AN-ZZRH33UD",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain charmant à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-01-05T11:03:45",
+  "prix": 964686,
+  "surface": 219,
+  "adresse": "139 rue Victor Hugo",
+  "latitude": 43.683738,
+  "longitude": 7.223958,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Roche"
+  }
+}

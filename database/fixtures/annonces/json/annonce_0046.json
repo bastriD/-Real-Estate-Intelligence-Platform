@@ -1,0 +1,22 @@
+{
+  "id": "018540ca-967c-47b6-b61b-0d3e9bdaf8fc",
+  "reference": "AN-QDP3S4VR",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "07-13-2025",
+  "prix": 148978,
+  "surface_m2": 140,
+  "nb_pieces": 6,
+  "nb_chambres": 5,
+  "dpe": "D",
+  "annee_construction": 1928,
+  "description": "Studio lumineux de 140 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0745130253"
+  }
+}

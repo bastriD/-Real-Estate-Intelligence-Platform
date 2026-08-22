@@ -1,0 +1,27 @@
+{
+  "id": "e10cc67b-eaaf-4749-aa1e-092a10b1e24f",
+  "reference": "AN-8CGV0ML7",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial charmant à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1743516225,
+  "prix": 221585,
+  "surface": 174,
+  "nb_pieces": 5,
+  "nb_chambres": 2,
+  "dpe": "A",
+  "adresse": "24 impasse des Lilas",
+  "contact": {
+    "nom": "Julie Roche",
+    "telephone": "0682722168",
+    "email": "julie.roche16@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-8CGV0ML7/1.jpg",
+    "https://exemple-images.test/AN-8CGV0ML7/2.jpg",
+    "https://exemple-images.test/AN-8CGV0ML7/3.jpg"
+  ]
+}

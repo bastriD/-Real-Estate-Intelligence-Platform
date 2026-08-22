@@ -1,0 +1,20 @@
+{
+  "id": "e0cbcb59-af6c-4260-9c01-fa3aea33ba3b",
+  "reference": "AN-2XIP24QV",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "25/07/2026",
+  "prix": 1414042,
+  "surface": 175,
+  "adresse": "132 place de la Mairie",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Faure",
+    "telephone": "0220595256",
+    "agence": "Clé en Main Immo"
+  }
+}

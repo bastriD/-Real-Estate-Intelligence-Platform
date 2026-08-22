@@ -1,0 +1,25 @@
+{
+  "id": "0618508c-8e0c-451f-a1e2-314e47e99b27",
+  "reference": "AN-LU2KY7JC",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-09-27T05:47:45",
+  "prix": "87114 €",
+  "surface": 64,
+  "nb_pieces": 8,
+  "dpe": "A",
+  "latitude": 43.247473,
+  "longitude": 5.419609,
+  "description": "Château atypique de 64 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Faure",
+    "telephone": "0704223299"
+  },
+  "exclusivite": false
+}

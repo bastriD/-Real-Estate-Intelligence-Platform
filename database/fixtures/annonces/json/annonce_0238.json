@@ -1,0 +1,25 @@
+{
+  "id": "fd3ac352-6aee-49f8-8356-d0d68bbe0f8f",
+  "reference": "AN-OZ42X6R6",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement spacieux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "14/03/2025",
+  "prix": "371703 €",
+  "charges_mensuelles": 293.34,
+  "surface": 90,
+  "nb_pieces": 3,
+  "nb_chambres": 5,
+  "meuble": false,
+  "adresse": "65 rue Jean Jaurès",
+  "latitude": 47.307962,
+  "longitude": 5.025684,
+  "description": "Appartement lumineux de 90 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Sophie Bernard",
+    "telephone": "0964346098",
+    "agence": "Clé en Main Immo"
+  }
+}

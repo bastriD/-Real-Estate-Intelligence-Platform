@@ -1,0 +1,23 @@
+{
+  "id": "d6456840-6d46-4832-a935-a737f59947a0",
+  "reference": "AN-5I9KBDD8",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement charmant à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "31/03/2026",
+  "prix": 350089,
+  "surface": 191,
+  "nb_pieces": 2,
+  "nb_chambres": 5,
+  "meuble": true,
+  "dpe": "D",
+  "description": "Appartement à rafraîchir de 191 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Luc Dubois",
+    "telephone": "0138809753",
+    "email": "luc.dubois44@example.com"
+  },
+  "particulier": true
+}

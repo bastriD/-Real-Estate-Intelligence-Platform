@@ -1,0 +1,27 @@
+{
+  "id": "f62fab48-326b-439f-8eb2-83779b3ac9d7",
+  "reference": "AN-ZIH8YNL7",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-04-03",
+  "prix": 114664,
+  "surface": 45,
+  "nb_pieces": 4,
+  "dpe": "A",
+  "latitude": 43.337007,
+  "longitude": 5.365534,
+  "description": "Château lumineux de 45 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Girard",
+    "telephone": "0618199745",
+    "email": "jean.girard55@example.com",
+    "agence": "Century Habitat"
+  },
+  "exclusivite": true
+}

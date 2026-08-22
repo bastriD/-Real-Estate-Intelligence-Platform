@@ -1,0 +1,21 @@
+{
+  "id": "53d0eab6-c651-48fc-be21-1b88c37ff9b1",
+  "reference": "AN-FVEN9NCN",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain spacieux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1753871445,
+  "prix": 1444134,
+  "surface": 250,
+  "latitude": 43.674443,
+  "longitude": 7.309573,
+  "description": "Terrain lumineux de 250 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Fontaine"
+  },
+  "particulier": true
+}

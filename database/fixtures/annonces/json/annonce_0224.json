@@ -1,0 +1,25 @@
+{
+  "id": "199f0458-7893-412f-804b-6d911382a95e",
+  "reference": "AN-7MBQ11W0",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement charmant à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "01-18-2025",
+  "prix": 241741,
+  "surface": 83,
+  "nb_pieces": 3,
+  "nb_chambres": 6,
+  "etage": 3,
+  "annee_construction": 1893,
+  "adresse": "112 avenue des Champs",
+  "latitude": 47.322995,
+  "longitude": 5.000952,
+  "description": "Appartement rénové de 83 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marie Lefevre",
+    "email": "marie.lefevre1@example.com"
+  },
+  "exclusivite": true
+}

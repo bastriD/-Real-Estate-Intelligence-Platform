@@ -1,0 +1,19 @@
+{
+  "id": "973d596d-91c2-4f06-8389-c8ba4c69e6e7",
+  "reference": "AN-B7DLDE33",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "29/06/2025",
+  "prix": 179677,
+  "surface": 103,
+  "etage": 5,
+  "dpe": "G",
+  "adresse": "186 allée des Platanes",
+  "calme": true,
+  "contact": {
+    "email": "contact4@example.com"
+  }
+}

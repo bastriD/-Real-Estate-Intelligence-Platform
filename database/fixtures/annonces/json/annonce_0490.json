@@ -1,0 +1,21 @@
+{
+  "id": "680c2452-0474-46c3-b3e5-128aaf19f6be",
+  "reference": "AN-RXLM4K3Y",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2024-09-14T09:20:45",
+  "prix": 1163902,
+  "charges_mensuelles": 192.38,
+  "surface": 165,
+  "adresse": "19 boulevard Gambetta",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Moreau",
+    "email": "sophie.moreau58@example.com",
+    "agence": "Century Habitat"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "284ec72a-eba2-47f2-aa39-7307f309aa7b",
+  "reference": "AN-F5LETR82",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-12-23T09:53:45",
+  "prix": 214121,
+  "charges_mensuelles": 379.98,
+  "surface_m2": 214,
+  "nb_pieces": 3,
+  "nb_chambres": 2,
+  "etage": 0,
+  "meuble": false,
+  "dpe": "C",
+  "adresse": "33 rue de la République",
+  "latitude": 43.306267,
+  "longitude": 5.407376,
+  "description": "Studio spacieux de 214 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Lefevre",
+    "telephone": "0177159795"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-F5LETR82/1.jpg",
+    "https://exemple-images.test/AN-F5LETR82/2.jpg"
+  ]
+}

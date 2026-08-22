@@ -1,0 +1,23 @@
+{
+  "id": "2fdec4c8-8263-49f3-9ba7-31eaca7deeea",
+  "reference": "AN-7A9ORW4N",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement charmant à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2024-09-01T10:55:45",
+  "prix": 288481,
+  "surface": 168,
+  "nb_pieces": 5,
+  "nb_chambres": 7,
+  "meuble": false,
+  "latitude": 47.361305,
+  "longitude": 5.050538,
+  "contact": {
+    "nom": "Julie Perrin",
+    "telephone": "0364045646",
+    "email": "julie.perrin39@example.com",
+    "agence": "Clé en Main Immo"
+  }
+}

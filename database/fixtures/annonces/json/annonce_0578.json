@@ -1,0 +1,22 @@
+{
+  "id": "4f65b39e-6145-4d4d-821b-5d2cbd9eeb93",
+  "reference": "AN-9LKL2H89",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain rénové à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2026-04-04",
+  "prix": 1739946,
+  "surface": 136,
+  "adresse": "127 impasse des Lilas",
+  "description": "Terrain rénové de 136 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Lefevre",
+    "email": "karim.lefevre21@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": true
+}

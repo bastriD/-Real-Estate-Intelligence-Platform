@@ -1,0 +1,27 @@
+{
+  "id": "5b37f39f-6aeb-4af6-a9ae-3f2c886b6554",
+  "reference": "AN-Q2AJR7R3",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1751842785,
+  "prix": 214351,
+  "charges_mensuelles": 237.57,
+  "surface": 74,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "meuble": true,
+  "latitude": 47.351023,
+  "longitude": 5.078846,
+  "contact": {
+    "nom": "Marie Roche",
+    "telephone": "0825216230"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-Q2AJR7R3/1.jpg",
+    "https://exemple-images.test/AN-Q2AJR7R3/2.jpg",
+    "https://exemple-images.test/AN-Q2AJR7R3/3.jpg"
+  ]
+}

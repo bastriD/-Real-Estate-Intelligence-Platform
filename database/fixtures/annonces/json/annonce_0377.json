@@ -1,0 +1,26 @@
+{
+  "id": "81dfe61b-b224-4112-9fc9-68049456440b",
+  "reference": "AN-UDOH9J1U",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement atypique à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1784003385,
+  "prix": 221770,
+  "surface": 130,
+  "nb_pieces": 5,
+  "nb_chambres": 5,
+  "etage": 5,
+  "meuble": true,
+  "dpe": "F",
+  "latitude": 47.276875,
+  "longitude": 5.078678,
+  "description": "Appartement atypique de 130 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0909131264",
+    "email": "contact36@example.com",
+    "agence": "Toit & Vous"
+  },
+  "particulier": true
+}

@@ -1,0 +1,26 @@
+{
+  "id": "87daf1a4-87e0-41a8-bc14-0999b1efbbfd",
+  "reference": "AN-1BH57VRL",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1786482885,
+  "prix": 998359,
+  "surface": 167,
+  "latitude": 43.686729,
+  "longitude": 7.298303,
+  "description": "Terrain en excellent état de 167 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "contact": {
+    "nom": "Luc Girard",
+    "telephone": "0796363849",
+    "email": "luc.girard16@example.com",
+    "agence": "Toit & Vous"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-1BH57VRL/1.jpg",
+    "https://exemple-images.test/AN-1BH57VRL/2.jpg"
+  ]
+}

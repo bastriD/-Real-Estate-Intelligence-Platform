@@ -1,0 +1,28 @@
+{
+  "id": "d4fa1c66-8058-49cb-8a5a-e7fb63a4c5d5",
+  "reference": "AN-U841QKSO",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial de standing à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "03-21-2026",
+  "prix": 223257,
+  "surface": 143,
+  "nb_pieces": 2,
+  "nb_chambres": 1,
+  "dpe": "E",
+  "adresse": "179 rue Jean Jaurès",
+  "latitude": 48.891863,
+  "longitude": 2.376091,
+  "description": "Local commercial à rafraîchir de 143 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Bernard",
+    "email": "karim.bernard52@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-U841QKSO/1.jpg"
+  ],
+  "exclusivite": true
+}

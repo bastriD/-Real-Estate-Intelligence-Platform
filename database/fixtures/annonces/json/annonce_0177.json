@@ -1,0 +1,25 @@
+{
+  "id": "5e7543e0-8882-4624-81b9-7ed547e1b63f",
+  "reference": "AN-Y80W4G9T",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1782361245,
+  "prix": 139182,
+  "charges_mensuelles": 156.95,
+  "surface": 214,
+  "nb_pieces": 5,
+  "meuble": false,
+  "annee_construction": 2010,
+  "latitude": 43.307695,
+  "longitude": 5.415284,
+  "description": "Studio lumineux de 214 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Fontaine",
+    "telephone": "0260219804"
+  }
+}

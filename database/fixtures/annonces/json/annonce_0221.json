@@ -1,0 +1,23 @@
+{
+  "id": "bffbe35b-c02e-4d01-925c-56f27e86922c",
+  "reference": "AN-CM19GRKX",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement spacieux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "01-17-2025",
+  "prix": 293062,
+  "surface": 195,
+  "nb_pieces": 2,
+  "nb_chambres": 6,
+  "latitude": 47.367987,
+  "longitude": 5.066839,
+  "description": "Appartement de standing de 195 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0795094703",
+    "email": "contact38@example.com",
+    "agence": "Century Habitat"
+  },
+  "particulier": true
+}

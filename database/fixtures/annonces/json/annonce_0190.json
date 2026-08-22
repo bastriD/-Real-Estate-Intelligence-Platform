@@ -1,0 +1,26 @@
+{
+  "id": "ec4bff06-ed26-42bd-9c8b-4ec8fabedde4",
+  "reference": "AN-496HU4PK",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-08-21T11:07:45",
+  "prix": 129992,
+  "surface": 116,
+  "nb_pieces": 3,
+  "nb_chambres": 4,
+  "etage": 3,
+  "adresse": "159 place de la Mairie",
+  "latitude": 43.256329,
+  "longitude": 5.373006,
+  "description": "Studio de standing de 116 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0029106144",
+    "email": "contact76@example.com"
+  },
+  "particulier": true
+}

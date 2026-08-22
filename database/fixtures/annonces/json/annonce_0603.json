@@ -1,0 +1,24 @@
+{
+  "id": "8f4accd6-8982-47f0-bd7a-327ba41b8034",
+  "reference": "AN-TTAIC12N",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial avec vue dégagée à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "02-05-2026",
+  "prix": 237150,
+  "surface": 257,
+  "nb_pieces": 4,
+  "dpe": "E",
+  "adresse": "17 rue Pasteur",
+  "description": "Local commercial rénové de 257 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Luc Faure",
+    "agence": "Nid Doré"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-TTAIC12N/1.jpg",
+    "https://exemple-images.test/AN-TTAIC12N/2.jpg"
+  ]
+}

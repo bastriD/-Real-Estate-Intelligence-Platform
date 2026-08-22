@@ -1,0 +1,21 @@
+{
+  "id": "ce89a7ac-e7cd-4302-b3ec-8cdf4eae2afa",
+  "reference": "AN-LIM75464",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial atypique à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "22/07/2025",
+  "prix": 380933,
+  "surface": 175,
+  "nb_pieces": 5,
+  "nb_chambres": 3,
+  "dpe": "E",
+  "latitude": 48.888613,
+  "longitude": 2.361925,
+  "description": "Local commercial avec vue dégagée de 175 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "email": "contact64@example.com"
+  }
+}

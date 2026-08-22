@@ -1,0 +1,30 @@
+{
+  "id": "635d3325-8042-47f1-a938-f644a4652c93",
+  "reference": "AN-K1HN2NN6",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial atypique à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "06/01/2025",
+  "prix": 262577,
+  "surface": 150,
+  "nb_pieces": 6,
+  "meuble": false,
+  "dpe": "D",
+  "annee_construction": 1972,
+  "adresse": "121 allée des Platanes",
+  "description": "Local commercial avec vue dégagée de 150 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Lefevre",
+    "telephone": "0515264083"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-K1HN2NN6/1.jpg",
+    "https://exemple-images.test/AN-K1HN2NN6/2.jpg",
+    "https://exemple-images.test/AN-K1HN2NN6/3.jpg",
+    "https://exemple-images.test/AN-K1HN2NN6/4.jpg",
+    "https://exemple-images.test/AN-K1HN2NN6/5.jpg"
+  ],
+  "particulier": true
+}

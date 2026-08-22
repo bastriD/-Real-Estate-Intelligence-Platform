@@ -1,0 +1,25 @@
+{
+  "id": "f7cf15fe-e09b-4d3f-bb0a-96f0cac1d7d9",
+  "reference": "AN-H5YUEQ6Z",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2024-10-12T14:16:45",
+  "prix": 351304,
+  "surface": 203,
+  "nb_pieces": 2,
+  "nb_chambres": 1,
+  "meuble": true,
+  "adresse": "103 rue Victor Hugo",
+  "latitude": 48.835469,
+  "longitude": 2.360691,
+  "description": "Local commercial spacieux de 203 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0660384047",
+    "email": "contact27@example.com"
+  },
+  "photos": [],
+  "exclusivite": true
+}

@@ -1,0 +1,27 @@
+{
+  "id": "7643cbea-ddb8-4bf6-9f8a-6502b0c02ae6",
+  "reference": "AN-030Y5RR4",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "29/04/2025",
+  "prix": 94894,
+  "surface": 119,
+  "nb_pieces": 8,
+  "nb_chambres": 2,
+  "etage": "RDC",
+  "dpe": "A",
+  "adresse": "127 rue Jean Jaurès",
+  "latitude": 43.257272,
+  "longitude": 5.390005,
+  "description": "Château à rafraîchir de 119 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0892008971",
+    "agence": "Toit & Vous"
+  },
+  "exclusivite": true
+}

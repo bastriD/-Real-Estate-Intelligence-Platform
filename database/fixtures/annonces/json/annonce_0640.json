@@ -1,0 +1,23 @@
+{
+  "id": "a801cd87-50da-46c2-b186-855ab7d06d21",
+  "reference": "AN-36IH1GRU",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial au calme à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-01-31T15:44:45",
+  "prix": 360473,
+  "surface": 258,
+  "nb_pieces": 5,
+  "etage": 5,
+  "adresse": "22 rue du Commerce",
+  "latitude": 48.835888,
+  "longitude": 2.328023,
+  "contact": {
+    "telephone": "0021069807",
+    "email": "contact75@example.com"
+  },
+  "photos": [],
+  "particulier": true
+}

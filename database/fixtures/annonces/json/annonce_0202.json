@@ -1,0 +1,20 @@
+{
+  "id": "ba92401e-05ea-4575-ac41-e1ee257831c3",
+  "reference": "AN-MBPG7XSM",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "31/05/2025",
+  "prix": 215176,
+  "surface": 144,
+  "nb_pieces": 1,
+  "nb_chambres": 5,
+  "description": "Appartement charmant de 144 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Jean Dubois",
+    "telephone": "0644338063"
+  },
+  "exclusivite": true
+}

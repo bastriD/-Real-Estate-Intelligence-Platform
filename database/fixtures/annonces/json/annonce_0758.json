@@ -1,0 +1,21 @@
+{
+  "id": "d68be94e-9497-4fd7-81df-2d625d8f3ca6",
+  "reference": "AN-TQ70UI5A",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial spacieux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "17/04/2026",
+  "prix": 345263,
+  "surface": 159,
+  "nb_pieces": 6,
+  "nb_chambres": 1,
+  "dpe": "A",
+  "description": "Local commercial lumineux de 159 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Claire Bernard",
+    "telephone": "0190298739",
+    "email": "claire.bernard66@example.com"
+  }
+}

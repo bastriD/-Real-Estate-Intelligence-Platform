@@ -1,0 +1,28 @@
+{
+  "id": "7eb45e04-108a-41a6-9935-85c229d7b6e8",
+  "reference": "AN-3QNVC2VU",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial de standing à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "29 mars 2026",
+  "prix": 323553,
+  "surface_m2": 266,
+  "nb_pieces": 6,
+  "nb_chambres": 0,
+  "meuble": false,
+  "latitude": 48.864853,
+  "longitude": 2.331403,
+  "description": "Local commercial rénové de 266 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Claire Roche",
+    "telephone": "0075960375"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-3QNVC2VU/1.jpg",
+    "https://exemple-images.test/AN-3QNVC2VU/2.jpg",
+    "https://exemple-images.test/AN-3QNVC2VU/3.jpg"
+  ],
+  "exclusivite": true
+}

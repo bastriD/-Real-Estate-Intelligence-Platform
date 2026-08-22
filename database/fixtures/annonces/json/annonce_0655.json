@@ -1,0 +1,20 @@
+{
+  "id": "850fc651-a757-4ca4-b05f-1709d7e1d884",
+  "reference": "AN-MWPFFUEX",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial spacieux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "21 décembre 2025",
+  "prix": 294986,
+  "surface": 135,
+  "nb_pieces": 4,
+  "dpe": "G",
+  "description": "Local commercial avec vue dégagée de 135 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0706935981",
+    "email": "contact78@example.com",
+    "agence": "Provence Immobilier"
+  }
+}

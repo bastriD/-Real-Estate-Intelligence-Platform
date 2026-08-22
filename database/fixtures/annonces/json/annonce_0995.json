@@ -1,0 +1,30 @@
+{
+  "id": "29a59bab-4c2d-4f5d-8e97-118abf36b613",
+  "reference": "AN-SR3IUSVL",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "08-31-2025",
+  "prix": 128728,
+  "surface": 172,
+  "nb_pieces": 7,
+  "nb_chambres": 1,
+  "dpe": "A",
+  "adresse": "49 boulevard Gambetta",
+  "latitude": 43.293013,
+  "longitude": 5.398735,
+  "description": "Château avec vue dégagée de 172 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0609192743",
+    "email": "contact78@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-SR3IUSVL/1.jpg"
+  ],
+  "exclusivite": true
+}

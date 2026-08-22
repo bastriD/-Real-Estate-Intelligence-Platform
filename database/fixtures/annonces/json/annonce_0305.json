@@ -1,0 +1,24 @@
+{
+  "id": "2a129b7b-f624-405a-a129-f8dd9b313a7f",
+  "reference": "AN-LZWH0UKW",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement atypique à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1733083845,
+  "prix": 335827,
+  "surface": 169,
+  "nb_pieces": 1,
+  "nb_chambres": 7,
+  "meuble": false,
+  "dpe": "B",
+  "adresse": "30 chemin des Vignes",
+  "description": "Appartement lumineux de 169 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Claire Perrin",
+    "telephone": "0299539886",
+    "email": "claire.perrin65@example.com"
+  },
+  "particulier": true
+}

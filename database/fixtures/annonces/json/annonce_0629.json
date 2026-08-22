@@ -1,0 +1,21 @@
+{
+  "id": "404b6e0a-47fa-4d56-82c7-0891105992db",
+  "reference": "AN-5D15JIZF",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial avec vue dégagée à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2026-01-15",
+  "prix": 224474,
+  "charges_mensuelles": 308.88,
+  "surface": 227,
+  "nb_pieces": 4,
+  "latitude": 48.849778,
+  "longitude": 2.367087,
+  "description": "Local commercial lumineux de 227 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "telephone": "0234800084"
+  },
+  "exclusivite": true
+}

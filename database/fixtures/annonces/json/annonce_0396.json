@@ -1,0 +1,24 @@
+{
+  "id": "0667aba9-1150-40d0-a51c-3c14ae98ac33",
+  "reference": "AN-F4B1F6D8",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2024-12-07",
+  "prix": 264524,
+  "surface": 211,
+  "nb_pieces": 5,
+  "nb_chambres": 4,
+  "meuble": false,
+  "latitude": 47.370656,
+  "longitude": 5.050301,
+  "description": "Appartement au calme de 211 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Perrin",
+    "email": "karim.perrin91@example.com",
+    "agence": "Century Habitat"
+  },
+  "exclusivite": false
+}

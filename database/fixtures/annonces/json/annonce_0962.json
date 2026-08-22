@@ -1,0 +1,30 @@
+{
+  "id": "61587bc6-d2f5-4905-a62d-fe2ca4bdb920",
+  "reference": "AN-DH7R79I2",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "03-24-2025",
+  "prix": 87145,
+  "charges_mensuelles": 325.65,
+  "surface": 91,
+  "nb_pieces": 8,
+  "nb_chambres": 1,
+  "meuble": true,
+  "dpe": "A",
+  "latitude": 43.345832,
+  "longitude": 5.383451,
+  "description": "Château rénové de 91 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Faure",
+    "telephone": "0133096663"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-DH7R79I2/1.jpg"
+  ]
+}

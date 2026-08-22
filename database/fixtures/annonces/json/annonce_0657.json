@@ -1,0 +1,23 @@
+{
+  "id": "2e089a35-c7fa-4dbb-bf63-a93dbbc7881e",
+  "reference": "AN-VQNJYTVL",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial atypique à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "15/10/2025",
+  "prix": 341843,
+  "surface": 131,
+  "nb_pieces": 3,
+  "etage": 3,
+  "meuble": true,
+  "dpe": "E",
+  "latitude": 48.89396,
+  "longitude": 2.341304,
+  "contact": {
+    "email": "contact77@example.com",
+    "agence": "Toit & Vous"
+  },
+  "exclusivite": true
+}

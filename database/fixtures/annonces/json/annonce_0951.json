@@ -1,0 +1,25 @@
+{
+  "id": "7a6c29bc-0c07-4d90-a04c-ea84488ac0fa",
+  "reference": "AN-NBNJ1DQA",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-05-24T11:19:45",
+  "prix": 128777,
+  "surface": 57,
+  "nb_pieces": 6,
+  "nb_chambres": 0,
+  "meuble": true,
+  "dpe": "A",
+  "description": "Château rénové de 57 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Moreau",
+    "telephone": "0335244255",
+    "email": "karim.moreau19@example.com"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "c7d2b988-5720-40bc-8f9c-8fe7c5389df1",
+  "reference": "AN-4C62W27Q",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial en excellent état à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "02/02/2026",
+  "prix": 375612,
+  "surface": 218,
+  "nb_pieces": 2,
+  "nb_chambres": 5,
+  "dpe": "D",
+  "annee_construction": 1873,
+  "adresse": "152 impasse des Lilas",
+  "latitude": 48.90526,
+  "longitude": 2.332097,
+  "description": "Local commercial en excellent état de 218 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Luc Roche",
+    "telephone": "0346106273",
+    "agence": "Provence Immobilier"
+  },
+  "exclusivite": true
+}

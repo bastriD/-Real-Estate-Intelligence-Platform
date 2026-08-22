@@ -1,0 +1,21 @@
+{
+  "id": "50fd5a80-2897-45df-a4b0-13473f79e444",
+  "reference": "AN-NFPJLUAD",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "05/06/2026",
+  "prix": 306819,
+  "surface": 210,
+  "nb_pieces": 3,
+  "nb_chambres": 6,
+  "etage": 4,
+  "annee_construction": 1889,
+  "contact": {
+    "nom": "Marie Lefevre",
+    "telephone": "0289893390",
+    "email": "marie.lefevre56@example.com"
+  }
+}

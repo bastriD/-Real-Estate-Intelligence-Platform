@@ -1,0 +1,25 @@
+{
+  "id": "16dcad8c-d94a-491d-a033-495a8cd09b49",
+  "reference": "AN-HNL3MR07",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial atypique à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2026-04-06T19:27:45",
+  "prix": "398702 €",
+  "surface": 244,
+  "nb_pieces": 2,
+  "nb_chambres": 3,
+  "contact": {
+    "nom": "Karim Moreau",
+    "telephone": "0295393462"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-HNL3MR07/1.jpg",
+    "https://exemple-images.test/AN-HNL3MR07/2.jpg",
+    "https://exemple-images.test/AN-HNL3MR07/3.jpg",
+    "https://exemple-images.test/AN-HNL3MR07/4.jpg"
+  ],
+  "exclusivite": false
+}

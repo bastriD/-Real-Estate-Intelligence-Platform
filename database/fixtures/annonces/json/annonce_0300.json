@@ -1,0 +1,22 @@
+{
+  "id": "eba043bc-6346-471f-8f9f-b2b940cce771",
+  "reference": "AN-NRPVNIQ8",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement spacieux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1765239705,
+  "prix": 324916,
+  "surface": 186,
+  "nb_pieces": 1,
+  "nb_chambres": 7,
+  "meuble": true,
+  "adresse": "195 rue Jean Jaurès",
+  "description": "Appartement de standing de 186 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Ahmed Martin",
+    "email": "ahmed.martin97@example.com",
+    "agence": "Toit & Vous"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "4e3598eb-8f38-49d7-9b03-6301c0d181f1",
+  "reference": "AN-MZ3I3BOE",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "22/03/2025",
+  "prix": 126108,
+  "charges_mensuelles": 368.72,
+  "surface": 24,
+  "nb_pieces": 8,
+  "nb_chambres": 3,
+  "etage": 0,
+  "dpe": "A",
+  "description": "Château à rafraîchir de 24 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0823471571",
+    "email": "contact18@example.com"
+  },
+  "exclusivite": false
+}

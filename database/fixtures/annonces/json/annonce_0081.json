@@ -1,0 +1,19 @@
+{
+  "id": "a4732e9d-7f9d-42d6-8cc8-3f43eabc334a",
+  "reference": "AN-I1SEBH7E",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-04-27T19:45:45",
+  "prix": "117661 €",
+  "surface": 123,
+  "nb_chambres": 0,
+  "dpe": "G",
+  "description": "Studio atypique de 123 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0961355617"
+  },
+  "exclusivite": false
+}

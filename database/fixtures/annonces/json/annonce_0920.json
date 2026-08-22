@@ -1,0 +1,29 @@
+{
+  "id": "1857305d-7297-4961-8a4e-0db789aa3466",
+  "reference": "AN-SRCSP4VV",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-12-29",
+  "prix": 96127,
+  "charges_mensuelles": 268.8,
+  "surface": 69,
+  "nb_pieces": 5,
+  "etage": 4,
+  "meuble": false,
+  "dpe": "A",
+  "adresse": "159 rue Jean Jaurès",
+  "latitude": 43.29144,
+  "longitude": 5.375768,
+  "description": "Château au calme de 69 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Bernard",
+    "email": "marc.bernard69@example.com"
+  },
+  "exclusivite": false
+}

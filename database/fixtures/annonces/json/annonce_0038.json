@@ -1,0 +1,27 @@
+{
+  "id": "5edd9859-6d33-4bf5-bbca-c8f5e79ae86a",
+  "reference": "AN-MYTAW9LV",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-04-25T01:59:45",
+  "prix": 126757,
+  "surface": 197,
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0133068726",
+    "email": "contact76@example.com",
+    "agence": "Century Habitat"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-MYTAW9LV/1.jpg",
+    "https://exemple-images.test/AN-MYTAW9LV/2.jpg",
+    "https://exemple-images.test/AN-MYTAW9LV/3.jpg",
+    "https://exemple-images.test/AN-MYTAW9LV/4.jpg",
+    "https://exemple-images.test/AN-MYTAW9LV/5.jpg"
+  ],
+  "particulier": true
+}

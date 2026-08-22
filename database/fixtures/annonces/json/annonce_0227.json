@@ -1,0 +1,28 @@
+{
+  "id": "29349f7d-e323-4783-9549-aaf739c59193",
+  "reference": "AN-UO08N0N8",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "02-27-2025",
+  "prix": 313299,
+  "surface": 91,
+  "nb_pieces": 4,
+  "nb_chambres": 4,
+  "etage": 0,
+  "meuble": true,
+  "adresse": "64 impasse des Lilas",
+  "latitude": 47.349639,
+  "longitude": 5.059597,
+  "description": "Appartement à rafraîchir de 91 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Faure",
+    "telephone": "0955112144"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-UO08N0N8/1.jpg"
+  ],
+  "exclusivite": false
+}

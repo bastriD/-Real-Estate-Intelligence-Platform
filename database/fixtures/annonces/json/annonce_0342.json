@@ -1,0 +1,25 @@
+{
+  "id": "a853ef8a-46ee-4fc9-91a2-646ea61dd0ae",
+  "reference": "AN-57AECKTP",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement rénové à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "16 septembre 2024",
+  "prix": 289943,
+  "surface": 204,
+  "nb_pieces": 4,
+  "nb_chambres": 6,
+  "meuble": true,
+  "dpe": "G",
+  "annee_construction": 1866,
+  "latitude": 47.37057,
+  "longitude": 4.993696,
+  "description": "Appartement spacieux de 204 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Nadia Girard",
+    "telephone": "0668665317",
+    "agence": "Century Habitat"
+  }
+}

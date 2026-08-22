@@ -1,0 +1,24 @@
+{
+  "id": "a73dc16b-7c97-40dd-aebb-6515dddce81a",
+  "reference": "AN-45Y8FRNY",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "18/08/2026",
+  "prix": 130148,
+  "surface": 25,
+  "nb_pieces": 6,
+  "etage": 0,
+  "dpe": "E",
+  "annee_construction": 1875,
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Bernard",
+    "email": "marie.bernard76@example.com"
+  },
+  "particulier": true
+}

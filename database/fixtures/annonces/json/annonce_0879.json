@@ -1,0 +1,26 @@
+{
+  "id": "bf4725e1-9e23-44f4-8056-dcc10e06ff0f",
+  "reference": "AN-9YA9OIP9",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1778122185,
+  "prix": "102423 €",
+  "surface": 139,
+  "nb_pieces": 7,
+  "dpe": "A",
+  "annee_construction": 1970,
+  "adresse": "135 impasse des Lilas",
+  "latitude": 43.304973,
+  "longitude": 5.417158,
+  "description": "Château charmant de 139 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "contact": {
+    "nom": "Marc Faure",
+    "telephone": "0637357651",
+    "email": "marc.faure63@example.com"
+  },
+  "exclusivite": false
+}

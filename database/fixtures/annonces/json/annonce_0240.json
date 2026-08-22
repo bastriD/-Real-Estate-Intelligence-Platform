@@ -1,0 +1,27 @@
+{
+  "id": "c0ceb7aa-c820-42e1-8958-0afb669ba2c3",
+  "reference": "AN-UR1ARSLF",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "16/06/2026",
+  "prix": 228357,
+  "surface": 104,
+  "nb_pieces": 3,
+  "nb_chambres": 5,
+  "etage": 2,
+  "meuble": false,
+  "dpe": "C",
+  "adresse": "197 quai de la Loire",
+  "latitude": 47.338321,
+  "longitude": 5.070436,
+  "description": "Appartement rénové de 104 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Julie Moreau",
+    "telephone": "0893226092",
+    "email": "julie.moreau2@example.com",
+    "agence": "ImmoPlus"
+  }
+}

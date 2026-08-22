@@ -1,0 +1,19 @@
+{
+  "id": "929bd906-20c2-4624-9a9c-2c9dbb6e681a",
+  "reference": "AN-F8A80J8N",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain charmant à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "01-31-2026",
+  "prix": 1298254,
+  "surface": 246,
+  "adresse": "2 rue Victor Hugo",
+  "description": "Terrain de standing de 246 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "calme": true,
+  "contact": {
+    "telephone": "0012330096",
+    "email": "contact64@example.com"
+  }
+}

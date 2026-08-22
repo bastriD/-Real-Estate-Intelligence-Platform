@@ -1,0 +1,30 @@
+{
+  "id": "322b6e1d-432e-4629-b6f4-a8172c477ecb",
+  "reference": "AN-U1N5QR3O",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-05-04",
+  "prix": 361746,
+  "surface": 106,
+  "nb_pieces": 2,
+  "nb_chambres": 4,
+  "adresse": "37 quai de la Loire",
+  "latitude": 47.353056,
+  "longitude": 5.035773,
+  "description": "Appartement charmant de 106 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Ahmed Faure",
+    "telephone": "0777516940",
+    "email": "ahmed.faure16@example.com",
+    "agence": "Toit & Vous"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-U1N5QR3O/1.jpg",
+    "https://exemple-images.test/AN-U1N5QR3O/2.jpg",
+    "https://exemple-images.test/AN-U1N5QR3O/3.jpg"
+  ],
+  "exclusivite": false
+}

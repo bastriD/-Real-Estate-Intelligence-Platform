@@ -1,0 +1,24 @@
+{
+  "id": "5cd104e8-4cc6-490b-bbeb-cd71af98fe19",
+  "reference": "AN-F6BZ8NA6",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain spacieux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-03-12",
+  "prix": 951656,
+  "charges_mensuelles": 278.16,
+  "surface": 129,
+  "latitude": 43.73916,
+  "longitude": 7.300878,
+  "vue": true,
+  "contact": {
+    "nom": "Claire Faure",
+    "telephone": "0073708926",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-F6BZ8NA6/1.jpg"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "005b05b2-47dc-46d2-8eb9-20686ebfd537",
+  "reference": "AN-O8YQGI2Z",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial atypique à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "24 décembre 2024",
+  "prix": 400008,
+  "charges_mensuelles": 315.18,
+  "surface": 256,
+  "nb_pieces": 4,
+  "nb_chambres": 1,
+  "adresse": "127 avenue des Champs",
+  "description": "Local commercial de standing de 256 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0519769051",
+    "email": "contact49@example.com"
+  }
+}

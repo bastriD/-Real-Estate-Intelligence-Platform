@@ -1,0 +1,24 @@
+{
+  "id": "787aef48-8de0-48e6-85ef-26ad58b5e0b9",
+  "reference": "AN-FUF4REXW",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial atypique à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2026-06-02",
+  "prix": 360988,
+  "surface": 182,
+  "nb_pieces": 2,
+  "nb_chambres": 5,
+  "etage": "RDC",
+  "annee_construction": 1975,
+  "adresse": "15 avenue des Champs",
+  "latitude": 48.905236,
+  "longitude": 2.348442,
+  "contact": {
+    "telephone": "0009703557",
+    "email": "contact27@example.com"
+  },
+  "exclusivite": false
+}

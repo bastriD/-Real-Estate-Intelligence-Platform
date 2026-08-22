@@ -1,0 +1,35 @@
+{
+  "id": "1710684b-c806-43b8-bb81-75e8875e7e23",
+  "reference": "AN-OOFX812I",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1776776985,
+  "prix": 144790,
+  "surface": 126,
+  "nb_pieces": 6,
+  "nb_chambres": 2,
+  "meuble": true,
+  "dpe": "G",
+  "annee_construction": 1909,
+  "latitude": 43.288308,
+  "longitude": 5.363244,
+  "description": "Studio en excellent état de 126 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Lefevre",
+    "telephone": "0224547363",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-OOFX812I/1.jpg",
+    "https://exemple-images.test/AN-OOFX812I/2.jpg",
+    "https://exemple-images.test/AN-OOFX812I/3.jpg",
+    "https://exemple-images.test/AN-OOFX812I/4.jpg",
+    "https://exemple-images.test/AN-OOFX812I/5.jpg"
+  ],
+  "exclusivite": false
+}

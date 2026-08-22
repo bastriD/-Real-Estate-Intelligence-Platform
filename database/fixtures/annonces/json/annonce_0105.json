@@ -1,0 +1,23 @@
+{
+  "id": "7752a072-f4f5-4ded-911c-0c7968a341ab",
+  "reference": "AN-1LM0GCVE",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-06-01T22:23:45",
+  "prix": 209856,
+  "surface_m2": 148,
+  "nb_pieces": 1,
+  "meuble": true,
+  "annee_construction": 2013,
+  "adresse": "50 rue de la République",
+  "description": "Studio rénové de 148 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "calme": true,
+  "contact": {
+    "nom": "Marie Perrin",
+    "email": "marie.perrin70@example.com",
+    "agence": "Clé en Main Immo"
+  }
+}

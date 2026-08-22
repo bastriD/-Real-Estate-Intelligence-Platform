@@ -1,0 +1,27 @@
+{
+  "id": "383ec6ed-777d-42e0-8b88-330cde1844ab",
+  "reference": "AN-GIOQ0GLJ",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "09/07/2025",
+  "prix": 178020,
+  "surface": 234,
+  "nb_pieces": 6,
+  "nb_chambres": 3,
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0975245411"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-GIOQ0GLJ/1.jpg",
+    "https://exemple-images.test/AN-GIOQ0GLJ/2.jpg",
+    "https://exemple-images.test/AN-GIOQ0GLJ/3.jpg",
+    "https://exemple-images.test/AN-GIOQ0GLJ/4.jpg",
+    "https://exemple-images.test/AN-GIOQ0GLJ/5.jpg"
+  ],
+  "exclusivite": true
+}

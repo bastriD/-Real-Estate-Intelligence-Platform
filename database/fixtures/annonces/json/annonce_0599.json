@@ -1,0 +1,23 @@
+{
+  "id": "7e9b4ab0-7a72-40d8-b5c0-f299a8651fac",
+  "reference": "AN-2QF92LVR",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain charmant à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "23 décembre 2024",
+  "prix": "1684718 €",
+  "surface": 182,
+  "adresse": "145 avenue des Champs",
+  "latitude": 43.734729,
+  "longitude": 7.215288,
+  "description": "Terrain spacieux de 182 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Faure",
+    "telephone": "0372409306"
+  },
+  "exclusivite": true
+}

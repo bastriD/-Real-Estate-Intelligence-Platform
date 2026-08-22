@@ -1,0 +1,32 @@
+{
+  "id": "f6a17bf5-0f2d-43b6-918e-e3c97c460c4d",
+  "reference": "AN-Z8E2R9RX",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "21/10/2024",
+  "prix": 114336,
+  "surface": 72,
+  "nb_pieces": 7,
+  "etage": 4,
+  "dpe": "A",
+  "adresse": "88 impasse des Lilas",
+  "latitude": 43.285533,
+  "longitude": 5.40135,
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Roche",
+    "telephone": "0349914736"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-Z8E2R9RX/1.jpg",
+    "https://exemple-images.test/AN-Z8E2R9RX/2.jpg",
+    "https://exemple-images.test/AN-Z8E2R9RX/3.jpg",
+    "https://exemple-images.test/AN-Z8E2R9RX/4.jpg",
+    "https://exemple-images.test/AN-Z8E2R9RX/5.jpg"
+  ]
+}

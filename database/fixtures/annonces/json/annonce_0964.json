@@ -1,0 +1,26 @@
+{
+  "id": "ca31d99b-0c2c-4369-85b2-cfd09debb894",
+  "reference": "AN-7UP09NFX",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "08/07/2026",
+  "prix": 119841,
+  "charges_mensuelles": 256.31,
+  "surface": 140,
+  "nb_pieces": 4,
+  "nb_chambres": 4,
+  "dpe": "E",
+  "adresse": "188 boulevard Gambetta",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Perrin",
+    "telephone": "0651352669",
+    "email": "marie.perrin24@example.com",
+    "agence": "Provence Immobilier"
+  }
+}

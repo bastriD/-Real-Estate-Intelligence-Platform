@@ -1,0 +1,24 @@
+{
+  "id": "6535df93-10a3-48c6-bc8f-f726d6be4aa1",
+  "reference": "AN-JQKA7FEX",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "04-03-2025",
+  "prix": 1296647,
+  "surface": 201,
+  "adresse": "67 rue Pasteur",
+  "latitude": 43.692459,
+  "longitude": 7.277078,
+  "description": "Terrain en excellent état de 201 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Fontaine",
+    "telephone": "0521699592",
+    "agence": "Nid Doré"
+  },
+  "exclusivite": true
+}

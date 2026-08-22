@@ -1,0 +1,29 @@
+{
+  "id": "cf35353b-5e17-49ad-b3e2-a4fd3f51d6c9",
+  "reference": "AN-NOGFXUXU",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-09-13T03:13:45",
+  "prix": 117750,
+  "charges_mensuelles": 166.46,
+  "surface": 135,
+  "nb_pieces": 8,
+  "etage": 4,
+  "dpe": "A",
+  "annee_construction": 1933,
+  "adresse": "184 rue Jean Jaurès",
+  "latitude": 43.293754,
+  "longitude": 5.409071,
+  "description": "Château avec vue dégagée de 135 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0960083696",
+    "email": "contact16@example.com"
+  },
+  "exclusivite": true
+}

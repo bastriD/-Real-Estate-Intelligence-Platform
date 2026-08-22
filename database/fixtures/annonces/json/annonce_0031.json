@@ -1,0 +1,21 @@
+{
+  "id": "f9333789-8303-4549-97c6-698a73c8eb61",
+  "reference": "AN-XX67LAQB",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "26/08/2024",
+  "prix": 204076,
+  "surface": 132,
+  "nb_pieces": 4,
+  "meuble": false,
+  "annee_construction": 2003,
+  "description": "Studio charmant de 132 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "contact": {
+    "agence": "Toit & Vous"
+  },
+  "exclusivite": false
+}

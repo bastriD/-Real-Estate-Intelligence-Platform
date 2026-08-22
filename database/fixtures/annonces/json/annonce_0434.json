@@ -1,0 +1,20 @@
+{
+  "id": "24deec74-9b2c-43bd-9b07-d586635e3a77",
+  "reference": "AN-C5LXIBS7",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain lumineux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1748532105,
+  "prix": 1116953,
+  "surface": 267,
+  "description": "Terrain de standing de 267 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Perrin",
+    "telephone": "0011755162",
+    "email": "sophie.perrin6@example.com"
+  }
+}

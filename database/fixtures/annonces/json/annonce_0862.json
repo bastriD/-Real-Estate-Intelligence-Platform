@@ -1,0 +1,29 @@
+{
+  "id": "9ddda41b-0573-49b4-a7c5-61e51bf0a653",
+  "reference": "AN-LCYKOBTR",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-09-20",
+  "prix": 131844,
+  "surface": 160,
+  "nb_pieces": 4,
+  "nb_chambres": 3,
+  "etage": "dernier étage",
+  "meuble": false,
+  "annee_construction": 1904,
+  "adresse": "173 allée des Platanes",
+  "description": "Château lumineux de 160 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Martin",
+    "telephone": "0011836864",
+    "email": "karim.martin33@example.com",
+    "agence": "Nid Doré"
+  },
+  "particulier": true
+}

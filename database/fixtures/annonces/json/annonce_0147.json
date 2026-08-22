@@ -1,0 +1,23 @@
+{
+  "id": "b624aedc-0290-49cf-ad6f-5071938e6d7a",
+  "reference": "AN-6V2VJRA3",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-04-11",
+  "prix": 194351,
+  "surface": 132,
+  "nb_pieces": 5,
+  "nb_chambres": 1,
+  "dpe": "F",
+  "description": "Studio spacieux de 132 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0133088995",
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": true
+}

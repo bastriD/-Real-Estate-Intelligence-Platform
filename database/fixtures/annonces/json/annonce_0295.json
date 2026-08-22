@@ -1,0 +1,21 @@
+{
+  "id": "24b5f33e-491c-4c4c-be04-ac53d4b89050",
+  "reference": "AN-5ILMQM9H",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-07-01T14:36:45",
+  "prix": "275721 €",
+  "surface": 81,
+  "nb_pieces": 4,
+  "nb_chambres": 4,
+  "latitude": 47.338908,
+  "longitude": 5.01611,
+  "contact": {
+    "nom": "Claire Faure",
+    "telephone": "0038074296",
+    "email": "claire.faure80@example.com"
+  }
+}

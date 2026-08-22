@@ -1,0 +1,24 @@
+{
+  "id": "e66f36e9-b684-4adc-b317-7002adf5cf60",
+  "reference": "AN-RDZ3SUKO",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "03-31-2026",
+  "prix": 223111,
+  "surface": 121,
+  "nb_pieces": 5,
+  "nb_chambres": 4,
+  "dpe": "F",
+  "adresse": "160 rue Jean Jaurès",
+  "latitude": 47.290505,
+  "longitude": 5.02793,
+  "description": "Appartement charmant de 121 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Luc Lefevre",
+    "email": "luc.lefevre27@example.com",
+    "agence": "Nid Doré"
+  }
+}

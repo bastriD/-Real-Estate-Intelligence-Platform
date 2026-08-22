@@ -1,0 +1,21 @@
+{
+  "id": "7997059c-f800-4395-95e3-d8a02dab91a9",
+  "reference": "AN-Y8OTROH5",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement charmant à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2026-08-07T16:58:45",
+  "prix": "222118 €",
+  "charges_mensuelles": 378.36,
+  "surface": 126,
+  "nb_pieces": 3,
+  "nb_chambres": 6,
+  "etage": 1,
+  "meuble": true,
+  "contact": {
+    "nom": "Karim Roche",
+    "email": "karim.roche35@example.com"
+  }
+}

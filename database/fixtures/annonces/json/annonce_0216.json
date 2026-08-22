@@ -1,0 +1,22 @@
+{
+  "id": "3bd80f56-452b-4b73-9d27-4ce72bf3dd5b",
+  "reference": "AN-5WL371QU",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2026-03-05",
+  "prix": 360901,
+  "surface": 175,
+  "nb_pieces": 5,
+  "nb_chambres": 6,
+  "latitude": 47.282538,
+  "longitude": 5.08625,
+  "description": "Appartement au calme de 175 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Ahmed Girard",
+    "telephone": "0288048709"
+  },
+  "exclusivite": false
+}

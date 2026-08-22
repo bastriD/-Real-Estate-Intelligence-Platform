@@ -1,0 +1,28 @@
+{
+  "id": "4d13c0ea-3fa6-4822-ab53-79c090a9623f",
+  "reference": "AN-LN4VDCWH",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "23 mars 2026",
+  "prix": 113427,
+  "surface_m2": 207,
+  "nb_pieces": 6,
+  "nb_chambres": 2,
+  "etage": 0,
+  "dpe": "C",
+  "annee_construction": 1992,
+  "adresse": "121 boulevard Gambetta",
+  "latitude": 43.280169,
+  "longitude": 5.367501,
+  "description": "Studio charmant de 207 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Moreau",
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": true
+}

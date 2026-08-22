@@ -1,0 +1,25 @@
+{
+  "id": "78e2c06c-79f9-4cf1-aace-94346fec0711",
+  "reference": "AN-QRQRIUHM",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2026-03-06",
+  "prix": 1577338,
+  "surface": 192,
+  "adresse": "146 rue Victor Hugo",
+  "latitude": 43.662,
+  "longitude": 7.294773,
+  "description": "Terrain au calme de 192 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Perrin",
+    "telephone": "0808620026",
+    "email": "marie.perrin51@example.com",
+    "agence": "Toit & Vous"
+  },
+  "exclusivite": false
+}

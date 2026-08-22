@@ -1,0 +1,21 @@
+{
+  "id": "ade2ae4a-fb2f-4b01-8676-4b8356540a25",
+  "reference": "AN-2ZWSPTU0",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain au calme à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1727261205,
+  "prix": 1438178,
+  "surface_m2": 174,
+  "adresse": "190 rue du Commerce",
+  "description": "Terrain lumineux de 174 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0382883676",
+    "email": "contact3@example.com",
+    "agence": "Provence Immobilier"
+  }
+}

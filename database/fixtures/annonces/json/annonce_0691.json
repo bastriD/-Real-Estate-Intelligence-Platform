@@ -1,0 +1,23 @@
+{
+  "id": "71d47ed0-566f-49d1-9a7a-6da3c06545ca",
+  "reference": "AN-64RPSKYH",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial de standing à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-05-19T11:41:45",
+  "prix": 369092,
+  "surface": 164,
+  "nb_pieces": 2,
+  "nb_chambres": 2,
+  "etage": "RDC",
+  "adresse": "140 avenue des Champs",
+  "description": "Local commercial au calme de 164 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Claire Bernard",
+    "telephone": "0199606806",
+    "email": "claire.bernard20@example.com"
+  },
+  "exclusivite": true
+}

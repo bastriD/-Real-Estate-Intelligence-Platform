@@ -1,0 +1,22 @@
+{
+  "id": "735cb8d2-f8af-4733-9953-a1d9766aed54",
+  "reference": "AN-Z9NK3703",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1783273725,
+  "prix": 128469,
+  "surface": 170,
+  "nb_pieces": 4,
+  "nb_chambres": 2,
+  "description": "Studio avec vue dégagée de 170 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Perrin",
+    "telephone": "0554034773",
+    "agence": "Toit & Vous"
+  }
+}

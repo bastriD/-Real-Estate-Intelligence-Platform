@@ -1,0 +1,21 @@
+{
+  "id": "9d958136-034b-4afa-aafc-d92b41cccced",
+  "reference": "AN-B1DAHAKE",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "06-08-2026",
+  "prix": 295553,
+  "surface": 100,
+  "nb_pieces": 2,
+  "nb_chambres": 6,
+  "dpe": "D",
+  "annee_construction": 1893,
+  "adresse": "182 place de la Mairie",
+  "description": "Appartement de standing de 100 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "telephone": "0541619358"
+  }
+}

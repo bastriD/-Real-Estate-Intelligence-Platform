@@ -1,0 +1,18 @@
+{
+  "id": "9860b321-2d03-4e9d-82dc-f7d7d5d3d95c",
+  "reference": "AN-AC063S4N",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2026-04-09",
+  "prix": 1436332,
+  "surface": 195,
+  "adresse": "155 rue Pasteur",
+  "description": "Terrain atypique de 195 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "telephone": "0260845986"
+  }
+}

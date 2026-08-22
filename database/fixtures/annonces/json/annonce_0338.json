@@ -1,0 +1,27 @@
+{
+  "id": "6f33ff96-9eac-411b-9555-153a3fc15210",
+  "reference": "AN-J2ZUJCHF",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "19 mars 2025",
+  "prix": 225561,
+  "surface": 195,
+  "nb_pieces": 5,
+  "nb_chambres": 7,
+  "etage": "RDC",
+  "dpe": "A",
+  "annee_construction": 1876,
+  "adresse": "124 allée des Platanes",
+  "description": "Appartement atypique de 195 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0863487416"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-J2ZUJCHF/1.jpg",
+    "https://exemple-images.test/AN-J2ZUJCHF/2.jpg",
+    "https://exemple-images.test/AN-J2ZUJCHF/3.jpg"
+  ]
+}

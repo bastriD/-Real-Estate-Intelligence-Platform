@@ -1,0 +1,22 @@
+{
+  "id": "56f1a2dd-9700-426f-8017-8a75feb3fbb8",
+  "reference": "AN-TH6NL30F",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1762229745,
+  "prix": 1445860,
+  "surface": 146,
+  "latitude": 43.738137,
+  "longitude": 7.30857,
+  "description": "Terrain charmant de 146 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Lefevre",
+    "telephone": "0269792518"
+  },
+  "exclusivite": true
+}

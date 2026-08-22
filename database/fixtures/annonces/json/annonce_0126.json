@@ -1,0 +1,22 @@
+{
+  "id": "2b13ffc7-1789-4abf-80ee-a893465f46e3",
+  "reference": "AN-UAQMY8T4",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-12-15",
+  "prix": 178187,
+  "surface": 175,
+  "adresse": "120 quai de la Loire",
+  "description": "Studio avec vue dégagée de 175 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Bernard",
+    "telephone": "0885122146",
+    "email": "sophie.bernard4@example.com"
+  },
+  "exclusivite": true
+}

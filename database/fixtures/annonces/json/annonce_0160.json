@@ -1,0 +1,24 @@
+{
+  "id": "7238af23-75e8-49e7-aa77-30bcf2ffcab6",
+  "reference": "AN-ONHKFDS8",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "22/08/2025",
+  "prix": 152101,
+  "charges_mensuelles": 162.83,
+  "surface": 200,
+  "nb_pieces": 3,
+  "nb_chambres": 2,
+  "etage": 5,
+  "adresse": "157 avenue des Champs",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Faure",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": false
+}

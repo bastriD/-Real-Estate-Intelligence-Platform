@@ -1,0 +1,32 @@
+{
+  "id": "10508ddd-4647-4f03-ab1b-afaa651b5d2e",
+  "reference": "AN-2W1TZBDO",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "02-18-2025",
+  "prix": "160041 €",
+  "surface": 112,
+  "nb_pieces": 3,
+  "nb_chambres": 2,
+  "etage": 2,
+  "meuble": false,
+  "adresse": "155 rue de la République",
+  "latitude": 43.298725,
+  "longitude": 5.32965,
+  "description": "Studio atypique de 112 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Lefevre",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-2W1TZBDO/1.jpg",
+    "https://exemple-images.test/AN-2W1TZBDO/2.jpg",
+    "https://exemple-images.test/AN-2W1TZBDO/3.jpg"
+  ],
+  "exclusivite": false
+}

@@ -1,0 +1,26 @@
+{
+  "id": "64d35486-fe44-4cdf-878a-4e63fe485c27",
+  "reference": "AN-96AMEO14",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement atypique à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "10-03-2024",
+  "prix": "331421 €",
+  "surface": 86,
+  "nb_pieces": 4,
+  "nb_chambres": 4,
+  "etage": 2,
+  "annee_construction": 1871,
+  "description": "Appartement charmant de 86 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "telephone": "0533539428",
+    "email": "contact89@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-96AMEO14/1.jpg",
+    "https://exemple-images.test/AN-96AMEO14/2.jpg",
+    "https://exemple-images.test/AN-96AMEO14/3.jpg"
+  ]
+}

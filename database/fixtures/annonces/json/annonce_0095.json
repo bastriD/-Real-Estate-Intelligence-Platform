@@ -1,0 +1,22 @@
+{
+  "id": "404f480e-0a0d-4478-a91e-6c200acc5176",
+  "reference": "AN-HS4Z68BT",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1774160145,
+  "prix": "154431 €",
+  "surface": 115,
+  "nb_pieces": 1,
+  "latitude": 43.320097,
+  "longitude": 5.369974,
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Martin",
+    "telephone": "0873787945",
+    "email": "nadia.martin40@example.com"
+  }
+}

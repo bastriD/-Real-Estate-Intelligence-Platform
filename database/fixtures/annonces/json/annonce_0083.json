@@ -1,0 +1,24 @@
+{
+  "id": "333886b0-9935-4eba-aa9e-2a014dfbd727",
+  "reference": "AN-FZ0NNJ6N",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-03-27T09:06:45",
+  "prix": 196230,
+  "charges_mensuelles": 75.28,
+  "surface": 218,
+  "nb_pieces": 6,
+  "nb_chambres": 3,
+  "adresse": "116 allée des Platanes",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "agence": "Provence Immobilier"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-FZ0NNJ6N/1.jpg"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "e4d41dac-5026-4a1a-9162-ceecafc02ab5",
+  "reference": "AN-QO63XWTC",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "12-25-2024",
+  "prix": 1501846,
+  "surface_m2": 155,
+  "adresse": "109 allée des Platanes",
+  "latitude": 43.70796,
+  "longitude": 7.26572,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0284665828"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-QO63XWTC/1.jpg",
+    "https://exemple-images.test/AN-QO63XWTC/2.jpg"
+  ],
+  "exclusivite": true
+}

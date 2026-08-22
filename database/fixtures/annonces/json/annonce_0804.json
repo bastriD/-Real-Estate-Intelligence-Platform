@@ -1,0 +1,31 @@
+{
+  "id": "472efeae-dbbb-4fa3-8abf-cfc231dee0a3",
+  "reference": "AN-3W4HBNRN",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "09/10/2025",
+  "prix": "105580 €",
+  "surface": 33,
+  "nb_pieces": 5,
+  "etage": "dernier étage",
+  "dpe": "A",
+  "adresse": "42 boulevard Gambetta",
+  "description": "Château atypique de 33 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Martin",
+    "telephone": "0284690344",
+    "email": "julie.martin27@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-3W4HBNRN/1.jpg",
+    "https://exemple-images.test/AN-3W4HBNRN/2.jpg",
+    "https://exemple-images.test/AN-3W4HBNRN/3.jpg"
+  ],
+  "particulier": true
+}

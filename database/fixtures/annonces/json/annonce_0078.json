@@ -1,0 +1,23 @@
+{
+  "id": "5c9b3d8f-7aa5-464f-8064-d4df6e9e910f",
+  "reference": "AN-V1Y1DTWD",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-02-05T16:08:45",
+  "prix": 147729,
+  "surface": 87,
+  "nb_pieces": 2,
+  "meuble": true,
+  "adresse": "62 rue Pasteur",
+  "latitude": 43.265856,
+  "longitude": 5.362638,
+  "description": "Studio charmant de 87 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0504220541"
+  }
+}

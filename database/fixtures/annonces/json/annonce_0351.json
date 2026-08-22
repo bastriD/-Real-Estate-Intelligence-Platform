@@ -1,0 +1,25 @@
+{
+  "id": "306fa473-a7d6-4e62-9d73-1747f7ce8423",
+  "reference": "AN-O24C83QN",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement rénové à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "23 mai 2026",
+  "prix": "208357 €",
+  "surface": 99,
+  "nb_pieces": 1,
+  "nb_chambres": 7,
+  "etage": "RDC",
+  "meuble": false,
+  "dpe": "F",
+  "adresse": "123 rue de la République",
+  "description": "Appartement avec vue dégagée de 99 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Nadia Lefevre",
+    "telephone": "0714013771",
+    "agence": "ImmoPlus"
+  },
+  "particulier": true
+}

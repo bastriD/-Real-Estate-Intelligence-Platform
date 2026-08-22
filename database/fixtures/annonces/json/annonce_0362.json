@@ -1,0 +1,21 @@
+{
+  "id": "083583dd-f9c8-40ae-8e05-5a5f1c9d51fa",
+  "reference": "AN-M83TDUZX",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1774575345,
+  "prix": "241614 €",
+  "surface": 113,
+  "nb_pieces": 2,
+  "nb_chambres": 6,
+  "annee_construction": 2008,
+  "adresse": "102 rue du Commerce",
+  "description": "Appartement lumineux de 113 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Fontaine",
+    "telephone": "0036107194"
+  }
+}

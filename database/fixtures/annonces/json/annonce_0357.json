@@ -1,0 +1,25 @@
+{
+  "id": "265725a5-8059-49d0-a5c4-fa3bd8a65f92",
+  "reference": "AN-9ELRKV00",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2026-04-03",
+  "prix": 353667,
+  "surface_m2": 114,
+  "nb_pieces": 4,
+  "nb_chambres": 6,
+  "etage": "dernier étage",
+  "dpe": "D",
+  "annee_construction": 1861,
+  "adresse": "82 rue de la République",
+  "latitude": 47.274762,
+  "longitude": 5.040189,
+  "description": "Appartement charmant de 114 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0464325953",
+    "agence": "Nid Doré"
+  }
+}

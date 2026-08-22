@@ -1,0 +1,26 @@
+{
+  "id": "e848b280-c113-4ecd-986c-f31ac433b2ec",
+  "reference": "AN-U55HCECZ",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "13/10/2025",
+  "prix": "160007 €",
+  "charges_mensuelles": 207.11,
+  "surface": 102,
+  "meuble": true,
+  "dpe": "B",
+  "adresse": "148 allée des Platanes",
+  "description": "Studio charmant de 102 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Roche",
+    "telephone": "0612015315",
+    "email": "marie.roche43@example.com",
+    "agence": "Nid Doré"
+  },
+  "exclusivite": true
+}

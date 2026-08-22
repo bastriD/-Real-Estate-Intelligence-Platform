@@ -1,0 +1,31 @@
+{
+  "id": "969c7ee3-cca0-44e9-98fc-b1b5d7454210",
+  "reference": "AN-05VECLZJ",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement rénové à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "26/04/2025",
+  "prix": 359464,
+  "surface": 76,
+  "nb_pieces": 2,
+  "nb_chambres": 4,
+  "dpe": "G",
+  "annee_construction": 1928,
+  "adresse": "63 allée des Platanes",
+  "latitude": 47.273631,
+  "longitude": 5.079987,
+  "description": "Appartement en excellent état de 76 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Sophie Dubois",
+    "telephone": "0115643819",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-05VECLZJ/1.jpg",
+    "https://exemple-images.test/AN-05VECLZJ/2.jpg",
+    "https://exemple-images.test/AN-05VECLZJ/3.jpg"
+  ],
+  "exclusivite": false
+}

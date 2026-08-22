@@ -1,0 +1,25 @@
+{
+  "id": "aef911ca-ccef-43d3-94d7-f358a90d5f16",
+  "reference": "AN-Y1OVD0N1",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "06-28-2026",
+  "prix": 126509,
+  "surface_m2": 185,
+  "nb_pieces": 2,
+  "nb_chambres": 0,
+  "adresse": "70 impasse des Lilas",
+  "latitude": 43.290969,
+  "longitude": 5.345781,
+  "description": "Studio en excellent état de 185 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Girard",
+    "telephone": "0263786346"
+  },
+  "particulier": true
+}

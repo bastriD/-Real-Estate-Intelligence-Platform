@@ -1,0 +1,24 @@
+{
+  "id": "39d3b3b9-523f-452d-9a29-1e250e6f0f48",
+  "reference": "AN-F1LTZHDM",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "11-30-2024",
+  "prix": 147398,
+  "surface_m2": 224,
+  "nb_pieces": 3,
+  "annee_construction": 2001,
+  "adresse": "57 rue Victor Hugo",
+  "description": "Studio en excellent état de 224 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Roche",
+    "telephone": "0735234495",
+    "email": "marie.roche54@example.com",
+    "agence": "Century Habitat"
+  }
+}

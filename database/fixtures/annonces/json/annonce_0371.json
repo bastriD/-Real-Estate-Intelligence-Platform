@@ -1,0 +1,24 @@
+{
+  "id": "0befc6ba-428e-439b-b78b-03843e6b508e",
+  "reference": "AN-WCHO7T9L",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement en excellent état à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-04-01",
+  "prix": "318448 €",
+  "surface": 192,
+  "nb_pieces": 2,
+  "nb_chambres": 4,
+  "etage": 4,
+  "adresse": "42 impasse des Lilas",
+  "contact": {
+    "nom": "Ahmed Martin",
+    "telephone": "0225288376",
+    "email": "ahmed.martin41@example.com",
+    "agence": "Toit & Vous"
+  },
+  "photos": [],
+  "exclusivite": true
+}

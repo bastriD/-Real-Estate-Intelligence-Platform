@@ -1,0 +1,25 @@
+{
+  "id": "b4cc4a45-815a-45b4-b0e5-09c12d4b3493",
+  "reference": "AN-AAC1A8SG",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1741591425,
+  "prix": 276747,
+  "surface": 110,
+  "nb_pieces": 5,
+  "nb_chambres": 6,
+  "etage": 3,
+  "dpe": "G",
+  "adresse": "106 rue Victor Hugo",
+  "latitude": 47.325502,
+  "longitude": 5.00456,
+  "contact": {
+    "telephone": "0032045887",
+    "email": "contact40@example.com"
+  },
+  "photos": [],
+  "exclusivite": false
+}

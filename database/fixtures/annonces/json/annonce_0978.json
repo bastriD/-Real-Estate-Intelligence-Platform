@@ -1,0 +1,25 @@
+{
+  "id": "501e74ca-2975-43e4-8a7c-a475eda05fa0",
+  "reference": "AN-I6KS972X",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "11-08-2025",
+  "prix": 98111,
+  "surface": 120,
+  "nb_pieces": 7,
+  "dpe": "A",
+  "latitude": 43.329216,
+  "longitude": 5.32739,
+  "description": "Château de standing de 120 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Lefevre",
+    "telephone": "0158880529"
+  },
+  "particulier": true
+}

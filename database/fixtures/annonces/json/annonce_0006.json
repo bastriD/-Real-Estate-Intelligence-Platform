@@ -1,0 +1,21 @@
+{
+  "id": "5ec3d196-bcff-4c74-8b6e-367caad4e12d",
+  "reference": "AN-7YQ221K7",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-09-09",
+  "prix": 208038,
+  "surface": 194,
+  "nb_pieces": 1,
+  "adresse": "115 place de la Mairie",
+  "description": "Studio lumineux de 194 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0840830274"
+  },
+  "exclusivite": false
+}

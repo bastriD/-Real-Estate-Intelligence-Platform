@@ -1,0 +1,23 @@
+{
+  "id": "fd939fd6-49f0-4b52-8273-b67c84093a30",
+  "reference": "AN-CC6AJC8F",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain au calme à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1761024705,
+  "prix": 1406581,
+  "charges_mensuelles": 65.56,
+  "surface": 122,
+  "latitude": 43.709553,
+  "longitude": 7.234705,
+  "description": "Terrain avec vue dégagée de 122 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "calme": true,
+  "contact": {
+    "telephone": "0480786600",
+    "email": "contact54@example.com",
+    "agence": "Century Habitat"
+  },
+  "particulier": true
+}

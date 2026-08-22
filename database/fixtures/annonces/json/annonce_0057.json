@@ -1,0 +1,26 @@
+{
+  "id": "1b77e17f-02db-4da0-8b84-900e278c2a09",
+  "reference": "AN-247YV4VP",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "02/12/2024",
+  "prix": 148869,
+  "surface": 194,
+  "nb_chambres": 3,
+  "dpe": "D",
+  "annee_construction": 1909,
+  "adresse": "10 rue Victor Hugo",
+  "terrasse": true,
+  "contact": {
+    "nom": "Karim Faure",
+    "telephone": "0042726577",
+    "agence": "Provence Immobilier"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-247YV4VP/1.jpg"
+  ],
+  "exclusivite": true
+}

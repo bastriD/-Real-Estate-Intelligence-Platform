@@ -1,0 +1,26 @@
+{
+  "id": "44eb9f04-f379-4ddc-a4d6-be7ff2819d4f",
+  "reference": "AN-JQSMTN30",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-01-12T00:29:45",
+  "prix": 157256,
+  "surface": 202,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "meuble": false,
+  "annee_construction": 1894,
+  "adresse": "46 quai de la Loire",
+  "latitude": 43.277376,
+  "longitude": 5.409966,
+  "description": "Studio lumineux de 202 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0228735406",
+    "email": "contact59@example.com"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "id": "7bf1a6a2-423a-409e-b232-5f53e8edf145",
+  "reference": "AN-J8YIBTNG",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain au calme à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2024-11-05T00:51:45",
+  "prix": 1043245,
+  "surface_m2": 146,
+  "calme": true,
+  "contact": {
+    "telephone": "0132291701",
+    "email": "contact2@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "exclusivite": true
+}

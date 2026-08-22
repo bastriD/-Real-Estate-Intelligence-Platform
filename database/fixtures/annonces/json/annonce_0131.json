@@ -1,0 +1,22 @@
+{
+  "id": "f3326957-502c-4629-a393-ac635e234594",
+  "reference": "AN-SHP9PSTQ",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "08/08/2025",
+  "prix": 165893,
+  "surface": 227,
+  "nb_pieces": 5,
+  "description": "Studio de standing de 227 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0350151615",
+    "email": "contact23@example.com",
+    "agence": "Century Habitat"
+  },
+  "exclusivite": false
+}

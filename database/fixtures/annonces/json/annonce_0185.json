@@ -1,0 +1,23 @@
+{
+  "id": "9d74cf51-9648-4f54-b78f-f53264ef0f24",
+  "reference": "AN-LNPXYVKL",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-08-25",
+  "prix": "169149 €",
+  "surface": 196,
+  "nb_pieces": 3,
+  "dpe": "A",
+  "description": "Studio lumineux de 196 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Faure",
+    "telephone": "0565910382",
+    "email": "nadia.faure95@example.com"
+  },
+  "exclusivite": false
+}

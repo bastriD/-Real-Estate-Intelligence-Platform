@@ -1,0 +1,23 @@
+{
+  "id": "a2d85fb9-ee87-4265-b738-51af1791f458",
+  "reference": "AN-8J4S2D0O",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2024-12-18T16:39:45",
+  "prix": "377612 €",
+  "surface": 82,
+  "nb_pieces": 2,
+  "nb_chambres": 4,
+  "etage": 2,
+  "dpe": "A",
+  "latitude": 47.319674,
+  "longitude": 4.995054,
+  "description": "Appartement de standing de 82 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0128159951",
+    "agence": "Clé en Main Immo"
+  }
+}

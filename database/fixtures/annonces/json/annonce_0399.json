@@ -1,0 +1,29 @@
+{
+  "id": "4bfbe3f8-b939-4211-b752-e7064d4e350b",
+  "reference": "AN-VXJ8PFYK",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement spacieux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "05/12/2024",
+  "prix": 292441,
+  "surface": 69,
+  "nb_pieces": 1,
+  "nb_chambres": 4,
+  "etage": 5,
+  "dpe": "B",
+  "adresse": "12 chemin des Vignes",
+  "latitude": 47.325214,
+  "longitude": 5.024435,
+  "contact": {
+    "telephone": "0338814965",
+    "email": "contact63@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-VXJ8PFYK/1.jpg",
+    "https://exemple-images.test/AN-VXJ8PFYK/2.jpg",
+    "https://exemple-images.test/AN-VXJ8PFYK/3.jpg",
+    "https://exemple-images.test/AN-VXJ8PFYK/4.jpg"
+  ]
+}

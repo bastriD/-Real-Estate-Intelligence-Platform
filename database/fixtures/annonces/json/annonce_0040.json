@@ -1,0 +1,25 @@
+{
+  "id": "00cf66d8-b538-4a38-88ed-348195da9ba9",
+  "reference": "AN-AFPZ5FYG",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-07-30T13:14:45",
+  "prix": 207176,
+  "surface": 130,
+  "nb_chambres": 2,
+  "etage": 1,
+  "meuble": true,
+  "annee_construction": 1964,
+  "description": "Studio atypique de 130 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0877394788"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-AFPZ5FYG/1.jpg"
+  ]
+}

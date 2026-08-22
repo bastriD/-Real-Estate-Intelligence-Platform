@@ -1,0 +1,19 @@
+{
+  "id": "8a53481d-efa2-4952-8bfa-d124feb5ea81",
+  "reference": "AN-HDH45C0X",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain avec vue dégagée à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-09-08T18:19:45",
+  "prix": 1569715,
+  "surface": 255,
+  "description": "Terrain atypique de 255 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Martin",
+    "telephone": "0090562692"
+  }
+}

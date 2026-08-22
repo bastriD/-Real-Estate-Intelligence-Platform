@@ -1,0 +1,26 @@
+{
+  "id": "caf7e38c-4603-4bc2-8552-ecb42ff4f816",
+  "reference": "AN-HJ6F11EQ",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial charmant à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "24 mai 2026",
+  "prix": 349492,
+  "surface": 156,
+  "nb_pieces": 6,
+  "nb_chambres": 5,
+  "etage": 5,
+  "meuble": false,
+  "annee_construction": 1940,
+  "adresse": "188 avenue des Champs",
+  "latitude": 48.896285,
+  "longitude": 2.314439,
+  "description": "Local commercial avec vue dégagée de 156 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0353564550",
+    "agence": "Century Habitat"
+  },
+  "particulier": true
+}

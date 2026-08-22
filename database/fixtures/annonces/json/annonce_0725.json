@@ -1,0 +1,21 @@
+{
+  "id": "ca214ffa-1706-450e-a241-e324936e2ec8",
+  "reference": "AN-2CVHF9F3",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial de standing à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1738297005,
+  "prix": 349059,
+  "surface": 203,
+  "nb_pieces": 5,
+  "meuble": false,
+  "adresse": "89 impasse des Lilas",
+  "description": "Local commercial atypique de 203 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Julie Bernard",
+    "telephone": "0289974047",
+    "email": "julie.bernard52@example.com"
+  }
+}

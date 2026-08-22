@@ -1,0 +1,19 @@
+{
+  "id": "8bcefe29-00aa-4fc6-8a9c-07c0b118e16b",
+  "reference": "AN-5IN25L2A",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain avec vue dégagée à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1754854425,
+  "prix": 1324961,
+  "surface_m2": 208,
+  "adresse": "16 rue de la République",
+  "description": "Terrain à rafraîchir de 208 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0208579469"
+  }
+}

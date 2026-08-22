@@ -1,0 +1,22 @@
+{
+  "id": "d777ebf4-3b32-47eb-84f6-32c7fc3fb507",
+  "reference": "AN-7G39DU60",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1769069985,
+  "prix": 1572461,
+  "charges_mensuelles": 211.31,
+  "surface": 240,
+  "adresse": "71 boulevard Gambetta",
+  "description": "Terrain spacieux de 240 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Roche",
+    "telephone": "0897384586",
+    "agence": "Clé en Main Immo"
+  }
+}

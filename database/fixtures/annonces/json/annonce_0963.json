@@ -1,0 +1,23 @@
+{
+  "id": "2c77be9c-67a9-4271-bdb1-435e5c0d8a66",
+  "reference": "AN-0EAP2VJU",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "10-28-2025",
+  "prix": 73037,
+  "surface": 118,
+  "nb_pieces": 6,
+  "meuble": true,
+  "dpe": "A",
+  "latitude": 43.272762,
+  "longitude": 5.412543,
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0061720046"
+  }
+}

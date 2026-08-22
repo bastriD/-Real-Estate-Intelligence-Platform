@@ -1,0 +1,28 @@
+{
+  "id": "60d5ebfe-8426-42be-9ead-ca63355e356f",
+  "reference": "AN-GGRDANQ0",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2024-10-20T10:51:45",
+  "prix": "372729 €",
+  "surface": 163,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "dpe": "A",
+  "adresse": "100 quai de la Loire",
+  "description": "Local commercial avec vue dégagée de 163 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Sophie Faure",
+    "telephone": "0274308949",
+    "email": "sophie.faure96@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-GGRDANQ0/1.jpg",
+    "https://exemple-images.test/AN-GGRDANQ0/2.jpg",
+    "https://exemple-images.test/AN-GGRDANQ0/3.jpg"
+  ],
+  "exclusivite": false
+}

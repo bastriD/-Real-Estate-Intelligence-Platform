@@ -1,0 +1,29 @@
+{
+  "id": "d3a3e4e0-2e62-4642-8d2d-43810b496790",
+  "reference": "AN-TWWN2N1C",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "28 mai 2025",
+  "prix": 267025,
+  "surface_m2": 108,
+  "nb_pieces": 3,
+  "nb_chambres": 5,
+  "etage": 3,
+  "annee_construction": 1859,
+  "adresse": "75 chemin des Vignes",
+  "latitude": 47.321262,
+  "longitude": 5.067454,
+  "description": "Appartement atypique de 108 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Sophie Perrin",
+    "telephone": "0817361538",
+    "email": "sophie.perrin70@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-TWWN2N1C/1.jpg"
+  ],
+  "particulier": true
+}

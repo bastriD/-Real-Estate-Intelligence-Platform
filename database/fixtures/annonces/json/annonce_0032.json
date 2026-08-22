@@ -1,0 +1,22 @@
+{
+  "id": "7ee993a7-b563-4380-ac3b-a3c10f327f25",
+  "reference": "AN-ZGXOF3RC",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2 avril 2026",
+  "prix": "134578 €",
+  "surface": 100,
+  "etage": "RDC",
+  "dpe": "F",
+  "adresse": "7 rue Pasteur",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Martin",
+    "telephone": "0811896517",
+    "agence": "ImmoPlus"
+  }
+}

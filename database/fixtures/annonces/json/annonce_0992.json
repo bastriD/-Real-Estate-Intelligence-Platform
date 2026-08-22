@@ -1,0 +1,31 @@
+{
+  "id": "4fd336ed-d4c6-4d96-8ab4-866895276249",
+  "reference": "AN-C3LZSZEC",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "25/09/2025",
+  "prix": 102200,
+  "surface": 104,
+  "nb_pieces": 5,
+  "nb_chambres": 4,
+  "etage": 3,
+  "dpe": "A",
+  "latitude": 43.277388,
+  "longitude": 5.406741,
+  "description": "Château au calme de 104 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Martin",
+    "telephone": "0438630249",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-C3LZSZEC/1.jpg",
+    "https://exemple-images.test/AN-C3LZSZEC/2.jpg"
+  ]
+}

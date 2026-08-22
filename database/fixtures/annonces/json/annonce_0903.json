@@ -1,0 +1,30 @@
+{
+  "id": "9ca4bf1c-b310-4fa1-9b72-d1777958db50",
+  "reference": "AN-KSME6Q97",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1732630485,
+  "prix": 83588,
+  "surface": 22,
+  "nb_pieces": 8,
+  "nb_chambres": 0,
+  "dpe": "A",
+  "annee_construction": 1919,
+  "description": "Château à rafraîchir de 22 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Bernard",
+    "telephone": "0957575443",
+    "email": "ahmed.bernard54@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-KSME6Q97/1.jpg",
+    "https://exemple-images.test/AN-KSME6Q97/2.jpg",
+    "https://exemple-images.test/AN-KSME6Q97/3.jpg",
+    "https://exemple-images.test/AN-KSME6Q97/4.jpg"
+  ]
+}

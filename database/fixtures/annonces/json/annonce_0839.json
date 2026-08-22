@@ -1,0 +1,27 @@
+{
+  "id": "c217b111-0a20-4a16-b533-076c427d6b52",
+  "reference": "AN-SJMXM9ZK",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-02-24",
+  "prix": 112973,
+  "surface": 159,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "etage": 3,
+  "dpe": "A",
+  "latitude": 43.265209,
+  "longitude": 5.386709,
+  "description": "Château à rafraîchir de 159 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "contact": {
+    "telephone": "0919578307",
+    "email": "contact62@example.com",
+    "agence": "Century Habitat"
+  },
+  "exclusivite": true
+}

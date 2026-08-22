@@ -1,0 +1,23 @@
+{
+  "id": "a5ba3815-1104-4931-9d4c-99b00689fb98",
+  "reference": "AN-SYQ9A0E7",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "17 février 2025",
+  "prix": 132003,
+  "charges_mensuelles": 158.83,
+  "surface": 209,
+  "nb_chambres": 4,
+  "etage": "dernier étage",
+  "adresse": "30 boulevard Gambetta",
+  "description": "Studio avec vue dégagée de 209 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Bernard",
+    "telephone": "0482904166",
+    "agence": "Provence Immobilier"
+  }
+}

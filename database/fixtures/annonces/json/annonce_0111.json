@@ -1,0 +1,26 @@
+{
+  "id": "d9b566f0-5136-486d-a8e2-95804e507533",
+  "reference": "AN-KLLFH4IS",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "10/11/2024",
+  "prix": 164147,
+  "surface": 170,
+  "nb_pieces": 3,
+  "nb_chambres": 2,
+  "etage": 1,
+  "adresse": "171 rue de la République",
+  "latitude": 43.305534,
+  "longitude": 5.323145,
+  "description": "Studio avec vue dégagée de 170 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "calme": true,
+  "contact": {
+    "telephone": "0071129989",
+    "email": "contact91@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "exclusivite": true
+}

@@ -1,0 +1,33 @@
+{
+  "id": "cdd26214-2384-4a11-abd6-1523da834eed",
+  "reference": "AN-I3V7H0DC",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial en excellent état à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "26/10/2025",
+  "prix": 285992,
+  "surface": 141,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "etage": "dernier étage",
+  "dpe": "C",
+  "adresse": "62 boulevard Gambetta",
+  "latitude": 48.849242,
+  "longitude": 2.389154,
+  "description": "Local commercial atypique de 141 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marie Roche",
+    "telephone": "0369770963",
+    "email": "marie.roche35@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-I3V7H0DC/1.jpg",
+    "https://exemple-images.test/AN-I3V7H0DC/2.jpg",
+    "https://exemple-images.test/AN-I3V7H0DC/3.jpg",
+    "https://exemple-images.test/AN-I3V7H0DC/4.jpg",
+    "https://exemple-images.test/AN-I3V7H0DC/5.jpg"
+  ],
+  "exclusivite": true
+}

@@ -1,0 +1,23 @@
+{
+  "id": "16338b51-71eb-4688-87c5-edee6c6fb1c7",
+  "reference": "AN-U1Y41DE4",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-07-08T03:35:45",
+  "prix": 75349,
+  "surface": 88,
+  "nb_pieces": 7,
+  "nb_chambres": 3,
+  "etage": 3,
+  "dpe": "A",
+  "jardin": true,
+  "vue": true,
+  "contact": {
+    "nom": "Julie Fontaine",
+    "telephone": "0070951506",
+    "email": "julie.fontaine92@example.com"
+  }
+}

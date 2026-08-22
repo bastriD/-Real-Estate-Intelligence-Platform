@@ -1,0 +1,21 @@
+{
+  "id": "c6ed94f7-b8c4-4b6d-9e46-91bc6a8d708a",
+  "reference": "AN-XSLNVGGR",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement en excellent état à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "04-15-2025",
+  "prix": 337934,
+  "surface_m2": 84,
+  "nb_pieces": 2,
+  "nb_chambres": 5,
+  "adresse": "48 quai de la Loire",
+  "contact": {
+    "nom": "Luc Lefevre",
+    "telephone": "0854553949",
+    "email": "luc.lefevre13@example.com",
+    "agence": "Provence Immobilier"
+  }
+}

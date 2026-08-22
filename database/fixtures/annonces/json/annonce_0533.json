@@ -1,0 +1,19 @@
+{
+  "id": "eda176bc-b057-448e-8a13-e24d088e2869",
+  "reference": "AN-G7FBVII0",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "21/04/2025",
+  "prix": 1584934,
+  "charges_mensuelles": 312.22,
+  "surface_m2": 187,
+  "description": "Terrain en excellent état de 187 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Perrin",
+    "telephone": "0003085911"
+  }
+}

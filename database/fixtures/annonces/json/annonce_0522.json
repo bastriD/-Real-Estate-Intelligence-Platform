@@ -1,0 +1,30 @@
+{
+  "id": "b163fac8-4d88-4a32-b582-bb2f75b87ba6",
+  "reference": "AN-FGFANYG1",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain au calme à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1739754285,
+  "prix": 1090799,
+  "surface": 215,
+  "adresse": "17 avenue des Champs",
+  "latitude": 43.687065,
+  "longitude": 7.238873,
+  "description": "Terrain spacieux de 215 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Moreau",
+    "telephone": "0181281560",
+    "email": "luc.moreau49@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-FGFANYG1/1.jpg",
+    "https://exemple-images.test/AN-FGFANYG1/2.jpg",
+    "https://exemple-images.test/AN-FGFANYG1/3.jpg",
+    "https://exemple-images.test/AN-FGFANYG1/4.jpg",
+    "https://exemple-images.test/AN-FGFANYG1/5.jpg"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "099563fc-14ab-4bb4-b16c-8265a4d3117b",
+  "reference": "AN-2QI4AKWE",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial spacieux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "29/09/2025",
+  "prix": 286566,
+  "surface": 198,
+  "nb_pieces": 4,
+  "nb_chambres": 3,
+  "etage": 3,
+  "latitude": 48.808448,
+  "longitude": 2.38824,
+  "description": "Local commercial à rafraîchir de 198 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "telephone": "0049030781"
+  }
+}

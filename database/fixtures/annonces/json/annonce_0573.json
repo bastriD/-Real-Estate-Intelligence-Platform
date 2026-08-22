@@ -1,0 +1,24 @@
+{
+  "id": "ee9f40f7-4c43-4523-8247-f00603ded47e",
+  "reference": "AN-QMQ697OU",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "20 janvier 2026",
+  "prix": 1522432,
+  "surface": 142,
+  "adresse": "4 place de la Mairie",
+  "latitude": 43.754492,
+  "longitude": 7.304961,
+  "description": "Terrain en excellent état de 142 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Lefevre",
+    "telephone": "0992848442",
+    "email": "luc.lefevre21@example.com"
+  },
+  "exclusivite": true
+}

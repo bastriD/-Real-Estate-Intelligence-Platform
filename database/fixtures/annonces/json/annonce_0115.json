@@ -1,0 +1,22 @@
+{
+  "id": "32d5bf27-f03c-4ee0-bbb3-36bdf2ebae19",
+  "reference": "AN-CGFQVVUY",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-04-03",
+  "prix": 140644,
+  "surface": 124,
+  "etage": 0,
+  "meuble": true,
+  "dpe": "E",
+  "description": "Studio atypique de 124 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Claire Martin",
+    "telephone": "0758975395",
+    "agence": "Clé en Main Immo"
+  }
+}

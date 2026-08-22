@@ -1,0 +1,23 @@
+{
+  "id": "46102987-47d1-405c-b582-3faae898091e",
+  "reference": "AN-AX96KIY3",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial rénové à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "05/02/2025",
+  "prix": 295961,
+  "surface": 175,
+  "nb_pieces": 5,
+  "nb_chambres": 5,
+  "etage": 0,
+  "adresse": "105 avenue des Champs",
+  "latitude": 48.906237,
+  "longitude": 2.329286,
+  "description": "Local commercial rénové de 175 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Claire Bernard",
+    "telephone": "0392928225"
+  }
+}

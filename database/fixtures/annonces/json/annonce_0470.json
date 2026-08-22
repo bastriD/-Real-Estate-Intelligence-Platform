@@ -1,0 +1,21 @@
+{
+  "id": "499ee030-ced2-44ba-b6de-34dbec124730",
+  "reference": "AN-5K26Y7Z7",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain rénové à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "02-17-2026",
+  "prix": 1252676,
+  "surface": 126,
+  "description": "Terrain spacieux de 126 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0225038312",
+    "email": "contact41@example.com",
+    "agence": "Century Habitat"
+  },
+  "exclusivite": false
+}

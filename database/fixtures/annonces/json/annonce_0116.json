@@ -1,0 +1,29 @@
+{
+  "id": "f68f0c38-7d95-468c-bec4-b39254f9c3bd",
+  "reference": "AN-NE0PWV0X",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1777023345,
+  "prix": 139085,
+  "surface": 163,
+  "nb_pieces": 3,
+  "etage": 0,
+  "annee_construction": 1947,
+  "adresse": "161 chemin des Vignes",
+  "latitude": 43.294462,
+  "longitude": 5.346099,
+  "description": "Studio au calme de 163 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Marie Martin",
+    "telephone": "0253883887",
+    "agence": "Toit & Vous"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-NE0PWV0X/1.jpg",
+    "https://exemple-images.test/AN-NE0PWV0X/2.jpg"
+  ]
+}

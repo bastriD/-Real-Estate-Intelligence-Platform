@@ -1,0 +1,20 @@
+{
+  "id": "3b41ec95-6e85-4a23-919a-7685b91d4fc7",
+  "reference": "AN-I9QTC8BS",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain charmant à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "01-18-2026",
+  "prix": 1336294,
+  "surface": 255,
+  "adresse": "58 avenue des Champs",
+  "description": "Terrain rénové de 255 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Bernard"
+  },
+  "exclusivite": false
+}

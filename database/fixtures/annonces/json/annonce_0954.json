@@ -1,0 +1,26 @@
+{
+  "id": "61b5bc2c-655b-4b2e-afbb-2676f14fc427",
+  "reference": "AN-ZSS1S23Z",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1775192385,
+  "prix": "143999 €",
+  "surface": 106,
+  "nb_pieces": 7,
+  "nb_chambres": 2,
+  "dpe": "A",
+  "adresse": "177 rue Victor Hugo",
+  "latitude": 43.282763,
+  "longitude": 5.407151,
+  "description": "Château spacieux de 106 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "agence": "Century Habitat"
+  },
+  "exclusivite": true
+}

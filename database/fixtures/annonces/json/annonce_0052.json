@@ -1,0 +1,24 @@
+{
+  "id": "2be3300d-f1cf-4327-ab9b-f4bdacc923f9",
+  "reference": "AN-WY6D1W8Y",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1768057785,
+  "prix": "177267 €",
+  "surface": 229,
+  "etage": 4,
+  "adresse": "134 chemin des Vignes",
+  "latitude": 43.335493,
+  "longitude": 5.416085,
+  "description": "Studio de standing de 229 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Martin",
+    "telephone": "0197158262"
+  },
+  "exclusivite": true
+}

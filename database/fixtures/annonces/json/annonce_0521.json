@@ -1,0 +1,26 @@
+{
+  "id": "e1b3ce0f-1161-47d0-a8fb-8a95ab4d14b2",
+  "reference": "AN-EDEXREVE",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "11/02/2025",
+  "prix": 1022914,
+  "surface": 246,
+  "adresse": "145 avenue des Champs",
+  "description": "Terrain au calme de 246 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Lefevre",
+    "telephone": "0704204654",
+    "email": "sophie.lefevre29@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-EDEXREVE/1.jpg",
+    "https://exemple-images.test/AN-EDEXREVE/2.jpg"
+  ],
+  "exclusivite": true
+}

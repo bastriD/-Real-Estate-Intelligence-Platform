@@ -1,0 +1,24 @@
+{
+  "id": "c2f45829-f565-4795-8258-c54622d7bb5f",
+  "reference": "AN-VXU94ASU",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-04-07T11:13:45",
+  "prix": 102625,
+  "charges_mensuelles": 53.44,
+  "surface": 27,
+  "nb_pieces": 6,
+  "dpe": "A",
+  "latitude": 43.314023,
+  "longitude": 5.359725,
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0230728506",
+    "email": "contact17@example.com"
+  }
+}

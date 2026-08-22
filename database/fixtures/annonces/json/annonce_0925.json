@@ -1,0 +1,27 @@
+{
+  "id": "d0080d35-8992-4e95-8877-ae30824edc26",
+  "reference": "AN-GQ33DNU5",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "02-17-2026",
+  "prix": 130031,
+  "surface": 88,
+  "nb_pieces": 7,
+  "nb_chambres": 2,
+  "etage": 3,
+  "dpe": "A",
+  "adresse": "170 rue du Commerce",
+  "latitude": 43.318229,
+  "longitude": 5.334471,
+  "description": "Château de standing de 88 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Girard",
+    "telephone": "0672953113"
+  }
+}

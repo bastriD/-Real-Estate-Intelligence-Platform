@@ -1,0 +1,20 @@
+{
+  "id": "6e8fe91f-83c7-49fc-9f96-808917ddeea9",
+  "reference": "AN-30FUV1OU",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial avec vue dégagée à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "25/11/2025",
+  "prix": 299117,
+  "charges_mensuelles": 193.04,
+  "surface": 213,
+  "nb_pieces": 5,
+  "dpe": "B",
+  "adresse": "101 allée des Platanes",
+  "latitude": 48.890276,
+  "longitude": 2.401388,
+  "description": "Local commercial lumineux de 213 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "exclusivite": false
+}

@@ -1,0 +1,24 @@
+{
+  "id": "44d4cf93-bd08-4e80-a56e-5374063206f4",
+  "reference": "AN-6IS1MU9M",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement en excellent état à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2024-09-06",
+  "prix": 330195,
+  "surface": 137,
+  "nb_pieces": 3,
+  "nb_chambres": 7,
+  "adresse": "174 avenue des Champs",
+  "latitude": 47.351578,
+  "longitude": 5.075381,
+  "description": "Appartement en excellent état de 137 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Ahmed Martin",
+    "telephone": "0428972023",
+    "email": "ahmed.martin24@example.com",
+    "agence": "ImmoPlus"
+  }
+}

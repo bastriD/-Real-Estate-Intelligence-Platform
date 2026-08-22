@@ -1,0 +1,21 @@
+{
+  "id": "605024ff-f2de-4594-95c5-04b1f21cce9d",
+  "reference": "AN-PC03XLTV",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain avec vue dégagée à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "27 août 2025",
+  "prix": 1176068,
+  "surface": 148,
+  "latitude": 43.759581,
+  "longitude": 7.239943,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Martin",
+    "telephone": "0692379432",
+    "email": "nadia.martin95@example.com"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "13db4abd-dd1e-4ce2-9204-d18cc0b6733e",
+  "reference": "AN-J3WDP47W",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1764261465,
+  "prix": 380646,
+  "surface": 255,
+  "nb_pieces": 6,
+  "nb_chambres": 5,
+  "adresse": "16 quai de la Loire",
+  "latitude": 48.807742,
+  "longitude": 2.398367,
+  "contact": {
+    "nom": "Luc Faure"
+  },
+  "particulier": true
+}

@@ -1,0 +1,26 @@
+{
+  "id": "07e3d278-9bb2-41f7-b557-c611977976fd",
+  "reference": "AN-F0P33DJX",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "10-14-2024",
+  "prix": 89786,
+  "surface": 63,
+  "nb_pieces": 4,
+  "dpe": "A",
+  "latitude": 43.276675,
+  "longitude": 5.369523,
+  "description": "Château au calme de 63 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "contact": {
+    "nom": "Julie Fontaine",
+    "telephone": "0388599708",
+    "agence": "Nid Doré"
+  },
+  "photos": [],
+  "exclusivite": true
+}

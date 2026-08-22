@@ -1,0 +1,21 @@
+{
+  "id": "df222c60-03fa-4745-8bdb-cb4329322007",
+  "reference": "AN-NQC4SS9S",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-04-15T14:40:45",
+  "prix": 1540090,
+  "surface": 243,
+  "adresse": "111 rue Victor Hugo",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Faure",
+    "telephone": "0287039538",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": []
+}

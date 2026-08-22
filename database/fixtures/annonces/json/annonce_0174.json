@@ -1,0 +1,22 @@
+{
+  "id": "cc651761-8a77-4f28-8e01-dc5172a6a463",
+  "reference": "AN-7IJPL4MI",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-09-06",
+  "prix": 130595,
+  "charges_mensuelles": 346.84,
+  "surface": 173,
+  "etage": "RDC",
+  "adresse": "180 rue de la République",
+  "description": "Studio rénové de 173 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Claire Moreau",
+    "telephone": "0152353499"
+  },
+  "particulier": true
+}

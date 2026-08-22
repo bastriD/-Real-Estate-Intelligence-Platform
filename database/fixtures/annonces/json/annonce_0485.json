@@ -1,0 +1,22 @@
+{
+  "id": "b96ff38e-8f11-4ef3-9acc-daba32eacba8",
+  "reference": "AN-Y0QAHPL8",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain lumineux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2024-12-15",
+  "prix": 1683485,
+  "surface": 146,
+  "latitude": 43.751548,
+  "longitude": 7.280847,
+  "description": "Terrain de standing de 146 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Dubois",
+    "email": "luc.dubois64@example.com",
+    "agence": "ImmoPlus"
+  }
+}

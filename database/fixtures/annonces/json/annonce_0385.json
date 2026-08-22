@@ -1,0 +1,25 @@
+{
+  "id": "130f7912-6e22-4971-8d30-1fb2dd508979",
+  "reference": "AN-80TFQIS3",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "12/01/2026",
+  "prix": 352514,
+  "surface": 125,
+  "nb_pieces": 2,
+  "nb_chambres": 4,
+  "etage": 1,
+  "annee_construction": 1945,
+  "adresse": "75 boulevard Gambetta",
+  "latitude": 47.296815,
+  "longitude": 5.066033,
+  "description": "Appartement de standing de 125 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Jean Moreau",
+    "email": "jean.moreau93@example.com"
+  },
+  "exclusivite": true
+}

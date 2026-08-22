@@ -1,0 +1,21 @@
+{
+  "id": "564c5caf-9ca6-450b-8306-186e2d5f969f",
+  "reference": "AN-50U7JTZL",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement atypique à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-03-07T08:06:45",
+  "prix": 307949,
+  "surface": 88,
+  "nb_pieces": 5,
+  "nb_chambres": 4,
+  "etage": 1,
+  "description": "Appartement à rafraîchir de 88 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0851986865",
+    "email": "contact91@example.com"
+  },
+  "photos": []
+}

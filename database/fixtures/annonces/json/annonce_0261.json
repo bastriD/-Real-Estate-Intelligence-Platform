@@ -1,0 +1,25 @@
+{
+  "id": "2abbf09a-5bc1-469f-9dcc-a92b77f9c574",
+  "reference": "AN-KSV3OE5Q",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement atypique à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "04/07/2026",
+  "prix": 372374,
+  "surface": 97,
+  "nb_pieces": 5,
+  "nb_chambres": 6,
+  "meuble": true,
+  "annee_construction": 1939,
+  "description": "Appartement de standing de 97 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Julie Martin",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-KSV3OE5Q/1.jpg"
+  ],
+  "exclusivite": true
+}

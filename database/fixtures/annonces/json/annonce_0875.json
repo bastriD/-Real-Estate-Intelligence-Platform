@@ -1,0 +1,27 @@
+{
+  "id": "1fabd136-5ff6-4f60-8350-eea73e5dc04f",
+  "reference": "AN-D1DH5OYG",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "02-23-2026",
+  "prix": 78155,
+  "surface_m2": 101,
+  "nb_pieces": 4,
+  "meuble": true,
+  "dpe": "B",
+  "annee_construction": 1995,
+  "latitude": 43.285861,
+  "longitude": 5.355559,
+  "description": "Château à rafraîchir de 101 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0041443157"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-D1DH5OYG/1.jpg"
+  ]
+}

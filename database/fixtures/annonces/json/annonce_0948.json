@@ -1,0 +1,26 @@
+{
+  "id": "98c717aa-d1ea-45f8-b826-46d6402a817a",
+  "reference": "AN-BYF30YHF",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-07-16",
+  "prix": "90970 €",
+  "surface": 77,
+  "nb_pieces": 6,
+  "nb_chambres": 4,
+  "meuble": false,
+  "latitude": 43.259764,
+  "longitude": 5.357568,
+  "description": "Château au calme de 77 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Dubois",
+    "telephone": "0109248419",
+    "email": "karim.dubois97@example.com"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "adde208e-3bcf-438e-9b9b-3853df11bc14",
+  "reference": "AN-J9C31VX8",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "08-31-2025",
+  "prix": "317458 €",
+  "surface": 156,
+  "nb_pieces": 4,
+  "nb_chambres": 4,
+  "meuble": true,
+  "latitude": 47.348531,
+  "longitude": 5.056521,
+  "description": "Appartement rénové de 156 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "email": "contact52@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-J9C31VX8/1.jpg",
+    "https://exemple-images.test/AN-J9C31VX8/2.jpg"
+  ]
+}

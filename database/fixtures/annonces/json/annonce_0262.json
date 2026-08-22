@@ -1,0 +1,25 @@
+{
+  "id": "4a3f44db-efed-4051-afb1-ec989276e5f5",
+  "reference": "AN-26KMQ22H",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement lumineux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2026-05-03T02:24:45",
+  "prix": 340073,
+  "surface": 116,
+  "nb_pieces": 3,
+  "nb_chambres": 4,
+  "dpe": "A",
+  "description": "Appartement atypique de 116 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Marie Moreau",
+    "agence": "Nid Doré"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-26KMQ22H/1.jpg",
+    "https://exemple-images.test/AN-26KMQ22H/2.jpg",
+    "https://exemple-images.test/AN-26KMQ22H/3.jpg"
+  ]
+}

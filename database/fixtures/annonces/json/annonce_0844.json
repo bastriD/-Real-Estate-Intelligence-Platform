@@ -1,0 +1,20 @@
+{
+  "id": "666a673b-6019-4cbb-9eed-687a0a2c62e5",
+  "reference": "AN-VRYPFYSA",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "4 novembre 2025",
+  "prix": 97620,
+  "surface": 150,
+  "nb_pieces": 7,
+  "dpe": "A",
+  "description": "Château rénové de 150 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Dubois"
+  }
+}

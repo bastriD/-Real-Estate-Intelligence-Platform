@@ -1,0 +1,27 @@
+{
+  "id": "2040e5b0-1ad5-4f86-ba66-f5f522240efa",
+  "reference": "AN-7FN42TC8",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-11-17T17:25:45",
+  "prix": 120309,
+  "surface": 140,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "etage": 5,
+  "dpe": "A",
+  "annee_construction": 1943,
+  "adresse": "157 rue du Commerce",
+  "latitude": 43.317738,
+  "longitude": 5.390026,
+  "description": "Château de standing de 140 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Fontaine"
+  }
+}

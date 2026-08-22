@@ -1,0 +1,20 @@
+{
+  "id": "789f68db-391c-4d69-8740-bb0f737da473",
+  "reference": "AN-41VRUKTT",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-05-01",
+  "prix": 1110787,
+  "surface": 183,
+  "description": "Terrain spacieux de 183 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Dubois",
+    "email": "sophie.dubois94@example.com"
+  },
+  "exclusivite": false
+}

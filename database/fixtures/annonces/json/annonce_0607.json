@@ -1,0 +1,23 @@
+{
+  "id": "48b9077f-6d1f-497d-8369-60fd1b48cc34",
+  "reference": "AN-OGK7ZI3I",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial avec vue dégagée à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "05-15-2025",
+  "prix": 233563,
+  "surface_m2": 204,
+  "nb_pieces": 3,
+  "etage": 5,
+  "latitude": 48.888275,
+  "longitude": 2.323288,
+  "description": "Local commercial au calme de 204 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marc Perrin",
+    "telephone": "0535845894",
+    "email": "marc.perrin97@example.com"
+  },
+  "exclusivite": false
+}

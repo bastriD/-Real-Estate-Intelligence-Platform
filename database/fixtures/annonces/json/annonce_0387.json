@@ -1,0 +1,27 @@
+{
+  "id": "3f5486d2-9f64-4b58-aa9a-bc98fbc6de8c",
+  "reference": "AN-POI310QZ",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement en excellent état à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "18 octobre 2025",
+  "prix": 326616,
+  "charges_mensuelles": 303.49,
+  "surface": 116,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "dpe": "C",
+  "annee_construction": 1913,
+  "adresse": "39 rue Pasteur",
+  "latitude": 47.365612,
+  "longitude": 5.071296,
+  "description": "Appartement atypique de 116 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Moreau",
+    "email": "karim.moreau38@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": true
+}

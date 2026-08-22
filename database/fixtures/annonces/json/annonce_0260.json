@@ -1,0 +1,27 @@
+{
+  "id": "4178a3ea-43b0-4ba4-96b9-94bfbd2c32a0",
+  "reference": "AN-5N2CSDNE",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement charmant à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "22/11/2024",
+  "prix": 324855,
+  "charges_mensuelles": 79.25,
+  "surface": 119,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "latitude": 47.277629,
+  "longitude": 5.004191,
+  "description": "Appartement spacieux de 119 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Claire Faure",
+    "agence": "Toit & Vous"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-5N2CSDNE/1.jpg",
+    "https://exemple-images.test/AN-5N2CSDNE/2.jpg"
+  ],
+  "particulier": true
+}

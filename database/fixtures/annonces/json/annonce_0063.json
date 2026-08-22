@@ -1,0 +1,28 @@
+{
+  "id": "a7cbc293-d1ea-4afa-a0e0-18749438233e",
+  "reference": "AN-2ZY1FHGK",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "20 juin 2025",
+  "prix": "187359 €",
+  "charges_mensuelles": 199.15,
+  "surface": 156,
+  "nb_pieces": 4,
+  "nb_chambres": 2,
+  "etage": 4,
+  "adresse": "117 impasse des Lilas",
+  "latitude": 43.322724,
+  "longitude": 5.348102,
+  "description": "Studio en excellent état de 156 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Perrin",
+    "telephone": "0912246347",
+    "email": "claire.perrin66@example.com",
+    "agence": "Nid Doré"
+  }
+}

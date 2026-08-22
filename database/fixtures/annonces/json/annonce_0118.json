@@ -1,0 +1,27 @@
+{
+  "id": "4459b4fb-00e8-4f85-a78a-ca8bbda7d356",
+  "reference": "AN-HY95DHSZ",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "3 juillet 2026",
+  "prix": 143190,
+  "surface": 233,
+  "nb_pieces": 8,
+  "etage": 5,
+  "meuble": false,
+  "dpe": "C",
+  "annee_construction": 2008,
+  "latitude": 43.296311,
+  "longitude": 5.325161,
+  "description": "Studio avec vue dégagée de 233 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Faure",
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": true
+}

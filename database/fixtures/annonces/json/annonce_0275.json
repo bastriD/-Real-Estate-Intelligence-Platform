@@ -1,0 +1,30 @@
+{
+  "id": "d9879567-335c-4b67-98e1-c80e676b3362",
+  "reference": "AN-EGGJWZB3",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement spacieux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "08-31-2024",
+  "prix": 319539,
+  "surface": 110,
+  "nb_pieces": 1,
+  "nb_chambres": 6,
+  "adresse": "73 quai de la Loire",
+  "latitude": 47.348328,
+  "longitude": 5.079447,
+  "description": "Appartement atypique de 110 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Sophie Bernard",
+    "agence": "Toit & Vous"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-EGGJWZB3/1.jpg",
+    "https://exemple-images.test/AN-EGGJWZB3/2.jpg",
+    "https://exemple-images.test/AN-EGGJWZB3/3.jpg",
+    "https://exemple-images.test/AN-EGGJWZB3/4.jpg",
+    "https://exemple-images.test/AN-EGGJWZB3/5.jpg"
+  ],
+  "particulier": true
+}

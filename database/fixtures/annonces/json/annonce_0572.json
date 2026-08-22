@@ -1,0 +1,23 @@
+{
+  "id": "bc1725da-ec38-4f45-b099-0bda8c452728",
+  "reference": "AN-56372JQU",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1735032765,
+  "prix": 1412181,
+  "surface": 252,
+  "description": "Terrain de standing de 252 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "email": "contact60@example.com",
+    "agence": "Nid Doré"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-56372JQU/1.jpg",
+    "https://exemple-images.test/AN-56372JQU/2.jpg"
+  ]
+}

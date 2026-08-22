@@ -1,0 +1,20 @@
+{
+  "id": "3263a34a-7363-4e66-aca3-09d9b6c1a12c",
+  "reference": "AN-VS2Z31WI",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "21 juillet 2026",
+  "prix": 1562433,
+  "surface": 160,
+  "adresse": "183 quai de la Loire",
+  "description": "Terrain charmant de 160 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0637903184"
+  },
+  "exclusivite": true
+}

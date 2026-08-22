@@ -1,0 +1,27 @@
+{
+  "id": "48bca2ad-f3d3-4416-85d4-93dbae94c983",
+  "reference": "AN-FHH6OO5Z",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial avec vue dégagée à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1759646745,
+  "prix": "280921 €",
+  "surface": 136,
+  "nb_pieces": 5,
+  "adresse": "107 rue de la République",
+  "latitude": 48.864841,
+  "longitude": 2.374766,
+  "description": "Local commercial de standing de 136 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Sophie Girard",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-FHH6OO5Z/1.jpg",
+    "https://exemple-images.test/AN-FHH6OO5Z/2.jpg",
+    "https://exemple-images.test/AN-FHH6OO5Z/3.jpg"
+  ],
+  "exclusivite": false
+}

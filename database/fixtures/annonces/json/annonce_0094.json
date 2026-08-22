@@ -1,0 +1,20 @@
+{
+  "id": "5b59f3fa-099c-42ff-8f25-b677da28a661",
+  "reference": "AN-MZQYL5LK",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-06-17T21:27:45",
+  "prix": 111410,
+  "surface_m2": 115,
+  "nb_pieces": 5,
+  "nb_chambres": 4,
+  "meuble": false,
+  "terrasse": true,
+  "contact": {
+    "agence": "Provence Immobilier"
+  },
+  "particulier": true
+}

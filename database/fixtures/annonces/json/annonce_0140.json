@@ -1,0 +1,32 @@
+{
+  "id": "d0575329-2de9-4a4f-86b8-07cf8ac4cb83",
+  "reference": "AN-10ZRN27H",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-05-07T23:17:45",
+  "prix": 142732,
+  "surface": 116,
+  "nb_pieces": 2,
+  "etage": 0,
+  "annee_construction": 1952,
+  "adresse": "118 avenue des Champs",
+  "latitude": 43.337465,
+  "longitude": 5.36276,
+  "description": "Studio rénové de 116 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0363534092"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-10ZRN27H/1.jpg",
+    "https://exemple-images.test/AN-10ZRN27H/2.jpg",
+    "https://exemple-images.test/AN-10ZRN27H/3.jpg",
+    "https://exemple-images.test/AN-10ZRN27H/4.jpg",
+    "https://exemple-images.test/AN-10ZRN27H/5.jpg"
+  ],
+  "exclusivite": false
+}

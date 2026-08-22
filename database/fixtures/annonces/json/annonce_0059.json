@@ -1,0 +1,25 @@
+{
+  "id": "3e4b0841-c4d2-4b6a-a6f1-f0cd8a1257b1",
+  "reference": "AN-KOADPZKV",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-07-16",
+  "prix": 109457,
+  "charges_mensuelles": 249.68,
+  "surface": 119,
+  "nb_pieces": 5,
+  "nb_chambres": 1,
+  "meuble": false,
+  "latitude": 43.297206,
+  "longitude": 5.338601,
+  "description": "Studio rénové de 119 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0635556587",
+    "agence": "Provence Immobilier"
+  }
+}

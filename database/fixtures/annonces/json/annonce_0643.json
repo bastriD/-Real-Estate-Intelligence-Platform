@@ -1,0 +1,19 @@
+{
+  "id": "18d41b61-efb5-47b8-aef4-c2bb60e1b086",
+  "reference": "AN-L7M5ZV1M",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial rénové à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1758138705,
+  "prix": 240360,
+  "surface": 218,
+  "nb_pieces": 6,
+  "dpe": "G",
+  "contact": {
+    "telephone": "0040016796",
+    "email": "contact72@example.com"
+  },
+  "exclusivite": true
+}

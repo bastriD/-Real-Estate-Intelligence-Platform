@@ -1,0 +1,36 @@
+{
+  "id": "1ccfb242-6235-4d71-a4d5-e25d015b4541",
+  "reference": "AN-24SVSNJL",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1724769885,
+  "prix": 106061,
+  "surface": 146,
+  "nb_pieces": 4,
+  "nb_chambres": 1,
+  "etage": "dernier étage",
+  "dpe": "A",
+  "annee_construction": 2012,
+  "adresse": "98 rue du Commerce",
+  "latitude": 43.292558,
+  "longitude": 5.368968,
+  "description": "Château en excellent état de 146 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Dubois",
+    "telephone": "0430254928",
+    "agence": "Century Habitat"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-24SVSNJL/1.jpg",
+    "https://exemple-images.test/AN-24SVSNJL/2.jpg",
+    "https://exemple-images.test/AN-24SVSNJL/3.jpg",
+    "https://exemple-images.test/AN-24SVSNJL/4.jpg",
+    "https://exemple-images.test/AN-24SVSNJL/5.jpg"
+  ]
+}

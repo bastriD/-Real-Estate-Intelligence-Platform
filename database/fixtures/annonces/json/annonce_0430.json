@@ -1,0 +1,22 @@
+{
+  "id": "c02acab7-7730-4ab3-a834-c99d1d054759",
+  "reference": "AN-C899W8XF",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "26 novembre 2024",
+  "prix": 1190806,
+  "charges_mensuelles": 239.91,
+  "surface": 175,
+  "adresse": "88 chemin des Vignes",
+  "latitude": 43.71652,
+  "longitude": 7.234935,
+  "description": "Terrain rénové de 175 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "contact": {
+    "email": "contact58@example.com"
+  },
+  "exclusivite": true
+}

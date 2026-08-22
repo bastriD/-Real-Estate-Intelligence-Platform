@@ -1,0 +1,24 @@
+{
+  "id": "2e5f6d76-4d1f-4b19-8b08-6a0e3370ff75",
+  "reference": "AN-GPP531W9",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-02-01T08:07:45",
+  "prix": "342754 €",
+  "surface_m2": 193,
+  "nb_pieces": 4,
+  "nb_chambres": 6,
+  "adresse": "16 boulevard Gambetta",
+  "latitude": 47.332115,
+  "longitude": 5.067648,
+  "contact": {
+    "nom": "Nadia Moreau",
+    "telephone": "0392626471",
+    "email": "nadia.moreau6@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "particulier": true
+}

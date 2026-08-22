@@ -1,0 +1,19 @@
+{
+  "id": "55344170-b816-4a65-9027-06c2ef065693",
+  "reference": "AN-3XO3CU4W",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "12/02/2025",
+  "prix": 1696425,
+  "surface": 256,
+  "vue": true,
+  "contact": {
+    "nom": "Luc Perrin",
+    "email": "luc.perrin71@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": true
+}

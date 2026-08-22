@@ -1,0 +1,22 @@
+{
+  "id": "083a9b8d-c492-4a62-b2d6-fbfaf1370f81",
+  "reference": "AN-5ISZCX7O",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial avec vue dégagée à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "24 janvier 2026",
+  "prix": 320525,
+  "surface": 173,
+  "nb_pieces": 4,
+  "nb_chambres": 3,
+  "adresse": "9 quai de la Loire",
+  "description": "Local commercial au calme de 173 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Jean Fontaine",
+    "telephone": "0273691359",
+    "email": "jean.fontaine83@example.com"
+  },
+  "exclusivite": true
+}

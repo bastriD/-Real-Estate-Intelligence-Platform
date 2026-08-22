@@ -1,0 +1,28 @@
+{
+  "id": "9422390f-af2d-478e-a85e-ada42cc85696",
+  "reference": "AN-QRBQUHBI",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-08-03T17:36:45",
+  "prix": 1001469,
+  "surface": 165,
+  "description": "Terrain avec vue dégagée de 165 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Moreau",
+    "telephone": "0968500178",
+    "email": "karim.moreau22@example.com",
+    "agence": "Nid Doré"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-QRBQUHBI/1.jpg",
+    "https://exemple-images.test/AN-QRBQUHBI/2.jpg",
+    "https://exemple-images.test/AN-QRBQUHBI/3.jpg",
+    "https://exemple-images.test/AN-QRBQUHBI/4.jpg"
+  ],
+  "particulier": true
+}

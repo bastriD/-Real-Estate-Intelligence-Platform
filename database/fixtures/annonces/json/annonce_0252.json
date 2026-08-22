@@ -1,0 +1,21 @@
+{
+  "id": "25166d90-19ed-46c9-a55d-15adb21800f4",
+  "reference": "AN-HIAXAHZU",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement spacieux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1739342505,
+  "prix": "378304 €",
+  "surface": 163,
+  "nb_pieces": 5,
+  "nb_chambres": 6,
+  "etage": "dernier étage",
+  "meuble": false,
+  "description": "Appartement avec vue dégagée de 163 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "photos": [
+    "https://exemple-images.test/AN-HIAXAHZU/1.jpg"
+  ],
+  "exclusivite": false
+}

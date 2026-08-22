@@ -1,0 +1,23 @@
+{
+  "id": "90a7ebf9-5255-420d-9055-c7218aa2a84e",
+  "reference": "AN-VYUC7UJF",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2026-05-27",
+  "prix": 1303860,
+  "surface": 226,
+  "latitude": 43.693453,
+  "longitude": 7.230863,
+  "description": "Terrain avec vue dégagée de 226 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Claire Bernard",
+    "telephone": "0375095777",
+    "email": "claire.bernard54@example.com",
+    "agence": "Toit & Vous"
+  },
+  "exclusivite": true
+}

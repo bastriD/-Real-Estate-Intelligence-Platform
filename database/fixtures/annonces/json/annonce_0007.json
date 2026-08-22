@@ -1,0 +1,24 @@
+{
+  "id": "f98d1454-cd0a-4979-9fe8-414836e77f76",
+  "reference": "AN-4LA4N8XT",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-10-20T07:30:45",
+  "prix": "202263 €",
+  "surface": 157,
+  "nb_pieces": 2,
+  "meuble": false,
+  "latitude": 43.269153,
+  "longitude": 5.363969,
+  "description": "Studio de standing de 157 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "contact": {
+    "nom": "Jean Moreau",
+    "telephone": "0908181396",
+    "email": "jean.moreau55@example.com"
+  },
+  "exclusivite": true
+}

@@ -1,0 +1,22 @@
+{
+  "id": "ae327107-d4a2-41b8-ad84-ef00846d68a7",
+  "reference": "AN-E1HTLO3X",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "06-16-2025",
+  "prix": 921463,
+  "surface_m2": 251,
+  "adresse": "137 boulevard Gambetta",
+  "latitude": 43.740451,
+  "longitude": 7.283983,
+  "description": "Terrain rénové de 251 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Julie Bernard",
+    "agence": "Century Habitat"
+  },
+  "exclusivite": false
+}

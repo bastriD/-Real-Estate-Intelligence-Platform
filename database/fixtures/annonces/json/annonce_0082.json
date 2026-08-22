@@ -1,0 +1,25 @@
+{
+  "id": "dbd5c69f-4ce3-417a-bbc2-70a2bc22f245",
+  "reference": "AN-LVVTJYIR",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-07-04",
+  "prix": 207026,
+  "charges_mensuelles": 290.74,
+  "surface_m2": 162,
+  "annee_construction": 1934,
+  "adresse": "144 impasse des Lilas",
+  "latitude": 43.265895,
+  "longitude": 5.401088,
+  "description": "Studio rénové de 162 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Girard",
+    "email": "marc.girard41@example.com"
+  },
+  "particulier": true
+}

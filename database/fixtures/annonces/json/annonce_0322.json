@@ -1,0 +1,33 @@
+{
+  "id": "da444757-e655-4dcc-a7a5-09f495d4153f",
+  "reference": "AN-8SQVTDRL",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1737315105,
+  "prix": 249910,
+  "charges_mensuelles": 171.79,
+  "surface": 168,
+  "nb_pieces": 2,
+  "nb_chambres": 5,
+  "dpe": "E",
+  "adresse": "63 quai de la Loire",
+  "latitude": 47.342083,
+  "longitude": 5.03826,
+  "description": "Appartement lumineux de 168 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Julie Roche",
+    "telephone": "0146971900",
+    "email": "julie.roche81@example.com",
+    "agence": "Century Habitat"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-8SQVTDRL/1.jpg",
+    "https://exemple-images.test/AN-8SQVTDRL/2.jpg",
+    "https://exemple-images.test/AN-8SQVTDRL/3.jpg",
+    "https://exemple-images.test/AN-8SQVTDRL/4.jpg"
+  ],
+  "exclusivite": true
+}

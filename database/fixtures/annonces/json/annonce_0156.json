@@ -1,0 +1,27 @@
+{
+  "id": "93870ca4-7f50-48cd-a89c-6ac29c54c6a7",
+  "reference": "AN-88GJE9T9",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "4 mai 2026",
+  "prix": 217603,
+  "charges_mensuelles": 253.27,
+  "surface": 192,
+  "nb_chambres": 1,
+  "etage": "dernier étage",
+  "dpe": "C",
+  "adresse": "73 boulevard Gambetta",
+  "description": "Studio de standing de 192 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Roche",
+    "telephone": "0226970833"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-88GJE9T9/1.jpg"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "e9b2a235-221c-4aa0-b06c-65219a3f3006",
+  "reference": "AN-JWEH1D5I",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "28 décembre 2025",
+  "prix": 384952,
+  "surface": 128,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "adresse": "192 place de la Mairie",
+  "contact": {
+    "nom": "Julie Roche",
+    "email": "julie.roche29@example.com"
+  }
+}

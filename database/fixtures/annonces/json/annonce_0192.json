@@ -1,0 +1,21 @@
+{
+  "id": "6f7c451f-d968-4ec9-ae2d-d46c4cfe0538",
+  "reference": "AN-E8J0WZ0Z",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1770604065,
+  "prix": 206640,
+  "charges_mensuelles": 160.38,
+  "surface": 208,
+  "dpe": "B",
+  "description": "Studio lumineux de 208 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "telephone": "0127950544",
+    "email": "contact16@example.com"
+  },
+  "exclusivite": true
+}

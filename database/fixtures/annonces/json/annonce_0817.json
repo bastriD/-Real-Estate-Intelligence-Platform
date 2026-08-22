@@ -1,0 +1,32 @@
+{
+  "id": "3bc2367b-4310-4f26-83c8-9314e9d9bbbd",
+  "reference": "AN-D9C5I557",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "14/07/2025",
+  "prix": 125598,
+  "surface": 93,
+  "nb_pieces": 5,
+  "nb_chambres": 2,
+  "dpe": "A",
+  "adresse": "106 allée des Platanes",
+  "latitude": 43.254774,
+  "longitude": 5.385447,
+  "description": "Château spacieux de 93 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Lefevre"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-D9C5I557/1.jpg",
+    "https://exemple-images.test/AN-D9C5I557/2.jpg",
+    "https://exemple-images.test/AN-D9C5I557/3.jpg",
+    "https://exemple-images.test/AN-D9C5I557/4.jpg",
+    "https://exemple-images.test/AN-D9C5I557/5.jpg"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "id": "b4aaf663-3f8f-4489-9852-2db33dd85043",
+  "reference": "AN-91S4LIE5",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain lumineux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "12-09-2024",
+  "prix": 1274471,
+  "charges_mensuelles": 78.56,
+  "surface": 142,
+  "latitude": 43.729533,
+  "longitude": 7.218316,
+  "description": "Terrain à rafraîchir de 142 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Moreau",
+    "agence": "Clé en Main Immo"
+  }
+}

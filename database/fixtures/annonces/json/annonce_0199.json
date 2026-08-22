@@ -1,0 +1,22 @@
+{
+  "id": "c3229439-b2ed-4691-82bd-3b6c17e46fe1",
+  "reference": "AN-YQICLOFJ",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-01-17T06:27:45",
+  "prix": 162059,
+  "surface": 227,
+  "nb_chambres": 0,
+  "meuble": false,
+  "annee_construction": 1927,
+  "description": "Studio charmant de 227 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0095653221",
+    "email": "contact96@example.com"
+  }
+}

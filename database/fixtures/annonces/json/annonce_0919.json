@@ -1,0 +1,25 @@
+{
+  "id": "ee641f56-8005-4c43-8da7-b924236f4b4e",
+  "reference": "AN-W9VAGTEP",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-09-19T15:27:45",
+  "prix": 107340,
+  "surface": 101,
+  "nb_pieces": 7,
+  "meuble": false,
+  "dpe": "A",
+  "adresse": "33 impasse des Lilas",
+  "jardin": true,
+  "vue": true,
+  "contact": {
+    "nom": "Marie Fontaine",
+    "telephone": "0369826136",
+    "email": "marie.fontaine66@example.com",
+    "agence": "Toit & Vous"
+  },
+  "exclusivite": false
+}

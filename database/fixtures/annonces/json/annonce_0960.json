@@ -1,0 +1,24 @@
+{
+  "id": "c0c2ce87-5097-40ea-bd13-9a9ef8a49ac7",
+  "reference": "AN-3OILQG13",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1786901325,
+  "prix": "81179 €",
+  "surface": 145,
+  "nb_pieces": 8,
+  "etage": "RDC",
+  "meuble": false,
+  "dpe": "A",
+  "annee_construction": 1911,
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Moreau",
+    "telephone": "0408072476",
+    "email": "karim.moreau77@example.com"
+  }
+}

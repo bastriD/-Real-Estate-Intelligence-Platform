@@ -1,0 +1,22 @@
+{
+  "id": "91a4e4ad-7c70-4b72-952a-cd35c82ef45f",
+  "reference": "AN-KBE5YW4R",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-05-25",
+  "prix": 108238,
+  "surface_m2": 51,
+  "nb_pieces": 6,
+  "etage": 2,
+  "meuble": false,
+  "dpe": "A",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0218207536"
+  },
+  "exclusivite": false
+}

@@ -1,0 +1,28 @@
+{
+  "id": "da39fa58-7810-4b4d-ac83-be9894de5b35",
+  "reference": "AN-PS9MMT47",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-05-09",
+  "prix": 129445,
+  "charges_mensuelles": 152.31,
+  "surface": 161,
+  "nb_pieces": 6,
+  "nb_chambres": 0,
+  "meuble": true,
+  "adresse": "198 allée des Platanes",
+  "latitude": 43.253614,
+  "longitude": 5.38137,
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Martin",
+    "telephone": "0177797000",
+    "agence": "Nid Doré"
+  },
+  "photos": [],
+  "exclusivite": false
+}

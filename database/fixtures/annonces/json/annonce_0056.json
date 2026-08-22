@@ -1,0 +1,22 @@
+{
+  "id": "f59a5746-6ca0-4869-ad9d-1479a9f46dc9",
+  "reference": "AN-LYV6PVPJ",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "9 janvier 2026",
+  "prix": 168166,
+  "surface": 125,
+  "nb_pieces": 3,
+  "meuble": false,
+  "dpe": "C",
+  "description": "Studio au calme de 125 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0791429972",
+    "agence": "Clé en Main Immo"
+  }
+}

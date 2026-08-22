@@ -1,0 +1,26 @@
+{
+  "id": "414cda89-5bc2-44e5-abad-62ba38599bf3",
+  "reference": "AN-PZ4BRZPF",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-11-14",
+  "prix": 171672,
+  "charges_mensuelles": 361.98,
+  "surface": 159,
+  "nb_pieces": 1,
+  "nb_chambres": 3,
+  "meuble": false,
+  "latitude": 43.298938,
+  "longitude": 5.350977,
+  "description": "Studio avec vue dégagée de 159 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Martin",
+    "telephone": "0538914441",
+    "agence": "Toit & Vous"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "3cff0910-635b-46d7-80ad-16e5621653aa",
+  "reference": "AN-MBV5F08Y",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-03-08T15:51:45",
+  "prix": 124844,
+  "charges_mensuelles": 100.33,
+  "surface": 87,
+  "nb_pieces": 2,
+  "etage": 4,
+  "dpe": "C",
+  "adresse": "101 place de la Mairie",
+  "description": "Studio lumineux de 87 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Marie Girard",
+    "telephone": "0787165737",
+    "agence": "ImmoPlus"
+  }
+}

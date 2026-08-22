@@ -1,0 +1,22 @@
+{
+  "id": "f5185076-195b-4802-a19f-0cf98eb01033",
+  "reference": "AN-UVMMU7PK",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain spacieux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-09-16T16:50:45",
+  "prix": 1249839,
+  "surface": 209,
+  "latitude": 43.660993,
+  "longitude": 7.268405,
+  "description": "Terrain charmant de 209 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Moreau",
+    "telephone": "0827644833"
+  },
+  "particulier": true
+}

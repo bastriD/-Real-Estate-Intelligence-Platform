@@ -1,0 +1,25 @@
+{
+  "id": "059171de-e623-4c28-9079-446db0905310",
+  "reference": "AN-5SQZHLAQ",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "12/07/2025",
+  "prix": 108203,
+  "surface": 87,
+  "nb_pieces": 8,
+  "meuble": true,
+  "dpe": "A",
+  "annee_construction": 2007,
+  "adresse": "194 rue du Commerce",
+  "description": "Château avec vue dégagée de 87 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Perrin",
+    "email": "nadia.perrin17@example.com"
+  },
+  "exclusivite": true
+}

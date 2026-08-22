@@ -1,0 +1,22 @@
+{
+  "id": "d867db39-5399-4907-86be-03820ba765e9",
+  "reference": "AN-5X09BOBS",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain au calme à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1775951265,
+  "prix": 1750478,
+  "surface": 228,
+  "latitude": 43.681066,
+  "longitude": 7.304649,
+  "description": "Terrain rénové de 228 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Girard",
+    "email": "marc.girard60@example.com",
+    "agence": "Provence Immobilier"
+  }
+}

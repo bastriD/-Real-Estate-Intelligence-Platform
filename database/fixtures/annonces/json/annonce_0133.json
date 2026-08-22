@@ -1,0 +1,26 @@
+{
+  "id": "08cdd923-b920-48ca-848e-5bd2a06542da",
+  "reference": "AN-1RTA6LXC",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "04-03-2026",
+  "prix": 185276,
+  "charges_mensuelles": 132.48,
+  "surface": 207,
+  "nb_pieces": 6,
+  "meuble": true,
+  "annee_construction": 1914,
+  "latitude": 43.315293,
+  "longitude": 5.375996,
+  "description": "Studio avec vue dégagée de 207 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Marie Dubois",
+    "email": "marie.dubois75@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": true
+}

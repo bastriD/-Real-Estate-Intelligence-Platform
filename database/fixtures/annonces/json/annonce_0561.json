@@ -1,0 +1,20 @@
+{
+  "id": "26412600-5c8d-46c0-b704-9e96f29249b2",
+  "reference": "AN-NO298T0D",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain charmant à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1753890165,
+  "prix": 1368684,
+  "charges_mensuelles": 159.06,
+  "surface": 221,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Girard",
+    "telephone": "0380078695",
+    "email": "karim.girard80@example.com"
+  }
+}

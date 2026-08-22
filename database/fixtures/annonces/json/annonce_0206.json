@@ -1,0 +1,28 @@
+{
+  "id": "79c8ba3b-3d52-4897-bdcd-f2f94a194b61",
+  "reference": "AN-FJMXX2FV",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "05-03-2026",
+  "prix": 367151,
+  "charges_mensuelles": 308.06,
+  "surface": 83,
+  "nb_pieces": 2,
+  "nb_chambres": 7,
+  "etage": 4,
+  "dpe": "B",
+  "adresse": "166 allée des Platanes",
+  "description": "Appartement rénové de 83 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marc Fontaine",
+    "telephone": "0450036336"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-FJMXX2FV/1.jpg",
+    "https://exemple-images.test/AN-FJMXX2FV/2.jpg"
+  ],
+  "exclusivite": false
+}

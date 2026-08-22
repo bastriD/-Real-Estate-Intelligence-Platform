@@ -1,0 +1,25 @@
+{
+  "id": "46b23f8c-368b-4802-b11e-12fbbc93de95",
+  "reference": "AN-5QWX7Q81",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-08-15",
+  "prix": 140910,
+  "surface": 92,
+  "nb_pieces": 3,
+  "nb_chambres": 0,
+  "etage": 2,
+  "meuble": false,
+  "dpe": "G",
+  "adresse": "139 place de la Mairie",
+  "description": "Studio à rafraîchir de 92 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0455385771",
+    "email": "contact68@example.com"
+  }
+}

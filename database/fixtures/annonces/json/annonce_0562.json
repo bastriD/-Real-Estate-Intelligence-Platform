@@ -1,0 +1,21 @@
+{
+  "id": "84ae9631-24f7-4229-b431-eafb3953accf",
+  "reference": "AN-1EBGGKH9",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain spacieux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "14 janvier 2026",
+  "prix": 1631911,
+  "surface_m2": 260,
+  "description": "Terrain de standing de 260 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0533526600",
+    "email": "contact20@example.com",
+    "agence": "Toit & Vous"
+  },
+  "photos": []
+}

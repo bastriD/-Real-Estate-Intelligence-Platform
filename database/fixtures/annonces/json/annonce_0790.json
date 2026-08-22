@@ -1,0 +1,20 @@
+{
+  "id": "40b8e2a1-7691-4c44-a175-39ddc34e288d",
+  "reference": "AN-QL7L34UD",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2026-03-01",
+  "prix": 220823,
+  "surface": 181,
+  "nb_pieces": 4,
+  "nb_chambres": 2,
+  "etage": 0,
+  "description": "Local commercial lumineux de 181 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0214895321"
+  },
+  "exclusivite": true
+}

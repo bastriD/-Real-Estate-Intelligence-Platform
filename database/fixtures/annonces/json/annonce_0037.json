@@ -1,0 +1,26 @@
+{
+  "id": "26215e8f-e5cc-4ae3-b13e-ef110b9a420b",
+  "reference": "AN-BW198PX0",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-06-19",
+  "prix": "198042 €",
+  "surface": 232,
+  "nb_pieces": 2,
+  "nb_chambres": 4,
+  "etage": "dernier étage",
+  "dpe": "A",
+  "terrasse": true,
+  "contact": {
+    "telephone": "0096158661",
+    "email": "contact7@example.com",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-BW198PX0/1.jpg"
+  ],
+  "particulier": true
+}

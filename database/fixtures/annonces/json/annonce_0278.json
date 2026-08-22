@@ -1,0 +1,25 @@
+{
+  "id": "c3cac91a-81ac-4329-9298-89c0fc5e5f04",
+  "reference": "AN-PZPTGP9Q",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "10-11-2025",
+  "prix": 200229,
+  "surface": 101,
+  "nb_pieces": 1,
+  "nb_chambres": 7,
+  "etage": 4,
+  "meuble": false,
+  "description": "Appartement spacieux de 101 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Julie Moreau",
+    "agence": "Nid Doré"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-PZPTGP9Q/1.jpg"
+  ],
+  "exclusivite": true
+}

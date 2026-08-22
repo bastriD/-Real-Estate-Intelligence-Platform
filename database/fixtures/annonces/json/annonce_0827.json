@@ -1,0 +1,26 @@
+{
+  "id": "87775c48-6c63-4915-a4e1-a81c2819425d",
+  "reference": "AN-8JQHMAJW",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-05-24",
+  "prix": "116117 €",
+  "surface": 104,
+  "nb_pieces": 7,
+  "etage": 0,
+  "dpe": "A",
+  "adresse": "139 place de la Mairie",
+  "latitude": 43.307854,
+  "longitude": 5.33079,
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Perrin",
+    "email": "julie.perrin14@example.com"
+  },
+  "exclusivite": false
+}

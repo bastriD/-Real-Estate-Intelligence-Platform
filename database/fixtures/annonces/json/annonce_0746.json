@@ -1,0 +1,21 @@
+{
+  "id": "ef639950-989e-43a0-96fd-0da304e05925",
+  "reference": "AN-U3PC2AH6",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2026-01-31",
+  "prix": 275767,
+  "surface": 134,
+  "nb_pieces": 6,
+  "etage": 0,
+  "annee_construction": 2007,
+  "adresse": "48 rue Victor Hugo",
+  "description": "Local commercial de standing de 134 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Claire Moreau",
+    "telephone": "0422532610"
+  }
+}

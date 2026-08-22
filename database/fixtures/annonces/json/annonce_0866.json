@@ -1,0 +1,22 @@
+{
+  "id": "64008676-1431-4c27-887f-1b9a293330ff",
+  "reference": "AN-RNBV5XOE",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "05-01-2025",
+  "prix": 128784,
+  "surface_m2": 90,
+  "nb_pieces": 7,
+  "nb_chambres": 4,
+  "meuble": false,
+  "dpe": "A",
+  "latitude": 43.300556,
+  "longitude": 5.414281,
+  "description": "Château spacieux de 90 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "exclusivite": false
+}

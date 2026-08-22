@@ -1,0 +1,30 @@
+{
+  "id": "90a60ab8-685d-4b6c-bf32-24ba6db61c03",
+  "reference": "AN-SCLRCF59",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "25 novembre 2024",
+  "prix": 172982,
+  "charges_mensuelles": 374.01,
+  "surface_m2": 173,
+  "nb_pieces": 4,
+  "etage": 4,
+  "meuble": false,
+  "dpe": "G",
+  "latitude": 43.274063,
+  "longitude": 5.370255,
+  "description": "Studio atypique de 173 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Dubois",
+    "telephone": "0934186682",
+    "email": "nadia.dubois48@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-SCLRCF59/1.jpg"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "10406123-7eb6-4f22-a247-008379296ab2",
+  "reference": "AN-6N2PCZ1Q",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain spacieux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "04/12/2024",
+  "prix": 1711022,
+  "surface": 244,
+  "adresse": "138 rue Victor Hugo",
+  "description": "Terrain au calme de 244 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "contact": {
+    "nom": "Karim Dubois",
+    "email": "karim.dubois9@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-6N2PCZ1Q/1.jpg",
+    "https://exemple-images.test/AN-6N2PCZ1Q/2.jpg",
+    "https://exemple-images.test/AN-6N2PCZ1Q/3.jpg",
+    "https://exemple-images.test/AN-6N2PCZ1Q/4.jpg",
+    "https://exemple-images.test/AN-6N2PCZ1Q/5.jpg"
+  ],
+  "particulier": true
+}

@@ -1,0 +1,21 @@
+{
+  "id": "5730324f-c54e-40c0-9fae-9057405888d9",
+  "reference": "AN-NBZWQ774",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement charmant à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "1 juin 2026",
+  "prix": 269528,
+  "surface": 170,
+  "nb_pieces": 2,
+  "nb_chambres": 5,
+  "latitude": 47.349527,
+  "longitude": 5.005055,
+  "description": "Appartement atypique de 170 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Ahmed Perrin",
+    "telephone": "0645036073"
+  }
+}

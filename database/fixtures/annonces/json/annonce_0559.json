@@ -1,0 +1,22 @@
+{
+  "id": "6c9915fd-3311-421b-a7ab-4ba8b39620a9",
+  "reference": "AN-DE7EH3KX",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain spacieux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-03-25",
+  "prix": 1256289,
+  "charges_mensuelles": 377.18,
+  "surface": 212,
+  "latitude": 43.740253,
+  "longitude": 7.277268,
+  "vue": true,
+  "contact": {
+    "nom": "Marc Lefevre",
+    "telephone": "0804789788",
+    "email": "marc.lefevre85@example.com",
+    "agence": "Nid Doré"
+  }
+}

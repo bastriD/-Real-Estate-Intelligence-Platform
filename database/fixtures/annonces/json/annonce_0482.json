@@ -1,0 +1,27 @@
+{
+  "id": "f449b798-9213-4fe4-9f6f-15b7fcc9cf1f",
+  "reference": "AN-I4Z7YV8P",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain au calme à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1764134145,
+  "prix": 1551028,
+  "surface": 193,
+  "description": "Terrain lumineux de 193 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Moreau",
+    "email": "julie.moreau4@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-I4Z7YV8P/1.jpg",
+    "https://exemple-images.test/AN-I4Z7YV8P/2.jpg",
+    "https://exemple-images.test/AN-I4Z7YV8P/3.jpg",
+    "https://exemple-images.test/AN-I4Z7YV8P/4.jpg",
+    "https://exemple-images.test/AN-I4Z7YV8P/5.jpg"
+  ],
+  "exclusivite": false
+}

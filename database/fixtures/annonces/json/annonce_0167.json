@@ -1,0 +1,27 @@
+{
+  "id": "7607716c-67de-4712-8299-8c5bd8f9a742",
+  "reference": "AN-GXR9N7X3",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "21 février 2026",
+  "prix": 178971,
+  "surface": 142,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "dpe": "F",
+  "latitude": 43.261247,
+  "longitude": 5.346618,
+  "description": "Studio au calme de 142 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Claire Girard",
+    "telephone": "0814859859"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-GXR9N7X3/1.jpg",
+    "https://exemple-images.test/AN-GXR9N7X3/2.jpg"
+  ]
+}

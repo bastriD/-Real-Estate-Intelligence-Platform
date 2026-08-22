@@ -1,0 +1,24 @@
+{
+  "id": "4334faf5-49d0-4e5e-b2de-bf01e4283aaa",
+  "reference": "AN-TCXQRKR1",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial au calme à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-01-18",
+  "prix": 254891,
+  "surface": 181,
+  "nb_pieces": 6,
+  "nb_chambres": 3,
+  "etage": 0,
+  "dpe": "A",
+  "latitude": 48.866075,
+  "longitude": 2.359065,
+  "description": "Local commercial à rafraîchir de 181 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Luc Lefevre",
+    "telephone": "0932697589",
+    "email": "luc.lefevre81@example.com"
+  }
+}

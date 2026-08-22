@@ -1,0 +1,21 @@
+{
+  "id": "ec06b5fc-7767-43e4-b49a-303986f02b00",
+  "reference": "AN-NECRU20J",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "03-10-2025",
+  "prix": 146691,
+  "surface": 128,
+  "nb_chambres": 2,
+  "dpe": "D",
+  "latitude": 43.334281,
+  "longitude": 5.350516,
+  "description": "Studio en excellent état de 128 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "contact": {
+    "email": "contact93@example.com"
+  }
+}

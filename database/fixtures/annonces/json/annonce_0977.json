@@ -1,0 +1,29 @@
+{
+  "id": "45852159-c639-405b-8052-887fc99d175c",
+  "reference": "AN-RKNBIQR0",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "02-24-2026",
+  "prix": 102798,
+  "surface": 35,
+  "nb_pieces": 5,
+  "nb_chambres": 5,
+  "dpe": "A",
+  "latitude": 43.308328,
+  "longitude": 5.326202,
+  "jardin": true,
+  "vue": true,
+  "contact": {
+    "telephone": "0807995149",
+    "email": "contact81@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-RKNBIQR0/1.jpg",
+    "https://exemple-images.test/AN-RKNBIQR0/2.jpg",
+    "https://exemple-images.test/AN-RKNBIQR0/3.jpg",
+    "https://exemple-images.test/AN-RKNBIQR0/4.jpg"
+  ]
+}

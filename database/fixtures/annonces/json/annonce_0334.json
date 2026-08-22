@@ -1,0 +1,22 @@
+{
+  "id": "ee8e7be0-95d1-447b-aa7b-6dfda4e23a63",
+  "reference": "AN-FAK7BQUV",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement charmant à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1739160765,
+  "prix": 200062,
+  "surface": 156,
+  "nb_pieces": 1,
+  "nb_chambres": 4,
+  "etage": "dernier étage",
+  "latitude": 47.276415,
+  "longitude": 5.041195,
+  "description": "Appartement atypique de 156 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "email": "contact72@example.com"
+  },
+  "particulier": true
+}

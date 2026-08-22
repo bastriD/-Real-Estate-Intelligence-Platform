@@ -1,0 +1,24 @@
+{
+  "id": "ab35bdc3-2e8c-48eb-ab70-3117c4159fbe",
+  "reference": "AN-CH3Q8Y24",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-03-02",
+  "prix": 171555,
+  "charges_mensuelles": 382.41,
+  "surface": 219,
+  "nb_chambres": 4,
+  "latitude": 43.344416,
+  "longitude": 5.374629,
+  "description": "Studio de standing de 219 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Dubois",
+    "telephone": "0247579403",
+    "agence": "ImmoPlus"
+  }
+}

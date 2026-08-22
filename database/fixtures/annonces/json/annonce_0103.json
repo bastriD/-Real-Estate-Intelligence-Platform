@@ -1,0 +1,20 @@
+{
+  "id": "b9789dcc-f3c0-40e1-9f07-060f95533bca",
+  "reference": "AN-CU5RC32C",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "11-28-2025",
+  "prix": 111549,
+  "surface": 107,
+  "etage": 5,
+  "adresse": "197 rue Jean Jaurès",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Perrin",
+    "email": "marie.perrin59@example.com"
+  }
+}

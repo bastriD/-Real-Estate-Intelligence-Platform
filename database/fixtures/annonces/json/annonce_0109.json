@@ -1,0 +1,25 @@
+{
+  "id": "9a506e50-bce2-4d51-9067-ad7f4f5ac374",
+  "reference": "AN-917CVD5B",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1756770345,
+  "prix": 199400,
+  "surface": 170,
+  "nb_pieces": 7,
+  "meuble": false,
+  "dpe": "B",
+  "annee_construction": 1973,
+  "adresse": "105 rue du Commerce",
+  "description": "Studio atypique de 170 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0181141638",
+    "email": "contact77@example.com",
+    "agence": "Toit & Vous"
+  }
+}

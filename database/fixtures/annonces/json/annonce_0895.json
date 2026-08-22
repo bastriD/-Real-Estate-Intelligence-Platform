@@ -1,0 +1,24 @@
+{
+  "id": "b392d25b-5311-40ea-b06a-4bdbdcc5521c",
+  "reference": "AN-J4ZY3C9D",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1748146305,
+  "prix": 93913,
+  "surface": 50,
+  "nb_pieces": 8,
+  "nb_chambres": 5,
+  "meuble": true,
+  "dpe": "A",
+  "annee_construction": 1982,
+  "description": "Château de standing de 50 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "contact": {
+    "nom": "Karim Fontaine",
+    "email": "karim.fontaine55@example.com",
+    "agence": "Clé en Main Immo"
+  }
+}

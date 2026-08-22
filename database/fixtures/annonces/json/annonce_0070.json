@@ -1,0 +1,26 @@
+{
+  "id": "0944f500-60b5-47fa-aa00-1e82c35b5521",
+  "reference": "AN-4NQNPA7R",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-08-01",
+  "prix": 169561,
+  "surface": 196,
+  "nb_pieces": 8,
+  "adresse": "93 rue Jean Jaurès",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Fontaine",
+    "telephone": "0526715060",
+    "agence": "Century Habitat"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-4NQNPA7R/1.jpg",
+    "https://exemple-images.test/AN-4NQNPA7R/2.jpg"
+  ],
+  "exclusivite": true
+}

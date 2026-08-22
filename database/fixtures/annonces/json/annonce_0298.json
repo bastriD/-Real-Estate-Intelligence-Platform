@@ -1,0 +1,22 @@
+{
+  "id": "f4798ded-a1ff-4595-be1c-42051148a0bb",
+  "reference": "AN-34H751V1",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement spacieux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2026-05-31T00:56:45",
+  "prix": 234191,
+  "surface": 186,
+  "nb_pieces": 4,
+  "nb_chambres": 6,
+  "dpe": "E",
+  "description": "Appartement rénové de 186 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0278399561",
+    "email": "contact71@example.com",
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": false
+}

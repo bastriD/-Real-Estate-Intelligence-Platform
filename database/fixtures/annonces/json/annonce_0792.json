@@ -1,0 +1,23 @@
+{
+  "id": "aeff54bb-0e81-42e5-8f11-ff25ba70fa93",
+  "reference": "AN-LDWR5D90",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial avec vue dégagée à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-04-26",
+  "prix": 308064,
+  "surface": 219,
+  "nb_pieces": 4,
+  "etage": 4,
+  "meuble": false,
+  "dpe": "E",
+  "adresse": "38 quai de la Loire",
+  "latitude": 48.887953,
+  "longitude": 2.391761,
+  "contact": {
+    "telephone": "0738291277",
+    "agence": "Clé en Main Immo"
+  }
+}

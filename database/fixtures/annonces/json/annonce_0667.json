@@ -1,0 +1,22 @@
+{
+  "id": "3afa9266-7379-4417-8c75-0ad01f78c2c9",
+  "reference": "AN-U5J0I599",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1745447265,
+  "prix": 274357,
+  "charges_mensuelles": 188.37,
+  "surface_m2": 262,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "dpe": "D",
+  "latitude": 48.840056,
+  "longitude": 2.302804,
+  "contact": {
+    "telephone": "0295543799"
+  },
+  "particulier": true
+}

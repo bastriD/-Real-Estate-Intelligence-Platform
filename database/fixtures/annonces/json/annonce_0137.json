@@ -1,0 +1,29 @@
+{
+  "id": "04ce5af7-9f44-4896-89ae-cb396e1f28fb",
+  "reference": "AN-KSC9NI5S",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1774953285,
+  "prix": 192129,
+  "surface": 227,
+  "dpe": "E",
+  "annee_construction": 1968,
+  "adresse": "192 allée des Platanes",
+  "latitude": 43.295382,
+  "longitude": 5.328439,
+  "description": "Studio avec vue dégagée de 227 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Martin",
+    "telephone": "0145040927",
+    "email": "julie.martin30@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-KSC9NI5S/1.jpg"
+  ],
+  "exclusivite": true
+}

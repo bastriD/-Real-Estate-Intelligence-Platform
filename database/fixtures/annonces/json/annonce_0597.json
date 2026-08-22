@@ -1,0 +1,22 @@
+{
+  "id": "056345c5-6cd9-47a1-870b-a8c3dfd208ea",
+  "reference": "AN-LIU98UQC",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "04-15-2026",
+  "prix": 1796437,
+  "surface": 160,
+  "description": "Terrain rénové de 160 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Roche",
+    "telephone": "0925401124",
+    "email": "jean.roche27@example.com",
+    "agence": "Toit & Vous"
+  },
+  "exclusivite": false
+}

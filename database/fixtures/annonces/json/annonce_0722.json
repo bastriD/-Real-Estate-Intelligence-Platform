@@ -1,0 +1,24 @@
+{
+  "id": "a9c9d651-5bb9-461a-9cb2-dd6197ce56fe",
+  "reference": "AN-NZHGD0LF",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial atypique à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "11-19-2025",
+  "prix": 281170,
+  "surface": 234,
+  "nb_pieces": 3,
+  "nb_chambres": 2,
+  "etage": 0,
+  "meuble": false,
+  "adresse": "7 rue Pasteur",
+  "latitude": 48.884771,
+  "longitude": 2.387043,
+  "description": "Local commercial spacieux de 234 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "telephone": "0678093862",
+    "email": "contact53@example.com"
+  }
+}

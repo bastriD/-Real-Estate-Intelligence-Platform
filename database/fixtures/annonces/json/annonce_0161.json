@@ -1,0 +1,24 @@
+{
+  "id": "5f883d73-aa6a-4bec-87f7-533d91c0f565",
+  "reference": "AN-GSR39OOU",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-08-24",
+  "prix": "191446 €",
+  "surface": 158,
+  "annee_construction": 1863,
+  "adresse": "72 avenue des Champs",
+  "latitude": 43.329922,
+  "longitude": 5.418354,
+  "description": "Studio spacieux de 158 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Dubois",
+    "email": "sophie.dubois96@example.com"
+  },
+  "exclusivite": false
+}

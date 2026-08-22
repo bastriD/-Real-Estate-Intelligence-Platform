@@ -1,0 +1,22 @@
+{
+  "id": "4e60322b-2eff-452a-bfc1-d951085a4a8e",
+  "reference": "AN-IJLXSEH5",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "05-01-2025",
+  "prix": "185622 €",
+  "surface": 119,
+  "nb_pieces": 7,
+  "nb_chambres": 5,
+  "etage": 4,
+  "description": "Studio charmant de 119 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Faure",
+    "telephone": "0645072466"
+  }
+}

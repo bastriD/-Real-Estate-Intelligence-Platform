@@ -1,0 +1,18 @@
+{
+  "id": "436dac60-c5c1-42d3-a2bc-5c1ca09d3d54",
+  "reference": "AN-8UWTEN2W",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-11-09",
+  "prix": 1563824,
+  "surface": 137,
+  "description": "Terrain charmant de 137 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Fontaine"
+  }
+}

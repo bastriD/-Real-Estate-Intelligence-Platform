@@ -1,0 +1,25 @@
+{
+  "id": "940c6807-c237-473a-82ed-e72aa61aa6ac",
+  "reference": "AN-HAGNWBO0",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement atypique à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-02-13T03:06:45",
+  "prix": 377519,
+  "surface": 182,
+  "nb_pieces": 5,
+  "nb_chambres": 6,
+  "dpe": "F",
+  "annee_construction": 1910,
+  "adresse": "11 allée des Platanes",
+  "latitude": 47.330542,
+  "longitude": 5.052938,
+  "description": "Appartement spacieux de 182 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Luc Martin",
+    "telephone": "0375432934"
+  },
+  "particulier": true
+}

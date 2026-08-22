@@ -1,0 +1,22 @@
+{
+  "id": "8fd1a869-b376-4b77-8376-7c33ac1be160",
+  "reference": "AN-V0EB8GZL",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial rénové à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "20/12/2024",
+  "prix": 422146,
+  "surface": 205,
+  "nb_pieces": 2,
+  "meuble": false,
+  "dpe": "C",
+  "annee_construction": 2015,
+  "adresse": "77 rue Pasteur",
+  "description": "Local commercial charmant de 205 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0568863947"
+  },
+  "particulier": true
+}

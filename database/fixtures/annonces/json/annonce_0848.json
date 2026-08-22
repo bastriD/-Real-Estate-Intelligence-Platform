@@ -1,0 +1,24 @@
+{
+  "id": "6c001213-a715-4580-903c-b267db1ef78a",
+  "reference": "AN-8CJ24K09",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "01/04/2025",
+  "prix": "135982 €",
+  "surface": 38,
+  "nb_pieces": 8,
+  "etage": "dernier étage",
+  "dpe": "A",
+  "adresse": "149 quai de la Loire",
+  "latitude": 43.319465,
+  "longitude": 5.377176,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0084669773"
+  },
+  "particulier": true
+}

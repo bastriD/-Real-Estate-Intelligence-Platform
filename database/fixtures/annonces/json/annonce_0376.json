@@ -1,0 +1,23 @@
+{
+  "id": "f1307af9-0925-4ebc-9349-beeb8d84671d",
+  "reference": "AN-4NM88PHE",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2024-12-14T22:43:45",
+  "prix": 262268,
+  "surface": 129,
+  "nb_pieces": 3,
+  "nb_chambres": 5,
+  "etage": 5,
+  "meuble": false,
+  "adresse": "145 chemin des Vignes",
+  "description": "Appartement de standing de 129 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "telephone": "0479301634",
+    "email": "contact36@example.com",
+    "agence": "ImmoPlus"
+  }
+}

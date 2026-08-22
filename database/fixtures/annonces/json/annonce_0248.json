@@ -1,0 +1,27 @@
+{
+  "id": "5b2c39a3-d361-4495-89e9-cdfab31bdb5e",
+  "reference": "AN-XFUH6HA0",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "6 mars 2025",
+  "prix": 279981,
+  "surface": 77,
+  "nb_pieces": 5,
+  "nb_chambres": 5,
+  "meuble": false,
+  "dpe": "A",
+  "adresse": "17 rue Jean Jaurès",
+  "latitude": 47.307238,
+  "longitude": 5.015159,
+  "description": "Appartement rénové de 77 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Luc Faure",
+    "telephone": "0116643512"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-XFUH6HA0/1.jpg"
+  ]
+}

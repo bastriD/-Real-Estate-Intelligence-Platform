@@ -1,0 +1,25 @@
+{
+  "id": "49962d15-0b42-48d2-920e-c75a6958a00b",
+  "reference": "AN-DV71Y98P",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1755651165,
+  "prix": 146082,
+  "surface": 215,
+  "nb_pieces": 7,
+  "etage": 1,
+  "meuble": true,
+  "dpe": "D",
+  "description": "Studio rénové de 215 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Roche",
+    "telephone": "0102655953",
+    "agence": "Toit & Vous"
+  },
+  "exclusivite": true
+}

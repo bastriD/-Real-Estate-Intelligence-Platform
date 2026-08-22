@@ -1,0 +1,27 @@
+{
+  "id": "12e9e520-fc34-47b8-bc68-24f50ffa0f46",
+  "reference": "AN-6IPJO1YS",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial avec vue dégagée à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1759948365,
+  "prix": 340128,
+  "surface": 240,
+  "nb_pieces": 4,
+  "annee_construction": 1896,
+  "latitude": 48.884475,
+  "longitude": 2.371282,
+  "description": "Local commercial à rafraîchir de 240 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Jean Dubois",
+    "telephone": "0090297369"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-6IPJO1YS/1.jpg",
+    "https://exemple-images.test/AN-6IPJO1YS/2.jpg",
+    "https://exemple-images.test/AN-6IPJO1YS/3.jpg"
+  ],
+  "exclusivite": false
+}

@@ -1,0 +1,19 @@
+{
+  "id": "75321238-2c9c-45a9-a1e6-27fd6b5b3784",
+  "reference": "AN-BUMTZ9UI",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "12-04-2025",
+  "prix": 282023,
+  "surface": 189,
+  "nb_pieces": 2,
+  "nb_chambres": 4,
+  "contact": {
+    "nom": "Marc Bernard",
+    "telephone": "0388971176",
+    "email": "marc.bernard64@example.com"
+  }
+}

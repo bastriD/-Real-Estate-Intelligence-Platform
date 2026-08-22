@@ -1,0 +1,19 @@
+{
+  "id": "c9139c66-5fa3-490d-93da-2ae0d384212d",
+  "reference": "AN-ZRDLYASB",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-08-06T13:31:45",
+  "prix": 1140401,
+  "surface": 244,
+  "description": "Terrain à rafraîchir de 244 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0692772784",
+    "email": "contact54@example.com"
+  }
+}

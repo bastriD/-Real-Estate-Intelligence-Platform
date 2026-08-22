@@ -1,0 +1,22 @@
+{
+  "id": "cec70631-8f38-4d9e-b790-56b15233fa38",
+  "reference": "AN-XZU3S7S1",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain lumineux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-06-18T07:03:45",
+  "prix": "1393915 €",
+  "surface": 126,
+  "latitude": 43.668287,
+  "longitude": 7.254529,
+  "description": "Terrain en excellent état de 126 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0156217859",
+    "email": "contact43@example.com"
+  },
+  "exclusivite": false
+}

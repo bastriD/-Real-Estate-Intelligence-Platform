@@ -1,0 +1,23 @@
+{
+  "id": "03c83386-6f93-4259-9a12-5f5f450aa574",
+  "reference": "AN-EQ27AZDI",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial spacieux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1783923225,
+  "prix": 401477,
+  "surface": 234,
+  "nb_pieces": 2,
+  "dpe": "F",
+  "annee_construction": 1875,
+  "contact": {
+    "nom": "Marc Perrin",
+    "telephone": "0801789686",
+    "email": "marc.perrin93@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-EQ27AZDI/1.jpg"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "992bed5f-b439-4c4e-baf6-af7dd31a8dac",
+  "reference": "AN-KKWC6UZ2",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain au calme à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "6 mars 2026",
+  "prix": 1159458,
+  "charges_mensuelles": 119.85,
+  "surface": 185,
+  "latitude": 43.68452,
+  "longitude": 7.249975,
+  "description": "Terrain lumineux de 185 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0067238535"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-KKWC6UZ2/1.jpg",
+    "https://exemple-images.test/AN-KKWC6UZ2/2.jpg"
+  ],
+  "particulier": true
+}

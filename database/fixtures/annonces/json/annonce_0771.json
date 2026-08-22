@@ -1,0 +1,23 @@
+{
+  "id": "57f9a4f2-8cb8-47a9-b96f-5a2490ca90ba",
+  "reference": "AN-ISSYUOBV",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1759850745,
+  "prix": 289905,
+  "surface": 254,
+  "nb_pieces": 2,
+  "nb_chambres": 1,
+  "adresse": "197 rue de la République",
+  "latitude": 48.885644,
+  "longitude": 2.347781,
+  "description": "Local commercial avec vue dégagée de 254 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Sophie Bernard",
+    "telephone": "0956747216",
+    "email": "sophie.bernard21@example.com"
+  }
+}

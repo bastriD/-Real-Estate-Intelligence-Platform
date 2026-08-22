@@ -1,0 +1,25 @@
+{
+  "id": "2bf80934-6381-493d-9f5e-b74591efcfe4",
+  "reference": "AN-7PKUA28M",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "05-11-2025",
+  "prix": 114996,
+  "surface": 38,
+  "nb_pieces": 7,
+  "dpe": "A",
+  "annee_construction": 1899,
+  "adresse": "114 quai de la Loire",
+  "latitude": 43.34187,
+  "longitude": 5.323737,
+  "description": "Château charmant de 38 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Girard",
+    "telephone": "0646398391"
+  }
+}

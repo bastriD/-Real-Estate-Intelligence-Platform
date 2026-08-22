@@ -1,0 +1,24 @@
+{
+  "id": "6c64f0d7-317f-4166-9be8-89cbded0bc42",
+  "reference": "AN-88X1GEDG",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial au calme à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1741117785,
+  "prix": 281125,
+  "surface": 143,
+  "nb_pieces": 3,
+  "dpe": "F",
+  "adresse": "114 rue de la République",
+  "latitude": 48.862197,
+  "longitude": 2.383202,
+  "description": "Local commercial atypique de 143 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Karim Martin",
+    "telephone": "0445620609",
+    "email": "karim.martin94@example.com"
+  },
+  "exclusivite": false
+}

@@ -1,0 +1,30 @@
+{
+  "id": "329e749f-b19b-42e0-ba8c-2b66e51b7c7c",
+  "reference": "AN-HD5I7AZ2",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-01-26T14:59:45",
+  "prix": "136825 €",
+  "surface": 178,
+  "nb_pieces": 5,
+  "nb_chambres": 2,
+  "meuble": false,
+  "dpe": "F",
+  "description": "Studio de standing de 178 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Bernard",
+    "telephone": "0124570243",
+    "email": "karim.bernard68@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-HD5I7AZ2/1.jpg",
+    "https://exemple-images.test/AN-HD5I7AZ2/2.jpg",
+    "https://exemple-images.test/AN-HD5I7AZ2/3.jpg"
+  ],
+  "exclusivite": true
+}

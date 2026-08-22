@@ -1,0 +1,25 @@
+{
+  "id": "5bbca97d-0d9b-4ae3-8795-037277046ed4",
+  "reference": "AN-YLG09DHF",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1750418265,
+  "prix": 84349,
+  "surface_m2": 43,
+  "nb_pieces": 4,
+  "nb_chambres": 2,
+  "etage": "dernier étage",
+  "dpe": "A",
+  "latitude": 43.280643,
+  "longitude": 5.367853,
+  "description": "Château lumineux de 43 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Fontaine",
+    "telephone": "0218829026"
+  }
+}

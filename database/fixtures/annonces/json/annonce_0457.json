@@ -1,0 +1,23 @@
+{
+  "id": "d2395c9e-66c1-49bc-9732-a4f2f5e0647c",
+  "reference": "AN-4MT9LS1G",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "20/05/2026",
+  "prix": 1221545,
+  "surface": 223,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Dubois",
+    "agence": "Provence Immobilier"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-4MT9LS1G/1.jpg",
+    "https://exemple-images.test/AN-4MT9LS1G/2.jpg"
+  ],
+  "exclusivite": false
+}

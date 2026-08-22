@@ -1,0 +1,20 @@
+{
+  "id": "8ac95b8c-c2e7-470f-b8ba-97952f97a32f",
+  "reference": "AN-2KR7L6P1",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial spacieux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "9 mars 2025",
+  "prix": 345923,
+  "surface": 131,
+  "nb_pieces": 5,
+  "annee_construction": 1951,
+  "adresse": "188 rue Pasteur",
+  "contact": {
+    "nom": "Julie Fontaine",
+    "email": "julie.fontaine82@example.com",
+    "agence": "Clé en Main Immo"
+  }
+}

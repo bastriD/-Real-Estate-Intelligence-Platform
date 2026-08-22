@@ -1,0 +1,17 @@
+{
+  "id": "0ac5c1c3-5679-484c-944e-4e8df4f81beb",
+  "reference": "AN-2405OJJP",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1768243545,
+  "prix": 1104196,
+  "surface": 121,
+  "latitude": 43.740604,
+  "longitude": 7.277315,
+  "description": "Terrain avec vue dégagée de 121 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true
+}

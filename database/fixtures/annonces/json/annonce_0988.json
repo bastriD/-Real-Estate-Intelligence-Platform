@@ -1,0 +1,25 @@
+{
+  "id": "8a4b05e3-a306-47d3-bb70-30b9e347a219",
+  "reference": "AN-6K90FZ8W",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "02-17-2025",
+  "prix": 118481,
+  "surface": 126,
+  "nb_pieces": 4,
+  "etage": 2,
+  "adresse": "44 chemin des Vignes",
+  "latitude": 43.258302,
+  "longitude": 5.326113,
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "email": "contact33@example.com",
+    "agence": "Century Habitat"
+  },
+  "particulier": true
+}

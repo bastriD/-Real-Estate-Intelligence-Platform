@@ -1,0 +1,32 @@
+{
+  "id": "a4dee758-66c7-496a-814e-d2d8b33e4030",
+  "reference": "AN-7WXU2UEL",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "08-30-2024",
+  "prix": "127547 €",
+  "charges_mensuelles": 396.58,
+  "surface": 138,
+  "nb_pieces": 4,
+  "nb_chambres": 4,
+  "dpe": "A",
+  "adresse": "2 rue de la République",
+  "latitude": 43.342092,
+  "longitude": 5.325552,
+  "description": "Château de standing de 138 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Lefevre",
+    "agence": "Century Habitat"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-7WXU2UEL/1.jpg",
+    "https://exemple-images.test/AN-7WXU2UEL/2.jpg"
+  ],
+  "particulier": true
+}

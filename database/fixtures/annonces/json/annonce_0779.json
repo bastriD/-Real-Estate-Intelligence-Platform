@@ -1,0 +1,28 @@
+{
+  "id": "1f61acb8-f764-4708-88d2-b4111cec4f5b",
+  "reference": "AN-IUC7ULBO",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial en excellent état à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1772165085,
+  "prix": 242259,
+  "surface": 221,
+  "nb_pieces": 6,
+  "nb_chambres": 3,
+  "etage": 4,
+  "adresse": "70 allée des Platanes",
+  "latitude": 48.847414,
+  "longitude": 2.364431,
+  "description": "Local commercial rénové de 221 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Nadia Fontaine",
+    "email": "nadia.fontaine16@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-IUC7ULBO/1.jpg",
+    "https://exemple-images.test/AN-IUC7ULBO/2.jpg"
+  ],
+  "exclusivite": true
+}

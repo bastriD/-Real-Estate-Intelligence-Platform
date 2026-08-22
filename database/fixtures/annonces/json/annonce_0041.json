@@ -1,0 +1,18 @@
+{
+  "id": "0d7e1d29-38d2-428e-9305-a2c8a8d33adb",
+  "reference": "AN-XC5Z83Q6",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "07-13-2026",
+  "prix": 176833,
+  "surface": 204,
+  "nb_pieces": 8,
+  "nb_chambres": 5,
+  "dpe": "E",
+  "description": "Studio charmant de 204 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true
+}

@@ -1,0 +1,22 @@
+{
+  "id": "fe1adc56-5124-4aea-8404-b120a390d6f4",
+  "reference": "AN-38XZX3I7",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-12-09",
+  "prix": 103181,
+  "surface": 107,
+  "nb_pieces": 7,
+  "nb_chambres": 4,
+  "dpe": "A",
+  "adresse": "71 rue Pasteur",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "email": "contact1@example.com"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "ef8a3f2c-f08e-4947-9253-f1ed9c1363ea",
+  "reference": "AN-JA92XRLI",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "27/11/2025",
+  "prix": 241563,
+  "surface": 234,
+  "nb_pieces": 4,
+  "etage": 5,
+  "annee_construction": 1977,
+  "adresse": "81 boulevard Gambetta",
+  "description": "Local commercial charmant de 234 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Girard",
+    "email": "karim.girard47@example.com",
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": true
+}

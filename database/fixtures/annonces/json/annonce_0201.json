@@ -1,0 +1,24 @@
+{
+  "id": "0ffde851-10c3-43fa-9960-4e204df79a9b",
+  "reference": "AN-XLNYR4U8",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2 mai 2025",
+  "prix": 328913,
+  "charges_mensuelles": 373.7,
+  "surface": 145,
+  "nb_pieces": 5,
+  "nb_chambres": 4,
+  "etage": 5,
+  "meuble": true,
+  "adresse": "122 quai de la Loire",
+  "contact": {
+    "nom": "Ahmed Moreau",
+    "email": "ahmed.moreau36@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "particulier": true
+}

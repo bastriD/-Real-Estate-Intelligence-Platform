@@ -1,0 +1,24 @@
+{
+  "id": "e18ea242-4bed-4485-aeb6-48186a0c1a5e",
+  "reference": "AN-8T2GFZLS",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-06-06T04:10:45",
+  "prix": 130621,
+  "surface_m2": 163,
+  "nb_pieces": 7,
+  "nb_chambres": 0,
+  "description": "Studio spacieux de 163 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "agence": "Nid Doré"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-8T2GFZLS/1.jpg"
+  ],
+  "exclusivite": false
+}

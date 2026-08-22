@@ -1,0 +1,23 @@
+{
+  "id": "817b571e-24ed-451d-b325-2d869fa745ed",
+  "reference": "AN-WNH4TZKB",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial avec vue dégagée à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1773498345,
+  "prix": "249196 €",
+  "surface": 225,
+  "nb_pieces": 4,
+  "latitude": 48.825765,
+  "longitude": 2.344869,
+  "description": "Local commercial au calme de 225 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Julie Dubois",
+    "telephone": "0535988745",
+    "email": "julie.dubois64@example.com",
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": false
+}

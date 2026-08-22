@@ -1,0 +1,26 @@
+{
+  "id": "25e4e838-359b-4a38-ae40-72e1decede36",
+  "reference": "AN-GY4KQUUG",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "04/06/2026",
+  "prix": 83875,
+  "surface": 110,
+  "nb_pieces": 7,
+  "annee_construction": 1851,
+  "latitude": 43.333035,
+  "longitude": 5.374024,
+  "description": "Château en excellent état de 110 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Girard",
+    "telephone": "0954078487",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": true
+}

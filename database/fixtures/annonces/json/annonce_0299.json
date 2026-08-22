@@ -1,0 +1,24 @@
+{
+  "id": "1c4c036e-a972-4255-82b9-5c4a35f7c823",
+  "reference": "AN-LJ1BHHK7",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement atypique à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "10/08/2025",
+  "prix": 385218,
+  "surface": 129,
+  "nb_pieces": 5,
+  "nb_chambres": 5,
+  "etage": 0,
+  "annee_construction": 1955,
+  "description": "Appartement de standing de 129 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0368657278",
+    "email": "contact86@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-LJ1BHHK7/1.jpg"
+  ]
+}

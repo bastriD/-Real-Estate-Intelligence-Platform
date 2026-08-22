@@ -1,0 +1,24 @@
+{
+  "id": "67924ecd-0bd7-41dc-a573-ae2a742b736b",
+  "reference": "AN-SJFFZIRS",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "5 juillet 2026",
+  "prix": 116057,
+  "surface": 124,
+  "nb_pieces": 8,
+  "meuble": true,
+  "dpe": "A",
+  "annee_construction": 1927,
+  "adresse": "177 rue Pasteur",
+  "description": "Château avec vue dégagée de 124 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Luc Fontaine",
+    "telephone": "0994373505"
+  },
+  "exclusivite": false
+}

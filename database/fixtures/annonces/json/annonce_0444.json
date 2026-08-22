@@ -1,0 +1,23 @@
+{
+  "id": "d004243d-0442-46fc-b94c-d698bf27ebe6",
+  "reference": "AN-4W2O5OUO",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain spacieux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1786972305,
+  "prix": 1102083,
+  "surface": 127,
+  "latitude": 43.684484,
+  "longitude": 7.289743,
+  "description": "Terrain atypique de 127 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Lefevre",
+    "telephone": "0661116529",
+    "agence": "Provence Immobilier"
+  },
+  "exclusivite": true
+}

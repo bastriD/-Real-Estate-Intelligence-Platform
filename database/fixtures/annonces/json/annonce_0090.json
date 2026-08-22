@@ -1,0 +1,23 @@
+{
+  "id": "fefcea80-ad6f-46a7-afb2-a733c72dde1a",
+  "reference": "AN-71NRW783",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-05-31T08:47:45",
+  "prix": "215149 €",
+  "surface": 139,
+  "nb_chambres": 0,
+  "annee_construction": 1950,
+  "adresse": "112 rue du Commerce",
+  "latitude": 43.317392,
+  "longitude": 5.382086,
+  "calme": true,
+  "contact": {
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [],
+  "exclusivite": false
+}

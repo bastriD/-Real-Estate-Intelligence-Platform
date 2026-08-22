@@ -1,0 +1,27 @@
+{
+  "id": "621775a2-5571-4402-9481-de1fed894135",
+  "reference": "AN-39DSXW8J",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain lumineux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-08-25T16:46:45",
+  "prix": 1260363,
+  "surface": 208,
+  "description": "Terrain spacieux de 208 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Moreau",
+    "telephone": "0207884336",
+    "email": "claire.moreau92@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-39DSXW8J/1.jpg",
+    "https://exemple-images.test/AN-39DSXW8J/2.jpg",
+    "https://exemple-images.test/AN-39DSXW8J/3.jpg",
+    "https://exemple-images.test/AN-39DSXW8J/4.jpg"
+  ],
+  "exclusivite": false
+}

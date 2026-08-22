@@ -1,0 +1,21 @@
+{
+  "id": "a1a682c6-cb8f-4827-b810-197335bfdc61",
+  "reference": "AN-0BF0BCTO",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "02/07/2026",
+  "prix": 1506751,
+  "surface": 180,
+  "adresse": "33 boulevard Gambetta",
+  "latitude": 43.694567,
+  "longitude": 7.308942,
+  "vue": true,
+  "contact": {
+    "nom": "Luc Dubois",
+    "telephone": "0489068167",
+    "agence": "Provence Immobilier"
+  }
+}

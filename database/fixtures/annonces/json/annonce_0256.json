@@ -1,0 +1,24 @@
+{
+  "id": "8c39b3e0-8f95-468f-9034-07b7bdb3aae2",
+  "reference": "AN-W3P72S67",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement atypique à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "21/03/2026",
+  "prix": 331934,
+  "surface_m2": 69,
+  "nb_pieces": 3,
+  "nb_chambres": 6,
+  "meuble": true,
+  "dpe": "C",
+  "adresse": "108 rue Pasteur",
+  "latitude": 47.335233,
+  "longitude": 5.067429,
+  "description": "Appartement rénové de 69 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Ahmed Roche"
+  },
+  "particulier": true
+}

@@ -1,0 +1,23 @@
+{
+  "id": "9187f791-1480-425e-af4a-ee84a2fa5d94",
+  "reference": "AN-Q0JBA8JF",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement spacieux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "12 avril 2026",
+  "prix": 223221,
+  "surface": 200,
+  "nb_pieces": 5,
+  "nb_chambres": 7,
+  "etage": "dernier étage",
+  "meuble": true,
+  "dpe": "D",
+  "annee_construction": 1999,
+  "adresse": "116 rue du Commerce",
+  "contact": {
+    "telephone": "0648582099",
+    "email": "contact23@example.com"
+  }
+}

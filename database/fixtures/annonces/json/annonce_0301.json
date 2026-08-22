@@ -1,0 +1,23 @@
+{
+  "id": "0c9cf4a6-d22c-4481-a4cd-cf85204034cb",
+  "reference": "AN-2AYYANSD",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement rénové à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "07-09-2025",
+  "prix": 274883,
+  "surface": 205,
+  "nb_pieces": 2,
+  "nb_chambres": 4,
+  "annee_construction": 1955,
+  "latitude": 47.286232,
+  "longitude": 5.091374,
+  "description": "Appartement lumineux de 205 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0624244900",
+    "email": "contact47@example.com"
+  },
+  "exclusivite": true
+}

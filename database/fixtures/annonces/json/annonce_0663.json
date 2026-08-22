@@ -1,0 +1,20 @@
+{
+  "id": "55f180ae-b561-4e6e-85c9-79ed11960817",
+  "reference": "AN-6PRLDVND",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial au calme à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-07-08",
+  "prix": "371579 €",
+  "surface_m2": 231,
+  "nb_pieces": 3,
+  "dpe": "A",
+  "adresse": "14 chemin des Vignes",
+  "latitude": 48.903793,
+  "longitude": 2.379545,
+  "contact": {
+    "telephone": "0735317568"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "3a3a87bb-cc03-4825-9358-b5122b982395",
+  "reference": "AN-V8FRXVJS",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "13 décembre 2025",
+  "prix": 216849,
+  "surface": 220,
+  "nb_chambres": 4,
+  "meuble": false,
+  "adresse": "169 avenue des Champs",
+  "latitude": 43.267766,
+  "longitude": 5.325763,
+  "description": "Studio spacieux de 220 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0144677830",
+    "email": "contact47@example.com",
+    "agence": "Century Habitat"
+  },
+  "exclusivite": true
+}

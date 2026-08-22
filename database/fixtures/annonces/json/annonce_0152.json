@@ -1,0 +1,26 @@
+{
+  "id": "7ff0afaa-8977-45d0-b187-c353156e2ce3",
+  "reference": "AN-COLSQ5HS",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1765717185,
+  "prix": "185807 €",
+  "surface": 141,
+  "nb_pieces": 2,
+  "nb_chambres": 3,
+  "dpe": "C",
+  "annee_construction": 1889,
+  "adresse": "23 rue Jean Jaurès",
+  "latitude": 43.265204,
+  "longitude": 5.368208,
+  "description": "Studio en excellent état de 141 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "telephone": "0097559322",
+    "email": "contact22@example.com",
+    "agence": "Century Habitat"
+  }
+}

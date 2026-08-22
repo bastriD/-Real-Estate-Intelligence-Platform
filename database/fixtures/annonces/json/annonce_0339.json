@@ -1,0 +1,26 @@
+{
+  "id": "1ab3aa11-2aa5-45c6-8913-630be7e45f70",
+  "reference": "AN-OCACR3O2",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement charmant à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1785198405,
+  "prix": 320877,
+  "surface": 98,
+  "nb_pieces": 2,
+  "nb_chambres": 7,
+  "etage": 1,
+  "meuble": true,
+  "dpe": "A",
+  "adresse": "51 allée des Platanes",
+  "latitude": 47.366855,
+  "longitude": 5.027114,
+  "description": "Appartement avec vue dégagée de 98 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Sophie Martin",
+    "telephone": "0536310932"
+  },
+  "particulier": true
+}

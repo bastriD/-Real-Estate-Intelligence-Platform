@@ -1,0 +1,23 @@
+{
+  "id": "1b6aa579-ab37-4f8a-953e-f5576f2fd297",
+  "reference": "AN-MN6EJBH0",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-11-23T00:40:45",
+  "prix": "160624 €",
+  "surface": 109,
+  "nb_pieces": 6,
+  "meuble": false,
+  "description": "Studio spacieux de 109 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0200242660",
+    "email": "contact3@example.com",
+    "agence": "Century Habitat"
+  },
+  "exclusivite": true
+}

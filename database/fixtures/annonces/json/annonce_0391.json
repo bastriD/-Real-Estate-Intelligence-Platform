@@ -1,0 +1,28 @@
+{
+  "id": "d5536cb4-01a1-4d62-8dab-2d71abc362d9",
+  "reference": "AN-B6XDNQQI",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement lumineux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1753175445,
+  "prix": "328135 €",
+  "surface": 80,
+  "nb_pieces": 4,
+  "nb_chambres": 6,
+  "meuble": true,
+  "adresse": "48 avenue des Champs",
+  "latitude": 47.279166,
+  "longitude": 5.080083,
+  "description": "Appartement atypique de 80 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0314037896",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-B6XDNQQI/1.jpg",
+    "https://exemple-images.test/AN-B6XDNQQI/2.jpg"
+  ],
+  "particulier": true
+}

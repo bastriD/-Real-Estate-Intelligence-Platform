@@ -1,0 +1,29 @@
+{
+  "id": "f6a4bf99-5154-4e52-a5a2-a75223dbce91",
+  "reference": "AN-JFILWANV",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "14 avril 2025",
+  "prix": "216203 €",
+  "surface": 140,
+  "nb_pieces": 2,
+  "nb_chambres": 5,
+  "dpe": "C",
+  "latitude": 47.285495,
+  "longitude": 5.031649,
+  "description": "Appartement au calme de 140 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Fontaine",
+    "telephone": "0831329899",
+    "email": "karim.fontaine35@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-JFILWANV/1.jpg",
+    "https://exemple-images.test/AN-JFILWANV/2.jpg",
+    "https://exemple-images.test/AN-JFILWANV/3.jpg"
+  ],
+  "exclusivite": true
+}

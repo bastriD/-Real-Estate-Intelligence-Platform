@@ -1,0 +1,22 @@
+{
+  "id": "d61b4053-6321-4f52-803d-48b48a318fb4",
+  "reference": "AN-KJ2RP1V6",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-10-21T01:02:45",
+  "prix": "200485 €",
+  "surface": 192,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "meuble": false,
+  "description": "Studio au calme de 192 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Dubois"
+  },
+  "particulier": true
+}

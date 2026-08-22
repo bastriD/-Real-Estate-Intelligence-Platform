@@ -1,0 +1,21 @@
+{
+  "id": "d3065610-29b7-403d-94d9-267d050d4fa0",
+  "reference": "AN-3WDVQXY6",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement rénové à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "12 avril 2025",
+  "prix": 278302,
+  "surface": 76,
+  "nb_pieces": 1,
+  "nb_chambres": 5,
+  "meuble": false,
+  "description": "Appartement atypique de 76 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Nadia Lefevre",
+    "telephone": "0338332680",
+    "agence": "ImmoPlus"
+  }
+}

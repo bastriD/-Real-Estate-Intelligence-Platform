@@ -1,0 +1,21 @@
+{
+  "id": "cec3280f-70e7-48e0-94e0-7fc54ac5956d",
+  "reference": "AN-4HWHTV1G",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement en excellent état à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "10/02/2026",
+  "prix": 208825,
+  "surface": 112,
+  "nb_pieces": 1,
+  "nb_chambres": 5,
+  "etage": 5,
+  "latitude": 47.31451,
+  "longitude": 5.072435,
+  "contact": {
+    "nom": "Julie Fontaine",
+    "agence": "Century Habitat"
+  }
+}

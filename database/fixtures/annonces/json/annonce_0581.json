@@ -1,0 +1,20 @@
+{
+  "id": "f37ead4c-fea2-4d12-905b-6d3e69e1740f",
+  "reference": "AN-F494TU2W",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-06-13T19:15:45",
+  "prix": 1343875,
+  "surface": 225,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Roche",
+    "email": "nadia.roche67@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": []
+}

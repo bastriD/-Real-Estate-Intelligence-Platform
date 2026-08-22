@@ -1,0 +1,28 @@
+{
+  "id": "e3657909-d14e-45e1-8b62-0a71c32fc4b5",
+  "reference": "AN-91Q1ADQQ",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1781916765,
+  "prix": 116322,
+  "surface": 53,
+  "nb_pieces": 5,
+  "nb_chambres": 5,
+  "etage": 2,
+  "meuble": false,
+  "annee_construction": 2002,
+  "latitude": 43.253874,
+  "longitude": 5.347375,
+  "description": "Château charmant de 53 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Girard",
+    "telephone": "0336822650"
+  },
+  "particulier": true
+}

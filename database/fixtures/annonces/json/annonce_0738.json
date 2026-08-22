@@ -1,0 +1,22 @@
+{
+  "id": "6a1875b0-bef6-41b1-bd8c-db00d873ce61",
+  "reference": "AN-JM02IPQE",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1762241985,
+  "prix": 268396,
+  "charges_mensuelles": 292.04,
+  "surface_m2": 178,
+  "nb_pieces": 4,
+  "annee_construction": 1998,
+  "description": "Local commercial au calme de 178 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Julie Fontaine",
+    "telephone": "0824304929",
+    "email": "julie.fontaine74@example.com"
+  },
+  "exclusivite": true
+}

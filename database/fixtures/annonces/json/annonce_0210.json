@@ -1,0 +1,28 @@
+{
+  "id": "37322fe1-5e1d-46f7-bb51-7a69ef31a69a",
+  "reference": "AN-P9UB4DNZ",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1758261885,
+  "prix": "378810 €",
+  "surface": 174,
+  "nb_pieces": 1,
+  "nb_chambres": 7,
+  "meuble": true,
+  "dpe": "E",
+  "adresse": "126 rue Victor Hugo",
+  "description": "Appartement atypique de 174 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Nadia Fontaine",
+    "telephone": "0710006052",
+    "email": "nadia.fontaine89@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-P9UB4DNZ/1.jpg",
+    "https://exemple-images.test/AN-P9UB4DNZ/2.jpg",
+    "https://exemple-images.test/AN-P9UB4DNZ/3.jpg"
+  ]
+}

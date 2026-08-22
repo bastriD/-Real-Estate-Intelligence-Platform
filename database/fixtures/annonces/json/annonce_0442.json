@@ -1,0 +1,22 @@
+{
+  "id": "abe9968e-ab1b-4cbf-b5b7-4e4d47ab33bd",
+  "reference": "AN-0DGONRKG",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "11 janvier 2025",
+  "prix": 1619570,
+  "charges_mensuelles": 382.01,
+  "surface": 158,
+  "latitude": 43.740045,
+  "longitude": 7.288423,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Moreau",
+    "telephone": "0376127233"
+  },
+  "particulier": true
+}

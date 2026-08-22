@@ -1,0 +1,25 @@
+{
+  "id": "d581b5e3-286a-4e2e-a189-62842b0727b5",
+  "reference": "AN-6EQCWIMS",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain charmant à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "23 janvier 2026",
+  "prix": 1234099,
+  "surface": 121,
+  "adresse": "138 rue du Commerce",
+  "latitude": 43.743243,
+  "longitude": 7.298591,
+  "description": "Terrain atypique de 121 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0581308473"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-6EQCWIMS/1.jpg",
+    "https://exemple-images.test/AN-6EQCWIMS/2.jpg"
+  ]
+}

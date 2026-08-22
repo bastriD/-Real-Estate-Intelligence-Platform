@@ -1,0 +1,26 @@
+{
+  "id": "cd79a179-a60d-4440-ab69-72b971d25138",
+  "reference": "AN-XY5U0WQ7",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1774111185,
+  "prix": 213246,
+  "surface": 154,
+  "nb_pieces": 1,
+  "nb_chambres": 0,
+  "etage": 3,
+  "adresse": "133 place de la Mairie",
+  "latitude": 43.292143,
+  "longitude": 5.332447,
+  "description": "Studio spacieux de 154 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Girard",
+    "telephone": "0756809540",
+    "agence": "Provence Immobilier"
+  }
+}

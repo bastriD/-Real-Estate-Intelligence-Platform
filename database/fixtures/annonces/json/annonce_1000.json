@@ -1,0 +1,31 @@
+{
+  "id": "7b19ab32-bc36-494d-9b49-e958348fd689",
+  "reference": "AN-PR5AORYE",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-07-19T13:07:45",
+  "prix": 93482,
+  "surface": 77,
+  "nb_pieces": 5,
+  "nb_chambres": 1,
+  "etage": 5,
+  "dpe": "B",
+  "latitude": 43.27345,
+  "longitude": 5.373745,
+  "description": "Château atypique de 77 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Fontaine",
+    "email": "luc.fontaine89@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-PR5AORYE/1.jpg",
+    "https://exemple-images.test/AN-PR5AORYE/2.jpg",
+    "https://exemple-images.test/AN-PR5AORYE/3.jpg",
+    "https://exemple-images.test/AN-PR5AORYE/4.jpg"
+  ]
+}

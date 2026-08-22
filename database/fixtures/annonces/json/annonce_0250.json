@@ -1,0 +1,22 @@
+{
+  "id": "49c4e661-6080-4401-a5f6-e79792568988",
+  "reference": "AN-5VHL8004",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2026-03-06",
+  "prix": 261749,
+  "surface_m2": 148,
+  "nb_pieces": 1,
+  "nb_chambres": 6,
+  "etage": 3,
+  "annee_construction": 1889,
+  "latitude": 47.291121,
+  "longitude": 5.08591,
+  "contact": {
+    "telephone": "0975738105",
+    "email": "contact48@example.com"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "b63157f0-2a97-4173-97fa-4dfa6854f087",
+  "reference": "AN-6HS2R8GG",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial charmant à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2026-07-22T00:34:45",
+  "prix": 277440,
+  "surface": 169,
+  "nb_pieces": 5,
+  "dpe": "C",
+  "annee_construction": 1952,
+  "latitude": 48.829462,
+  "longitude": 2.4012,
+  "description": "Local commercial de standing de 169 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0122701594",
+    "email": "contact65@example.com"
+  }
+}

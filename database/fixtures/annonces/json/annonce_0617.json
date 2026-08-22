@@ -1,0 +1,21 @@
+{
+  "id": "2f21d7f1-a1f1-4ae9-a8f5-a2fb94088eff",
+  "reference": "AN-JIDO1SK8",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2026-04-04",
+  "prix": 371011,
+  "charges_mensuelles": 370.96,
+  "surface": 143,
+  "nb_pieces": 3,
+  "meuble": false,
+  "description": "Local commercial avec vue dégagée de 143 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Luc Perrin",
+    "telephone": "0962773149"
+  },
+  "exclusivite": true
+}

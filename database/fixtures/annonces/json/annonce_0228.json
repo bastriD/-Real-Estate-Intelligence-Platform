@@ -1,0 +1,31 @@
+{
+  "id": "53426109-96e8-499d-b4e9-0a90b782f398",
+  "reference": "AN-4Z7FNO2Q",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "24 décembre 2025",
+  "prix": 287435,
+  "charges_mensuelles": 213.61,
+  "surface_m2": 189,
+  "nb_pieces": 3,
+  "nb_chambres": 6,
+  "annee_construction": 1866,
+  "latitude": 47.308165,
+  "longitude": 5.076918,
+  "description": "Appartement lumineux de 189 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Sophie Lefevre",
+    "email": "sophie.lefevre90@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-4Z7FNO2Q/1.jpg",
+    "https://exemple-images.test/AN-4Z7FNO2Q/2.jpg",
+    "https://exemple-images.test/AN-4Z7FNO2Q/3.jpg",
+    "https://exemple-images.test/AN-4Z7FNO2Q/4.jpg"
+  ],
+  "particulier": true
+}

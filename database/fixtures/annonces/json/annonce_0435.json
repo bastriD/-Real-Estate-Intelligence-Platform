@@ -1,0 +1,22 @@
+{
+  "id": "2c39c2a1-efc3-4ec0-aaf5-b21fdc2ccf36",
+  "reference": "AN-F9NNQJ47",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain au calme à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-06-07T12:24:45",
+  "prix": 1434615,
+  "charges_mensuelles": 331.86,
+  "surface": 148,
+  "description": "Terrain spacieux de 148 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Roche",
+    "telephone": "0057188681",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": true
+}

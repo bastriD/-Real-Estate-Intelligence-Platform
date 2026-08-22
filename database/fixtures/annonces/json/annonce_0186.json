@@ -1,0 +1,29 @@
+{
+  "id": "cb7844be-a090-4524-8648-19383feb93fd",
+  "reference": "AN-CYFEP800",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "30 octobre 2024",
+  "prix": "129226 €",
+  "charges_mensuelles": 270.01,
+  "surface": 197,
+  "nb_pieces": 7,
+  "nb_chambres": 4,
+  "etage": "RDC",
+  "meuble": false,
+  "annee_construction": 1850,
+  "adresse": "129 rue du Commerce",
+  "latitude": 43.268593,
+  "longitude": 5.402944,
+  "description": "Studio en excellent état de 197 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0843922335",
+    "email": "contact34@example.com",
+    "agence": "Clé en Main Immo"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "e02b1086-8cd6-4046-974e-292e06b0a618",
+  "reference": "AN-VZKVAQ77",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-06-29T22:58:45",
+  "prix": 1545809,
+  "surface": 176,
+  "adresse": "100 rue Pasteur",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Fontaine",
+    "telephone": "0242534519",
+    "email": "julie.fontaine72@example.com"
+  }
+}

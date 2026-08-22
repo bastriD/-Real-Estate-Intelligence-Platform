@@ -1,0 +1,28 @@
+{
+  "id": "e35c84ba-369d-4879-a524-cad7096a7d1d",
+  "reference": "AN-5P5GHKSG",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "6 octobre 2025",
+  "prix": 144508,
+  "surface": 172,
+  "nb_pieces": 3,
+  "meuble": false,
+  "annee_construction": 1874,
+  "description": "Studio au calme de 172 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0955401366"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-5P5GHKSG/1.jpg",
+    "https://exemple-images.test/AN-5P5GHKSG/2.jpg",
+    "https://exemple-images.test/AN-5P5GHKSG/3.jpg",
+    "https://exemple-images.test/AN-5P5GHKSG/4.jpg",
+    "https://exemple-images.test/AN-5P5GHKSG/5.jpg"
+  ]
+}

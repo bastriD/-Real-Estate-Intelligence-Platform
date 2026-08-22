@@ -1,0 +1,20 @@
+{
+  "id": "8b292100-bfca-419f-8bbe-17fc9b067f55",
+  "reference": "AN-GGM4APVZ",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "27 février 2026",
+  "prix": 134095,
+  "surface": 53,
+  "nb_pieces": 5,
+  "nb_chambres": 4,
+  "adresse": "197 avenue des Champs",
+  "description": "Château atypique de 53 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Luc Bernard",
+    "telephone": "0553714017"
+  }
+}

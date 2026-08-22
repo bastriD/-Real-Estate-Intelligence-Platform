@@ -1,0 +1,21 @@
+{
+  "id": "22467ae0-bbf4-4f8d-a756-c7955a786d40",
+  "reference": "AN-V4LDTM7J",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial en excellent état à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1744588605,
+  "prix": 384038,
+  "surface": 207,
+  "nb_pieces": 5,
+  "adresse": "66 rue Jean Jaurès",
+  "description": "Local commercial de standing de 207 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Sophie Roche",
+    "telephone": "0281453074",
+    "email": "sophie.roche44@example.com",
+    "agence": "Nid Doré"
+  }
+}

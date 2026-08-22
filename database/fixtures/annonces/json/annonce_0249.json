@@ -1,0 +1,26 @@
+{
+  "id": "f8d0b192-674d-4f25-b1e9-55fd338cfdc0",
+  "reference": "AN-LWC3R64K",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "12/07/2025",
+  "prix": 273887,
+  "charges_mensuelles": 146.84,
+  "surface": 93,
+  "nb_pieces": 4,
+  "nb_chambres": 7,
+  "etage": 2,
+  "dpe": "B",
+  "annee_construction": 1930,
+  "adresse": "41 impasse des Lilas",
+  "description": "Appartement rénové de 93 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Jean Moreau",
+    "telephone": "0745758532",
+    "email": "jean.moreau68@example.com"
+  },
+  "particulier": true
+}

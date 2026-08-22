@@ -1,0 +1,30 @@
+{
+  "id": "e8f63346-f55a-4f4a-8dbb-7ced46572901",
+  "reference": "AN-WAPOF5E8",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial avec vue dégagée à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "06-25-2025",
+  "prix": 310716,
+  "surface": 255,
+  "nb_pieces": 3,
+  "nb_chambres": 5,
+  "etage": 5,
+  "meuble": false,
+  "adresse": "181 boulevard Gambetta",
+  "latitude": 48.84766,
+  "longitude": 2.321665,
+  "description": "Local commercial en excellent état de 255 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Dubois",
+    "telephone": "0071064378",
+    "email": "karim.dubois19@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-WAPOF5E8/1.jpg",
+    "https://exemple-images.test/AN-WAPOF5E8/2.jpg",
+    "https://exemple-images.test/AN-WAPOF5E8/3.jpg"
+  ]
+}

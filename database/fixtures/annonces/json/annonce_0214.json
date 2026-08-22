@@ -1,0 +1,22 @@
+{
+  "id": "9dcc918d-ab86-4b3a-919b-b18ad5d69257",
+  "reference": "AN-JJ0YAGUV",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement charmant à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "08-17-2025",
+  "prix": 390147,
+  "surface_m2": 108,
+  "nb_pieces": 1,
+  "nb_chambres": 4,
+  "meuble": false,
+  "annee_construction": 1935,
+  "adresse": "194 rue du Commerce",
+  "description": "Appartement de standing de 108 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0181421482",
+    "email": "contact95@example.com"
+  }
+}

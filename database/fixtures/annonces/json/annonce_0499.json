@@ -1,0 +1,28 @@
+{
+  "id": "7219b92c-4b50-472f-af9c-bf7db520b8aa",
+  "reference": "AN-RFJVDR5A",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain avec vue dégagée à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "12-02-2024",
+  "prix": 1591868,
+  "charges_mensuelles": 355.69,
+  "surface": 158,
+  "adresse": "18 rue Victor Hugo",
+  "description": "Terrain spacieux de 158 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Dubois",
+    "telephone": "0503617000",
+    "email": "nadia.dubois56@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-RFJVDR5A/1.jpg",
+    "https://exemple-images.test/AN-RFJVDR5A/2.jpg",
+    "https://exemple-images.test/AN-RFJVDR5A/3.jpg",
+    "https://exemple-images.test/AN-RFJVDR5A/4.jpg"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": "e40ef7c2-71c4-4007-a3fc-ae3a1630ba53",
+  "reference": "AN-K1K9DHUJ",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "29/07/2025",
+  "prix": 170603,
+  "surface": 134,
+  "nb_pieces": 6,
+  "meuble": true,
+  "dpe": "E",
+  "latitude": 43.273364,
+  "longitude": 5.320596,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Bernard",
+    "telephone": "0203234717"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-K1K9DHUJ/1.jpg",
+    "https://exemple-images.test/AN-K1K9DHUJ/2.jpg",
+    "https://exemple-images.test/AN-K1K9DHUJ/3.jpg"
+  ],
+  "exclusivite": true
+}

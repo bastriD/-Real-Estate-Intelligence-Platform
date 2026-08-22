@@ -1,0 +1,28 @@
+{
+  "id": "08f3cca1-00df-45bf-989a-041c55770953",
+  "reference": "AN-WUK1X1A1",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-03-17",
+  "prix": 165608,
+  "surface": 151,
+  "nb_pieces": 5,
+  "adresse": "131 rue du Commerce",
+  "latitude": 43.342506,
+  "longitude": 5.369655,
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Bernard",
+    "telephone": "0381336306",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-WUK1X1A1/1.jpg",
+    "https://exemple-images.test/AN-WUK1X1A1/2.jpg",
+    "https://exemple-images.test/AN-WUK1X1A1/3.jpg"
+  ]
+}

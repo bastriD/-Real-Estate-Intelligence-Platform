@@ -1,0 +1,25 @@
+{
+  "id": "94ad63f0-f785-406f-8599-49546fa19cbe",
+  "reference": "AN-A1ZUSM3J",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-12-16T19:54:45",
+  "prix": 122801,
+  "surface_m2": 39,
+  "nb_pieces": 6,
+  "nb_chambres": 4,
+  "etage": "RDC",
+  "meuble": false,
+  "dpe": "A",
+  "description": "Château de standing de 39 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0587613821",
+    "agence": "Century Habitat"
+  }
+}

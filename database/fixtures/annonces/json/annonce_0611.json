@@ -1,0 +1,24 @@
+{
+  "id": "2682dbb4-60c5-422c-b0f4-48be66bb580f",
+  "reference": "AN-3U1D43CG",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial rénové à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "13 juin 2026",
+  "prix": 227560,
+  "charges_mensuelles": 390.55,
+  "surface": 276,
+  "nb_pieces": 5,
+  "nb_chambres": 4,
+  "dpe": "G",
+  "latitude": 48.866755,
+  "longitude": 2.351598,
+  "description": "Local commercial atypique de 276 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Julie Lefevre"
+  },
+  "photos": [],
+  "exclusivite": true
+}

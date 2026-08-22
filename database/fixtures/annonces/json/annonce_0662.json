@@ -1,0 +1,27 @@
+{
+  "id": "7a7f302a-f700-4d7f-9a73-92b09a2fc6f4",
+  "reference": "AN-U4D3Y3K7",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "11-27-2024",
+  "prix": 402000,
+  "surface": 212,
+  "nb_pieces": 6,
+  "nb_chambres": 4,
+  "etage": 4,
+  "adresse": "104 avenue des Champs",
+  "contact": {
+    "telephone": "0095900699",
+    "agence": "Toit & Vous"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-U4D3Y3K7/1.jpg",
+    "https://exemple-images.test/AN-U4D3Y3K7/2.jpg",
+    "https://exemple-images.test/AN-U4D3Y3K7/3.jpg",
+    "https://exemple-images.test/AN-U4D3Y3K7/4.jpg"
+  ],
+  "exclusivite": true
+}

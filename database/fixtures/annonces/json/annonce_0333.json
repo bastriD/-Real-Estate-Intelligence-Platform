@@ -1,0 +1,23 @@
+{
+  "id": "5052076a-67fd-4083-9cae-8aba5c347b0c",
+  "reference": "AN-6VY5UINH",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement en excellent état à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-11-24T16:50:45",
+  "prix": 310191,
+  "charges_mensuelles": 221.09,
+  "surface": 203,
+  "nb_pieces": 3,
+  "nb_chambres": 7,
+  "meuble": true,
+  "adresse": "121 rue de la République",
+  "description": "Appartement charmant de 203 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Luc Perrin",
+    "email": "luc.perrin42@example.com"
+  },
+  "exclusivite": true
+}

@@ -1,0 +1,23 @@
+{
+  "id": "2d5a2998-6210-41be-bae1-5079e8aaf85f",
+  "reference": "AN-5I37GB13",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement atypique à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "04-01-2025",
+  "prix": 361716,
+  "charges_mensuelles": 66.99,
+  "surface": 172,
+  "nb_pieces": 5,
+  "nb_chambres": 7,
+  "etage": 5,
+  "adresse": "69 avenue des Champs",
+  "latitude": 47.286434,
+  "longitude": 5.049848,
+  "description": "Appartement atypique de 172 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "telephone": "0632383261"
+  }
+}

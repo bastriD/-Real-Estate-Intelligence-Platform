@@ -1,0 +1,23 @@
+{
+  "id": "c0a05401-21fe-4c1f-9f7f-e13e0b30d03f",
+  "reference": "AN-K8BCAN37",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement rénové à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "11 août 2026",
+  "prix": 210598,
+  "surface": 200,
+  "nb_pieces": 1,
+  "nb_chambres": 5,
+  "etage": 3,
+  "adresse": "97 allée des Platanes",
+  "description": "Appartement à rafraîchir de 200 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Jean Dubois",
+    "telephone": "0909507344",
+    "agence": "Nid Doré"
+  },
+  "exclusivite": true
+}

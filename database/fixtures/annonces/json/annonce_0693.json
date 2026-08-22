@@ -1,0 +1,28 @@
+{
+  "id": "0eeaebe2-e491-4e19-9198-6467bd9ca5b9",
+  "reference": "AN-1EK6CBGW",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial rénové à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-07-08",
+  "prix": 418857,
+  "surface": 130,
+  "nb_pieces": 6,
+  "nb_chambres": 0,
+  "latitude": 48.900103,
+  "longitude": 2.360752,
+  "description": "Local commercial avec vue dégagée de 130 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marie Faure",
+    "email": "marie.faure77@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-1EK6CBGW/1.jpg",
+    "https://exemple-images.test/AN-1EK6CBGW/2.jpg",
+    "https://exemple-images.test/AN-1EK6CBGW/3.jpg",
+    "https://exemple-images.test/AN-1EK6CBGW/4.jpg"
+  ],
+  "particulier": true
+}

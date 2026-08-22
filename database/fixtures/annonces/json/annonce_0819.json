@@ -1,0 +1,31 @@
+{
+  "id": "e04e8104-0a02-481a-98af-e0a42a22fdce",
+  "reference": "AN-NRLJF0LG",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "19/01/2026",
+  "prix": 140149,
+  "surface": 37,
+  "nb_pieces": 7,
+  "nb_chambres": 0,
+  "etage": 1,
+  "dpe": "A",
+  "adresse": "61 rue du Commerce",
+  "latitude": 43.283496,
+  "longitude": 5.382468,
+  "description": "Château avec vue dégagée de 37 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Lefevre",
+    "email": "marc.lefevre50@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-NRLJF0LG/1.jpg",
+    "https://exemple-images.test/AN-NRLJF0LG/2.jpg"
+  ],
+  "particulier": true
+}

@@ -1,0 +1,26 @@
+{
+  "id": "11414b25-80e5-4fac-ad61-51de56918cb0",
+  "reference": "AN-8SFLD8F0",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1759136025,
+  "prix": 175932,
+  "surface": 152,
+  "latitude": 43.264676,
+  "longitude": 5.400661,
+  "description": "Studio lumineux de 152 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "contact": {
+    "nom": "Julie Fontaine"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-8SFLD8F0/1.jpg",
+    "https://exemple-images.test/AN-8SFLD8F0/2.jpg",
+    "https://exemple-images.test/AN-8SFLD8F0/3.jpg",
+    "https://exemple-images.test/AN-8SFLD8F0/4.jpg"
+  ],
+  "exclusivite": true
+}

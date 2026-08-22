@@ -1,0 +1,26 @@
+{
+  "id": "81352f89-225c-400c-aaea-1d0c3bf363fb",
+  "reference": "AN-69THEP2C",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial avec vue dégagée à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "03-08-2025",
+  "prix": "312526 €",
+  "surface": 158,
+  "nb_pieces": 2,
+  "etage": 4,
+  "meuble": false,
+  "dpe": "G",
+  "annee_construction": 2019,
+  "adresse": "30 place de la Mairie",
+  "latitude": 48.867667,
+  "longitude": 2.378461,
+  "description": "Local commercial à rafraîchir de 158 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Marc Dubois",
+    "telephone": "0195351089"
+  },
+  "exclusivite": false
+}

@@ -1,0 +1,24 @@
+{
+  "id": "d5f6f471-c6a6-48b0-8705-e4f624f49b4c",
+  "reference": "AN-5G450MA7",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "8 mars 2025",
+  "prix": 201111,
+  "surface": 91,
+  "nb_pieces": 5,
+  "nb_chambres": 7,
+  "dpe": "G",
+  "annee_construction": 1852,
+  "adresse": "120 chemin des Vignes",
+  "latitude": 47.369846,
+  "longitude": 5.061294,
+  "description": "Appartement avec vue dégagée de 91 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Ahmed Martin",
+    "email": "ahmed.martin41@example.com"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "291ff3f5-cefd-4775-9193-65b79ddca558",
+  "reference": "AN-9LTS82US",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-01-16T15:49:45",
+  "prix": 79524,
+  "surface": 164,
+  "nb_pieces": 6,
+  "dpe": "A",
+  "adresse": "156 chemin des Vignes",
+  "description": "Château au calme de 164 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0114154044"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-9LTS82US/1.jpg",
+    "https://exemple-images.test/AN-9LTS82US/2.jpg"
+  ]
+}

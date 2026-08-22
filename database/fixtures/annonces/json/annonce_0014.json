@@ -1,0 +1,29 @@
+{
+  "id": "3fb38ad8-c372-4be8-9648-c81abc11269a",
+  "reference": "AN-K8YKP6SP",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-11-09",
+  "prix": 141145,
+  "surface": 121,
+  "nb_pieces": 3,
+  "etage": 1,
+  "meuble": false,
+  "dpe": "E",
+  "adresse": "197 rue Victor Hugo",
+  "description": "Studio spacieux de 121 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Faure",
+    "email": "nadia.faure96@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-K8YKP6SP/1.jpg",
+    "https://exemple-images.test/AN-K8YKP6SP/2.jpg"
+  ],
+  "exclusivite": true
+}

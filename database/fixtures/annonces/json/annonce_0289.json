@@ -1,0 +1,32 @@
+{
+  "id": "1630b5d0-0551-4e2f-9f88-f07596abffba",
+  "reference": "AN-P9IBDJGP",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement lumineux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "06-18-2025",
+  "prix": 278507,
+  "charges_mensuelles": 325.69,
+  "surface": 152,
+  "nb_pieces": 1,
+  "nb_chambres": 6,
+  "etage": "dernier étage",
+  "dpe": "A",
+  "adresse": "118 impasse des Lilas",
+  "latitude": 47.320478,
+  "longitude": 5.06268,
+  "description": "Appartement lumineux de 152 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0865222134",
+    "email": "contact51@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-P9IBDJGP/1.jpg",
+    "https://exemple-images.test/AN-P9IBDJGP/2.jpg",
+    "https://exemple-images.test/AN-P9IBDJGP/3.jpg",
+    "https://exemple-images.test/AN-P9IBDJGP/4.jpg"
+  ],
+  "exclusivite": true
+}

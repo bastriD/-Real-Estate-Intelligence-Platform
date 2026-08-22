@@ -1,0 +1,23 @@
+{
+  "id": "a13038e4-6e91-4f19-9aa0-c616515161ae",
+  "reference": "AN-SA8OK7W9",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement lumineux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1742370765,
+  "prix": "340799 €",
+  "surface": 153,
+  "nb_pieces": 1,
+  "nb_chambres": 6,
+  "meuble": true,
+  "dpe": "F",
+  "latitude": 47.329679,
+  "longitude": 4.992357,
+  "description": "Appartement spacieux de 153 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Nadia Lefevre",
+    "telephone": "0834929582"
+  }
+}

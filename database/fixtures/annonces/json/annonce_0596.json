@@ -1,0 +1,22 @@
+{
+  "id": "304bfdb9-b830-41eb-b9c9-7599afe4b513",
+  "reference": "AN-YGSGZAKI",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain charmant à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-03-14",
+  "prix": 1222430,
+  "surface": 218,
+  "latitude": 43.708204,
+  "longitude": 7.234691,
+  "description": "Terrain spacieux de 218 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Fontaine",
+    "email": "ahmed.fontaine89@example.com",
+    "agence": "Provence Immobilier"
+  }
+}

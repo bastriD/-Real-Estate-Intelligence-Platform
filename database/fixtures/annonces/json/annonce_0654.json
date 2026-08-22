@@ -1,0 +1,26 @@
+{
+  "id": "01fd63a3-77b9-42a1-90c9-abf82d9c90d0",
+  "reference": "AN-0K4Z0XUV",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial atypique à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "18 novembre 2025",
+  "prix": 260058,
+  "surface": 185,
+  "nb_pieces": 3,
+  "etage": 5,
+  "meuble": true,
+  "dpe": "A",
+  "adresse": "23 impasse des Lilas",
+  "latitude": 48.81715,
+  "longitude": 2.378512,
+  "description": "Local commercial au calme de 185 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marc Perrin",
+    "telephone": "0081555232"
+  },
+  "photos": [],
+  "exclusivite": false
+}

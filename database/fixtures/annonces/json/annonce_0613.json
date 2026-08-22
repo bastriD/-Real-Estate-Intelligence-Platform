@@ -1,0 +1,22 @@
+{
+  "id": "fd77181c-1162-471d-9bdf-4b5100e1e3dd",
+  "reference": "AN-47K8SXQ8",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial rénové à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "22 mai 2026",
+  "prix": "379720 €",
+  "surface": 159,
+  "nb_pieces": 3,
+  "nb_chambres": 3,
+  "etage": 5,
+  "adresse": "96 allée des Platanes",
+  "description": "Local commercial charmant de 159 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Perrin",
+    "email": "karim.perrin35@example.com"
+  },
+  "exclusivite": true
+}

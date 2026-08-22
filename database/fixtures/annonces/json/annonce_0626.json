@@ -1,0 +1,22 @@
+{
+  "id": "94053dfc-d1e9-4ad8-8e05-abadb7731632",
+  "reference": "AN-UI3K7BTM",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial charmant à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1730925345,
+  "prix": 355245,
+  "surface": 155,
+  "nb_pieces": 6,
+  "nb_chambres": 4,
+  "adresse": "41 rue Victor Hugo",
+  "latitude": 48.893593,
+  "longitude": 2.320837,
+  "description": "Local commercial charmant de 155 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "telephone": "0284653877"
+  },
+  "exclusivite": true
+}

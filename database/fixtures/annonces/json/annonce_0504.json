@@ -1,0 +1,25 @@
+{
+  "id": "f9b1bd1e-4b0c-4275-9055-1b2e60e8cdc0",
+  "reference": "AN-9T3IGG10",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain spacieux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1784148525,
+  "prix": 1197733,
+  "surface": 205,
+  "description": "Terrain charmant de 205 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Fontaine",
+    "telephone": "0113920049",
+    "email": "luc.fontaine32@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-9T3IGG10/1.jpg",
+    "https://exemple-images.test/AN-9T3IGG10/2.jpg"
+  ],
+  "exclusivite": true
+}

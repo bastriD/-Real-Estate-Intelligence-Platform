@@ -1,0 +1,25 @@
+{
+  "id": "058c8e87-888f-4c69-b077-e374b6ef394b",
+  "reference": "AN-LR1F8937",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-10-06",
+  "prix": 111995,
+  "surface": 145,
+  "nb_pieces": 6,
+  "nb_chambres": 1,
+  "dpe": "A",
+  "annee_construction": 1954,
+  "adresse": "158 rue Victor Hugo",
+  "description": "Château spacieux de 145 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "vue": true,
+  "contact": {
+    "nom": "Ahmed Lefevre",
+    "telephone": "0094700424"
+  },
+  "exclusivite": false
+}

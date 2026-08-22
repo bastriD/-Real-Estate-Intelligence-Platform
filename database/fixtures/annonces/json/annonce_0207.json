@@ -1,0 +1,24 @@
+{
+  "id": "bbfd7d93-77a2-4623-b926-ae55abb01abf",
+  "reference": "AN-WC4LZ9T7",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-05-17T11:13:45",
+  "prix": 384323,
+  "surface": 111,
+  "nb_pieces": 3,
+  "nb_chambres": 7,
+  "etage": 5,
+  "adresse": "129 chemin des Vignes",
+  "description": "Appartement atypique de 111 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Karim Roche",
+    "telephone": "0928378619",
+    "email": "karim.roche6@example.com",
+    "agence": "Toit & Vous"
+  },
+  "particulier": true
+}

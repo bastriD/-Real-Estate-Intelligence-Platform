@@ -1,0 +1,27 @@
+{
+  "id": "17ab64ae-0def-4386-b170-ddfeb4e88731",
+  "reference": "AN-DZXFGSBU",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1752614805,
+  "prix": 116208,
+  "surface": 22,
+  "nb_pieces": 6,
+  "etage": 5,
+  "meuble": false,
+  "dpe": "A",
+  "latitude": 43.288623,
+  "longitude": 5.358862,
+  "description": "Château charmant de 22 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "contact": {
+    "email": "contact58@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-DZXFGSBU/1.jpg"
+  ]
+}

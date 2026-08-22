@@ -1,0 +1,26 @@
+{
+  "id": "091f1489-2670-4746-b0dc-ace87ad36801",
+  "reference": "AN-HEUU0TIV",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-09-07",
+  "prix": "193792 €",
+  "surface": 129,
+  "adresse": "78 rue de la République",
+  "latitude": 43.260307,
+  "longitude": 5.362472,
+  "description": "Studio à rafraîchir de 129 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0647500534",
+    "email": "contact60@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-HEUU0TIV/1.jpg",
+    "https://exemple-images.test/AN-HEUU0TIV/2.jpg"
+  ]
+}

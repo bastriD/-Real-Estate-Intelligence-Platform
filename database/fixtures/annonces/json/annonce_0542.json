@@ -1,0 +1,23 @@
+{
+  "id": "b8c5fe36-483d-4086-a102-f55560a3aa8e",
+  "reference": "AN-3604IR88",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain spacieux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1761210705,
+  "prix": 1725874,
+  "surface": 189,
+  "adresse": "199 rue Jean Jaurès",
+  "latitude": 43.752304,
+  "longitude": 7.282472,
+  "description": "Terrain en excellent état de 189 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Lefevre",
+    "telephone": "0560101699",
+    "email": "jean.lefevre73@example.com"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "id": "5df03802-4e87-4b9e-95dc-411d7538f808",
+  "reference": "AN-5LH21XEX",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2026-07-22",
+  "prix": 269479,
+  "surface": 137,
+  "nb_pieces": 5,
+  "nb_chambres": 3,
+  "meuble": false,
+  "dpe": "B",
+  "adresse": "87 boulevard Gambetta",
+  "description": "Local commercial avec vue dégagée de 137 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Claire Fontaine",
+    "telephone": "0545864163",
+    "email": "claire.fontaine9@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-5LH21XEX/1.jpg"
+  ],
+  "exclusivite": true
+}

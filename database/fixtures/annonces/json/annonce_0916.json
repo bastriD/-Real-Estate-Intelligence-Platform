@@ -1,0 +1,28 @@
+{
+  "id": "a03282e0-899e-43f8-b7d1-416ac8ee4530",
+  "reference": "AN-F9OG5HBN",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-10-24",
+  "prix": 113976,
+  "surface": 169,
+  "nb_pieces": 5,
+  "etage": 5,
+  "dpe": "A",
+  "latitude": 43.314377,
+  "longitude": 5.371444,
+  "description": "Château de standing de 169 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0893723673",
+    "email": "contact7@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-F9OG5HBN/1.jpg",
+    "https://exemple-images.test/AN-F9OG5HBN/2.jpg"
+  ]
+}

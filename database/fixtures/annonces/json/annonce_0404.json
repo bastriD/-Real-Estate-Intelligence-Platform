@@ -1,0 +1,23 @@
+{
+  "id": "51553c9a-3f29-4f01-941b-c18398c5998d",
+  "reference": "AN-2ISXVIAA",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain lumineux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2026-05-27",
+  "prix": 1059990,
+  "surface": 174,
+  "latitude": 43.733869,
+  "longitude": 7.253447,
+  "description": "Terrain rénové de 174 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Dubois",
+    "telephone": "0687805002",
+    "email": "jean.dubois24@example.com"
+  },
+  "particulier": true
+}

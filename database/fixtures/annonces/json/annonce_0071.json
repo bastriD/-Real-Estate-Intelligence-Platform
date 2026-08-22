@@ -1,0 +1,25 @@
+{
+  "id": "bf8a7b10-e1ef-4a5e-bc15-3a907e0f7adc",
+  "reference": "AN-S1Q39UWM",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "12-16-2025",
+  "prix": 178789,
+  "charges_mensuelles": 275.74,
+  "surface": 167,
+  "nb_pieces": 5,
+  "nb_chambres": 0,
+  "meuble": true,
+  "dpe": "B",
+  "adresse": "78 rue Jean Jaurès",
+  "description": "Studio rénové de 167 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Girard",
+    "telephone": "0591423966"
+  },
+  "exclusivite": false
+}

@@ -1,0 +1,24 @@
+{
+  "id": "1297142b-f787-4881-94bc-ef2ff03b634b",
+  "reference": "AN-9XRZU7OS",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1740579045,
+  "prix": 325413,
+  "surface": 246,
+  "nb_pieces": 6,
+  "nb_chambres": 0,
+  "etage": 4,
+  "adresse": "123 rue Jean Jaurès",
+  "latitude": 48.849583,
+  "longitude": 2.35333,
+  "contact": {
+    "nom": "Claire Perrin",
+    "telephone": "0995764966",
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": false
+}

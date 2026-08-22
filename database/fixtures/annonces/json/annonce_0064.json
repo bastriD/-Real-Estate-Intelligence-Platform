@@ -1,0 +1,28 @@
+{
+  "id": "282fe49a-9da0-47db-9c20-6e80bd58c010",
+  "reference": "AN-FJYUS97X",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "25/05/2025",
+  "prix": 186730,
+  "surface": 182,
+  "nb_pieces": 2,
+  "etage": 1,
+  "meuble": false,
+  "dpe": "C",
+  "description": "Studio à rafraîchir de 182 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Moreau",
+    "telephone": "0437444836"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-FJYUS97X/1.jpg",
+    "https://exemple-images.test/AN-FJYUS97X/2.jpg",
+    "https://exemple-images.test/AN-FJYUS97X/3.jpg"
+  ]
+}

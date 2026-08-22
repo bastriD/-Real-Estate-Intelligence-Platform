@@ -1,0 +1,25 @@
+{
+  "id": "db218387-7024-42bc-870a-dadbb6026420",
+  "reference": "AN-1ZMCU0S9",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial charmant à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1738022505,
+  "prix": 279508,
+  "surface": 140,
+  "nb_pieces": 3,
+  "nb_chambres": 2,
+  "etage": "RDC",
+  "meuble": false,
+  "annee_construction": 1913,
+  "adresse": "173 allée des Platanes",
+  "latitude": 48.891377,
+  "longitude": 2.341098,
+  "description": "Local commercial charmant de 140 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0124586673",
+    "agence": "Century Habitat"
+  }
+}

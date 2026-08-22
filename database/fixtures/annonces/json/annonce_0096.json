@@ -1,0 +1,29 @@
+{
+  "id": "2b8627d4-e338-4b87-b920-df78b32aef16",
+  "reference": "AN-H9272AGM",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "08-23-2025",
+  "prix": 132856,
+  "surface": 177,
+  "nb_pieces": 2,
+  "nb_chambres": 0,
+  "adresse": "169 rue de la République",
+  "latitude": 43.316202,
+  "longitude": 5.323387,
+  "description": "Studio de standing de 177 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0333222503",
+    "email": "contact46@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-H9272AGM/1.jpg",
+    "https://exemple-images.test/AN-H9272AGM/2.jpg"
+  ],
+  "particulier": true
+}

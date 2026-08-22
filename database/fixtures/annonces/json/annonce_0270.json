@@ -1,0 +1,23 @@
+{
+  "id": "18236b5c-ad60-43a7-a928-747b5e70b05c",
+  "reference": "AN-P74VG8VX",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "05-21-2026",
+  "prix": 304803,
+  "surface": 182,
+  "nb_pieces": 5,
+  "nb_chambres": 7,
+  "etage": 5,
+  "annee_construction": 1903,
+  "adresse": "135 rue du Commerce",
+  "latitude": 47.320047,
+  "longitude": 5.007088,
+  "description": "Appartement à rafraîchir de 182 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "agence": "Clé en Main Immo"
+  }
+}

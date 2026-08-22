@@ -1,0 +1,21 @@
+{
+  "id": "38566058-ad4a-4b1d-aa27-d0075bd5a5b7",
+  "reference": "AN-FSUSFC96",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "6 novembre 2024",
+  "prix": 1075189,
+  "charges_mensuelles": 326.57,
+  "surface": 211,
+  "description": "Terrain au calme de 211 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0389407940",
+    "agence": "Nid Doré"
+  },
+  "exclusivite": true
+}

@@ -1,0 +1,19 @@
+{
+  "id": "9804b5ae-ad9b-4a58-9a9b-4ae72ba0526f",
+  "reference": "AN-4C3ANHYC",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain rénové à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1742884545,
+  "prix": 1518797,
+  "surface": 177,
+  "description": "Terrain charmant de 177 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "agence": "Toit & Vous"
+  },
+  "exclusivite": true
+}

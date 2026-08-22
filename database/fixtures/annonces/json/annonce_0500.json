@@ -1,0 +1,19 @@
+{
+  "id": "c68f35a9-661f-4d97-adfd-fc53deb569c2",
+  "reference": "AN-UUOYDYPS",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-07-09T06:06:45",
+  "prix": 1384497,
+  "surface": 264,
+  "description": "Terrain spacieux de 264 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0126748524",
+    "agence": "Toit & Vous"
+  }
+}

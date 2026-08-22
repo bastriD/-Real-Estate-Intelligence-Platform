@@ -1,0 +1,19 @@
+{
+  "id": "62e82c11-cd26-4a3d-9077-f916b2f6ff5a",
+  "reference": "AN-6WT83FDB",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain au calme à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "30/09/2025",
+  "prix": "1220775 €",
+  "surface": 135,
+  "description": "Terrain spacieux de 135 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Girard",
+    "telephone": "0966510762"
+  }
+}

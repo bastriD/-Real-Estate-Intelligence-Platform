@@ -1,0 +1,28 @@
+{
+  "id": "5e11c9d6-f96f-4608-afad-a41bccada90b",
+  "reference": "AN-ZEGRI2A7",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial spacieux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "7 novembre 2024",
+  "prix": 242049,
+  "surface": 195,
+  "nb_pieces": 5,
+  "nb_chambres": 0,
+  "etage": "RDC",
+  "latitude": 48.86978,
+  "longitude": 2.329938,
+  "description": "Local commercial en excellent état de 195 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "email": "contact42@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-ZEGRI2A7/1.jpg",
+    "https://exemple-images.test/AN-ZEGRI2A7/2.jpg",
+    "https://exemple-images.test/AN-ZEGRI2A7/3.jpg",
+    "https://exemple-images.test/AN-ZEGRI2A7/4.jpg",
+    "https://exemple-images.test/AN-ZEGRI2A7/5.jpg"
+  ]
+}

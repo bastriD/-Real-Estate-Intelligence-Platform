@@ -1,0 +1,32 @@
+{
+  "id": "8abe2c8a-733f-4876-8e4c-296caf51168d",
+  "reference": "AN-1SMESJMZ",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "05/10/2024",
+  "prix": 138871,
+  "surface_m2": 83,
+  "nb_pieces": 5,
+  "nb_chambres": 3,
+  "etage": "dernier étage",
+  "meuble": false,
+  "dpe": "A",
+  "adresse": "37 rue Victor Hugo",
+  "latitude": 43.26711,
+  "longitude": 5.380686,
+  "description": "Château atypique de 83 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Lefevre",
+    "telephone": "0211833307",
+    "agence": "Toit & Vous"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-1SMESJMZ/1.jpg"
+  ]
+}

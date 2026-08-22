@@ -1,0 +1,32 @@
+{
+  "id": "6d31fc73-19f9-4c18-bff8-8a952ee4ad42",
+  "reference": "AN-EINSTU52",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "8 avril 2025",
+  "prix": 128389,
+  "charges_mensuelles": 338.91,
+  "surface": 157,
+  "nb_pieces": 5,
+  "dpe": "G",
+  "annee_construction": 1928,
+  "latitude": 43.251164,
+  "longitude": 5.35817,
+  "description": "Studio spacieux de 157 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "contact": {
+    "telephone": "0461899520",
+    "email": "contact36@example.com",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-EINSTU52/1.jpg",
+    "https://exemple-images.test/AN-EINSTU52/2.jpg",
+    "https://exemple-images.test/AN-EINSTU52/3.jpg",
+    "https://exemple-images.test/AN-EINSTU52/4.jpg"
+  ],
+  "particulier": true
+}

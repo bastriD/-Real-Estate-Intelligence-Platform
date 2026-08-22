@@ -1,0 +1,24 @@
+{
+  "id": "219edcc1-77fa-4ca3-bdec-397bd5d914e5",
+  "reference": "AN-W2VVDLUH",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain charmant à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "1 septembre 2024",
+  "prix": 1254091,
+  "surface_m2": 155,
+  "description": "Terrain spacieux de 155 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Lefevre",
+    "email": "sophie.lefevre8@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-W2VVDLUH/1.jpg",
+    "https://exemple-images.test/AN-W2VVDLUH/2.jpg"
+  ],
+  "exclusivite": true
+}

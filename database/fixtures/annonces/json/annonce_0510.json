@@ -1,0 +1,23 @@
+{
+  "id": "6abcb8ce-c4f1-4278-b23d-6e8998f9e2d3",
+  "reference": "AN-GJLCZ480",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain spacieux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1744743945,
+  "prix": 937248,
+  "surface": 159,
+  "latitude": 43.675487,
+  "longitude": 7.254246,
+  "description": "Terrain spacieux de 159 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0455623936",
+    "email": "contact25@example.com",
+    "agence": "Toit & Vous"
+  },
+  "exclusivite": false
+}

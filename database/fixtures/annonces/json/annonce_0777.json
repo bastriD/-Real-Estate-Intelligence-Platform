@@ -1,0 +1,24 @@
+{
+  "id": "9fd4466c-913e-490d-be00-fb9a27be7587",
+  "reference": "AN-84RNLRIJ",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial spacieux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1725682845,
+  "prix": 214538,
+  "surface": 133,
+  "nb_pieces": 4,
+  "meuble": true,
+  "dpe": "F",
+  "annee_construction": 1979,
+  "adresse": "24 allée des Platanes",
+  "description": "Local commercial au calme de 133 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Jean Faure",
+    "telephone": "0448260472",
+    "email": "jean.faure4@example.com",
+    "agence": "Century Habitat"
+  }
+}

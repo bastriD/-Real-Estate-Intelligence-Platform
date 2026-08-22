@@ -1,0 +1,24 @@
+{
+  "id": "ec1fba6a-4e6f-48d6-8a1e-a9ffe3298391",
+  "reference": "AN-OTMCMLV2",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "01-15-2026",
+  "prix": 170173,
+  "surface_m2": 126,
+  "nb_pieces": 2,
+  "nb_chambres": 0,
+  "adresse": "21 allée des Platanes",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Perrin",
+    "telephone": "0366736740",
+    "email": "claire.perrin81@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "photos": []
+}

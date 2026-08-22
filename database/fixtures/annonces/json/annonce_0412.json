@@ -1,0 +1,23 @@
+{
+  "id": "d76a0c22-ff06-4a35-a848-7a5193dc764a",
+  "reference": "AN-FEUCNMGN",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2024-08-23T05:12:45",
+  "prix": 1687612,
+  "surface": 251,
+  "adresse": "55 allée des Platanes",
+  "calme": true,
+  "contact": {
+    "telephone": "0627569141"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-FEUCNMGN/1.jpg",
+    "https://exemple-images.test/AN-FEUCNMGN/2.jpg",
+    "https://exemple-images.test/AN-FEUCNMGN/3.jpg",
+    "https://exemple-images.test/AN-FEUCNMGN/4.jpg"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "251af8db-ae9b-4f21-93d8-cf384158635c",
+  "reference": "AN-Y6P24BMG",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "04/08/2026",
+  "prix": 95837,
+  "surface": 154,
+  "nb_pieces": 5,
+  "dpe": "A",
+  "annee_construction": 1984,
+  "adresse": "51 impasse des Lilas",
+  "latitude": 43.30041,
+  "longitude": 5.346567,
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0656322051",
+    "email": "contact86@example.com",
+    "agence": "Nid Doré"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-Y6P24BMG/1.jpg",
+    "https://exemple-images.test/AN-Y6P24BMG/2.jpg",
+    "https://exemple-images.test/AN-Y6P24BMG/3.jpg"
+  ]
+}

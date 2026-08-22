@@ -1,0 +1,25 @@
+{
+  "id": "7eeba1d2-9584-41ea-a4aa-612e607c6c8a",
+  "reference": "AN-H2218BA4",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "21 avril 2025",
+  "prix": 978913,
+  "surface": 198,
+  "adresse": "69 rue Pasteur",
+  "latitude": 43.707644,
+  "longitude": 7.286833,
+  "description": "Terrain en excellent état de 198 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Perrin",
+    "telephone": "0160313098",
+    "email": "nadia.perrin81@example.com",
+    "agence": "Nid Doré"
+  },
+  "particulier": true
+}

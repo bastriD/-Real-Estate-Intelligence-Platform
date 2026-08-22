@@ -1,0 +1,23 @@
+{
+  "id": "93a7cffc-aba3-4cc7-8cca-b1c2ab956682",
+  "reference": "AN-AFCDOM61",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement charmant à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "23 juin 2026",
+  "prix": 293624,
+  "surface": 85,
+  "nb_pieces": 3,
+  "nb_chambres": 7,
+  "etage": 2,
+  "annee_construction": 1894,
+  "latitude": 47.317128,
+  "longitude": 5.030594,
+  "description": "Appartement de standing de 85 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "telephone": "0069684056",
+    "agence": "Provence Immobilier"
+  }
+}

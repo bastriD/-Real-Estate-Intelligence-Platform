@@ -1,0 +1,20 @@
+{
+  "id": "17b4164e-e6d0-4943-9e4b-98f19b53a055",
+  "reference": "AN-1HMZLQ34",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-12-25",
+  "prix": 219158,
+  "surface": 191,
+  "nb_pieces": 1,
+  "nb_chambres": 6,
+  "description": "Appartement charmant de 191 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0332622728",
+    "email": "contact70@example.com",
+    "agence": "Nid Doré"
+  }
+}

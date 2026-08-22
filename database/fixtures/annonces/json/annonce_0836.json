@@ -1,0 +1,24 @@
+{
+  "id": "13ecc39f-cbf0-4dce-ad88-598918fb411f",
+  "reference": "AN-U786X9XB",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "19 août 2026",
+  "prix": 72900,
+  "surface": 141,
+  "nb_pieces": 8,
+  "nb_chambres": 4,
+  "meuble": false,
+  "dpe": "A",
+  "annee_construction": 1991,
+  "description": "Château à rafraîchir de 141 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "contact": {
+    "telephone": "0220120363",
+    "email": "contact85@example.com"
+  },
+  "exclusivite": true
+}

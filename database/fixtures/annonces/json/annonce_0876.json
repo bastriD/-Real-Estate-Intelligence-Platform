@@ -1,0 +1,23 @@
+{
+  "id": "b3ae0fce-308a-4995-a2e6-525d2dcfce62",
+  "reference": "AN-XX20B0VW",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1782682185,
+  "prix": 80160,
+  "surface": 116,
+  "nb_pieces": 8,
+  "etage": 2,
+  "meuble": true,
+  "dpe": "A",
+  "description": "Château en excellent état de 116 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "email": "contact61@example.com"
+  }
+}

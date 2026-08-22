@@ -1,0 +1,31 @@
+{
+  "id": "6ad92a9d-f9a9-4523-b563-09deaae355f5",
+  "reference": "AN-LID47YDV",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-04-08T17:12:45",
+  "prix": 128424,
+  "surface": 30,
+  "nb_pieces": 7,
+  "nb_chambres": 3,
+  "meuble": true,
+  "dpe": "A",
+  "adresse": "84 allée des Platanes",
+  "description": "Château lumineux de 30 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "email": "contact26@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-LID47YDV/1.jpg",
+    "https://exemple-images.test/AN-LID47YDV/2.jpg",
+    "https://exemple-images.test/AN-LID47YDV/3.jpg",
+    "https://exemple-images.test/AN-LID47YDV/4.jpg",
+    "https://exemple-images.test/AN-LID47YDV/5.jpg"
+  ]
+}

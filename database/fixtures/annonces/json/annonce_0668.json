@@ -1,0 +1,19 @@
+{
+  "id": "9cc97c9e-125b-4630-adc8-a00e3f684907",
+  "reference": "AN-C524SEY8",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial rénové à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "02/02/2026",
+  "prix": 272147,
+  "surface": 259,
+  "nb_pieces": 2,
+  "meuble": true,
+  "annee_construction": 2007,
+  "contact": {
+    "telephone": "0870196892"
+  },
+  "exclusivite": true
+}

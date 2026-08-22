@@ -1,0 +1,21 @@
+{
+  "id": "1f240448-9c02-434f-bc4d-33afd3d20d1b",
+  "reference": "AN-RS5W0C5Y",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1761412485,
+  "prix": 290161,
+  "surface": 169,
+  "nb_pieces": 3,
+  "meuble": true,
+  "latitude": 48.820928,
+  "longitude": 2.390536,
+  "contact": {
+    "nom": "Nadia Fontaine",
+    "telephone": "0582167902",
+    "email": "nadia.fontaine92@example.com"
+  }
+}

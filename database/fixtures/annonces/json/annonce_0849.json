@@ -1,0 +1,28 @@
+{
+  "id": "cd074172-8635-4d66-8c4c-487d7951d7fe",
+  "reference": "AN-QO46HP1L",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-02-16",
+  "prix": "102679 €",
+  "surface": 28,
+  "nb_pieces": 4,
+  "nb_chambres": 4,
+  "meuble": true,
+  "dpe": "F",
+  "annee_construction": 1901,
+  "adresse": "195 boulevard Gambetta",
+  "jardin": true,
+  "contact": {
+    "nom": "Claire Bernard",
+    "agence": "Nid Doré"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-QO46HP1L/1.jpg",
+    "https://exemple-images.test/AN-QO46HP1L/2.jpg"
+  ],
+  "exclusivite": true
+}

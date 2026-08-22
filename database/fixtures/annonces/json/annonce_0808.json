@@ -1,0 +1,24 @@
+{
+  "id": "aebe9937-6c92-423f-bdbd-6f87ad6a6042",
+  "reference": "AN-P7XEKI29",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "05-18-2025",
+  "prix": 93378,
+  "surface": 160,
+  "nb_pieces": 6,
+  "nb_chambres": 5,
+  "dpe": "A",
+  "latitude": 43.31091,
+  "longitude": 5.391775,
+  "description": "Château lumineux de 160 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0778825700"
+  }
+}

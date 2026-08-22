@@ -1,0 +1,19 @@
+{
+  "id": "fedff21a-cc4e-4311-b68c-bd7d1f056029",
+  "reference": "AN-96C91UHL",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "13 juin 2026",
+  "prix": 114405,
+  "surface_m2": 159,
+  "nb_pieces": 4,
+  "dpe": "D",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0599278641"
+  }
+}

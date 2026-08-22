@@ -1,0 +1,25 @@
+{
+  "id": "989b0635-a7f5-48e4-a58b-5df991f34ae4",
+  "reference": "AN-AFEPAK9M",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "11 juin 2025",
+  "prix": "133711 €",
+  "surface": 143,
+  "nb_pieces": 7,
+  "nb_chambres": 1,
+  "meuble": false,
+  "adresse": "156 rue de la République",
+  "description": "Studio rénové de 143 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Lefevre",
+    "telephone": "0875157676",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": []
+}

@@ -1,0 +1,28 @@
+{
+  "id": "dc3dd9b8-069a-421a-bd0c-6ffd85bef32b",
+  "reference": "AN-I93BV6YG",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1741867065,
+  "prix": 93838,
+  "charges_mensuelles": 296.1,
+  "surface": 122,
+  "nb_pieces": 7,
+  "nb_chambres": 5,
+  "dpe": "A",
+  "adresse": "36 rue de la République",
+  "latitude": 43.298619,
+  "longitude": 5.37153,
+  "description": "Château spacieux de 122 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Perrin",
+    "agence": "Century Habitat"
+  },
+  "particulier": true
+}

@@ -1,0 +1,24 @@
+{
+  "id": "2c3bef35-a72a-4b3a-962a-da6cc6785e33",
+  "reference": "AN-J90MMDHK",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1765898745,
+  "prix": 1745842,
+  "surface": 219,
+  "latitude": 43.754819,
+  "longitude": 7.23354,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "email": "contact9@example.com",
+    "agence": "Nid Doré"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-J90MMDHK/1.jpg",
+    "https://exemple-images.test/AN-J90MMDHK/2.jpg"
+  ]
+}

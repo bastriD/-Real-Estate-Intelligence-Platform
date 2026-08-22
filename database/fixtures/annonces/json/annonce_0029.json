@@ -1,0 +1,25 @@
+{
+  "id": "84606037-79e0-4a53-a418-5a502ebf7551",
+  "reference": "AN-Q3IQJOMV",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1737673425,
+  "prix": "124159 €",
+  "surface": 156,
+  "nb_pieces": 6,
+  "nb_chambres": 4,
+  "etage": 3,
+  "adresse": "85 boulevard Gambetta",
+  "latitude": 43.33375,
+  "longitude": 5.352025,
+  "description": "Studio atypique de 156 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "agence": "Provence Immobilier"
+  },
+  "particulier": true
+}

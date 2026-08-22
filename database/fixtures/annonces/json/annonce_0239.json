@@ -1,0 +1,23 @@
+{
+  "id": "f3e35dfb-11d8-4c09-b916-c3687d89dc04",
+  "reference": "AN-XZ7PVXHJ",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-06-29T20:44:45",
+  "prix": 230532,
+  "surface": 201,
+  "nb_pieces": 1,
+  "nb_chambres": 7,
+  "meuble": false,
+  "dpe": "B",
+  "description": "Appartement à rafraîchir de 201 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0499509586",
+    "email": "contact93@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": true
+}

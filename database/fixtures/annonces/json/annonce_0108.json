@@ -1,0 +1,30 @@
+{
+  "id": "b5032f1c-a39f-454a-ad1d-b3b3d3441fe6",
+  "reference": "AN-HTNHENVO",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-04-15T06:41:45",
+  "prix": 211672,
+  "surface": 221,
+  "nb_chambres": 3,
+  "etage": 4,
+  "meuble": true,
+  "adresse": "12 rue de la République",
+  "latitude": 43.333602,
+  "longitude": 5.347844,
+  "calme": true,
+  "contact": {
+    "telephone": "0251408135",
+    "email": "contact52@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-HTNHENVO/1.jpg",
+    "https://exemple-images.test/AN-HTNHENVO/2.jpg",
+    "https://exemple-images.test/AN-HTNHENVO/3.jpg",
+    "https://exemple-images.test/AN-HTNHENVO/4.jpg",
+    "https://exemple-images.test/AN-HTNHENVO/5.jpg"
+  ]
+}

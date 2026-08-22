@@ -1,0 +1,23 @@
+{
+  "id": "23d6e2ca-df34-4a25-b5ae-c346badba788",
+  "reference": "AN-W12VWLQ4",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "07-10-2026",
+  "prix": 211718,
+  "surface": 185,
+  "nb_pieces": 1,
+  "nb_chambres": 1,
+  "dpe": "D",
+  "description": "Studio atypique de 185 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Martin",
+    "telephone": "0585906761",
+    "email": "luc.martin9@example.com"
+  }
+}

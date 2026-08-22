@@ -1,0 +1,20 @@
+{
+  "id": "7c667a1e-e6e1-4f92-a142-d63163955c7f",
+  "reference": "AN-0FE5IIHP",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "10/12/2025",
+  "prix": 413670,
+  "surface": 225,
+  "nb_pieces": 5,
+  "adresse": "18 rue du Commerce",
+  "contact": {
+    "nom": "Julie Fontaine",
+    "telephone": "0583645933",
+    "email": "julie.fontaine26@example.com"
+  },
+  "exclusivite": true
+}

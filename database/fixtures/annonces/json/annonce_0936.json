@@ -1,0 +1,29 @@
+{
+  "id": "66fac4bd-6a25-4096-bb12-9e088c98344e",
+  "reference": "AN-2UI4RULL",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1755660825,
+  "prix": 133648,
+  "surface": 134,
+  "nb_pieces": 8,
+  "nb_chambres": 3,
+  "etage": 5,
+  "annee_construction": 2008,
+  "adresse": "148 rue du Commerce",
+  "latitude": 43.264276,
+  "longitude": 5.334563,
+  "description": "Château avec vue dégagée de 134 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Girard",
+    "telephone": "0320480652",
+    "agence": "Clé en Main Immo"
+  },
+  "particulier": true
+}

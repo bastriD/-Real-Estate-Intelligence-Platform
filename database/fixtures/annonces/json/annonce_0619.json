@@ -1,0 +1,21 @@
+{
+  "id": "101a539d-50a6-4c7e-bd3f-38ffc57a9b18",
+  "reference": "AN-XYIWCUTK",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial atypique à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1726094985,
+  "prix": 283239,
+  "surface": 202,
+  "nb_pieces": 3,
+  "nb_chambres": 4,
+  "meuble": true,
+  "dpe": "F",
+  "latitude": 48.861388,
+  "longitude": 2.303724,
+  "contact": {
+    "email": "contact77@example.com"
+  }
+}

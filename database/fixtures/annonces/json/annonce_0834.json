@@ -1,0 +1,25 @@
+{
+  "id": "6bc38672-3717-42ff-a869-4f97648073c3",
+  "reference": "AN-8547VH2M",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "01-31-2026",
+  "prix": 139168,
+  "surface": 53,
+  "nb_pieces": 5,
+  "meuble": true,
+  "adresse": "115 avenue des Champs",
+  "description": "Château charmant de 53 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0289464204",
+    "email": "contact46@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "particulier": true
+}

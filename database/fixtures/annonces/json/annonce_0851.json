@@ -1,0 +1,25 @@
+{
+  "id": "06dd20fc-8f96-48be-af34-f4037e393af1",
+  "reference": "AN-N3AARVWL",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "1 mai 2025",
+  "prix": 117459,
+  "surface": 66,
+  "nb_pieces": 5,
+  "nb_chambres": 5,
+  "meuble": false,
+  "dpe": "A",
+  "description": "Château spacieux de 66 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Roche",
+    "telephone": "0027208051",
+    "email": "nadia.roche90@example.com"
+  }
+}

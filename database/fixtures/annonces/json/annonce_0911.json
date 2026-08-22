@@ -1,0 +1,24 @@
+{
+  "id": "ab237bf5-e0a1-49fa-b0ce-1f7ea9a80fe0",
+  "reference": "AN-GWVDI9RU",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "12-25-2025",
+  "prix": 85367,
+  "surface": 166,
+  "nb_pieces": 8,
+  "etage": 1,
+  "dpe": "A",
+  "annee_construction": 1926,
+  "latitude": 43.313109,
+  "longitude": 5.368508,
+  "description": "Château de standing de 166 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Fontaine"
+  }
+}

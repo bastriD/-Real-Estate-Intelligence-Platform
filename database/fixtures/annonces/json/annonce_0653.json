@@ -1,0 +1,24 @@
+{
+  "id": "df62c84b-8f29-457f-bcda-f7e38e7fd066",
+  "reference": "AN-LEOM3DVO",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial au calme à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2026-01-26T22:09:45",
+  "prix": 281656,
+  "charges_mensuelles": 335.91,
+  "surface": 267,
+  "nb_pieces": 4,
+  "meuble": false,
+  "dpe": "F",
+  "latitude": 48.827214,
+  "longitude": 2.327419,
+  "description": "Local commercial charmant de 267 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Fontaine",
+    "email": "karim.fontaine16@example.com"
+  },
+  "exclusivite": true
+}

@@ -1,0 +1,28 @@
+{
+  "id": "d2d84b13-ec13-4678-ac2a-90a162f4b882",
+  "reference": "AN-C07PXUR8",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1763146785,
+  "prix": 124754,
+  "surface_m2": 130,
+  "nb_pieces": 5,
+  "nb_chambres": 5,
+  "meuble": false,
+  "dpe": "A",
+  "annee_construction": 1852,
+  "description": "Château avec vue dégagée de 130 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "contact": {
+    "nom": "Sophie Moreau",
+    "telephone": "0421314250"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-C07PXUR8/1.jpg",
+    "https://exemple-images.test/AN-C07PXUR8/2.jpg"
+  ]
+}

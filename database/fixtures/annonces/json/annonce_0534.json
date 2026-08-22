@@ -1,0 +1,25 @@
+{
+  "id": "0f313d74-a6f5-4bd3-916f-73e5a698569c",
+  "reference": "AN-XF7AMB2M",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2026-01-30T11:04:45",
+  "prix": 1035721,
+  "surface": 175,
+  "adresse": "136 place de la Mairie",
+  "description": "Terrain atypique de 175 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Martin",
+    "telephone": "0914904963",
+    "email": "luc.martin4@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-XF7AMB2M/1.jpg",
+    "https://exemple-images.test/AN-XF7AMB2M/2.jpg"
+  ]
+}

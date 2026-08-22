@@ -1,0 +1,23 @@
+{
+  "id": "fffa747f-3319-4cac-92d9-f608d8adfbd0",
+  "reference": "AN-DOLM6Y6B",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement rénové à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "10/06/2026",
+  "prix": 196365,
+  "charges_mensuelles": 320.94,
+  "surface": 169,
+  "nb_pieces": 3,
+  "nb_chambres": 4,
+  "meuble": true,
+  "dpe": "G",
+  "adresse": "9 allée des Platanes",
+  "description": "Appartement lumineux de 169 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marie Lefevre"
+  },
+  "exclusivite": false
+}

@@ -1,0 +1,22 @@
+{
+  "id": "2cd6689c-eab7-4983-9cf2-e606be829581",
+  "reference": "AN-CA608T83",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-02-10T21:00:45",
+  "prix": 320413,
+  "surface": 271,
+  "nb_pieces": 4,
+  "etage": 5,
+  "meuble": false,
+  "latitude": 48.889901,
+  "longitude": 2.330268,
+  "description": "Local commercial à rafraîchir de 271 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0767662896",
+    "agence": "Clé en Main Immo"
+  }
+}

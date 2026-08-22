@@ -1,0 +1,23 @@
+{
+  "id": "8526031b-51e8-41ee-b259-7042041e185c",
+  "reference": "AN-7ODKZ8WH",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-02-08",
+  "prix": 186309,
+  "surface": 92,
+  "nb_pieces": 8,
+  "etage": 4,
+  "latitude": 43.277291,
+  "longitude": 5.407187,
+  "description": "Studio atypique de 92 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0413472776"
+  },
+  "exclusivite": true
+}

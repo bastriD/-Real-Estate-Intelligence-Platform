@@ -1,0 +1,28 @@
+{
+  "id": "5623aaed-f327-4349-8521-1f953328b35c",
+  "reference": "AN-TGC3OP16",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1734606285,
+  "prix": 88841,
+  "surface": 68,
+  "nb_pieces": 6,
+  "nb_chambres": 5,
+  "etage": 0,
+  "dpe": "B",
+  "adresse": "108 chemin des Vignes",
+  "latitude": 43.303303,
+  "longitude": 5.419797,
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Lefevre",
+    "telephone": "0461778011",
+    "email": "karim.lefevre75@example.com"
+  },
+  "particulier": true
+}

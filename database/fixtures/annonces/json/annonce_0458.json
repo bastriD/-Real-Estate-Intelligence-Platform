@@ -1,0 +1,22 @@
+{
+  "id": "5faf9c77-25f6-4c2f-beff-28b6693f7bef",
+  "reference": "AN-UFTUNPDR",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain au calme à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "26 juillet 2025",
+  "prix": 1594839,
+  "surface": 225,
+  "adresse": "186 impasse des Lilas",
+  "description": "Terrain rénové de 225 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Marie Girard",
+    "telephone": "0564878292",
+    "email": "marie.girard19@example.com",
+    "agence": "Nid Doré"
+  },
+  "particulier": true
+}

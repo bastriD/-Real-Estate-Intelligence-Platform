@@ -1,0 +1,26 @@
+{
+  "id": "1575800b-3fbe-44cb-b800-67c1c931259d",
+  "reference": "AN-A7DQH207",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "05-11-2025",
+  "prix": 104910,
+  "surface": 83,
+  "nb_pieces": 6,
+  "etage": 0,
+  "meuble": true,
+  "dpe": "A",
+  "latitude": 43.31518,
+  "longitude": 5.373117,
+  "description": "Château à rafraîchir de 83 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "email": "contact60@example.com"
+  },
+  "exclusivite": true
+}

@@ -1,0 +1,21 @@
+{
+  "id": "98b00e76-84bf-4c87-a35f-56105169eb95",
+  "reference": "AN-I6MG1AII",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial avec vue dégagée à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "19 juillet 2025",
+  "prix": 398649,
+  "charges_mensuelles": 283.84,
+  "surface": 212,
+  "nb_pieces": 5,
+  "nb_chambres": 5,
+  "description": "Local commercial de standing de 212 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Julie Moreau",
+    "telephone": "0487565810"
+  },
+  "exclusivite": true
+}

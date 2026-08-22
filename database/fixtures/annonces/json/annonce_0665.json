@@ -1,0 +1,24 @@
+{
+  "id": "96040183-65eb-40c9-88ad-69cd84dc91db",
+  "reference": "AN-0YNPH4UF",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial avec vue dégagée à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "07-13-2025",
+  "prix": 317342,
+  "surface": 143,
+  "nb_pieces": 6,
+  "adresse": "194 rue Pasteur",
+  "contact": {
+    "nom": "Sophie Bernard",
+    "telephone": "0573371404"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-0YNPH4UF/1.jpg",
+    "https://exemple-images.test/AN-0YNPH4UF/2.jpg",
+    "https://exemple-images.test/AN-0YNPH4UF/3.jpg"
+  ],
+  "exclusivite": false
+}

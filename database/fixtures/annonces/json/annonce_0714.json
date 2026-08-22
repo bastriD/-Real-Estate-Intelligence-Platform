@@ -1,0 +1,28 @@
+{
+  "id": "b196a1bc-2bb1-4f6f-a766-6e4264a7ee08",
+  "reference": "AN-DMX0LCBZ",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial atypique à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "13 août 2026",
+  "prix": 318179,
+  "surface": 219,
+  "nb_pieces": 5,
+  "etage": "RDC",
+  "dpe": "F",
+  "adresse": "111 allée des Platanes",
+  "latitude": 48.856678,
+  "longitude": 2.328623,
+  "description": "Local commercial de standing de 219 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0643964434",
+    "email": "contact82@example.com",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-DMX0LCBZ/1.jpg",
+    "https://exemple-images.test/AN-DMX0LCBZ/2.jpg"
+  ]
+}

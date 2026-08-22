@@ -1,0 +1,35 @@
+{
+  "id": "e6765aca-49ca-4fdf-b352-5635ff947459",
+  "reference": "AN-B0EICL56",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1730661945,
+  "prix": "114867 €",
+  "charges_mensuelles": 256.76,
+  "surface_m2": 144,
+  "nb_pieces": 7,
+  "nb_chambres": 4,
+  "etage": 4,
+  "meuble": false,
+  "dpe": "A",
+  "latitude": 43.341188,
+  "longitude": 5.386293,
+  "description": "Château avec vue dégagée de 144 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Roche",
+    "telephone": "0316061464"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-B0EICL56/1.jpg",
+    "https://exemple-images.test/AN-B0EICL56/2.jpg",
+    "https://exemple-images.test/AN-B0EICL56/3.jpg",
+    "https://exemple-images.test/AN-B0EICL56/4.jpg"
+  ],
+  "particulier": true
+}

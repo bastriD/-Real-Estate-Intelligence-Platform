@@ -1,0 +1,21 @@
+{
+  "id": "11d0049d-a6fa-4946-8a39-98de75a1e5a6",
+  "reference": "AN-MNYN6CMX",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial au calme à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2026-04-13T12:56:45",
+  "prix": 290757,
+  "surface": 207,
+  "nb_pieces": 6,
+  "meuble": true,
+  "dpe": "B",
+  "description": "Local commercial charmant de 207 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Claire Moreau",
+    "agence": "Toit & Vous"
+  },
+  "exclusivite": true
+}

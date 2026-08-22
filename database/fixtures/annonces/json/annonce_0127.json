@@ -1,0 +1,29 @@
+{
+  "id": "0d7fa893-6b9a-468e-9756-7fceebd5daec",
+  "reference": "AN-PB1CZN8Z",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-04-22T05:17:45",
+  "prix": "197866 €",
+  "surface": 107,
+  "nb_pieces": 1,
+  "dpe": "B",
+  "adresse": "41 boulevard Gambetta",
+  "latitude": 43.268575,
+  "longitude": 5.395252,
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "email": "contact74@example.com",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-PB1CZN8Z/1.jpg",
+    "https://exemple-images.test/AN-PB1CZN8Z/2.jpg",
+    "https://exemple-images.test/AN-PB1CZN8Z/3.jpg",
+    "https://exemple-images.test/AN-PB1CZN8Z/4.jpg"
+  ]
+}

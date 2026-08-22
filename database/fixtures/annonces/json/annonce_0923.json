@@ -1,0 +1,27 @@
+{
+  "id": "20cfe1cf-e236-4562-a54c-c589388b175e",
+  "reference": "AN-4FB49VXS",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "08/01/2026",
+  "prix": 72798,
+  "charges_mensuelles": 50.9,
+  "surface": 115,
+  "nb_pieces": 6,
+  "meuble": false,
+  "dpe": "A",
+  "annee_construction": 1970,
+  "adresse": "168 place de la Mairie",
+  "latitude": 43.279642,
+  "longitude": 5.39169,
+  "description": "Château lumineux de 115 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0681723544",
+    "email": "contact47@example.com"
+  }
+}

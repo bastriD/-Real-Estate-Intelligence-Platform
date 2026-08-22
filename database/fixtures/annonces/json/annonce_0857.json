@@ -1,0 +1,27 @@
+{
+  "id": "7f20773f-b7b9-4bb5-b034-545d40a3e110",
+  "reference": "AN-RTM9IYRL",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1733704785,
+  "prix": 89408,
+  "surface_m2": 165,
+  "nb_pieces": 8,
+  "nb_chambres": 5,
+  "etage": "dernier étage",
+  "dpe": "A",
+  "adresse": "152 rue Victor Hugo",
+  "description": "Château à rafraîchir de 165 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Martin",
+    "telephone": "0185866341",
+    "agence": "Nid Doré"
+  },
+  "particulier": true
+}

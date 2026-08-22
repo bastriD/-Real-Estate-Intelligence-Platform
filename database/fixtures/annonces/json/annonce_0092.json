@@ -1,0 +1,32 @@
+{
+  "id": "6fada634-9c06-4366-816e-76c4c2f32b9a",
+  "reference": "AN-OKL9KYZO",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "08-21-2026",
+  "prix": 157764,
+  "surface": 157,
+  "nb_pieces": 7,
+  "nb_chambres": 2,
+  "etage": 2,
+  "adresse": "149 chemin des Vignes",
+  "latitude": 43.338557,
+  "longitude": 5.326732,
+  "description": "Studio en excellent état de 157 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Girard"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-OKL9KYZO/1.jpg",
+    "https://exemple-images.test/AN-OKL9KYZO/2.jpg",
+    "https://exemple-images.test/AN-OKL9KYZO/3.jpg",
+    "https://exemple-images.test/AN-OKL9KYZO/4.jpg",
+    "https://exemple-images.test/AN-OKL9KYZO/5.jpg"
+  ],
+  "exclusivite": true
+}

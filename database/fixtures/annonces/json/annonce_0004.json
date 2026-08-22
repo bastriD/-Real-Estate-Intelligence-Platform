@@ -1,0 +1,24 @@
+{
+  "id": "197a9abc-09d9-4bd7-ad2c-abf1ad2fc1a7",
+  "reference": "AN-HGKF9YV5",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1731041085,
+  "prix": 135500,
+  "surface_m2": 94,
+  "nb_pieces": 8,
+  "nb_chambres": 5,
+  "annee_construction": 1869,
+  "adresse": "126 allée des Platanes",
+  "latitude": 43.337853,
+  "longitude": 5.409099,
+  "description": "Studio lumineux de 94 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Faure"
+  }
+}

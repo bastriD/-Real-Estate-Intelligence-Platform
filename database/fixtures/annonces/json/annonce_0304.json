@@ -1,0 +1,24 @@
+{
+  "id": "1a64eb77-114f-41dc-99a8-58e60184357a",
+  "reference": "AN-TNOK9JIT",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "04-17-2026",
+  "prix": 299417,
+  "surface": 84,
+  "nb_pieces": 2,
+  "nb_chambres": 5,
+  "etage": 4,
+  "dpe": "D",
+  "annee_construction": 1941,
+  "description": "Appartement rénové de 84 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Nadia Lefevre",
+    "telephone": "0070512329",
+    "agence": "Century Habitat"
+  },
+  "particulier": true
+}

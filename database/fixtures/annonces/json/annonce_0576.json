@@ -1,0 +1,22 @@
+{
+  "id": "a0d52df4-55f6-4fc7-ac37-8ba19588cd2c",
+  "reference": "AN-W4BCVY6T",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain avec vue dégagée à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "01-25-2026",
+  "prix": 1381176,
+  "charges_mensuelles": 372.66,
+  "surface": 159,
+  "description": "Terrain à rafraîchir de 159 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "agence": "Provence Immobilier"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-W4BCVY6T/1.jpg"
+  ]
+}

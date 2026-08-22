@@ -1,0 +1,33 @@
+{
+  "id": "423a52ea-820b-4e61-aaee-4cfd33f0351f",
+  "reference": "AN-J3RVJC2U",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement rénové à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1725219045,
+  "prix": 332032,
+  "surface": 88,
+  "nb_pieces": 2,
+  "nb_chambres": 6,
+  "meuble": true,
+  "annee_construction": 1944,
+  "adresse": "200 rue du Commerce",
+  "latitude": 47.333664,
+  "longitude": 5.070063,
+  "description": "Appartement charmant de 88 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Claire Lefevre",
+    "telephone": "0530846311",
+    "email": "claire.lefevre34@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-J3RVJC2U/1.jpg",
+    "https://exemple-images.test/AN-J3RVJC2U/2.jpg",
+    "https://exemple-images.test/AN-J3RVJC2U/3.jpg",
+    "https://exemple-images.test/AN-J3RVJC2U/4.jpg",
+    "https://exemple-images.test/AN-J3RVJC2U/5.jpg"
+  ],
+  "particulier": true
+}

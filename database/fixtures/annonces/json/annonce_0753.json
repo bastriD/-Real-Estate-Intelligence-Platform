@@ -1,0 +1,22 @@
+{
+  "id": "34025e8e-cdaa-4ab3-bbbb-ddf6c0541a35",
+  "reference": "AN-41MQYDIQ",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1748203725,
+  "prix": 287655,
+  "surface": 149,
+  "nb_pieces": 4,
+  "etage": 0,
+  "adresse": "173 allée des Platanes",
+  "latitude": 48.871466,
+  "longitude": 2.338432,
+  "description": "Local commercial avec vue dégagée de 149 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Claire Girard"
+  },
+  "particulier": true
+}

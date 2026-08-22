@@ -1,0 +1,23 @@
+{
+  "id": "10d86a32-9f39-47f3-a51e-460456ae6e87",
+  "reference": "AN-FJJJLUJV",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "06/11/2024",
+  "prix": 272905,
+  "surface": 180,
+  "nb_pieces": 1,
+  "nb_chambres": 4,
+  "meuble": false,
+  "adresse": "138 rue Pasteur",
+  "description": "Appartement spacieux de 180 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0309486313",
+    "agence": "Toit & Vous"
+  },
+  "photos": [],
+  "exclusivite": true
+}

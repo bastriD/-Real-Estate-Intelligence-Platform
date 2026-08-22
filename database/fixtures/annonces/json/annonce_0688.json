@@ -1,0 +1,33 @@
+{
+  "id": "988fc1be-5033-468c-bc14-6fcf19a7f554",
+  "reference": "AN-X8YKAD12",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial spacieux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "03-14-2026",
+  "prix": 363521,
+  "charges_mensuelles": 339.58,
+  "surface": 154,
+  "nb_pieces": 2,
+  "nb_chambres": 1,
+  "etage": 4,
+  "dpe": "F",
+  "adresse": "94 place de la Mairie",
+  "latitude": 48.857253,
+  "longitude": 2.306939,
+  "description": "Local commercial avec vue dégagée de 154 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0600035141",
+    "email": "contact12@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-X8YKAD12/1.jpg",
+    "https://exemple-images.test/AN-X8YKAD12/2.jpg",
+    "https://exemple-images.test/AN-X8YKAD12/3.jpg",
+    "https://exemple-images.test/AN-X8YKAD12/4.jpg"
+  ],
+  "exclusivite": false
+}

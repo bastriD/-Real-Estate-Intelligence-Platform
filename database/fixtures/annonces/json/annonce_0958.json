@@ -1,0 +1,22 @@
+{
+  "id": "13661c75-cebe-4dcb-8e98-c69b91d5b0f5",
+  "reference": "AN-3BI9RXIH",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "07/10/2025",
+  "prix": 77134,
+  "surface": 85,
+  "nb_pieces": 6,
+  "etage": 3,
+  "dpe": "A",
+  "latitude": 43.318324,
+  "longitude": 5.369732,
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Dubois"
+  }
+}

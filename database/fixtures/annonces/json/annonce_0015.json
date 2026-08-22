@@ -1,0 +1,21 @@
+{
+  "id": "d4bcf012-4747-472e-aada-87531c304643",
+  "reference": "AN-W54OBJ5S",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-08-05",
+  "prix": 172494,
+  "surface_m2": 214,
+  "nb_pieces": 7,
+  "nb_chambres": 4,
+  "etage": "RDC",
+  "adresse": "39 impasse des Lilas",
+  "terrasse": true,
+  "contact": {
+    "nom": "Julie Lefevre"
+  },
+  "particulier": true
+}

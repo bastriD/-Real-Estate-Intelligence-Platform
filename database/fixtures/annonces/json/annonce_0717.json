@@ -1,0 +1,24 @@
+{
+  "id": "46b8adc0-50b1-45fa-b836-72c1ecc6b06b",
+  "reference": "AN-IP0YGWKU",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial atypique à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "01-20-2025",
+  "prix": 290913,
+  "charges_mensuelles": 100.1,
+  "surface": 232,
+  "nb_pieces": 6,
+  "nb_chambres": 1,
+  "etage": "dernier étage",
+  "adresse": "62 rue Victor Hugo",
+  "latitude": 48.845277,
+  "longitude": 2.398149,
+  "description": "Local commercial spacieux de 232 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Jean Faure",
+    "telephone": "0951442501"
+  }
+}

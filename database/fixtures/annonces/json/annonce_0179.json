@@ -1,0 +1,23 @@
+{
+  "id": "b85f8666-96c0-429a-a54e-abc6ec1acddb",
+  "reference": "AN-AAO2XW0K",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-03-04",
+  "prix": "153580 €",
+  "surface": 199,
+  "nb_pieces": 8,
+  "nb_chambres": 1,
+  "etage": 2,
+  "adresse": "121 rue Pasteur",
+  "description": "Studio lumineux de 199 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0434558175",
+    "email": "contact27@example.com"
+  }
+}

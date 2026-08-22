@@ -1,0 +1,22 @@
+{
+  "id": "a1d339c8-61ab-4c07-9140-ff89dea15bda",
+  "reference": "AN-WUAFERP8",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-01-03T14:54:45",
+  "prix": 165833,
+  "surface": 155,
+  "nb_pieces": 4,
+  "nb_chambres": 2,
+  "dpe": "F",
+  "description": "Studio au calme de 155 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "contact": {
+    "telephone": "0297661949",
+    "agence": "Nid Doré"
+  },
+  "exclusivite": false
+}

@@ -1,0 +1,30 @@
+{
+  "id": "7fc4d92a-a8e3-46e7-bb43-a56f46cfe8a3",
+  "reference": "AN-O8X1DLXD",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "16 décembre 2025",
+  "prix": "153031 €",
+  "charges_mensuelles": 331.19,
+  "surface": 110,
+  "nb_pieces": 4,
+  "nb_chambres": 0,
+  "etage": "dernier étage",
+  "dpe": "D",
+  "adresse": "190 rue Victor Hugo",
+  "description": "Studio à rafraîchir de 110 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0365200203",
+    "agence": "Century Habitat"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-O8X1DLXD/1.jpg",
+    "https://exemple-images.test/AN-O8X1DLXD/2.jpg",
+    "https://exemple-images.test/AN-O8X1DLXD/3.jpg"
+  ]
+}

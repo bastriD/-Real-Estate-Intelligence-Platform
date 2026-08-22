@@ -1,0 +1,25 @@
+{
+  "id": "fd479f12-70d3-47d0-ac4d-45fa15445cb6",
+  "reference": "AN-AKQRL2KA",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "10 novembre 2024",
+  "prix": 140708,
+  "surface_m2": 88,
+  "nb_chambres": 1,
+  "dpe": "D",
+  "annee_construction": 1869,
+  "latitude": 43.297995,
+  "longitude": 5.380272,
+  "description": "Studio rénové de 88 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0581430627",
+    "email": "contact20@example.com"
+  },
+  "exclusivite": false
+}

@@ -1,0 +1,27 @@
+{
+  "id": "4ce9ab2b-7563-4cda-b7c6-27b0407d109c",
+  "reference": "AN-P234ARA9",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "31 mai 2026",
+  "prix": 90031,
+  "surface": 106,
+  "nb_pieces": 8,
+  "nb_chambres": 3,
+  "etage": 3,
+  "dpe": "A",
+  "adresse": "43 impasse des Lilas",
+  "latitude": 43.32029,
+  "longitude": 5.35048,
+  "description": "Château atypique de 106 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0269165839",
+    "email": "contact28@example.com",
+    "agence": "Century Habitat"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "c721e396-a1e5-4377-861f-2ee75f643379",
+  "reference": "AN-S944333C",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial charmant à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1729938765,
+  "prix": 271189,
+  "surface": 267,
+  "nb_pieces": 3,
+  "etage": 4,
+  "meuble": true,
+  "dpe": "G",
+  "adresse": "146 place de la Mairie",
+  "latitude": 48.889757,
+  "longitude": 2.370223,
+  "description": "Local commercial rénové de 267 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0419031411"
+  },
+  "exclusivite": true
+}

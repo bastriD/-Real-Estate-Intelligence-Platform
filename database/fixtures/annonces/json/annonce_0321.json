@@ -1,0 +1,25 @@
+{
+  "id": "c5845da6-ffdc-49de-a0b2-ff1225fd0923",
+  "reference": "AN-Y0XA3FS6",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "27/09/2025",
+  "prix": 368696,
+  "surface": 166,
+  "nb_pieces": 1,
+  "nb_chambres": 6,
+  "etage": "dernier étage",
+  "adresse": "33 boulevard Gambetta",
+  "latitude": 47.317197,
+  "longitude": 5.014901,
+  "description": "Appartement lumineux de 166 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Karim Roche",
+    "telephone": "0011724474",
+    "email": "karim.roche68@example.com",
+    "agence": "ImmoPlus"
+  }
+}

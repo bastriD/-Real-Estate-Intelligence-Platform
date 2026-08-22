@@ -1,0 +1,23 @@
+{
+  "id": "53e08d97-88fa-4374-8934-5a34f5412b2d",
+  "reference": "AN-BDUDEAZA",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "23 mai 2025",
+  "prix": "967456 €",
+  "surface": 238,
+  "latitude": 43.703369,
+  "longitude": 7.225888,
+  "description": "Terrain spacieux de 238 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Roche",
+    "telephone": "0644603334",
+    "email": "marc.roche50@example.com"
+  },
+  "exclusivite": false
+}

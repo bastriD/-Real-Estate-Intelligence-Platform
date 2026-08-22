@@ -1,0 +1,23 @@
+{
+  "id": "efad97ec-f1ea-4adf-a33b-0676795a6e9f",
+  "reference": "AN-078IKF65",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2026-08-18",
+  "prix": 232350,
+  "surface_m2": 206,
+  "nb_pieces": 6,
+  "etage": 1,
+  "adresse": "38 rue de la République",
+  "description": "Local commercial à rafraîchir de 206 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Perrin",
+    "telephone": "0496643311",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [],
+  "exclusivite": false
+}

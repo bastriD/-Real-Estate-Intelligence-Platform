@@ -1,0 +1,25 @@
+{
+  "id": "a0e8ab19-f536-4c82-ab2b-12c244ba55bf",
+  "reference": "AN-3W92GYVE",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1732744665,
+  "prix": 215204,
+  "charges_mensuelles": 194.61,
+  "surface": 188,
+  "nb_pieces": 6,
+  "adresse": "163 chemin des Vignes",
+  "description": "Studio charmant de 188 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Martin",
+    "telephone": "0471823960"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-3W92GYVE/1.jpg"
+  ]
+}

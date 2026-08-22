@@ -1,0 +1,24 @@
+{
+  "id": "20e7aa17-6636-4f07-8067-95e8af737c5f",
+  "reference": "AN-32AKMJK0",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain avec vue dégagée à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "10-14-2025",
+  "prix": 1359075,
+  "surface": 145,
+  "latitude": 43.672778,
+  "longitude": 7.309571,
+  "description": "Terrain au calme de 145 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Faure",
+    "telephone": "0485104357",
+    "email": "marc.faure65@example.com",
+    "agence": "Toit & Vous"
+  },
+  "exclusivite": false
+}

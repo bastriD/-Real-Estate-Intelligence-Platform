@@ -1,0 +1,23 @@
+{
+  "id": "433b8293-94d4-4873-8c5f-b7d1c77c83e1",
+  "reference": "AN-S2TSY263",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement en excellent état à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-03-05",
+  "prix": 299623,
+  "surface": 210,
+  "nb_pieces": 5,
+  "nb_chambres": 5,
+  "annee_construction": 1995,
+  "adresse": "123 rue Victor Hugo",
+  "latitude": 47.314721,
+  "longitude": 5.068519,
+  "contact": {
+    "telephone": "0496279322",
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": false
+}

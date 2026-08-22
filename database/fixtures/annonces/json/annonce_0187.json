@@ -1,0 +1,25 @@
+{
+  "id": "f6c33b76-8899-4d98-bc45-3d844e9a6f88",
+  "reference": "AN-COYUJL1Y",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-08-04T11:46:45",
+  "prix": 151201,
+  "surface": 128,
+  "nb_pieces": 6,
+  "nb_chambres": 3,
+  "etage": 5,
+  "meuble": false,
+  "dpe": "A",
+  "annee_construction": 1906,
+  "latitude": 43.275167,
+  "longitude": 5.408912,
+  "description": "Studio atypique de 128 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "contact": {
+    "nom": "Ahmed Lefevre"
+  }
+}

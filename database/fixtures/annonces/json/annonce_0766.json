@@ -1,0 +1,22 @@
+{
+  "id": "c12b386f-7496-4a68-b283-abf92f38b058",
+  "reference": "AN-L2VZNTLB",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial de standing à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1744385625,
+  "prix": 366805,
+  "charges_mensuelles": 304.8,
+  "surface": 172,
+  "nb_pieces": 6,
+  "nb_chambres": 0,
+  "etage": 4,
+  "adresse": "111 avenue des Champs",
+  "description": "Local commercial spacieux de 172 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0601246587"
+  },
+  "exclusivite": true
+}

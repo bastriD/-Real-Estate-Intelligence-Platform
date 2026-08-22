@@ -1,0 +1,25 @@
+{
+  "id": "d1d6ae3f-d452-4736-b09d-2336b9dac188",
+  "reference": "AN-DQB76J6V",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial spacieux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1748556765,
+  "prix": 267388,
+  "surface_m2": 201,
+  "nb_pieces": 5,
+  "etage": "dernier étage",
+  "dpe": "D",
+  "annee_construction": 1860,
+  "adresse": "182 chemin des Vignes",
+  "description": "Local commercial rénové de 201 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Nadia Lefevre",
+    "email": "nadia.lefevre86@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-DQB76J6V/1.jpg"
+  ]
+}

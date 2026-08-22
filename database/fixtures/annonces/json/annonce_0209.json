@@ -1,0 +1,30 @@
+{
+  "id": "d80e8c74-5d68-47b8-bbf3-a481630ee8d8",
+  "reference": "AN-PGE0AS08",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement spacieux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "02-12-2025",
+  "prix": 363321,
+  "surface": 83,
+  "nb_pieces": 5,
+  "nb_chambres": 4,
+  "meuble": false,
+  "dpe": "B",
+  "adresse": "94 rue Victor Hugo",
+  "latitude": 47.335368,
+  "longitude": 5.028252,
+  "description": "Appartement à rafraîchir de 83 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Jean Dubois"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-PGE0AS08/1.jpg",
+    "https://exemple-images.test/AN-PGE0AS08/2.jpg",
+    "https://exemple-images.test/AN-PGE0AS08/3.jpg",
+    "https://exemple-images.test/AN-PGE0AS08/4.jpg"
+  ],
+  "exclusivite": false
+}

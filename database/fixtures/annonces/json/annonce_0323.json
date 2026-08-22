@@ -1,0 +1,23 @@
+{
+  "id": "de46d425-4260-4303-b20e-849123dd79dd",
+  "reference": "AN-KRCG7X79",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement charmant à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2026-07-02",
+  "prix": 335922,
+  "surface": 74,
+  "nb_pieces": 3,
+  "nb_chambres": 5,
+  "etage": 2,
+  "meuble": true,
+  "dpe": "G",
+  "adresse": "180 quai de la Loire",
+  "description": "Appartement au calme de 74 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0765902314",
+    "agence": "Century Habitat"
+  }
+}

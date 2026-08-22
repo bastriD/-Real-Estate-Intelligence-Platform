@@ -1,0 +1,21 @@
+{
+  "id": "32c86657-ad81-4fc2-9e39-0c025d924dca",
+  "reference": "AN-4G81WAAV",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain lumineux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "06-21-2025",
+  "prix": 1751379,
+  "surface": 190,
+  "adresse": "117 place de la Mairie",
+  "description": "Terrain au calme de 190 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Moreau",
+    "telephone": "0289569479"
+  },
+  "exclusivite": true
+}

@@ -1,0 +1,21 @@
+{
+  "id": "9d2baece-d4e0-4a9d-ad94-880d8a818fa5",
+  "reference": "AN-WYOQ27JA",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain avec vue dégagée à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "21 avril 2026",
+  "prix": 1694644,
+  "surface_m2": 239,
+  "adresse": "198 quai de la Loire",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Roche",
+    "email": "karim.roche95@example.com",
+    "agence": "Century Habitat"
+  },
+  "particulier": true
+}

@@ -1,0 +1,23 @@
+{
+  "id": "493b6b38-b4a5-46c0-afd1-70278c2fd6a9",
+  "reference": "AN-UQEO9SS7",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "14/12/2024",
+  "prix": 338756,
+  "charges_mensuelles": 56.41,
+  "surface": 77,
+  "nb_pieces": 3,
+  "nb_chambres": 4,
+  "meuble": true,
+  "dpe": "E",
+  "annee_construction": 2014,
+  "description": "Appartement atypique de 77 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Nadia Faure"
+  },
+  "exclusivite": true
+}

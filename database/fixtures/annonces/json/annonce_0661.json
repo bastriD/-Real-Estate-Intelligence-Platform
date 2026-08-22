@@ -1,0 +1,20 @@
+{
+  "id": "5aeb8977-3026-4834-afb7-32b868debe52",
+  "reference": "AN-IIKQ0E68",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-06-22",
+  "prix": 367493,
+  "surface": 264,
+  "nb_pieces": 5,
+  "nb_chambres": 2,
+  "meuble": false,
+  "description": "Local commercial de standing de 264 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0749947041",
+    "agence": "Clé en Main Immo"
+  }
+}

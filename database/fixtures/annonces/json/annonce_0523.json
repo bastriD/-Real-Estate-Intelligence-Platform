@@ -1,0 +1,19 @@
+{
+  "id": "445ee84b-9839-47df-af34-e1fe823d30a5",
+  "reference": "AN-YU6L3CTE",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain rénové à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2026-07-22T16:12:45",
+  "prix": 997466,
+  "surface": 262,
+  "description": "Terrain rénové de 262 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Lefevre",
+    "email": "sophie.lefevre73@example.com"
+  },
+  "exclusivite": false
+}

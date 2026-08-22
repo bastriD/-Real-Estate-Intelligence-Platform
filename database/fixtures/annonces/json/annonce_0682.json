@@ -1,0 +1,31 @@
+{
+  "id": "2b2db640-3b60-4a8b-8d7f-df949944049f",
+  "reference": "AN-28ES09FV",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "22 mars 2026",
+  "prix": "283665 €",
+  "surface": 212,
+  "nb_pieces": 4,
+  "nb_chambres": 2,
+  "etage": 2,
+  "meuble": false,
+  "dpe": "F",
+  "annee_construction": 2003,
+  "adresse": "106 avenue des Champs",
+  "latitude": 48.834109,
+  "longitude": 2.39013,
+  "contact": {
+    "nom": "Marc Perrin",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-28ES09FV/1.jpg",
+    "https://exemple-images.test/AN-28ES09FV/2.jpg",
+    "https://exemple-images.test/AN-28ES09FV/3.jpg"
+  ],
+  "exclusivite": true
+}

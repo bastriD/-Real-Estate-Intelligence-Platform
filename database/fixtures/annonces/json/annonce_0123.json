@@ -1,0 +1,28 @@
+{
+  "id": "da19d714-9753-43f5-908a-2a813c67bab2",
+  "reference": "AN-6O3SWNZO",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-09-04",
+  "prix": 167208,
+  "surface": 212,
+  "nb_pieces": 2,
+  "nb_chambres": 3,
+  "etage": 5,
+  "annee_construction": 1966,
+  "adresse": "185 place de la Mairie",
+  "latitude": 43.28785,
+  "longitude": 5.358579,
+  "description": "Studio rénové de 212 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0353895032",
+    "email": "contact5@example.com",
+    "agence": "Nid Doré"
+  },
+  "exclusivite": true
+}

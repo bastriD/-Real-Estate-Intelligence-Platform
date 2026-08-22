@@ -1,0 +1,24 @@
+{
+  "id": "135a85c9-0b29-4164-990f-de95cc7560f7",
+  "reference": "AN-Y7TUZPWN",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial au calme à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "08/04/2025",
+  "prix": "302250 €",
+  "surface": 178,
+  "nb_pieces": 2,
+  "nb_chambres": 3,
+  "meuble": false,
+  "dpe": "C",
+  "adresse": "198 place de la Mairie",
+  "latitude": 48.80695,
+  "longitude": 2.377788,
+  "description": "Local commercial au calme de 178 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Luc Lefevre",
+    "telephone": "0071541135"
+  }
+}

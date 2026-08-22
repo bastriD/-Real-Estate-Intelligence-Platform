@@ -1,0 +1,24 @@
+{
+  "id": "e1abd952-fee3-45ed-9c64-15945410f41a",
+  "reference": "AN-0ZT4N4US",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial avec vue dégagée à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "16 mai 2026",
+  "prix": 334311,
+  "surface": 271,
+  "nb_pieces": 3,
+  "etage": 4,
+  "meuble": false,
+  "adresse": "118 rue du Commerce",
+  "description": "Local commercial au calme de 271 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Sophie Moreau",
+    "agence": "Provence Immobilier"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-0ZT4N4US/1.jpg"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "id": "b3e32b80-81ac-4912-9494-d2f564e63745",
+  "reference": "AN-IKHW1ZLH",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial au calme à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1756416645,
+  "prix": 264068,
+  "charges_mensuelles": 72.41,
+  "surface": 168,
+  "nb_pieces": 6,
+  "meuble": true,
+  "dpe": "B",
+  "contact": {
+    "nom": "Claire Bernard",
+    "telephone": "0611852930",
+    "email": "claire.bernard49@example.com"
+  },
+  "photos": []
+}

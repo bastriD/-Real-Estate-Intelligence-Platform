@@ -1,0 +1,23 @@
+{
+  "id": "c66941cd-450d-438e-9da3-4f20a48d45de",
+  "reference": "AN-UAM3XBIE",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement spacieux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1740298665,
+  "prix": 216098,
+  "surface": 210,
+  "nb_pieces": 1,
+  "nb_chambres": 5,
+  "meuble": false,
+  "latitude": 47.329075,
+  "longitude": 5.026681,
+  "description": "Appartement à rafraîchir de 210 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0395527085",
+    "email": "contact27@example.com",
+    "agence": "Century Habitat"
+  }
+}

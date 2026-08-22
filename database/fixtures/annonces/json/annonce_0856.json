@@ -1,0 +1,31 @@
+{
+  "id": "761ec386-a8e4-4b1d-9e7d-98a037408ca4",
+  "reference": "AN-1N5WUB6V",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "3 juin 2025",
+  "prix": 123679,
+  "surface": 117,
+  "nb_pieces": 6,
+  "dpe": "A",
+  "annee_construction": 1942,
+  "adresse": "109 place de la Mairie",
+  "description": "Château rénové de 117 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Lefevre",
+    "telephone": "0279974748",
+    "email": "karim.lefevre3@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-1N5WUB6V/1.jpg",
+    "https://exemple-images.test/AN-1N5WUB6V/2.jpg",
+    "https://exemple-images.test/AN-1N5WUB6V/3.jpg",
+    "https://exemple-images.test/AN-1N5WUB6V/4.jpg",
+    "https://exemple-images.test/AN-1N5WUB6V/5.jpg"
+  ]
+}

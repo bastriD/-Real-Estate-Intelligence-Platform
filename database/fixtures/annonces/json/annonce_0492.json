@@ -1,0 +1,19 @@
+{
+  "id": "faaae250-11c2-4bee-af1f-bea6b26e424c",
+  "reference": "AN-YGM25E9G",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "29 janvier 2025",
+  "prix": 1039991,
+  "surface": 139,
+  "description": "Terrain à rafraîchir de 139 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "calme": true,
+  "contact": {
+    "nom": "Claire Girard",
+    "telephone": "0450127680",
+    "agence": "Toit & Vous"
+  }
+}

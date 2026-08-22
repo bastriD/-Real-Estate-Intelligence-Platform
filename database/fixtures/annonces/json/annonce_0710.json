@@ -1,0 +1,22 @@
+{
+  "id": "7c179913-515d-404b-aed3-0bd9d050276f",
+  "reference": "AN-J1QQO0XO",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1780471185,
+  "prix": 337213,
+  "surface_m2": 171,
+  "nb_pieces": 3,
+  "nb_chambres": 1,
+  "dpe": "G",
+  "description": "Local commercial atypique de 171 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marc Perrin",
+    "telephone": "0989854901",
+    "email": "marc.perrin67@example.com",
+    "agence": "Toit & Vous"
+  }
+}

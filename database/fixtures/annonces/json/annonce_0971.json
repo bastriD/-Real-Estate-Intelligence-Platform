@@ -1,0 +1,24 @@
+{
+  "id": "021d721e-6002-4265-be87-ac115a8082b1",
+  "reference": "AN-0A2E2123",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-09-07T12:29:45",
+  "prix": "84482 €",
+  "surface": 37,
+  "nb_pieces": 7,
+  "nb_chambres": 0,
+  "dpe": "D",
+  "description": "Château charmant de 37 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Roche",
+    "telephone": "0968246315",
+    "email": "marie.roche96@example.com",
+    "agence": "ImmoPlus"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "cd7c0f73-8c44-44ed-98fa-75dd2cd285ef",
+  "reference": "AN-YWI0Q5RT",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-01-28T01:35:45",
+  "prix": "120737 €",
+  "surface": 231,
+  "nb_chambres": 1,
+  "dpe": "A",
+  "description": "Studio rénové de 231 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Martin",
+    "email": "luc.martin51@example.com"
+  },
+  "exclusivite": false
+}

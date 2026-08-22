@@ -1,0 +1,23 @@
+{
+  "id": "81ea3896-d6e9-4e25-a98b-ecbbb570e3e9",
+  "reference": "AN-6AIZLQXW",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement en excellent état à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1732848405,
+  "prix": 298268,
+  "surface": 208,
+  "nb_pieces": 4,
+  "nb_chambres": 4,
+  "dpe": "A",
+  "adresse": "199 rue Jean Jaurès",
+  "latitude": 47.310199,
+  "longitude": 5.05764,
+  "contact": {
+    "nom": "Claire Dubois",
+    "telephone": "0593388738",
+    "email": "claire.dubois6@example.com"
+  }
+}

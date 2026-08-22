@@ -1,0 +1,31 @@
+{
+  "id": "5fa1ec53-be94-49cc-aa48-a1e765263035",
+  "reference": "AN-7BZAMV3Y",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "01-29-2026",
+  "prix": 171235,
+  "surface": 118,
+  "nb_pieces": 3,
+  "nb_chambres": 0,
+  "meuble": false,
+  "dpe": "G",
+  "adresse": "102 boulevard Gambetta",
+  "latitude": 43.334293,
+  "longitude": 5.345209,
+  "description": "Studio atypique de 118 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Faure",
+    "telephone": "0102122101",
+    "email": "luc.faure44@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-7BZAMV3Y/1.jpg"
+  ],
+  "exclusivite": true
+}

@@ -1,0 +1,23 @@
+{
+  "id": "e0ac0bed-5dd2-4cf9-9a00-6c9afb2aa05d",
+  "reference": "AN-QW8ZTZN1",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1752339825,
+  "prix": "280689 €",
+  "charges_mensuelles": 156.2,
+  "surface": 146,
+  "nb_pieces": 2,
+  "nb_chambres": 5,
+  "meuble": false,
+  "adresse": "119 quai de la Loire",
+  "description": "Appartement avec vue dégagée de 146 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Julie Fontaine",
+    "telephone": "0815934749",
+    "email": "julie.fontaine72@example.com"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "id": "a34cf9d2-dea2-4686-95cb-c383eb965380",
+  "reference": "AN-TYLLAMCA",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial spacieux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-10-25T01:37:45",
+  "prix": 397910,
+  "surface_m2": 218,
+  "nb_pieces": 6,
+  "etage": 3,
+  "dpe": "F",
+  "description": "Local commercial spacieux de 218 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0664185100",
+    "email": "contact67@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-TYLLAMCA/1.jpg",
+    "https://exemple-images.test/AN-TYLLAMCA/2.jpg",
+    "https://exemple-images.test/AN-TYLLAMCA/3.jpg",
+    "https://exemple-images.test/AN-TYLLAMCA/4.jpg",
+    "https://exemple-images.test/AN-TYLLAMCA/5.jpg"
+  ],
+  "exclusivite": true
+}

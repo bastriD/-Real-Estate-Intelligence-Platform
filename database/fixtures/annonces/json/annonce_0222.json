@@ -1,0 +1,30 @@
+{
+  "id": "14c447b6-66aa-4acd-82db-a41576b473ef",
+  "reference": "AN-WWFY5NOV",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement lumineux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "10 décembre 2024",
+  "prix": 273437,
+  "surface": 81,
+  "nb_pieces": 1,
+  "nb_chambres": 7,
+  "etage": 5,
+  "dpe": "D",
+  "adresse": "64 rue Pasteur",
+  "latitude": 47.346478,
+  "longitude": 5.056926,
+  "description": "Appartement spacieux de 81 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Claire Girard",
+    "telephone": "0271802711",
+    "email": "claire.girard76@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-WWFY5NOV/1.jpg",
+    "https://exemple-images.test/AN-WWFY5NOV/2.jpg",
+    "https://exemple-images.test/AN-WWFY5NOV/3.jpg"
+  ]
+}

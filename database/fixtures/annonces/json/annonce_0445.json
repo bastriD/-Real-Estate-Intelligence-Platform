@@ -1,0 +1,23 @@
+{
+  "id": "96eee312-c671-4826-8575-73f66a68c507",
+  "reference": "AN-NNWM1RCI",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain charmant à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "18 août 2025",
+  "prix": "963787 €",
+  "surface": 170,
+  "adresse": "66 rue Victor Hugo",
+  "latitude": 43.66034,
+  "longitude": 7.243113,
+  "description": "Terrain spacieux de 170 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Roche",
+    "telephone": "0902736732",
+    "agence": "Century Habitat"
+  }
+}

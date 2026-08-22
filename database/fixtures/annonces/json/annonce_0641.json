@@ -1,0 +1,21 @@
+{
+  "id": "6df589c7-992e-492e-8ea4-6d571d85550f",
+  "reference": "AN-YLWME3WN",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial rénové à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "09-02-2024",
+  "prix": 339311,
+  "surface": 239,
+  "nb_pieces": 6,
+  "nb_chambres": 3,
+  "etage": 4,
+  "contact": {
+    "nom": "Nadia Perrin",
+    "telephone": "0497562401",
+    "agence": "Nid Doré"
+  },
+  "exclusivite": false
+}

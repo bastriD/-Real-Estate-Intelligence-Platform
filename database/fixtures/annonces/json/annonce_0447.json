@@ -1,0 +1,23 @@
+{
+  "id": "20c03f66-70cd-45a2-8e85-fecb4f6754fe",
+  "reference": "AN-RS7XDNFB",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "11/04/2026",
+  "prix": 1173486,
+  "surface": 155,
+  "adresse": "70 impasse des Lilas",
+  "description": "Terrain au calme de 155 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Martin"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-RS7XDNFB/1.jpg",
+    "https://exemple-images.test/AN-RS7XDNFB/2.jpg"
+  ]
+}

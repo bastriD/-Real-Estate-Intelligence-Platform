@@ -1,0 +1,23 @@
+{
+  "id": "b331f2cf-6f29-4474-b4d0-bd2bee3065ec",
+  "reference": "AN-L2KORQS3",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-12-06T00:43:45",
+  "prix": 134409,
+  "surface": 158,
+  "nb_pieces": 6,
+  "etage": 2,
+  "dpe": "A",
+  "adresse": "39 quai de la Loire",
+  "description": "Château lumineux de 158 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Fontaine",
+    "email": "ahmed.fontaine98@example.com"
+  }
+}

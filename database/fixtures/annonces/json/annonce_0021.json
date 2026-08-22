@@ -1,0 +1,23 @@
+{
+  "id": "c908b78d-0f44-4b38-80c0-b21c48739b6b",
+  "reference": "AN-DSHY4C70",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "05-24-2026",
+  "prix": 154717,
+  "surface": 193,
+  "nb_pieces": 5,
+  "description": "Studio atypique de 193 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Fontaine",
+    "telephone": "0596610732",
+    "email": "julie.fontaine96@example.com",
+    "agence": "Nid Doré"
+  },
+  "exclusivite": true
+}

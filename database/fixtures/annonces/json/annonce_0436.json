@@ -1,0 +1,21 @@
+{
+  "id": "e51338b7-ae66-4fc0-b220-cc62899f2fa1",
+  "reference": "AN-M4DXD0WC",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain charmant à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "3 juillet 2025",
+  "prix": 1158294,
+  "surface": 215,
+  "latitude": 43.732472,
+  "longitude": 7.246935,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Roche",
+    "telephone": "0024102334",
+    "agence": "Provence Immobilier"
+  }
+}

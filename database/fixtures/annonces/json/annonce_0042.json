@@ -1,0 +1,32 @@
+{
+  "id": "aca65a2c-187c-41cc-997c-6d0fac6e6e2c",
+  "reference": "AN-XZ6VWKC9",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-01-21T13:31:45",
+  "prix": 152647,
+  "surface": 125,
+  "nb_pieces": 1,
+  "nb_chambres": 3,
+  "etage": 3,
+  "dpe": "D",
+  "latitude": 43.259459,
+  "longitude": 5.414999,
+  "description": "Studio charmant de 125 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Dubois",
+    "telephone": "0475749574"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-XZ6VWKC9/1.jpg",
+    "https://exemple-images.test/AN-XZ6VWKC9/2.jpg",
+    "https://exemple-images.test/AN-XZ6VWKC9/3.jpg",
+    "https://exemple-images.test/AN-XZ6VWKC9/4.jpg",
+    "https://exemple-images.test/AN-XZ6VWKC9/5.jpg"
+  ]
+}

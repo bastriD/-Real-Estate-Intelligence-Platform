@@ -1,0 +1,27 @@
+{
+  "id": "9185cf72-56e3-4b7f-b11c-0b343774ef0a",
+  "reference": "AN-K4ESF4R4",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "02-21-2025",
+  "prix": 105433,
+  "charges_mensuelles": 81.78,
+  "surface": 88,
+  "nb_pieces": 7,
+  "etage": 4,
+  "dpe": "A",
+  "latitude": 43.247105,
+  "longitude": 5.360118,
+  "description": "Château de standing de 88 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0440078700",
+    "agence": "Clé en Main Immo"
+  },
+  "particulier": true
+}

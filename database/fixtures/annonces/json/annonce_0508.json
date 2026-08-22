@@ -1,0 +1,25 @@
+{
+  "id": "75d530ea-e897-441b-9bc8-46b730ebeaed",
+  "reference": "AN-E75Y6TAU",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain au calme à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "10-30-2024",
+  "prix": 973828,
+  "surface": 175,
+  "adresse": "131 rue Pasteur",
+  "latitude": 43.679907,
+  "longitude": 7.30191,
+  "description": "Terrain de standing de 175 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Lefevre",
+    "telephone": "0480645384",
+    "email": "karim.lefevre56@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": true
+}

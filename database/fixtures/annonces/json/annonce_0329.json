@@ -1,0 +1,24 @@
+{
+  "id": "f66bb11c-612e-4f0e-8e23-d43ca6f0bab5",
+  "reference": "AN-TNIIB16M",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "29 octobre 2025",
+  "prix": 221493,
+  "charges_mensuelles": 129.09,
+  "surface": 136,
+  "nb_pieces": 4,
+  "nb_chambres": 7,
+  "etage": 2,
+  "dpe": "B",
+  "annee_construction": 1859,
+  "description": "Appartement lumineux de 136 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Bernard",
+    "telephone": "0683431809",
+    "agence": "Provence Immobilier"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "id": "06b64ac3-2c9a-40a7-b6e6-333e049361f1",
+  "reference": "AN-I7WWJJFT",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement rénové à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "15/08/2025",
+  "prix": 228201,
+  "surface": 127,
+  "nb_pieces": 3,
+  "nb_chambres": 5,
+  "etage": 4,
+  "dpe": "E",
+  "annee_construction": 1977,
+  "latitude": 47.308553,
+  "longitude": 5.039746,
+  "contact": {
+    "telephone": "0695011540",
+    "email": "contact64@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-I7WWJJFT/1.jpg",
+    "https://exemple-images.test/AN-I7WWJJFT/2.jpg"
+  ],
+  "particulier": true
+}

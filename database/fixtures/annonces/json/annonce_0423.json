@@ -1,0 +1,20 @@
+{
+  "id": "c57a1f85-f8e0-44cd-9b00-e45061041ebf",
+  "reference": "AN-MMAM80JC",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain au calme à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "23 février 2026",
+  "prix": 1112464,
+  "surface": 174,
+  "description": "Terrain spacieux de 174 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Dubois",
+    "telephone": "0579426043"
+  },
+  "exclusivite": true
+}

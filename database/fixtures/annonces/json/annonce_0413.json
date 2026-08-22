@@ -1,0 +1,23 @@
+{
+  "id": "78b02d25-647a-4a0c-94f7-6128e6cf3701",
+  "reference": "AN-8YT741YF",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-12-20",
+  "prix": 1439776,
+  "surface": 170,
+  "adresse": "182 place de la Mairie",
+  "description": "Terrain en excellent état de 170 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0946481448",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-8YT741YF/1.jpg"
+  ]
+}

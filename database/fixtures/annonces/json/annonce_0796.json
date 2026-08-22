@@ -1,0 +1,27 @@
+{
+  "id": "2fd1ae7b-923b-45f1-8b04-5d1390d4f78f",
+  "reference": "AN-7M0K3SKA",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "07-13-2026",
+  "prix": 316275,
+  "surface": 247,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "dpe": "B",
+  "description": "Local commercial de standing de 247 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Luc Perrin",
+    "telephone": "0035370432",
+    "email": "luc.perrin33@example.com",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-7M0K3SKA/1.jpg",
+    "https://exemple-images.test/AN-7M0K3SKA/2.jpg",
+    "https://exemple-images.test/AN-7M0K3SKA/3.jpg"
+  ]
+}

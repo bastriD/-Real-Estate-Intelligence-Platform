@@ -1,0 +1,20 @@
+{
+  "id": "f3d32f15-660f-4bfa-aa88-215fd1bff8df",
+  "reference": "AN-TWN22SX8",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain rénové à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "10-03-2025",
+  "prix": "1067442 €",
+  "surface": 244,
+  "adresse": "39 chemin des Vignes",
+  "description": "Terrain rénové de 244 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "calme": true,
+  "contact": {
+    "nom": "Luc Girard",
+    "telephone": "0607007416"
+  },
+  "exclusivite": false
+}

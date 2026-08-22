@@ -1,0 +1,21 @@
+{
+  "id": "cc097c9e-4ef3-4950-a415-2ef735b6f218",
+  "reference": "AN-F7OG5C9P",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain lumineux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1749795345,
+  "prix": 1612710,
+  "surface": 141,
+  "latitude": 43.735252,
+  "longitude": 7.308975,
+  "description": "Terrain en excellent état de 141 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Faure",
+    "email": "jean.faure53@example.com"
+  }
+}

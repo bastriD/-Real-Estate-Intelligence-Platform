@@ -1,0 +1,28 @@
+{
+  "id": "ec1a137c-14d6-4990-8471-9143bfbfbeed",
+  "reference": "AN-PQO4QHEV",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial au calme à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1732915365,
+  "prix": "342561 €",
+  "surface": 135,
+  "nb_pieces": 6,
+  "nb_chambres": 0,
+  "etage": 1,
+  "dpe": "A",
+  "adresse": "179 impasse des Lilas",
+  "description": "Local commercial à rafraîchir de 135 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Girard",
+    "telephone": "0051580090"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-PQO4QHEV/1.jpg",
+    "https://exemple-images.test/AN-PQO4QHEV/2.jpg",
+    "https://exemple-images.test/AN-PQO4QHEV/3.jpg"
+  ],
+  "exclusivite": true
+}

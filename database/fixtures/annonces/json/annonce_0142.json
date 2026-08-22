@@ -1,0 +1,30 @@
+{
+  "id": "3cdef2fa-0427-419c-a529-4791b0c42325",
+  "reference": "AN-V62EH5YR",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1724402625,
+  "prix": 167224,
+  "surface": 182,
+  "nb_pieces": 8,
+  "nb_chambres": 1,
+  "latitude": 43.336473,
+  "longitude": 5.382085,
+  "description": "Studio atypique de 182 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Lefevre",
+    "email": "karim.lefevre76@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-V62EH5YR/1.jpg",
+    "https://exemple-images.test/AN-V62EH5YR/2.jpg",
+    "https://exemple-images.test/AN-V62EH5YR/3.jpg",
+    "https://exemple-images.test/AN-V62EH5YR/4.jpg"
+  ],
+  "exclusivite": true
+}

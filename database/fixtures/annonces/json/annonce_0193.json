@@ -1,0 +1,23 @@
+{
+  "id": "773d9944-20e5-4ca7-8905-3f6c35c156bd",
+  "reference": "AN-RZ9UWFVL",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "28/01/2025",
+  "prix": 175383,
+  "charges_mensuelles": 360.61,
+  "surface": 88,
+  "latitude": 43.316708,
+  "longitude": 5.345531,
+  "description": "Studio en excellent état de 88 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Martin",
+    "telephone": "0511317711",
+    "agence": "Provence Immobilier"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "29234f3a-7cbd-4abe-9714-e7472fdf3b94",
+  "reference": "AN-6D0IT31L",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-05-07",
+  "prix": 126077,
+  "surface": 87,
+  "nb_pieces": 5,
+  "nb_chambres": 0,
+  "latitude": 43.306341,
+  "longitude": 5.359436,
+  "description": "Studio spacieux de 87 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0149327578",
+    "email": "contact96@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-6D0IT31L/1.jpg",
+    "https://exemple-images.test/AN-6D0IT31L/2.jpg",
+    "https://exemple-images.test/AN-6D0IT31L/3.jpg",
+    "https://exemple-images.test/AN-6D0IT31L/4.jpg",
+    "https://exemple-images.test/AN-6D0IT31L/5.jpg"
+  ]
+}

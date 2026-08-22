@@ -1,0 +1,27 @@
+{
+  "id": "b3121b57-0f10-470e-bca5-d75bee1527c5",
+  "reference": "AN-Y44OKZPK",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "22/05/2025",
+  "prix": 379991,
+  "surface": 181,
+  "nb_pieces": 5,
+  "nb_chambres": 4,
+  "dpe": "G",
+  "annee_construction": 1928,
+  "adresse": "7 avenue des Champs",
+  "description": "Appartement de standing de 181 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Sophie Lefevre",
+    "email": "sophie.lefevre25@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-Y44OKZPK/1.jpg",
+    "https://exemple-images.test/AN-Y44OKZPK/2.jpg"
+  ],
+  "exclusivite": true
+}

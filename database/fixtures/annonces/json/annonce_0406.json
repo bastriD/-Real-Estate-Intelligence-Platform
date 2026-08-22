@@ -1,0 +1,18 @@
+{
+  "id": "36531cec-9886-464a-b2f4-373aa83e3b49",
+  "reference": "AN-2RB68QY6",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1774910625,
+  "prix": 1225448,
+  "surface": 127,
+  "description": "Terrain avec vue dégagée de 127 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "agence": "Nid Doré"
+  }
+}

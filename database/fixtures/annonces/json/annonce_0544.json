@@ -1,0 +1,19 @@
+{
+  "id": "908b1268-f256-443c-be7c-d9c265c24de7",
+  "reference": "AN-RHSLOUGO",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2026-07-28T18:03:45",
+  "prix": 1368320,
+  "surface": 218,
+  "description": "Terrain rénové de 218 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Roche",
+    "agence": "Provence Immobilier"
+  }
+}

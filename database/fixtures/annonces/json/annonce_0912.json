@@ -1,0 +1,31 @@
+{
+  "id": "c0c5f76e-2856-4c71-8e15-9cfa860c750e",
+  "reference": "AN-9YYUOF3E",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-05-04",
+  "prix": 144042,
+  "surface": 126,
+  "nb_pieces": 5,
+  "etage": 5,
+  "meuble": false,
+  "dpe": "A",
+  "annee_construction": 2006,
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Faure",
+    "telephone": "0317750621",
+    "agence": "Nid Doré"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-9YYUOF3E/1.jpg",
+    "https://exemple-images.test/AN-9YYUOF3E/2.jpg",
+    "https://exemple-images.test/AN-9YYUOF3E/3.jpg"
+  ],
+  "exclusivite": true
+}

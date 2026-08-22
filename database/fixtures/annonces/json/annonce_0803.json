@@ -1,0 +1,23 @@
+{
+  "id": "e038e3b6-5657-4f04-86cb-cb179b9ed2bc",
+  "reference": "AN-XPNP53A9",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-11-17T08:14:45",
+  "prix": 79520,
+  "surface": 102,
+  "nb_pieces": 4,
+  "nb_chambres": 0,
+  "etage": "RDC",
+  "dpe": "A",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Lefevre",
+    "telephone": "0697370768"
+  }
+}

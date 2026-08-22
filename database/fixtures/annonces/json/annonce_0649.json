@@ -1,0 +1,22 @@
+{
+  "id": "a6b06fc2-b27e-4c0a-83b4-7e8f79a80661",
+  "reference": "AN-I2GK80EZ",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2024-12-23",
+  "prix": 267128,
+  "surface": 214,
+  "nb_pieces": 2,
+  "adresse": "153 place de la Mairie",
+  "latitude": 48.896732,
+  "longitude": 2.357323,
+  "description": "Local commercial charmant de 214 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Nadia Roche",
+    "telephone": "0968860041",
+    "email": "nadia.roche69@example.com"
+  }
+}

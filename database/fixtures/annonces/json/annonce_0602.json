@@ -1,0 +1,23 @@
+{
+  "id": "ed281082-872f-4650-a86c-d749fbc79cc4",
+  "reference": "AN-2ET3Z2AC",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-08-15",
+  "prix": 356763,
+  "surface": 217,
+  "nb_pieces": 3,
+  "etage": 1,
+  "dpe": "F",
+  "annee_construction": 2012,
+  "adresse": "61 rue Victor Hugo",
+  "description": "Local commercial atypique de 217 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Sophie Moreau",
+    "telephone": "0126139857"
+  },
+  "exclusivite": true
+}

@@ -1,0 +1,21 @@
+{
+  "id": "26bacfa6-4f50-4c36-b3ca-1e9243a1997d",
+  "reference": "AN-380R2KWC",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1764315405,
+  "prix": 1691177,
+  "surface": 252,
+  "description": "Terrain avec vue dégagée de 252 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Moreau",
+    "email": "karim.moreau40@example.com",
+    "agence": "Toit & Vous"
+  },
+  "exclusivite": false
+}

@@ -1,0 +1,22 @@
+{
+  "id": "2c549022-d75f-4f6a-95c8-162fc8aa1c7c",
+  "reference": "AN-COR08KRL",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial au calme à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1737605805,
+  "prix": 312627,
+  "surface": 258,
+  "nb_pieces": 5,
+  "nb_chambres": 5,
+  "etage": 1,
+  "dpe": "A",
+  "latitude": 48.892483,
+  "longitude": 2.325555,
+  "contact": {
+    "nom": "Karim Martin",
+    "agence": "Toit & Vous"
+  }
+}

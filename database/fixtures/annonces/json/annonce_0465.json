@@ -1,0 +1,29 @@
+{
+  "id": "1ae4c6a2-6899-4fd1-9eca-a9ab7a3ee23d",
+  "reference": "AN-PVMEYCO5",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain lumineux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-11-29T18:57:45",
+  "prix": 1119348,
+  "surface": 154,
+  "latitude": 43.694737,
+  "longitude": 7.267767,
+  "description": "Terrain de standing de 154 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Dubois",
+    "telephone": "0645629349",
+    "email": "marie.dubois72@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-PVMEYCO5/1.jpg",
+    "https://exemple-images.test/AN-PVMEYCO5/2.jpg",
+    "https://exemple-images.test/AN-PVMEYCO5/3.jpg",
+    "https://exemple-images.test/AN-PVMEYCO5/4.jpg",
+    "https://exemple-images.test/AN-PVMEYCO5/5.jpg"
+  ]
+}

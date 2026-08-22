@@ -1,0 +1,26 @@
+{
+  "id": "a19845e2-357f-40df-ac77-847edeea0c79",
+  "reference": "AN-0FY6PKI2",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "04/05/2025",
+  "prix": 128317,
+  "charges_mensuelles": 358.54,
+  "surface": 189,
+  "nb_pieces": 2,
+  "etage": 4,
+  "meuble": true,
+  "annee_construction": 1989,
+  "latitude": 43.287899,
+  "longitude": 5.320821,
+  "description": "Studio à rafraîchir de 189 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": false
+}

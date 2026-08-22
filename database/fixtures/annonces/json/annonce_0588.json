@@ -1,0 +1,21 @@
+{
+  "id": "ae8499ff-118d-4669-b4b3-974205ce2be7",
+  "reference": "AN-KUMQ0N8A",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "08-09-2025",
+  "prix": 1655659,
+  "charges_mensuelles": 208.7,
+  "surface": 259,
+  "adresse": "147 boulevard Gambetta",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0126755064",
+    "email": "contact1@example.com",
+    "agence": "Provence Immobilier"
+  }
+}

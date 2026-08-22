@@ -1,0 +1,24 @@
+{
+  "id": "49045f54-1e2c-44e7-ab6a-bf15948a6648",
+  "reference": "AN-2J667F6J",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial atypique à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-10-31",
+  "prix": 272458,
+  "charges_mensuelles": 205.45,
+  "surface": 161,
+  "nb_pieces": 5,
+  "nb_chambres": 3,
+  "dpe": "B",
+  "adresse": "86 allée des Platanes",
+  "description": "Local commercial atypique de 161 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Luc Lefevre",
+    "telephone": "0050184224",
+    "email": "luc.lefevre7@example.com",
+    "agence": "Nid Doré"
+  }
+}

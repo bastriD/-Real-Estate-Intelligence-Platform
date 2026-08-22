@@ -1,0 +1,21 @@
+{
+  "id": "ddf49635-33bb-46a6-ae33-2d55ce7b8f1c",
+  "reference": "AN-3D084453",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1762170885,
+  "prix": 334941,
+  "surface": 145,
+  "nb_pieces": 4,
+  "nb_chambres": 7,
+  "annee_construction": 1857,
+  "description": "Appartement au calme de 145 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Claire Martin",
+    "telephone": "0811805944",
+    "email": "claire.martin22@example.com"
+  }
+}

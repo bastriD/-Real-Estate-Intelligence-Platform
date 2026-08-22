@@ -1,0 +1,22 @@
+{
+  "id": "deb2dfe6-a740-4506-9c01-b8b48f890cd1",
+  "reference": "AN-7MMETT3X",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "10-13-2025",
+  "prix": "296516 €",
+  "surface": 77,
+  "nb_pieces": 4,
+  "nb_chambres": 6,
+  "etage": 0,
+  "dpe": "B",
+  "adresse": "171 rue Jean Jaurès",
+  "description": "Appartement spacieux de 77 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Bernard"
+  },
+  "exclusivite": false
+}

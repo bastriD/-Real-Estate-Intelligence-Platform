@@ -1,0 +1,26 @@
+{
+  "id": "59ab720f-bcbd-44ec-b91f-abf0b8b71ba5",
+  "reference": "AN-IEVB7JHW",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial en excellent état à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "22/06/2025",
+  "prix": "384228 €",
+  "surface": 199,
+  "nb_pieces": 2,
+  "etage": 5,
+  "description": "Local commercial en excellent état de 199 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "email": "contact17@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-IEVB7JHW/1.jpg",
+    "https://exemple-images.test/AN-IEVB7JHW/2.jpg",
+    "https://exemple-images.test/AN-IEVB7JHW/3.jpg",
+    "https://exemple-images.test/AN-IEVB7JHW/4.jpg",
+    "https://exemple-images.test/AN-IEVB7JHW/5.jpg"
+  ],
+  "exclusivite": true
+}

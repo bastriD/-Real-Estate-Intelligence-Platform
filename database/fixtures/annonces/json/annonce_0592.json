@@ -1,0 +1,23 @@
+{
+  "id": "1151b999-570c-4ed1-8ed4-5e2beafaa13b",
+  "reference": "AN-DF28VLD1",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain charmant à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "05-07-2025",
+  "prix": 1253956,
+  "surface": 200,
+  "adresse": "126 rue du Commerce",
+  "latitude": 43.74172,
+  "longitude": 7.213502,
+  "description": "Terrain avec vue dégagée de 200 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "contact": {
+    "nom": "Jean Moreau",
+    "telephone": "0013766903",
+    "agence": "Provence Immobilier"
+  },
+  "exclusivite": false
+}

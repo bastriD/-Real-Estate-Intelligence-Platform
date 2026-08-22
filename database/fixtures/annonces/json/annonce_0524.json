@@ -1,0 +1,23 @@
+{
+  "id": "c527e9a2-ddda-41c8-997a-ad5e93ff47ef",
+  "reference": "AN-PTEU27KW",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain lumineux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-04-21T04:31:45",
+  "prix": "1381101 €",
+  "surface": 123,
+  "adresse": "159 place de la Mairie",
+  "latitude": 43.736259,
+  "longitude": 7.229629,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Perrin",
+    "telephone": "0506748004",
+    "email": "nadia.perrin37@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "exclusivite": true
+}

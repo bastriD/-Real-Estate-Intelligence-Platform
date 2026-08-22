@@ -1,0 +1,24 @@
+{
+  "id": "3cd8d02f-dd12-409f-8f96-fbdc87b76a33",
+  "reference": "AN-5R3EA2TJ",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1725750465,
+  "prix": 372872,
+  "surface": 134,
+  "nb_pieces": 5,
+  "nb_chambres": 4,
+  "adresse": "68 rue de la République",
+  "latitude": 47.32685,
+  "longitude": 5.027002,
+  "description": "Appartement en excellent état de 134 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Claire Perrin",
+    "telephone": "0751302481",
+    "email": "claire.perrin72@example.com",
+    "agence": "Toit & Vous"
+  }
+}

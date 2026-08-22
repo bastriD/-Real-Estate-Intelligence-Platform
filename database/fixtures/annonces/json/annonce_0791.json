@@ -1,0 +1,23 @@
+{
+  "id": "227d14d0-fec6-43a4-9f1b-34cdc3e9460e",
+  "reference": "AN-84MNSY7O",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial au calme à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "20/08/2025",
+  "prix": 312848,
+  "surface": 127,
+  "nb_pieces": 2,
+  "nb_chambres": 5,
+  "etage": 3,
+  "annee_construction": 1913,
+  "latitude": 48.854845,
+  "longitude": 2.319673,
+  "description": "Local commercial au calme de 127 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0974454268"
+  },
+  "particulier": true
+}

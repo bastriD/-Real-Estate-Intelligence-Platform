@@ -1,0 +1,21 @@
+{
+  "id": "d659ee15-c880-474d-afbf-0e82e74f4e2c",
+  "reference": "AN-IQUY8MJC",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "13 juin 2026",
+  "prix": 1741006,
+  "surface": 206,
+  "adresse": "171 rue du Commerce",
+  "description": "Terrain lumineux de 206 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Faure",
+    "telephone": "0728430040",
+    "agence": "ImmoPlus"
+  }
+}

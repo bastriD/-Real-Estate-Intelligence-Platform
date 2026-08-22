@@ -1,0 +1,17 @@
+{
+  "id": "2facd280-b2f2-470b-a644-9e646df2ea93",
+  "reference": "AN-T2VIQBFH",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "22 novembre 2025",
+  "prix": 1129567,
+  "surface_m2": 156,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Moreau",
+    "email": "jean.moreau28@example.com"
+  }
+}

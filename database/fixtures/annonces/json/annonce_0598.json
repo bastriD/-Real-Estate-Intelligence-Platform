@@ -1,0 +1,27 @@
+{
+  "id": "1d7a8284-e74c-4737-b5ef-689c7de2c5db",
+  "reference": "AN-HFFDHLE8",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain charmant à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "19 août 2026",
+  "prix": 1397629,
+  "surface": 232,
+  "adresse": "12 rue de la République",
+  "description": "Terrain avec vue dégagée de 232 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Roche",
+    "telephone": "0737485619"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-HFFDHLE8/1.jpg",
+    "https://exemple-images.test/AN-HFFDHLE8/2.jpg",
+    "https://exemple-images.test/AN-HFFDHLE8/3.jpg",
+    "https://exemple-images.test/AN-HFFDHLE8/4.jpg",
+    "https://exemple-images.test/AN-HFFDHLE8/5.jpg"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "769c579d-db19-4277-a95a-9f13a1cc5fbb",
+  "reference": "AN-IY6FHUOG",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial de standing à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "23 juin 2026",
+  "prix": 313679,
+  "charges_mensuelles": 292.21,
+  "surface": 208,
+  "nb_pieces": 5,
+  "nb_chambres": 4,
+  "meuble": false,
+  "adresse": "93 allée des Platanes",
+  "latitude": 48.896882,
+  "longitude": 2.358648,
+  "description": "Local commercial atypique de 208 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Claire Dubois"
+  },
+  "exclusivite": false
+}

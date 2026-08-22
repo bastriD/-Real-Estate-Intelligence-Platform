@@ -1,0 +1,29 @@
+{
+  "id": "5b5051cd-1589-47e8-96aa-92e51daf46f5",
+  "reference": "AN-3CHL3J0U",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-04-01",
+  "prix": 88395,
+  "charges_mensuelles": 273.32,
+  "surface": 64,
+  "nb_pieces": 8,
+  "etage": 5,
+  "meuble": false,
+  "dpe": "A",
+  "adresse": "46 chemin des Vignes",
+  "latitude": 43.295508,
+  "longitude": 5.356689,
+  "description": "Château de standing de 64 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Martin",
+    "agence": "Toit & Vous"
+  },
+  "exclusivite": true
+}

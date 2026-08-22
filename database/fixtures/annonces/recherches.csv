@@ -1,0 +1,6 @@
+﻿id,reference,date_creation,ville,code_postal,type_bien,budget_max,surface_min,criteres_souhaites,nb_pieces_min,nb_chambres_min,dpe_max
+1,REC-R8HA1NA2,2025-12-10,Marseille,13000,Studio,217800,85,terrasse; calme,,,
+2,REC-Y4HU00HU,2025-11-21,Dijon,21000,Appartement,391500,65,,1,4,
+3,REC-WRRG42NP,2026-03-03,Nice,06000,Terrain,1815100,117,vue; calme,,,
+4,REC-Q8F6L9KY,2025-05-29,Paris,75000,Local commercial,423800,126,,2,,
+5,REC-CD5PL9OF,2026-07-08,Marseille,13000,Château,144400,22,jardin; vue; calme,4,,A

@@ -1,0 +1,21 @@
+{
+  "id": "dbf59a14-f667-4413-8aa9-7b8838031b54",
+  "reference": "AN-26QXP9OU",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain avec vue dégagée à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "15/08/2025",
+  "prix": "1297884 €",
+  "surface_m2": 144,
+  "adresse": "155 rue Victor Hugo",
+  "latitude": 43.72829,
+  "longitude": 7.244099,
+  "description": "Terrain au calme de 144 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "agence": "Toit & Vous"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "4617945f-8ae5-4d20-aaec-1e34296f70a0",
+  "reference": "AN-EYK2B31F",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-04-14T06:52:45",
+  "prix": 1386302,
+  "surface": 215,
+  "adresse": "133 rue Pasteur",
+  "latitude": 43.718208,
+  "longitude": 7.218363,
+  "vue": true,
+  "contact": {
+    "nom": "Luc Bernard",
+    "telephone": "0908372451"
+  },
+  "exclusivite": false
+}

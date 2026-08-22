@@ -1,0 +1,29 @@
+{
+  "id": "88a6e932-6c22-4246-89eb-38fe2c2948fd",
+  "reference": "AN-P85HNKUQ",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "03-10-2025",
+  "prix": 298049,
+  "surface_m2": 221,
+  "nb_pieces": 2,
+  "nb_chambres": 5,
+  "meuble": true,
+  "latitude": 48.852331,
+  "longitude": 2.389187,
+  "description": "Local commercial à rafraîchir de 221 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0048929280",
+    "email": "contact3@example.com",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-P85HNKUQ/1.jpg",
+    "https://exemple-images.test/AN-P85HNKUQ/2.jpg",
+    "https://exemple-images.test/AN-P85HNKUQ/3.jpg"
+  ],
+  "exclusivite": true
+}

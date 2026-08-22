@@ -1,0 +1,25 @@
+{
+  "id": "0cf76c81-35f4-400a-9923-1376a9837238",
+  "reference": "AN-PUNO3AU5",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement en excellent état à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "21 juillet 2026",
+  "prix": "301112 €",
+  "surface": 181,
+  "nb_pieces": 5,
+  "nb_chambres": 7,
+  "etage": 2,
+  "dpe": "G",
+  "adresse": "179 impasse des Lilas",
+  "latitude": 47.352297,
+  "longitude": 5.054727,
+  "description": "Appartement avec vue dégagée de 181 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Ahmed Bernard",
+    "telephone": "0743458840",
+    "agence": "Clé en Main Immo"
+  }
+}

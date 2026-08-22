@@ -1,0 +1,22 @@
+{
+  "id": "9ff0b65c-13a2-4970-b803-9867133d5bd4",
+  "reference": "AN-U0R6C40K",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-09-06",
+  "prix": 178214,
+  "surface": 160,
+  "etage": 5,
+  "adresse": "67 quai de la Loire",
+  "latitude": 43.316033,
+  "longitude": 5.333641,
+  "description": "Studio de standing de 160 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "contact": {
+    "telephone": "0727381324"
+  },
+  "exclusivite": true
+}

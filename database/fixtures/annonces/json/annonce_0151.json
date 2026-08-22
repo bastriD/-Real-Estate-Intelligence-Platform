@@ -1,0 +1,22 @@
+{
+  "id": "ec651fb8-bf48-47c1-ab61-4cfcad4a7067",
+  "reference": "AN-COEY50KR",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-12-01",
+  "prix": "118816 €",
+  "surface": 141,
+  "nb_pieces": 5,
+  "etage": "dernier étage",
+  "adresse": "2 rue Victor Hugo",
+  "description": "Studio charmant de 141 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "contact": {
+    "nom": "Nadia Dubois",
+    "email": "nadia.dubois28@example.com"
+  },
+  "exclusivite": true
+}

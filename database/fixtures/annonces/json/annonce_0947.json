@@ -1,0 +1,33 @@
+{
+  "id": "76c2d9df-9984-4c0f-a2ea-a85e61407059",
+  "reference": "AN-280WSQ1L",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "13/07/2026",
+  "prix": 132726,
+  "surface": 49,
+  "nb_pieces": 6,
+  "etage": 3,
+  "dpe": "A",
+  "annee_construction": 1994,
+  "description": "Château rénové de 49 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Roche",
+    "telephone": "0545589640",
+    "email": "jean.roche96@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-280WSQ1L/1.jpg",
+    "https://exemple-images.test/AN-280WSQ1L/2.jpg",
+    "https://exemple-images.test/AN-280WSQ1L/3.jpg",
+    "https://exemple-images.test/AN-280WSQ1L/4.jpg",
+    "https://exemple-images.test/AN-280WSQ1L/5.jpg"
+  ]
+}

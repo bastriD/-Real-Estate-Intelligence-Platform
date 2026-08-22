@@ -1,0 +1,25 @@
+{
+  "id": "ea891a4e-5112-4012-8698-ede5c9e456c1",
+  "reference": "AN-VXBS7DLE",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1738555785,
+  "prix": "120290 €",
+  "charges_mensuelles": 209.86,
+  "surface": 168,
+  "nb_pieces": 7,
+  "adresse": "31 allée des Platanes",
+  "latitude": 43.263356,
+  "longitude": 5.404048,
+  "description": "Studio charmant de 168 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Bernard",
+    "telephone": "0901023168",
+    "agence": "Provence Immobilier"
+  }
+}

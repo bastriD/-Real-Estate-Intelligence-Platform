@@ -1,0 +1,28 @@
+{
+  "id": "c1b4e707-46be-4bbf-adcc-36ac564dc744",
+  "reference": "AN-RZ2X5N6M",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "09-08-2024",
+  "prix": 108915,
+  "surface": 205,
+  "nb_pieces": 1,
+  "meuble": false,
+  "dpe": "F",
+  "annee_construction": 1866,
+  "adresse": "57 avenue des Champs",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Fontaine",
+    "telephone": "0425537792",
+    "email": "claire.fontaine61@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-RZ2X5N6M/1.jpg"
+  ],
+  "exclusivite": false
+}

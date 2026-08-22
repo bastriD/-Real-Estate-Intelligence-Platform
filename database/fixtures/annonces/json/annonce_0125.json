@@ -1,0 +1,26 @@
+{
+  "id": "84f27906-87e3-4b9a-9d07-ce5591118258",
+  "reference": "AN-RC9X8EBN",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "14/11/2025",
+  "prix": 172062,
+  "surface": 173,
+  "nb_pieces": 7,
+  "nb_chambres": 2,
+  "dpe": "G",
+  "adresse": "43 place de la Mairie",
+  "description": "Studio lumineux de 173 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0717217849"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-RC9X8EBN/1.jpg"
+  ],
+  "particulier": true
+}

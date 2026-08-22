@@ -1,0 +1,30 @@
+{
+  "id": "4e4b1120-412f-4af3-9ad9-cfffde2f892e",
+  "reference": "AN-749DC5BH",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "27 avril 2026",
+  "prix": 404985,
+  "charges_mensuelles": 81.3,
+  "surface": 190,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "meuble": true,
+  "dpe": "G",
+  "latitude": 48.835974,
+  "longitude": 2.369721,
+  "description": "Local commercial atypique de 190 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Julie Martin",
+    "email": "julie.martin20@example.com",
+    "agence": "Toit & Vous"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-749DC5BH/1.jpg",
+    "https://exemple-images.test/AN-749DC5BH/2.jpg"
+  ],
+  "particulier": true
+}

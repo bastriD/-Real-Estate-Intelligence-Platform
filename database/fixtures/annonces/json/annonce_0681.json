@@ -1,0 +1,22 @@
+{
+  "id": "ed062e28-79f9-4a23-b4e2-a77455b07bb0",
+  "reference": "AN-TN1F4KP1",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial en excellent état à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "15 août 2025",
+  "prix": 372819,
+  "surface": 163,
+  "nb_pieces": 4,
+  "etage": 1,
+  "meuble": true,
+  "dpe": "C",
+  "description": "Local commercial à rafraîchir de 163 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0008997680",
+    "agence": "Clé en Main Immo"
+  },
+  "particulier": true
+}

@@ -1,0 +1,23 @@
+{
+  "id": "bc45133b-0bf5-47a0-aa5e-906c21b1d251",
+  "reference": "AN-RVSB76W9",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial au calme à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "07/05/2026",
+  "prix": 380125,
+  "surface": 158,
+  "nb_pieces": 2,
+  "nb_chambres": 4,
+  "meuble": false,
+  "adresse": "192 impasse des Lilas",
+  "description": "Local commercial spacieux de 158 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Jean Bernard",
+    "telephone": "0309379247",
+    "email": "jean.bernard60@example.com",
+    "agence": "Toit & Vous"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "786814a8-9182-43ea-b8ec-43e77c30c656",
+  "reference": "AN-G9ULJYT8",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "13 juin 2025",
+  "prix": 121700,
+  "surface": 179,
+  "nb_pieces": 8,
+  "annee_construction": 2024,
+  "description": "Studio de standing de 179 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "contact": {
+    "telephone": "0045000547"
+  },
+  "particulier": true
+}

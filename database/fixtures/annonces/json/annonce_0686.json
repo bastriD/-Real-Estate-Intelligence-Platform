@@ -1,0 +1,22 @@
+{
+  "id": "2d98c027-e7be-4382-aedc-d438dc94edfb",
+  "reference": "AN-VL7NY6KD",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial rénové à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-04-19",
+  "prix": 249886,
+  "surface": 255,
+  "nb_pieces": 2,
+  "etage": "dernier étage",
+  "dpe": "E",
+  "latitude": 48.874921,
+  "longitude": 2.343295,
+  "contact": {
+    "telephone": "0052419820",
+    "email": "contact84@example.com"
+  },
+  "exclusivite": true
+}

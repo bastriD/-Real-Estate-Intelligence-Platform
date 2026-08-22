@@ -1,0 +1,24 @@
+{
+  "id": "3e99fc67-3a43-41de-9146-f2f7cf01759e",
+  "reference": "AN-7ZQPCO0S",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-06-20T11:54:45",
+  "prix": 1137773,
+  "surface_m2": 165,
+  "adresse": "101 rue Jean Jaurès",
+  "description": "Terrain charmant de 165 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Bernard",
+    "telephone": "0437294348",
+    "email": "ahmed.bernard35@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [],
+  "exclusivite": false
+}

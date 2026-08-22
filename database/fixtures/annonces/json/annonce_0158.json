@@ -1,0 +1,32 @@
+{
+  "id": "d7a56829-7eb5-4b8a-a472-c339e4fe6494",
+  "reference": "AN-VKLFWXEW",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "24 juin 2026",
+  "prix": "159590 €",
+  "charges_mensuelles": 305.13,
+  "surface": 111,
+  "nb_pieces": 7,
+  "nb_chambres": 0,
+  "etage": "RDC",
+  "description": "Studio avec vue dégagée de 111 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Luc Girard",
+    "telephone": "0479851625",
+    "email": "luc.girard73@example.com",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-VKLFWXEW/1.jpg",
+    "https://exemple-images.test/AN-VKLFWXEW/2.jpg",
+    "https://exemple-images.test/AN-VKLFWXEW/3.jpg",
+    "https://exemple-images.test/AN-VKLFWXEW/4.jpg",
+    "https://exemple-images.test/AN-VKLFWXEW/5.jpg"
+  ],
+  "exclusivite": true
+}

@@ -1,0 +1,26 @@
+{
+  "id": "57271b89-d7e3-4183-9aa3-3b3931bff117",
+  "reference": "AN-AOAG6PLZ",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial au calme à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "01-09-2025",
+  "prix": "329533 €",
+  "surface": 226,
+  "nb_pieces": 5,
+  "nb_chambres": 2,
+  "etage": 3,
+  "annee_construction": 1874,
+  "adresse": "112 rue Jean Jaurès",
+  "description": "Local commercial spacieux de 226 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Claire Moreau",
+    "telephone": "0606304952",
+    "email": "claire.moreau42@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-AOAG6PLZ/1.jpg"
+  ]
+}

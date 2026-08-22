@@ -1,0 +1,24 @@
+{
+  "id": "28e8456b-34da-4e27-b871-505ff9e72372",
+  "reference": "AN-5AG67DSI",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial de standing à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2026-08-23",
+  "prix": 373094,
+  "surface": 132,
+  "nb_pieces": 2,
+  "nb_chambres": 3,
+  "etage": 0,
+  "meuble": true,
+  "annee_construction": 1957,
+  "latitude": 48.853864,
+  "longitude": 2.389997,
+  "description": "Local commercial à rafraîchir de 132 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Luc Girard",
+    "agence": "Toit & Vous"
+  }
+}

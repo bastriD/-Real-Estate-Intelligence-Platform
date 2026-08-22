@@ -1,0 +1,24 @@
+{
+  "id": "6ec4f44f-c3ae-4900-a2ff-f8b079b05066",
+  "reference": "AN-955TAQPP",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement lumineux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2026-06-10",
+  "prix": 359896,
+  "surface": 66,
+  "nb_pieces": 3,
+  "nb_chambres": 6,
+  "meuble": true,
+  "dpe": "G",
+  "adresse": "176 rue Pasteur",
+  "latitude": 47.319937,
+  "longitude": 5.024209,
+  "description": "Appartement avec vue dégagée de 66 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0064521626",
+    "email": "contact9@example.com"
+  }
+}

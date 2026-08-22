@@ -1,0 +1,24 @@
+{
+  "id": "6871c3fe-cb9c-481e-958b-58189cc1805f",
+  "reference": "AN-B3S5152T",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "04-05-2026",
+  "prix": 314897,
+  "surface": 205,
+  "nb_pieces": 3,
+  "nb_chambres": 1,
+  "etage": 0,
+  "dpe": "G",
+  "adresse": "41 rue Jean Jaurès",
+  "latitude": 48.841497,
+  "longitude": 2.395762,
+  "description": "Local commercial lumineux de 205 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Nadia Girard",
+    "telephone": "0527529624"
+  }
+}

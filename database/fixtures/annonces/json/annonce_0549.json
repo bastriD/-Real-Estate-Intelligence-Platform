@@ -1,0 +1,19 @@
+{
+  "id": "340e44aa-a660-4231-9420-b6d9d0d267b2",
+  "reference": "AN-LCA8H7LB",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain spacieux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-10-19",
+  "prix": 1587603,
+  "surface": 202,
+  "description": "Terrain charmant de 202 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "contact": {
+    "nom": "Claire Faure",
+    "telephone": "0128827038"
+  },
+  "exclusivite": true
+}

@@ -1,0 +1,21 @@
+{
+  "id": "6918ceec-6a49-498b-9dbc-f01f0a959d77",
+  "reference": "AN-GBZVO6W5",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement spacieux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "6 mars 2026",
+  "prix": 312287,
+  "surface": 124,
+  "nb_pieces": 5,
+  "nb_chambres": 6,
+  "etage": 0,
+  "meuble": false,
+  "dpe": "C",
+  "description": "Appartement au calme de 124 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "agence": "Clé en Main Immo"
+  }
+}

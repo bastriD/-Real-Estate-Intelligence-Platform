@@ -1,0 +1,23 @@
+{
+  "id": "f0ed25c6-5bb0-4fbf-96f2-e7192c34786d",
+  "reference": "AN-0ZEFFZU4",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial rénové à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-08-25",
+  "prix": "213741 €",
+  "surface": 173,
+  "nb_pieces": 3,
+  "etage": 5,
+  "dpe": "D",
+  "adresse": "135 rue Victor Hugo",
+  "description": "Local commercial à rafraîchir de 173 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marie Martin",
+    "telephone": "0135152161",
+    "email": "marie.martin68@example.com"
+  },
+  "exclusivite": false
+}

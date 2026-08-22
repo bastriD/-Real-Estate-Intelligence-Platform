@@ -1,0 +1,22 @@
+{
+  "id": "eab833d1-0b6d-48be-a0fd-840034cf690e",
+  "reference": "AN-YPAARUC3",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "09-24-2025",
+  "prix": 241639,
+  "surface_m2": 129,
+  "nb_pieces": 2,
+  "nb_chambres": 7,
+  "annee_construction": 1875,
+  "description": "Appartement avec vue dégagée de 129 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Nadia Fontaine",
+    "telephone": "0861173830",
+    "email": "nadia.fontaine74@example.com"
+  },
+  "exclusivite": true
+}

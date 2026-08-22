@@ -1,0 +1,25 @@
+{
+  "id": "bf216ebd-8928-4842-babf-2d52cedae2e8",
+  "reference": "AN-CJWMOTWN",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "20/11/2025",
+  "prix": 414514,
+  "surface": 183,
+  "nb_pieces": 4,
+  "nb_chambres": 2,
+  "etage": 1,
+  "dpe": "C",
+  "adresse": "112 impasse des Lilas",
+  "contact": {
+    "email": "contact27@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-CJWMOTWN/1.jpg",
+    "https://exemple-images.test/AN-CJWMOTWN/2.jpg"
+  ],
+  "exclusivite": false
+}

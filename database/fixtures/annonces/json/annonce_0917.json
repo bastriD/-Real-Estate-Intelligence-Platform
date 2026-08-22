@@ -1,0 +1,27 @@
+{
+  "id": "d1e3380d-b1f9-48f8-9812-5fda9a39c12f",
+  "reference": "AN-4G1PZ20Z",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1749604485,
+  "prix": 137484,
+  "surface": 171,
+  "nb_pieces": 4,
+  "nb_chambres": 3,
+  "etage": 5,
+  "dpe": "A",
+  "adresse": "163 rue de la République",
+  "description": "Château de standing de 171 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Martin",
+    "email": "marie.martin48@example.com",
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": false
+}

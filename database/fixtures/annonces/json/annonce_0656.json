@@ -1,0 +1,27 @@
+{
+  "id": "90bc0ca9-3807-4dd2-b707-e9137e66f3b6",
+  "reference": "AN-M4NR385A",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "03-08-2025",
+  "prix": 307531,
+  "surface": 229,
+  "nb_pieces": 5,
+  "dpe": "E",
+  "adresse": "128 rue du Commerce",
+  "latitude": 48.828748,
+  "longitude": 2.311087,
+  "contact": {
+    "nom": "Sophie Martin",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-M4NR385A/1.jpg",
+    "https://exemple-images.test/AN-M4NR385A/2.jpg",
+    "https://exemple-images.test/AN-M4NR385A/3.jpg",
+    "https://exemple-images.test/AN-M4NR385A/4.jpg"
+  ]
+}

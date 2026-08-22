@@ -1,0 +1,28 @@
+{
+  "id": "67324ad7-0cda-4505-889e-601a7fb90e44",
+  "reference": "AN-EYO8X3PQ",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "06-04-2026",
+  "prix": 73755,
+  "surface": 138,
+  "nb_pieces": 6,
+  "etage": "RDC",
+  "dpe": "A",
+  "annee_construction": 1922,
+  "adresse": "46 place de la Mairie",
+  "latitude": 43.301087,
+  "longitude": 5.347159,
+  "description": "Château rénové de 138 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Perrin",
+    "telephone": "0672206712"
+  },
+  "particulier": true
+}

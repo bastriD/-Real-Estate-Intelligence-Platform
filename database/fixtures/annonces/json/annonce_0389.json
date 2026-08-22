@@ -1,0 +1,22 @@
+{
+  "id": "39fef9fe-7c2c-4568-9ea5-7ae3832d3cc4",
+  "reference": "AN-PT33GZLB",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1743229245,
+  "prix": 329243,
+  "surface_m2": 161,
+  "nb_pieces": 2,
+  "nb_chambres": 6,
+  "latitude": 47.290467,
+  "longitude": 5.048234,
+  "description": "Appartement atypique de 161 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "telephone": "0971802482",
+    "agence": "Century Habitat"
+  },
+  "exclusivite": false
+}

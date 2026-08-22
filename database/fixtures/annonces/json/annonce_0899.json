@@ -1,0 +1,27 @@
+{
+  "id": "75f0bfad-c57f-41cc-97e5-2ff41d196a52",
+  "reference": "AN-DZJ4DKYG",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-12-19T03:37:45",
+  "prix": 119588,
+  "charges_mensuelles": 262.02,
+  "surface": 37,
+  "nb_pieces": 7,
+  "dpe": "A",
+  "adresse": "164 chemin des Vignes",
+  "latitude": 43.320468,
+  "longitude": 5.348648,
+  "description": "Château rénové de 37 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Bernard",
+    "telephone": "0563096004",
+    "email": "marc.bernard4@example.com"
+  }
+}

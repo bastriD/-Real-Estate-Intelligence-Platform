@@ -1,0 +1,21 @@
+{
+  "id": "62e3224d-30fb-4c61-a47a-aeb99cccec07",
+  "reference": "AN-M5ORNH2K",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial charmant à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "30/08/2024",
+  "prix": 238793,
+  "surface": 240,
+  "nb_pieces": 5,
+  "adresse": "66 quai de la Loire",
+  "latitude": 48.902637,
+  "longitude": 2.372486,
+  "description": "Local commercial avec vue dégagée de 240 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0308906120",
+    "agence": "Clé en Main Immo"
+  }
+}

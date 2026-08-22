@@ -1,0 +1,26 @@
+{
+  "id": "ba260a8a-f7d2-4a91-a87e-35a15bc47437",
+  "reference": "AN-U38XC813",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1777863225,
+  "prix": 130556,
+  "surface": 121,
+  "nb_pieces": 7,
+  "dpe": "C",
+  "adresse": "122 rue Jean Jaurès",
+  "description": "Château à rafraîchir de 121 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Fontaine",
+    "telephone": "0013149248",
+    "email": "nadia.fontaine45@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "exclusivite": false
+}

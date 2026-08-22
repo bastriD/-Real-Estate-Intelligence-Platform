@@ -1,0 +1,29 @@
+{
+  "id": "4ec98ff3-cc4a-482a-a35b-b35f1945aaff",
+  "reference": "AN-MM6JG8EV",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement rénové à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "01-01-2025",
+  "prix": 327200,
+  "surface": 97,
+  "nb_pieces": 5,
+  "nb_chambres": 7,
+  "adresse": "69 rue Victor Hugo",
+  "latitude": 47.365142,
+  "longitude": 5.001391,
+  "description": "Appartement au calme de 97 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marc Girard",
+    "email": "marc.girard20@example.com",
+    "agence": "Century Habitat"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-MM6JG8EV/1.jpg",
+    "https://exemple-images.test/AN-MM6JG8EV/2.jpg",
+    "https://exemple-images.test/AN-MM6JG8EV/3.jpg"
+  ],
+  "exclusivite": false
+}

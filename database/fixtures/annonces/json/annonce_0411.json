@@ -1,0 +1,27 @@
+{
+  "id": "cfa07958-972f-4065-a581-8ae9959f837a",
+  "reference": "AN-Z5APX9WM",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain charmant à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "7 mars 2025",
+  "prix": 1763144,
+  "surface": 128,
+  "latitude": 43.668529,
+  "longitude": 7.270796,
+  "vue": true,
+  "contact": {
+    "nom": "Marie Faure",
+    "telephone": "0313602569"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-Z5APX9WM/1.jpg",
+    "https://exemple-images.test/AN-Z5APX9WM/2.jpg",
+    "https://exemple-images.test/AN-Z5APX9WM/3.jpg",
+    "https://exemple-images.test/AN-Z5APX9WM/4.jpg",
+    "https://exemple-images.test/AN-Z5APX9WM/5.jpg"
+  ],
+  "exclusivite": false
+}

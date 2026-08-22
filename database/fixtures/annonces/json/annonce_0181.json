@@ -1,0 +1,25 @@
+{
+  "id": "e1cb3973-88fc-4d93-a26e-39ee705f5fcf",
+  "reference": "AN-K1HLNMC9",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1737968625,
+  "prix": "156283 €",
+  "surface_m2": 127,
+  "nb_pieces": 1,
+  "meuble": true,
+  "latitude": 43.299847,
+  "longitude": 5.321569,
+  "description": "Studio en excellent état de 127 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0290973725",
+    "email": "contact57@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "exclusivite": true
+}

@@ -1,0 +1,32 @@
+{
+  "id": "7e1fc91a-0cbf-43c4-8f75-68ceec25fb07",
+  "reference": "AN-A4BK1QU5",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "10-24-2024",
+  "prix": 124312,
+  "surface": 132,
+  "nb_pieces": 7,
+  "etage": 4,
+  "adresse": "31 rue Jean Jaurès",
+  "latitude": 43.302002,
+  "longitude": 5.326471,
+  "description": "Château à rafraîchir de 132 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Moreau",
+    "telephone": "0553134590",
+    "agence": "Century Habitat"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-A4BK1QU5/1.jpg",
+    "https://exemple-images.test/AN-A4BK1QU5/2.jpg",
+    "https://exemple-images.test/AN-A4BK1QU5/3.jpg"
+  ],
+  "exclusivite": false
+}

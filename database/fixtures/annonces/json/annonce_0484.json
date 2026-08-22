@@ -1,0 +1,21 @@
+{
+  "id": "43666cde-0177-4e30-84a0-c082dc98356d",
+  "reference": "AN-PW22YJSU",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain lumineux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "5 novembre 2025",
+  "prix": 1346082,
+  "surface_m2": 167,
+  "description": "Terrain à rafraîchir de 167 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Faure",
+    "telephone": "0097437199",
+    "email": "ahmed.faure70@example.com"
+  },
+  "particulier": true
+}

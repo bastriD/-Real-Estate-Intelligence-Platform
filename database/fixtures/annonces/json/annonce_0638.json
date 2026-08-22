@@ -1,0 +1,24 @@
+{
+  "id": "fd18170d-e712-4614-89f0-ebf35634837b",
+  "reference": "AN-961ARBZ4",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2026-03-27T11:29:45",
+  "prix": 249321,
+  "surface": 261,
+  "nb_pieces": 2,
+  "nb_chambres": 4,
+  "annee_construction": 1929,
+  "adresse": "91 place de la Mairie",
+  "description": "Local commercial atypique de 261 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marc Fontaine",
+    "telephone": "0244678385",
+    "email": "marc.fontaine95@example.com",
+    "agence": "Nid Doré"
+  },
+  "exclusivite": false
+}

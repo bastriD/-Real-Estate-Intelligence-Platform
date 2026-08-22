@@ -1,0 +1,20 @@
+{
+  "id": "34eb9cec-1577-423c-b98a-fed33adad018",
+  "reference": "AN-O6BIXG4J",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement lumineux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "8 juin 2026",
+  "prix": 209394,
+  "surface": 169,
+  "nb_pieces": 2,
+  "nb_chambres": 6,
+  "contact": {
+    "nom": "Marc Roche",
+    "email": "marc.roche45@example.com",
+    "agence": "Century Habitat"
+  },
+  "particulier": true
+}

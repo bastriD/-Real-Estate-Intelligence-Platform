@@ -1,0 +1,24 @@
+{
+  "id": "d2db805b-1428-4b49-b2de-cbfecfc1d606",
+  "reference": "AN-IUIQ5ZZ0",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "09/10/2024",
+  "prix": 241903,
+  "surface": 202,
+  "nb_pieces": 5,
+  "nb_chambres": 7,
+  "etage": 1,
+  "meuble": true,
+  "adresse": "123 rue Pasteur",
+  "latitude": 47.306884,
+  "longitude": 5.048998,
+  "contact": {
+    "nom": "Sophie Bernard",
+    "telephone": "0347552184",
+    "email": "sophie.bernard45@example.com"
+  }
+}

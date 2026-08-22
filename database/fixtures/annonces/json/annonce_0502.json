@@ -1,0 +1,24 @@
+{
+  "id": "a6482b96-7155-454a-b740-3bdb42ad9bcb",
+  "reference": "AN-AULKCEQJ",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1752176865,
+  "prix": 1405356,
+  "surface_m2": 217,
+  "adresse": "37 rue Jean Jaurès",
+  "description": "Terrain en excellent état de 217 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Dubois",
+    "telephone": "0200980500",
+    "email": "marc.dubois74@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-AULKCEQJ/1.jpg"
+  ]
+}

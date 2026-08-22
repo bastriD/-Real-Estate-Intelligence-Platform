@@ -1,0 +1,19 @@
+{
+  "id": "8637d36a-0437-409b-b3a0-8d37c17bc992",
+  "reference": "AN-Y1PPRWV7",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "08-14-2026",
+  "prix": 362429,
+  "surface": 87,
+  "nb_pieces": 4,
+  "nb_chambres": 4,
+  "description": "Appartement avec vue dégagée de 87 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marc Girard"
+  },
+  "exclusivite": true
+}

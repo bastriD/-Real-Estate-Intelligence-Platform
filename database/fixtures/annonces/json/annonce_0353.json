@@ -1,0 +1,30 @@
+{
+  "id": "737176af-9590-440c-bcf8-d172ba45eeea",
+  "reference": "AN-K9LH6B3O",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2026-03-17T22:50:45",
+  "prix": 232984,
+  "surface_m2": 89,
+  "nb_pieces": 2,
+  "nb_chambres": 6,
+  "annee_construction": 1874,
+  "adresse": "178 quai de la Loire",
+  "description": "Appartement à rafraîchir de 89 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Claire Lefevre",
+    "telephone": "0937403821",
+    "email": "claire.lefevre39@example.com",
+    "agence": "Century Habitat"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-K9LH6B3O/1.jpg",
+    "https://exemple-images.test/AN-K9LH6B3O/2.jpg",
+    "https://exemple-images.test/AN-K9LH6B3O/3.jpg",
+    "https://exemple-images.test/AN-K9LH6B3O/4.jpg",
+    "https://exemple-images.test/AN-K9LH6B3O/5.jpg"
+  ]
+}

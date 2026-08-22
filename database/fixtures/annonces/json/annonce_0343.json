@@ -1,0 +1,24 @@
+{
+  "id": "203193af-28b1-4b7f-a747-70a5e520d508",
+  "reference": "AN-CSRXSFY3",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "24/04/2026",
+  "prix": 329595,
+  "surface": 112,
+  "nb_pieces": 3,
+  "nb_chambres": 4,
+  "meuble": true,
+  "latitude": 47.34777,
+  "longitude": 5.024068,
+  "description": "Appartement au calme de 112 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Jean Faure",
+    "telephone": "0212055153",
+    "email": "jean.faure25@example.com"
+  },
+  "exclusivite": false
+}

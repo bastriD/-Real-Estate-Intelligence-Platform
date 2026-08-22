@@ -1,0 +1,22 @@
+{
+  "id": "9220c274-ad28-4b5e-bda3-3eed31011cff",
+  "reference": "AN-FAU9OWQD",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain rénové à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "3 mars 2025",
+  "prix": 1320323,
+  "surface": 251,
+  "adresse": "27 boulevard Gambetta",
+  "latitude": 43.704722,
+  "longitude": 7.293724,
+  "description": "Terrain de standing de 251 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Fontaine"
+  },
+  "exclusivite": true
+}

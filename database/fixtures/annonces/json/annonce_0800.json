@@ -1,0 +1,26 @@
+{
+  "id": "79c9eb77-f9c1-4715-bdbb-0394c4964016",
+  "reference": "AN-QZOLGM50",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial spacieux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "10-28-2024",
+  "prix": 300298,
+  "surface": 139,
+  "nb_pieces": 6,
+  "nb_chambres": 1,
+  "etage": "dernier étage",
+  "meuble": true,
+  "annee_construction": 1852,
+  "latitude": 48.872798,
+  "longitude": 2.357718,
+  "description": "Local commercial charmant de 139 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marie Dubois",
+    "telephone": "0285578293",
+    "email": "marie.dubois19@example.com"
+  },
+  "exclusivite": false
+}

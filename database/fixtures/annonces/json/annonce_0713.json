@@ -1,0 +1,26 @@
+{
+  "id": "8509282f-61ed-4be3-a31b-fbafe9d206ca",
+  "reference": "AN-0BWMN79K",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial rénové à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2026-03-03",
+  "prix": 241508,
+  "surface": 128,
+  "nb_pieces": 5,
+  "nb_chambres": 5,
+  "dpe": "G",
+  "annee_construction": 1986,
+  "description": "Local commercial lumineux de 128 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "telephone": "0841662774",
+    "email": "contact19@example.com",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-0BWMN79K/1.jpg",
+    "https://exemple-images.test/AN-0BWMN79K/2.jpg"
+  ]
+}

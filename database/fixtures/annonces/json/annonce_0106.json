@@ -1,0 +1,29 @@
+{
+  "id": "986c70e3-542f-4d6b-bcb3-9cf4156f547a",
+  "reference": "AN-5TZ8KRXF",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "28 octobre 2025",
+  "prix": 184453,
+  "surface": 149,
+  "nb_pieces": 7,
+  "etage": "RDC",
+  "dpe": "A",
+  "adresse": "106 place de la Mairie",
+  "latitude": 43.338889,
+  "longitude": 5.334308,
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Perrin",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-5TZ8KRXF/1.jpg",
+    "https://exemple-images.test/AN-5TZ8KRXF/2.jpg"
+  ],
+  "particulier": true
+}

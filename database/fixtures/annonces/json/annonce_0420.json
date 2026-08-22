@@ -1,0 +1,21 @@
+{
+  "id": "1898d5b0-8980-4c59-bc9d-1cf22b3ab4f4",
+  "reference": "AN-ESRBOORM",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1760985585,
+  "prix": 921687,
+  "surface": 160,
+  "adresse": "190 rue du Commerce",
+  "latitude": 43.674541,
+  "longitude": 7.22015,
+  "description": "Terrain lumineux de 160 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "email": "contact4@example.com"
+  }
+}

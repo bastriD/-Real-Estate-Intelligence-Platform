@@ -1,0 +1,22 @@
+{
+  "id": "3d7a7df2-9bf4-4cc7-bf71-3af3248b231b",
+  "reference": "AN-KPI6EHX2",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "11/01/2026",
+  "prix": "145530 €",
+  "surface": 89,
+  "nb_pieces": 4,
+  "adresse": "2 rue de la République",
+  "description": "Studio rénové de 89 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Perrin",
+    "telephone": "0013027960"
+  },
+  "exclusivite": true
+}

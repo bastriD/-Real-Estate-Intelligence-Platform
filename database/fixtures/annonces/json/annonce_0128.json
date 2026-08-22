@@ -1,0 +1,22 @@
+{
+  "id": "4d2ec1d3-0725-4ff4-8859-bd2573c063d7",
+  "reference": "AN-BX2J7Z34",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-01-02",
+  "prix": 160786,
+  "charges_mensuelles": 91.3,
+  "surface_m2": 149,
+  "nb_pieces": 2,
+  "nb_chambres": 2,
+  "etage": 5,
+  "annee_construction": 2002,
+  "adresse": "24 chemin des Vignes",
+  "description": "Studio avec vue dégagée de 149 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "exclusivite": false
+}

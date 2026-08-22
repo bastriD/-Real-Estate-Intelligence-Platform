@@ -1,0 +1,22 @@
+{
+  "id": "e8409572-5669-49ad-a039-dab31ccea22c",
+  "reference": "AN-2PT6A8SF",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial spacieux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2024-11-05T04:39:45",
+  "prix": 270182,
+  "surface": 257,
+  "nb_pieces": 5,
+  "meuble": false,
+  "dpe": "G",
+  "latitude": 48.865819,
+  "longitude": 2.368493,
+  "contact": {
+    "nom": "Luc Faure",
+    "email": "luc.faure3@example.com"
+  },
+  "exclusivite": true
+}

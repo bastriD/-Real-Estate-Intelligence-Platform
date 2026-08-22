@@ -1,0 +1,29 @@
+{
+  "id": "2565f943-103e-4ed9-a75b-7bcf53d151ab",
+  "reference": "AN-AZ93OIUE",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "06-30-2026",
+  "prix": 97205,
+  "charges_mensuelles": 283.97,
+  "surface": 53,
+  "nb_pieces": 5,
+  "nb_chambres": 2,
+  "etage": 1,
+  "dpe": "A",
+  "annee_construction": 1945,
+  "latitude": 43.269706,
+  "longitude": 5.344802,
+  "description": "Château avec vue dégagée de 53 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Karim Moreau"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-AZ93OIUE/1.jpg"
+  ],
+  "exclusivite": true
+}

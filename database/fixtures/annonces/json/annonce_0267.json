@@ -1,0 +1,23 @@
+{
+  "id": "4e422cd5-4980-4d0c-9ed5-6f45bdd63ff4",
+  "reference": "AN-E2UH5KI3",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement rénové à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "08-18-2026",
+  "prix": 242453,
+  "surface": 137,
+  "nb_pieces": 3,
+  "nb_chambres": 6,
+  "annee_construction": 1901,
+  "latitude": 47.368859,
+  "longitude": 5.018749,
+  "contact": {
+    "nom": "Marc Roche",
+    "telephone": "0214176416",
+    "email": "marc.roche4@example.com"
+  },
+  "exclusivite": false
+}

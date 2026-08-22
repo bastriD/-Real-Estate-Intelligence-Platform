@@ -1,0 +1,24 @@
+{
+  "id": "9c739e2e-a6ac-4bb5-af8e-73500afc35c1",
+  "reference": "AN-FZ75PASM",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain spacieux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-09-29",
+  "prix": 917884,
+  "charges_mensuelles": 246.36,
+  "surface": 257,
+  "adresse": "118 rue Pasteur",
+  "latitude": 43.712854,
+  "longitude": 7.258237,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Dubois",
+    "telephone": "0972542902",
+    "email": "karim.dubois77@example.com"
+  },
+  "exclusivite": false
+}

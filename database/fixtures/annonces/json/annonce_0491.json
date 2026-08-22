@@ -1,0 +1,21 @@
+{
+  "id": "8899d52f-5ab5-42d7-a1a5-f4fec577e241",
+  "reference": "AN-ASKT5KAX",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain avec vue dégagée à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2024-08-26",
+  "prix": 1185058,
+  "surface": 167,
+  "latitude": 43.734717,
+  "longitude": 7.217271,
+  "description": "Terrain à rafraîchir de 167 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "contact": {
+    "nom": "Luc Perrin",
+    "email": "luc.perrin16@example.com",
+    "agence": "Century Habitat"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "ff15bbd9-ea8b-41b3-9214-ed0afd06bab6",
+  "reference": "AN-TSWI2GTL",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "08-13-2025",
+  "prix": 170851,
+  "surface": 197,
+  "nb_pieces": 1,
+  "nb_chambres": 1,
+  "etage": "RDC",
+  "dpe": "B",
+  "description": "Studio atypique de 197 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Bernard",
+    "email": "sophie.bernard43@example.com",
+    "agence": "Nid Doré"
+  }
+}

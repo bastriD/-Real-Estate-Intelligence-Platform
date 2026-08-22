@@ -1,0 +1,24 @@
+{
+  "id": "73f083d1-2dc1-42c5-9c95-3372b762401d",
+  "reference": "AN-ZOT86Q4C",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1751899485,
+  "prix": 352753,
+  "surface": 164,
+  "nb_pieces": 3,
+  "meuble": false,
+  "annee_construction": 1954,
+  "adresse": "161 rue du Commerce",
+  "latitude": 48.868394,
+  "longitude": 2.394488,
+  "description": "Local commercial lumineux de 164 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Julie Dubois",
+    "telephone": "0278923241"
+  },
+  "exclusivite": true
+}

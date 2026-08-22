@@ -1,0 +1,24 @@
+{
+  "id": "71aad71a-42c4-4b0b-a7c3-2c111b979482",
+  "reference": "AN-MODCK61H",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "05-14-2025",
+  "prix": 204222,
+  "surface": 93,
+  "nb_pieces": 7,
+  "etage": 0,
+  "dpe": "G",
+  "description": "Studio en excellent état de 93 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Fontaine",
+    "email": "marie.fontaine70@example.com",
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": false
+}

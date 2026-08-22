@@ -1,0 +1,22 @@
+{
+  "id": "2871cae8-87c0-4b93-a055-ed8e2b3a483c",
+  "reference": "AN-Q258FN8A",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial rénové à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-11-07T07:58:45",
+  "prix": 249862,
+  "surface": 190,
+  "nb_pieces": 6,
+  "nb_chambres": 0,
+  "etage": 5,
+  "dpe": "D",
+  "annee_construction": 1887,
+  "adresse": "84 chemin des Vignes",
+  "description": "Local commercial avec vue dégagée de 190 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Nadia Girard"
+  }
+}

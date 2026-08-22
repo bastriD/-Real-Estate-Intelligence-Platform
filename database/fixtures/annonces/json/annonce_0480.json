@@ -1,0 +1,21 @@
+{
+  "id": "de7d9361-b42b-4350-bd0b-f53dff824617",
+  "reference": "AN-RDHECSS3",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain rénové à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "18 février 2026",
+  "prix": 1557659,
+  "surface": 172,
+  "adresse": "108 boulevard Gambetta",
+  "description": "Terrain atypique de 172 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Moreau",
+    "telephone": "0208400663",
+    "agence": "Toit & Vous"
+  }
+}

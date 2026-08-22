@@ -1,0 +1,20 @@
+{
+  "id": "59c2eddb-5d10-401d-82ee-c96d1c52baf1",
+  "reference": "AN-WV71350T",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "30 décembre 2024",
+  "prix": 348854,
+  "surface_m2": 246,
+  "nb_pieces": 5,
+  "etage": "RDC",
+  "meuble": false,
+  "description": "Local commercial à rafraîchir de 246 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "email": "contact52@example.com"
+  },
+  "exclusivite": false
+}

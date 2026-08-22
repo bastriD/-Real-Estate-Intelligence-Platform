@@ -1,0 +1,32 @@
+{
+  "id": "f2ac615a-1897-45de-a85a-52ad01881b1d",
+  "reference": "AN-FK6GT5A9",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1730511405,
+  "prix": "104217 €",
+  "surface": 135,
+  "nb_pieces": 4,
+  "etage": 2,
+  "dpe": "A",
+  "annee_construction": 2002,
+  "latitude": 43.296015,
+  "longitude": 5.4041,
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0864868835",
+    "email": "contact48@example.com",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-FK6GT5A9/1.jpg",
+    "https://exemple-images.test/AN-FK6GT5A9/2.jpg",
+    "https://exemple-images.test/AN-FK6GT5A9/3.jpg"
+  ],
+  "exclusivite": true
+}

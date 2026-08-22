@@ -1,0 +1,21 @@
+{
+  "id": "292673cf-9f11-4e26-983c-8fc4154e015c",
+  "reference": "AN-D7WPNFTY",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-11-08T21:50:45",
+  "prix": 133334,
+  "surface": 234,
+  "nb_pieces": 7,
+  "description": "Studio lumineux de 234 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Perrin",
+    "agence": "Toit & Vous"
+  },
+  "exclusivite": false
+}

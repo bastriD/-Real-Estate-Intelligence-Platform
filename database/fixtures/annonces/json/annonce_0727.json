@@ -1,0 +1,24 @@
+{
+  "id": "c780eb2a-7231-493b-a8c8-cf1603338783",
+  "reference": "AN-84I7D62B",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial atypique à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2026-07-23",
+  "prix": 284351,
+  "surface": 151,
+  "nb_pieces": 6,
+  "adresse": "53 allée des Platanes",
+  "latitude": 48.834887,
+  "longitude": 2.373413,
+  "contact": {
+    "email": "contact38@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-84I7D62B/1.jpg",
+    "https://exemple-images.test/AN-84I7D62B/2.jpg"
+  ],
+  "particulier": true
+}

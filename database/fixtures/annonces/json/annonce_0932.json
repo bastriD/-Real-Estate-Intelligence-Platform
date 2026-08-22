@@ -1,0 +1,34 @@
+{
+  "id": "230e0af7-e09d-43f5-8bed-e5da67e3b3b7",
+  "reference": "AN-3PUJW3OW",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-12-29T08:08:45",
+  "prix": 124138,
+  "charges_mensuelles": 152.59,
+  "surface": 126,
+  "nb_pieces": 8,
+  "nb_chambres": 5,
+  "etage": "dernier étage",
+  "dpe": "A",
+  "adresse": "61 rue Pasteur",
+  "latitude": 43.26328,
+  "longitude": 5.344841,
+  "description": "Château au calme de 126 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Dubois",
+    "telephone": "0444318314",
+    "email": "claire.dubois54@example.com",
+    "agence": "Century Habitat"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-3PUJW3OW/1.jpg"
+  ],
+  "exclusivite": true
+}

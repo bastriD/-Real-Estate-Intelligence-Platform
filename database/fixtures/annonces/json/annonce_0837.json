@@ -1,0 +1,26 @@
+{
+  "id": "1212056e-a88d-478f-afa5-ec130d2942f9",
+  "reference": "AN-YK0OG7VK",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-10-03",
+  "prix": 80246,
+  "surface": 135,
+  "nb_pieces": 4,
+  "nb_chambres": 1,
+  "meuble": true,
+  "dpe": "A",
+  "annee_construction": 1972,
+  "adresse": "168 rue Jean Jaurès",
+  "description": "Château spacieux de 135 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0555370550"
+  },
+  "particulier": true
+}

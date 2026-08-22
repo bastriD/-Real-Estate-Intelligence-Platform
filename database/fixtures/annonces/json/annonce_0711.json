@@ -1,0 +1,31 @@
+{
+  "id": "60d9ef5f-a6c0-46a1-9679-a44e9163cebb",
+  "reference": "AN-8JA1SC1I",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial en excellent état à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "10 octobre 2024",
+  "prix": 340767,
+  "surface": 259,
+  "nb_pieces": 5,
+  "nb_chambres": 2,
+  "etage": 5,
+  "meuble": false,
+  "adresse": "151 place de la Mairie",
+  "latitude": 48.825232,
+  "longitude": 2.357537,
+  "contact": {
+    "telephone": "0485677754",
+    "agence": "Toit & Vous"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-8JA1SC1I/1.jpg",
+    "https://exemple-images.test/AN-8JA1SC1I/2.jpg",
+    "https://exemple-images.test/AN-8JA1SC1I/3.jpg",
+    "https://exemple-images.test/AN-8JA1SC1I/4.jpg",
+    "https://exemple-images.test/AN-8JA1SC1I/5.jpg"
+  ],
+  "exclusivite": false
+}

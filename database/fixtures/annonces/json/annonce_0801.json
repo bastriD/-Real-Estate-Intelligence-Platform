@@ -1,0 +1,25 @@
+{
+  "id": "d66a0698-ab33-4fc8-bb8f-85cd9635327a",
+  "reference": "AN-94OMZZGW",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-03-31T17:04:45",
+  "prix": 135211,
+  "surface": 110,
+  "nb_pieces": 8,
+  "meuble": false,
+  "dpe": "A",
+  "annee_construction": 1931,
+  "adresse": "126 allée des Platanes",
+  "description": "Château charmant de 110 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Bernard",
+    "telephone": "0386823281"
+  }
+}

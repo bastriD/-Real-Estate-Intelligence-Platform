@@ -1,0 +1,25 @@
+{
+  "id": "bf99d896-ff4c-42bf-b80e-4fb34075aa5c",
+  "reference": "AN-08QES1UR",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement atypique à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1727962365,
+  "prix": 258506,
+  "surface": 67,
+  "nb_pieces": 2,
+  "nb_chambres": 7,
+  "etage": 5,
+  "dpe": "C",
+  "annee_construction": 1875,
+  "adresse": "69 chemin des Vignes",
+  "description": "Appartement atypique de 67 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Sophie Fontaine",
+    "telephone": "0043987235",
+    "email": "sophie.fontaine48@example.com"
+  },
+  "photos": []
+}

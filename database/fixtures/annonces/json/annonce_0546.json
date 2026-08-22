@@ -1,0 +1,22 @@
+{
+  "id": "41f2d12e-7ac8-4127-8d59-4ae8973bdbc5",
+  "reference": "AN-GKECI3YZ",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain au calme à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "08-21-2026",
+  "prix": 1423127,
+  "surface": 248,
+  "latitude": 43.747912,
+  "longitude": 7.233209,
+  "description": "Terrain charmant de 248 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Roche",
+    "telephone": "0355606394",
+    "agence": "Nid Doré"
+  }
+}

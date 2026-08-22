@@ -1,0 +1,30 @@
+{
+  "id": "b4d761d9-065d-4b17-a9c0-d918428e161a",
+  "reference": "AN-DEDHTX9E",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-03-10T05:18:45",
+  "prix": 106163,
+  "surface": 169,
+  "nb_pieces": 7,
+  "nb_chambres": 1,
+  "meuble": false,
+  "dpe": "A",
+  "adresse": "177 rue Jean Jaurès",
+  "latitude": 43.333635,
+  "longitude": 5.335644,
+  "description": "Château en excellent état de 169 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Moreau",
+    "telephone": "0815954641",
+    "email": "ahmed.moreau90@example.com",
+    "agence": "Century Habitat"
+  },
+  "exclusivite": false
+}

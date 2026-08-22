@@ -1,0 +1,26 @@
+{
+  "id": "08daefc5-281b-4bbe-b7f9-3c18dc6dbfde",
+  "reference": "AN-C76DK6RU",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "06-08-2026",
+  "prix": 73402,
+  "surface": 171,
+  "nb_pieces": 4,
+  "etage": 3,
+  "dpe": "A",
+  "annee_construction": 1915,
+  "adresse": "31 place de la Mairie",
+  "description": "Château au calme de 171 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Fontaine",
+    "telephone": "0420190330",
+    "email": "claire.fontaine51@example.com",
+    "agence": "Nid Doré"
+  }
+}

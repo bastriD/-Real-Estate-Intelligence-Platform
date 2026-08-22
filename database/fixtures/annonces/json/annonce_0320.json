@@ -1,0 +1,22 @@
+{
+  "id": "52a2de75-2606-4899-9a0c-9f1e7aa447d8",
+  "reference": "AN-PV599BJ8",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "03-07-2026",
+  "prix": 285302,
+  "surface": 194,
+  "nb_pieces": 1,
+  "nb_chambres": 4,
+  "dpe": "B",
+  "adresse": "54 allée des Platanes",
+  "description": "Appartement lumineux de 194 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Ahmed Perrin",
+    "telephone": "0815128491"
+  },
+  "particulier": true
+}

@@ -1,0 +1,23 @@
+{
+  "id": "1513088d-2b9a-42fa-b567-bc7ca6b229d0",
+  "reference": "AN-IUY517H5",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial au calme à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "07-05-2025",
+  "prix": 412656,
+  "surface": 180,
+  "nb_pieces": 5,
+  "etage": 2,
+  "adresse": "90 place de la Mairie",
+  "latitude": 48.82867,
+  "longitude": 2.377408,
+  "description": "Local commercial charmant de 180 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marc Fontaine",
+    "telephone": "0417061020"
+  },
+  "exclusivite": false
+}

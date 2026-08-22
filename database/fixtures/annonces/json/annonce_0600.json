@@ -1,0 +1,24 @@
+{
+  "id": "afea6bd1-7454-4599-a416-8ca99e3f1510",
+  "reference": "AN-EWYEK6QJ",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain avec vue dégagée à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "7 décembre 2024",
+  "prix": 1085324,
+  "charges_mensuelles": 59.9,
+  "surface": 230,
+  "latitude": 43.662103,
+  "longitude": 7.237954,
+  "description": "Terrain à rafraîchir de 230 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0504787464",
+    "email": "contact10@example.com"
+  },
+  "photos": [],
+  "exclusivite": false
+}

@@ -1,0 +1,26 @@
+{
+  "id": "a4c5b5b3-f718-4ee9-a671-9560776d76b8",
+  "reference": "AN-1J56XNDK",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "05-17-2026",
+  "prix": "295507 €",
+  "surface": 206,
+  "nb_pieces": 3,
+  "nb_chambres": 5,
+  "meuble": false,
+  "dpe": "G",
+  "annee_construction": 1915,
+  "adresse": "24 place de la Mairie",
+  "latitude": 47.345475,
+  "longitude": 5.066796,
+  "description": "Appartement avec vue dégagée de 206 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Nadia Lefevre",
+    "telephone": "0699166705"
+  },
+  "exclusivite": false
+}

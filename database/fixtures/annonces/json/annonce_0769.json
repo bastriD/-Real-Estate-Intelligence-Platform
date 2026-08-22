@@ -1,0 +1,22 @@
+{
+  "id": "69ec6ed2-a9f6-4a3d-944c-208904fb90e8",
+  "reference": "AN-G2YKQU83",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial au calme à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "11-27-2024",
+  "prix": 235731,
+  "surface": 260,
+  "nb_pieces": 6,
+  "annee_construction": 1889,
+  "adresse": "3 rue Jean Jaurès",
+  "latitude": 48.835126,
+  "longitude": 2.374934,
+  "description": "Local commercial en excellent état de 260 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Ahmed Fontaine",
+    "telephone": "0121254710"
+  }
+}

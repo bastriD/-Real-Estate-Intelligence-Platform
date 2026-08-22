@@ -1,0 +1,27 @@
+{
+  "id": "dfb796df-b6a0-4463-90b6-8487da8b8e7a",
+  "reference": "AN-4JCFGZ6E",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1758691905,
+  "prix": 75769,
+  "charges_mensuelles": 119.19,
+  "surface": 162,
+  "nb_pieces": 6,
+  "etage": 1,
+  "meuble": true,
+  "dpe": "A",
+  "latitude": 43.284506,
+  "longitude": 5.39534,
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Martin",
+    "telephone": "0413911559",
+    "agence": "Century Habitat"
+  }
+}

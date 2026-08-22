@@ -1,0 +1,21 @@
+{
+  "id": "52add511-6936-4c28-869a-66256e321710",
+  "reference": "AN-9H31XW0R",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial spacieux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "14/02/2026",
+  "prix": 393456,
+  "surface": 201,
+  "nb_pieces": 6,
+  "meuble": true,
+  "description": "Local commercial avec vue dégagée de 201 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Nadia Moreau",
+    "telephone": "0014895803",
+    "email": "nadia.moreau9@example.com"
+  },
+  "exclusivite": true
+}

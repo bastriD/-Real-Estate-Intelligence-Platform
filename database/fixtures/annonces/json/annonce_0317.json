@@ -1,0 +1,23 @@
+{
+  "id": "1af5dc77-2c6f-4628-bdaf-e17b92ebdab5",
+  "reference": "AN-RSEUPACA",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1779027885,
+  "prix": 357746,
+  "surface": 161,
+  "nb_pieces": 1,
+  "nb_chambres": 7,
+  "latitude": 47.282127,
+  "longitude": 5.061492,
+  "contact": {
+    "nom": "Marie Faure",
+    "telephone": "0272642583",
+    "email": "marie.faure94@example.com",
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": false
+}

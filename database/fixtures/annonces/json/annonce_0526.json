@@ -1,0 +1,27 @@
+{
+  "id": "0723b1dd-97f5-4b59-8ef2-4f6af0bcd98b",
+  "reference": "AN-55GQ8VBJ",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "03-08-2025",
+  "prix": 1716129,
+  "surface": 223,
+  "adresse": "85 quai de la Loire",
+  "latitude": 43.660808,
+  "longitude": 7.264723,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Bernard",
+    "telephone": "0800631914",
+    "email": "marc.bernard14@example.com",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-55GQ8VBJ/1.jpg"
+  ],
+  "exclusivite": true
+}

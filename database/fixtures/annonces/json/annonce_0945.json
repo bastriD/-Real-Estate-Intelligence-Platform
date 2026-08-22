@@ -1,0 +1,34 @@
+{
+  "id": "d9098452-643c-4721-86a6-af63e9ba4748",
+  "reference": "AN-449HZ9PM",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "08-07-2025",
+  "prix": 112943,
+  "surface": 76,
+  "nb_pieces": 7,
+  "nb_chambres": 3,
+  "dpe": "A",
+  "adresse": "199 rue Pasteur",
+  "latitude": 43.251294,
+  "longitude": 5.341287,
+  "description": "Château rénové de 76 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Fontaine",
+    "telephone": "0974140654",
+    "email": "claire.fontaine27@example.com",
+    "agence": "Nid Doré"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-449HZ9PM/1.jpg",
+    "https://exemple-images.test/AN-449HZ9PM/2.jpg",
+    "https://exemple-images.test/AN-449HZ9PM/3.jpg",
+    "https://exemple-images.test/AN-449HZ9PM/4.jpg"
+  ]
+}

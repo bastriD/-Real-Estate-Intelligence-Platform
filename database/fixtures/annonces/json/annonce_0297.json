@@ -1,0 +1,23 @@
+{
+  "id": "ec77661d-2458-43eb-9e1f-a83168b1a73b",
+  "reference": "AN-WVJY2PGN",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-11-09T17:26:45",
+  "prix": 355609,
+  "charges_mensuelles": 375.58,
+  "surface": 99,
+  "nb_pieces": 1,
+  "nb_chambres": 5,
+  "annee_construction": 2022,
+  "description": "Appartement à rafraîchir de 99 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Claire Roche",
+    "email": "claire.roche29@example.com"
+  },
+  "photos": [],
+  "exclusivite": false
+}

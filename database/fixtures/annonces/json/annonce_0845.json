@@ -1,0 +1,23 @@
+{
+  "id": "59f47217-8715-4581-acc1-53ba4fd7c59a",
+  "reference": "AN-VZ98VNVS",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-03-06",
+  "prix": 99803,
+  "surface": 50,
+  "nb_pieces": 7,
+  "nb_chambres": 4,
+  "etage": 3,
+  "latitude": 43.248003,
+  "longitude": 5.409769,
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Perrin",
+    "telephone": "0720521078"
+  }
+}

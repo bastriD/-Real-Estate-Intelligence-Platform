@@ -1,0 +1,19 @@
+{
+  "id": "bea3250e-a914-4ca1-af2d-4328ef76850d",
+  "reference": "AN-994WOBP3",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial au calme à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "4 août 2025",
+  "prix": 356088,
+  "surface": 145,
+  "nb_pieces": 3,
+  "nb_chambres": 0,
+  "meuble": true,
+  "description": "Local commercial charmant de 145 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "email": "contact64@example.com"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "484032e6-c861-4f8c-9382-11dbbe97b187",
+  "reference": "AN-A5M98Z40",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-09-01",
+  "prix": "141862 €",
+  "surface": 113,
+  "nb_pieces": 5,
+  "nb_chambres": 5,
+  "meuble": false,
+  "dpe": "A",
+  "latitude": 43.337469,
+  "longitude": 5.366053,
+  "description": "Château lumineux de 113 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Martin",
+    "telephone": "0003659219",
+    "email": "luc.martin42@example.com",
+    "agence": "Nid Doré"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-A5M98Z40/1.jpg"
+  ]
+}

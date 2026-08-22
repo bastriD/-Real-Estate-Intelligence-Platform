@@ -1,0 +1,24 @@
+{
+  "id": "03b25b62-1756-4366-b1a6-290a248ebb12",
+  "reference": "AN-DJV5GK7F",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2026-03-15T01:46:45",
+  "prix": 1079136,
+  "charges_mensuelles": 284.58,
+  "surface": 127,
+  "description": "Terrain avec vue dégagée de 127 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "photos": [
+    "https://exemple-images.test/AN-DJV5GK7F/1.jpg",
+    "https://exemple-images.test/AN-DJV5GK7F/2.jpg",
+    "https://exemple-images.test/AN-DJV5GK7F/3.jpg",
+    "https://exemple-images.test/AN-DJV5GK7F/4.jpg",
+    "https://exemple-images.test/AN-DJV5GK7F/5.jpg"
+  ],
+  "particulier": true
+}

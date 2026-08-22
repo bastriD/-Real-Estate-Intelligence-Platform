@@ -1,0 +1,28 @@
+{
+  "id": "31637278-06a5-4765-8860-bd9c69fe6dea",
+  "reference": "AN-GT7UV2GA",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "09-14-2024",
+  "prix": 145460,
+  "charges_mensuelles": 113.03,
+  "surface": 124,
+  "nb_pieces": 8,
+  "nb_chambres": 5,
+  "annee_construction": 2005,
+  "description": "Studio charmant de 124 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Jean Lefevre",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-GT7UV2GA/1.jpg",
+    "https://exemple-images.test/AN-GT7UV2GA/2.jpg",
+    "https://exemple-images.test/AN-GT7UV2GA/3.jpg"
+  ],
+  "particulier": true
+}

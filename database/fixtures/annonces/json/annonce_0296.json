@@ -1,0 +1,24 @@
+{
+  "id": "ff489801-01f1-43ca-b90f-d37ac7369b4a",
+  "reference": "AN-OKO163NR",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement en excellent état à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "03-26-2025",
+  "prix": 239857,
+  "surface": 101,
+  "nb_pieces": 3,
+  "nb_chambres": 6,
+  "etage": 4,
+  "meuble": false,
+  "adresse": "80 boulevard Gambetta",
+  "latitude": 47.305656,
+  "longitude": 5.083441,
+  "contact": {
+    "nom": "Julie Perrin",
+    "agence": "Provence Immobilier"
+  },
+  "exclusivite": true
+}

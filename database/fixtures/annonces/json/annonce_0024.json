@@ -1,0 +1,24 @@
+{
+  "id": "91e6efb2-ebbb-40fa-9348-50f953c84727",
+  "reference": "AN-A1DUVS8R",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "11 juin 2026",
+  "prix": 167426,
+  "surface": 233,
+  "nb_pieces": 7,
+  "nb_chambres": 1,
+  "dpe": "B",
+  "annee_construction": 1906,
+  "adresse": "55 place de la Mairie",
+  "description": "Studio de standing de 233 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0742214089"
+  },
+  "exclusivite": false
+}

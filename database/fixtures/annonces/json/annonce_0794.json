@@ -1,0 +1,26 @@
+{
+  "id": "75247a2f-9d1c-4da0-8b4e-c1d9bf75fc52",
+  "reference": "AN-GPDN88SM",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial atypique à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "09-14-2024",
+  "prix": 420111,
+  "surface": 144,
+  "nb_pieces": 6,
+  "nb_chambres": 1,
+  "etage": 2,
+  "meuble": false,
+  "dpe": "F",
+  "annee_construction": 1987,
+  "latitude": 48.837983,
+  "longitude": 2.331748,
+  "description": "Local commercial en excellent état de 144 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Sophie Girard",
+    "email": "sophie.girard41@example.com"
+  },
+  "exclusivite": true
+}

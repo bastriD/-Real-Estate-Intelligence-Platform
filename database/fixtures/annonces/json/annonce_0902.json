@@ -1,0 +1,31 @@
+{
+  "id": "680ed870-d6d4-40bb-86a8-51baef03e4e0",
+  "reference": "AN-5LAWWYB8",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1734915825,
+  "prix": 126913,
+  "surface": 120,
+  "nb_pieces": 5,
+  "nb_chambres": 2,
+  "meuble": true,
+  "dpe": "A",
+  "annee_construction": 2012,
+  "adresse": "81 chemin des Vignes",
+  "latitude": 43.314727,
+  "longitude": 5.384809,
+  "description": "Château atypique de 120 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "contact": {
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-5LAWWYB8/1.jpg",
+    "https://exemple-images.test/AN-5LAWWYB8/2.jpg",
+    "https://exemple-images.test/AN-5LAWWYB8/3.jpg"
+  ]
+}

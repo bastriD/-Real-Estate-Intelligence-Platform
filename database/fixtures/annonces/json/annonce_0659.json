@@ -1,0 +1,22 @@
+{
+  "id": "65815905-ea0c-4902-b848-a14d4defeed7",
+  "reference": "AN-X5QRFVU6",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial avec vue dégagée à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1739053905,
+  "prix": 363596,
+  "surface_m2": 223,
+  "nb_pieces": 6,
+  "adresse": "15 allée des Platanes",
+  "latitude": 48.841965,
+  "longitude": 2.371722,
+  "description": "Local commercial charmant de 223 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Ahmed Perrin",
+    "telephone": "0090652110"
+  },
+  "exclusivite": true
+}

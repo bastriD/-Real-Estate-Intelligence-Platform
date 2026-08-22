@@ -1,0 +1,25 @@
+{
+  "id": "7a08ac53-0a8c-4fcc-8ded-754bb076866c",
+  "reference": "AN-6MOMHZG4",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "28/11/2025",
+  "prix": 102183,
+  "charges_mensuelles": 288.65,
+  "surface": 33,
+  "nb_pieces": 5,
+  "dpe": "A",
+  "latitude": 43.287007,
+  "longitude": 5.348705,
+  "description": "Château à rafraîchir de 33 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0461856882",
+    "email": "contact99@example.com"
+  }
+}

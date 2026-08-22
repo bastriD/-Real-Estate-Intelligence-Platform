@@ -1,0 +1,25 @@
+{
+  "id": "8b7add9d-181d-4b89-9488-8b1f6ee7dd45",
+  "reference": "AN-OY4BALAL",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement lumineux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-05-12T10:30:45",
+  "prix": 332055,
+  "surface": 151,
+  "nb_pieces": 3,
+  "nb_chambres": 5,
+  "meuble": false,
+  "annee_construction": 1960,
+  "latitude": 47.329736,
+  "longitude": 5.011038,
+  "description": "Appartement lumineux de 151 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0123565233",
+    "email": "contact67@example.com",
+    "agence": "Toit & Vous"
+  },
+  "exclusivite": false
+}

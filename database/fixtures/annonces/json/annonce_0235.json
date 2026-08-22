@@ -1,0 +1,23 @@
+{
+  "id": "435b1cea-0d53-49c5-b6e0-f67618789397",
+  "reference": "AN-WYVD15L5",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "30/08/2025",
+  "prix": 357732,
+  "surface": 195,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "meuble": false,
+  "adresse": "151 rue Victor Hugo",
+  "description": "Appartement au calme de 195 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0808039445",
+    "email": "contact89@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "particulier": true
+}

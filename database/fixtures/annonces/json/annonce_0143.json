@@ -1,0 +1,25 @@
+{
+  "id": "943e2f10-2d22-40f5-9969-8d66f4808e0c",
+  "reference": "AN-401Y5DWQ",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1776848565,
+  "prix": 216874,
+  "surface": 133,
+  "nb_pieces": 8,
+  "etage": "dernier étage",
+  "meuble": true,
+  "dpe": "C",
+  "adresse": "36 allée des Platanes",
+  "description": "Studio rénové de 133 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Lefevre",
+    "telephone": "0805175333"
+  },
+  "particulier": true
+}

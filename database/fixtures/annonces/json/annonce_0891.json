@@ -1,0 +1,29 @@
+{
+  "id": "6e2a78f5-86a9-4a77-b6f7-f385d5a64c20",
+  "reference": "AN-ALA8JV1D",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1775553705,
+  "prix": 80944,
+  "surface": 71,
+  "nb_pieces": 6,
+  "etage": 2,
+  "dpe": "A",
+  "annee_construction": 1912,
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Perrin",
+    "telephone": "0870873141",
+    "email": "jean.perrin25@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-ALA8JV1D/1.jpg",
+    "https://exemple-images.test/AN-ALA8JV1D/2.jpg"
+  ],
+  "exclusivite": true
+}

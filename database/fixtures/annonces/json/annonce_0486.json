@@ -1,0 +1,19 @@
+{
+  "id": "ab14161b-80eb-4a42-9022-9ec5cb5e4e06",
+  "reference": "AN-T654HMN4",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "01-16-2025",
+  "prix": 1181611,
+  "surface": 124,
+  "description": "Terrain rénové de 124 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marc Roche",
+    "telephone": "0921734089"
+  }
+}

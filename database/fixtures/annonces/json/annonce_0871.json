@@ -1,0 +1,27 @@
+{
+  "id": "64d539e0-87d7-4897-b2c2-3d63e58af298",
+  "reference": "AN-MHRJU5BU",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "20 décembre 2025",
+  "prix": 144012,
+  "charges_mensuelles": 294.9,
+  "surface": 67,
+  "nb_pieces": 5,
+  "etage": 0,
+  "dpe": "A",
+  "latitude": 43.325418,
+  "longitude": 5.385446,
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Girard",
+    "telephone": "0675952229",
+    "agence": "Nid Doré"
+  },
+  "exclusivite": false
+}

@@ -1,0 +1,21 @@
+{
+  "id": "9b6ad2ce-9452-464f-b498-ca700425420f",
+  "reference": "AN-WLHQVFCZ",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "08-22-2026",
+  "prix": 214472,
+  "surface": 216,
+  "etage": 3,
+  "description": "Studio spacieux de 216 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Faure",
+    "email": "julie.faure95@example.com",
+    "agence": "Clé en Main Immo"
+  }
+}

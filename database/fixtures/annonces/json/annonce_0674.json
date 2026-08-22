@@ -1,0 +1,21 @@
+{
+  "id": "d3b0124f-0874-4e3c-a2a1-67b3f94dc6aa",
+  "reference": "AN-MHO26WEA",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial en excellent état à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "03-17-2025",
+  "prix": 305985,
+  "surface": 138,
+  "nb_pieces": 2,
+  "nb_chambres": 1,
+  "adresse": "144 place de la Mairie",
+  "latitude": 48.82303,
+  "longitude": 2.327384,
+  "contact": {
+    "email": "contact14@example.com"
+  },
+  "exclusivite": false
+}

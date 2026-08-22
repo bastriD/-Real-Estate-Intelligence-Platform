@@ -1,0 +1,24 @@
+{
+  "id": "f44486ab-5038-46b7-92d7-1f2b8d65cacf",
+  "reference": "AN-QF1MQ56N",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-02-01T19:08:45",
+  "prix": 360065,
+  "surface": 176,
+  "nb_pieces": 2,
+  "annee_construction": 1896,
+  "adresse": "64 rue Victor Hugo",
+  "latitude": 48.889204,
+  "longitude": 2.38611,
+  "description": "Local commercial à rafraîchir de 176 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0903106835",
+    "email": "contact15@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": true
+}

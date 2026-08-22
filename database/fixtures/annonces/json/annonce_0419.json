@@ -1,0 +1,24 @@
+{
+  "id": "e410879b-50d7-43fe-bc9c-a9dea8f95a7f",
+  "reference": "AN-1DWKBPPA",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain lumineux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1737163185,
+  "prix": 1653264,
+  "surface": 192,
+  "adresse": "103 rue de la République",
+  "latitude": 43.702325,
+  "longitude": 7.218366,
+  "vue": true,
+  "contact": {
+    "nom": "Sophie Bernard",
+    "email": "sophie.bernard3@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-1DWKBPPA/1.jpg"
+  ]
+}

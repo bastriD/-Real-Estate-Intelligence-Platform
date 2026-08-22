@@ -1,0 +1,28 @@
+{
+  "id": "08ca64f6-0ba8-49f8-944a-1421ca8aeb46",
+  "reference": "AN-JLOYX8RN",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "19/06/2025",
+  "prix": 189901,
+  "charges_mensuelles": 85.58,
+  "surface": 190,
+  "nb_pieces": 4,
+  "meuble": false,
+  "dpe": "G",
+  "annee_construction": 1851,
+  "latitude": 43.266054,
+  "longitude": 5.399326,
+  "description": "Studio à rafraîchir de 190 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Fontaine",
+    "email": "sophie.fontaine97@example.com",
+    "agence": "ImmoPlus"
+  },
+  "particulier": true
+}

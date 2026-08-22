@@ -1,0 +1,25 @@
+{
+  "id": "03246f70-7c95-42a1-8fdb-7c0c8ef46e5c",
+  "reference": "AN-IM0Q1EDW",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial rénové à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1744421145,
+  "prix": "228016 €",
+  "charges_mensuelles": 300.68,
+  "surface": 144,
+  "nb_pieces": 5,
+  "nb_chambres": 4,
+  "etage": 0,
+  "annee_construction": 1888,
+  "adresse": "12 place de la Mairie",
+  "latitude": 48.876664,
+  "longitude": 2.373829,
+  "description": "Local commercial rénové de 144 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0740917901",
+    "agence": "Clé en Main Immo"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "6a7e60d3-057d-41ad-ac6a-02cda5d23b6f",
+  "reference": "AN-SZK55ACO",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1770472905,
+  "prix": "1216603 €",
+  "surface": 220,
+  "latitude": 43.752711,
+  "longitude": 7.2753,
+  "description": "Terrain de standing de 220 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "telephone": "0543345736",
+    "email": "contact86@example.com",
+    "agence": "Century Habitat"
+  },
+  "exclusivite": true
+}

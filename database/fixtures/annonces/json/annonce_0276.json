@@ -1,0 +1,30 @@
+{
+  "id": "d5fe3893-ead1-4e2e-9ced-23ff27c00899",
+  "reference": "AN-G7L5T4Z6",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement rénové à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "05-24-2026",
+  "prix": 248226,
+  "charges_mensuelles": 70.92,
+  "surface": 206,
+  "nb_pieces": 1,
+  "nb_chambres": 4,
+  "meuble": false,
+  "latitude": 47.332438,
+  "longitude": 5.01644,
+  "contact": {
+    "nom": "Karim Roche",
+    "email": "karim.roche71@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-G7L5T4Z6/1.jpg",
+    "https://exemple-images.test/AN-G7L5T4Z6/2.jpg",
+    "https://exemple-images.test/AN-G7L5T4Z6/3.jpg",
+    "https://exemple-images.test/AN-G7L5T4Z6/4.jpg",
+    "https://exemple-images.test/AN-G7L5T4Z6/5.jpg"
+  ]
+}

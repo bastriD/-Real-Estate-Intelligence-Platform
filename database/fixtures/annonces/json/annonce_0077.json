@@ -1,0 +1,26 @@
+{
+  "id": "af1b8f01-3795-47d3-b768-ec6e5a4d9f45",
+  "reference": "AN-POEJ0ISI",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "18/09/2025",
+  "prix": 145485,
+  "surface": 153,
+  "nb_pieces": 5,
+  "annee_construction": 1948,
+  "adresse": "13 impasse des Lilas",
+  "latitude": 43.256325,
+  "longitude": 5.407606,
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Perrin",
+    "telephone": "0391651181",
+    "email": "julie.perrin74@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": true
+}

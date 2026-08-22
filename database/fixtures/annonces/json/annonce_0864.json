@@ -1,0 +1,27 @@
+{
+  "id": "b31a7bac-cdc4-4e42-92e7-f9f6d8f6d5e5",
+  "reference": "AN-8IICCD28",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-07-12T18:38:45",
+  "prix": 136742,
+  "surface": 154,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "meuble": false,
+  "dpe": "A",
+  "annee_construction": 2001,
+  "adresse": "54 rue Pasteur",
+  "latitude": 43.257274,
+  "longitude": 5.37013,
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Roche",
+    "email": "karim.roche19@example.com"
+  }
+}

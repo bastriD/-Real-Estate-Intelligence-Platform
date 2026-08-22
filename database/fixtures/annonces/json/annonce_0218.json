@@ -1,0 +1,25 @@
+{
+  "id": "0e740228-793b-4c2a-99b3-0800a0d5591b",
+  "reference": "AN-5U9LB9XC",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "8 décembre 2025",
+  "prix": 333048,
+  "charges_mensuelles": 250.43,
+  "surface": 139,
+  "nb_pieces": 5,
+  "nb_chambres": 5,
+  "etage": 1,
+  "meuble": true,
+  "dpe": "E",
+  "latitude": 47.294838,
+  "longitude": 5.043037,
+  "contact": {
+    "nom": "Luc Faure",
+    "telephone": "0159372412"
+  },
+  "exclusivite": false
+}

@@ -1,0 +1,23 @@
+{
+  "id": "95392d76-d1c9-416e-9d04-a27bd3dd71ff",
+  "reference": "AN-9NU8ASH0",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-05-28",
+  "prix": 134956,
+  "surface": 42,
+  "nb_pieces": 4,
+  "etage": 1,
+  "dpe": "A",
+  "description": "Château avec vue dégagée de 42 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Faure",
+    "email": "jean.faure85@example.com"
+  },
+  "exclusivite": false
+}

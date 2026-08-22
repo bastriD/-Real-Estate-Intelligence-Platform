@@ -1,0 +1,24 @@
+{
+  "id": "6851feea-5714-4cc3-9600-51b125d139ec",
+  "reference": "AN-53HBCT03",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1733157705,
+  "prix": 134913,
+  "charges_mensuelles": 191.26,
+  "surface": 170,
+  "nb_pieces": 7,
+  "meuble": false,
+  "latitude": 43.29582,
+  "longitude": 5.320617,
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0980856821"
+  },
+  "particulier": true
+}

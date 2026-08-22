@@ -1,0 +1,21 @@
+{
+  "id": "f4148bbb-183d-400d-b263-020dd96dfa6b",
+  "reference": "AN-S01UPO6U",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-06-26T23:30:45",
+  "prix": "162677 €",
+  "surface": 203,
+  "nb_pieces": 3,
+  "nb_chambres": 1,
+  "etage": 0,
+  "meuble": true,
+  "adresse": "20 boulevard Gambetta",
+  "calme": true,
+  "contact": {
+    "telephone": "0452896199"
+  }
+}

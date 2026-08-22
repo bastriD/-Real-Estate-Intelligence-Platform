@@ -1,0 +1,25 @@
+{
+  "id": "a3da1986-1c35-41a2-af5d-c6b9287ff482",
+  "reference": "AN-Y1OQ2BX5",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial de standing à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-08-10",
+  "prix": 397355,
+  "charges_mensuelles": 325.1,
+  "surface": 219,
+  "nb_pieces": 5,
+  "meuble": false,
+  "latitude": 48.839221,
+  "longitude": 2.376592,
+  "contact": {
+    "telephone": "0802860391",
+    "email": "contact51@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-Y1OQ2BX5/1.jpg"
+  ]
+}

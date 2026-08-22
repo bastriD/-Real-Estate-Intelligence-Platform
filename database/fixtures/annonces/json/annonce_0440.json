@@ -1,0 +1,20 @@
+{
+  "id": "833bbeec-c435-4200-8d29-915d7f18b795",
+  "reference": "AN-Z6LFUT47",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain lumineux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "04/09/2025",
+  "prix": 913829,
+  "surface": 236,
+  "adresse": "90 rue Pasteur",
+  "latitude": 43.732386,
+  "longitude": 7.310148,
+  "vue": true,
+  "contact": {
+    "nom": "Nadia Martin",
+    "telephone": "0859114719"
+  }
+}

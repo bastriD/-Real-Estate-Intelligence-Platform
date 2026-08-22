@@ -1,0 +1,26 @@
+{
+  "id": "11a0e23b-1f42-4e6f-a79f-700f65d9ac3c",
+  "reference": "AN-R62CT24X",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-05-29",
+  "prix": 367445,
+  "surface_m2": 115,
+  "nb_pieces": 2,
+  "nb_chambres": 4,
+  "etage": "RDC",
+  "meuble": false,
+  "dpe": "F",
+  "annee_construction": 2021,
+  "adresse": "190 boulevard Gambetta",
+  "latitude": 47.32576,
+  "longitude": 5.050963,
+  "description": "Appartement au calme de 115 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0850119000",
+    "agence": "Nid Doré"
+  }
+}

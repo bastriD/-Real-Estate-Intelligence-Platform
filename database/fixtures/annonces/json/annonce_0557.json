@@ -1,0 +1,25 @@
+{
+  "id": "e07c21cc-0460-462b-ada9-2a9d093b74eb",
+  "reference": "AN-5GKUOJK3",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain au calme à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-11-23T14:51:45",
+  "prix": 1434024,
+  "surface": 151,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Fontaine",
+    "telephone": "0859947306"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-5GKUOJK3/1.jpg",
+    "https://exemple-images.test/AN-5GKUOJK3/2.jpg",
+    "https://exemple-images.test/AN-5GKUOJK3/3.jpg",
+    "https://exemple-images.test/AN-5GKUOJK3/4.jpg",
+    "https://exemple-images.test/AN-5GKUOJK3/5.jpg"
+  ]
+}

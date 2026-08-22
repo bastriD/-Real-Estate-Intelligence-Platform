@@ -1,0 +1,26 @@
+{
+  "id": "c56bed4b-ff00-461e-b291-efb5c8bbee0f",
+  "reference": "AN-AWOWKSKO",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-10-14",
+  "prix": 118775,
+  "charges_mensuelles": 196.0,
+  "surface": 146,
+  "nb_pieces": 4,
+  "dpe": "E",
+  "annee_construction": 1867,
+  "latitude": 43.251912,
+  "longitude": 5.389398,
+  "description": "Château atypique de 146 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "contact": {
+    "email": "contact61@example.com",
+    "agence": "Century Habitat"
+  },
+  "exclusivite": true
+}

@@ -1,0 +1,26 @@
+{
+  "id": "7128e749-17b7-40d3-b455-ee59d50f3bf0",
+  "reference": "AN-X11H4PRQ",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-05-07T09:19:45",
+  "prix": 212141,
+  "surface": 123,
+  "nb_pieces": 7,
+  "nb_chambres": 4,
+  "etage": 1,
+  "meuble": false,
+  "dpe": "A",
+  "adresse": "116 allée des Platanes",
+  "description": "Studio à rafraîchir de 123 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "contact": {
+    "telephone": "0729193449",
+    "email": "contact13@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": false
+}

@@ -1,0 +1,24 @@
+{
+  "id": "ef4be8e9-c736-4a4e-bfb4-460363e4c182",
+  "reference": "AN-7MOPLW57",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1753919025,
+  "prix": 213007,
+  "surface": 104,
+  "nb_pieces": 3,
+  "meuble": false,
+  "annee_construction": 2009,
+  "adresse": "33 rue Pasteur",
+  "latitude": 43.296176,
+  "longitude": 5.385829,
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0532396260",
+    "email": "contact36@example.com"
+  }
+}

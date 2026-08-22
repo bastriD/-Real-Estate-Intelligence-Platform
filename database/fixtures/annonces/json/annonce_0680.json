@@ -1,0 +1,22 @@
+{
+  "id": "49616f26-9d8e-4974-ae65-b7f5bc2b8404",
+  "reference": "AN-JZHEN127",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial rénové à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-11-14T07:23:45",
+  "prix": 350585,
+  "surface": 140,
+  "nb_pieces": 4,
+  "nb_chambres": 4,
+  "etage": 3,
+  "dpe": "D",
+  "latitude": 48.856619,
+  "longitude": 2.321094,
+  "contact": {
+    "telephone": "0881208505"
+  },
+  "exclusivite": false
+}

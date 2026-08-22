@@ -1,0 +1,31 @@
+{
+  "id": "af66095c-8c5c-4bf1-903e-15d8bc2b2621",
+  "reference": "AN-SDZC268U",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial de standing à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-09-28T15:58:45",
+  "prix": 406870,
+  "surface": 264,
+  "nb_pieces": 2,
+  "etage": 1,
+  "annee_construction": 1967,
+  "adresse": "139 place de la Mairie",
+  "latitude": 48.853126,
+  "longitude": 2.34101,
+  "description": "Local commercial de standing de 264 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0671126366",
+    "agence": "Century Habitat"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-SDZC268U/1.jpg",
+    "https://exemple-images.test/AN-SDZC268U/2.jpg",
+    "https://exemple-images.test/AN-SDZC268U/3.jpg",
+    "https://exemple-images.test/AN-SDZC268U/4.jpg",
+    "https://exemple-images.test/AN-SDZC268U/5.jpg"
+  ],
+  "particulier": true
+}

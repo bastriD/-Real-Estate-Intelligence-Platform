@@ -1,0 +1,23 @@
+{
+  "id": "a501c73f-89a1-4e28-8de4-b9c0474b28ca",
+  "reference": "AN-JAW91HBZ",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "19/02/2025",
+  "prix": 135339,
+  "surface": 95,
+  "nb_pieces": 6,
+  "nb_chambres": 2,
+  "meuble": true,
+  "dpe": "A",
+  "description": "Château atypique de 95 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "email": "contact69@example.com",
+    "agence": "Nid Doré"
+  }
+}

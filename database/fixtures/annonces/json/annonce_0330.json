@@ -1,0 +1,24 @@
+{
+  "id": "1cf07622-b850-4742-9742-a5189e2e2ce6",
+  "reference": "AN-LMIXZB1G",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement spacieux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1783699725,
+  "prix": 362253,
+  "surface": 194,
+  "nb_pieces": 1,
+  "nb_chambres": 7,
+  "dpe": "C",
+  "annee_construction": 1936,
+  "adresse": "131 rue Jean Jaurès",
+  "latitude": 47.371827,
+  "longitude": 5.054731,
+  "contact": {
+    "email": "contact71@example.com",
+    "agence": "ImmoPlus"
+  },
+  "particulier": true
+}

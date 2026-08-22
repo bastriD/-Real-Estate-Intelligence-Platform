@@ -1,0 +1,28 @@
+{
+  "id": "a7f1a8e7-2edc-445f-91cd-cad8a1ae9769",
+  "reference": "AN-ZXEW53ZC",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-09-02",
+  "prix": "209349 €",
+  "surface": 135,
+  "nb_chambres": 2,
+  "adresse": "181 quai de la Loire",
+  "latitude": 43.261779,
+  "longitude": 5.341462,
+  "description": "Studio atypique de 135 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Bernard",
+    "telephone": "0488030616",
+    "email": "nadia.bernard94@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-ZXEW53ZC/1.jpg",
+    "https://exemple-images.test/AN-ZXEW53ZC/2.jpg",
+    "https://exemple-images.test/AN-ZXEW53ZC/3.jpg"
+  ]
+}

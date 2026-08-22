@@ -1,0 +1,25 @@
+{
+  "id": "856cfc80-45c7-4b20-b637-e0348640b681",
+  "reference": "AN-RI7Z0D2B",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement lumineux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "08-16-2025",
+  "prix": "246377 €",
+  "surface_m2": 96,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "etage": 5,
+  "meuble": false,
+  "dpe": "B",
+  "latitude": 47.357065,
+  "longitude": 4.991543,
+  "description": "Appartement spacieux de 96 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "email": "contact14@example.com",
+    "agence": "ImmoPlus"
+  },
+  "photos": []
+}

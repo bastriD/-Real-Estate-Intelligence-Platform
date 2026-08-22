@@ -1,0 +1,21 @@
+{
+  "id": "1a07649d-91f0-4aa8-8e8c-fc550e379b43",
+  "reference": "AN-A14FE82F",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "07-29-2025",
+  "prix": "1710004 €",
+  "surface": 192,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Roche",
+    "telephone": "0295825698",
+    "email": "sophie.roche93@example.com",
+    "agence": "Toit & Vous"
+  },
+  "particulier": true
+}

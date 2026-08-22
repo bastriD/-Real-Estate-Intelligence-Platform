@@ -1,0 +1,19 @@
+{
+  "id": "e96f5e93-33ba-4e87-83da-6f5f9e82b37f",
+  "reference": "AN-LXFAVHJN",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "05/11/2024",
+  "prix": 218194,
+  "surface": 199,
+  "nb_pieces": 5,
+  "nb_chambres": 6,
+  "description": "Appartement spacieux de 199 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "telephone": "0799055393"
+  },
+  "exclusivite": false
+}

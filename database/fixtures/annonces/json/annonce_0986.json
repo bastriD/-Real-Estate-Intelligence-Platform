@@ -1,0 +1,23 @@
+{
+  "id": "17269019-b711-4eac-ad1d-4c0a7d1887fa",
+  "reference": "AN-XTMEQO5Y",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-06-21",
+  "prix": 121053,
+  "charges_mensuelles": 158.31,
+  "surface": 168,
+  "nb_pieces": 8,
+  "etage": "RDC",
+  "dpe": "A",
+  "adresse": "40 rue Jean Jaurès",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0239071438"
+  },
+  "exclusivite": false
+}

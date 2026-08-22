@@ -1,0 +1,21 @@
+{
+  "id": "6226a517-49be-42ce-90b2-2533ea345f44",
+  "reference": "AN-ICI6M1TP",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "02-21-2026",
+  "prix": 245298,
+  "charges_mensuelles": 190.92,
+  "surface": 175,
+  "nb_pieces": 6,
+  "meuble": true,
+  "annee_construction": 2010,
+  "adresse": "125 chemin des Vignes",
+  "description": "Local commercial en excellent état de 175 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "agence": "Century Habitat"
+  }
+}

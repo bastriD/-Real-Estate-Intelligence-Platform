@@ -1,0 +1,23 @@
+{
+  "id": "ce77aaa0-287c-4655-a69a-7b3a0ce9f5ed",
+  "reference": "AN-0ZDXVW6A",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1737044205,
+  "prix": 134470,
+  "charges_mensuelles": 194.96,
+  "surface": 171,
+  "nb_chambres": 0,
+  "latitude": 43.283371,
+  "longitude": 5.366644,
+  "description": "Studio au calme de 171 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "contact": {
+    "nom": "Marie Dubois",
+    "telephone": "0597607445"
+  },
+  "particulier": true
+}

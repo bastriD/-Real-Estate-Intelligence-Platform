@@ -1,0 +1,25 @@
+{
+  "id": "cebdd8dd-d287-403e-a970-0c735223a42c",
+  "reference": "AN-6NCFTMDR",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement en excellent état à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "12-02-2024",
+  "prix": "215807 €",
+  "surface": 78,
+  "nb_pieces": 2,
+  "nb_chambres": 4,
+  "etage": 4,
+  "meuble": false,
+  "latitude": 47.325996,
+  "longitude": 5.080567,
+  "description": "Appartement en excellent état de 78 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Claire Fontaine",
+    "telephone": "0368139424",
+    "agence": "Century Habitat"
+  },
+  "exclusivite": true
+}

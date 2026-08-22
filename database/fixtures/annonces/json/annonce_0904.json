@@ -1,0 +1,29 @@
+{
+  "id": "2ef9def5-d216-49a0-857a-863963752f60",
+  "reference": "AN-JPYG87F0",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-03-03",
+  "prix": 131602,
+  "surface": 117,
+  "nb_pieces": 4,
+  "nb_chambres": 4,
+  "etage": 3,
+  "dpe": "A",
+  "adresse": "195 quai de la Loire",
+  "latitude": 43.285063,
+  "longitude": 5.373836,
+  "description": "Château à rafraîchir de 117 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Faure",
+    "telephone": "0914286058",
+    "email": "marie.faure2@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": false
+}

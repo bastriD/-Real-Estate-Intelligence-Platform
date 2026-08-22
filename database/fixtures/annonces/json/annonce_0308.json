@@ -1,0 +1,22 @@
+{
+  "id": "74f80612-d8c8-4764-816a-3295cacddf69",
+  "reference": "AN-EN891BDR",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement en excellent état à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2026-04-04",
+  "prix": 280446,
+  "surface": 93,
+  "nb_pieces": 1,
+  "nb_chambres": 4,
+  "meuble": true,
+  "dpe": "E",
+  "description": "Appartement spacieux de 93 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "telephone": "0419163008",
+    "email": "contact50@example.com"
+  },
+  "exclusivite": false
+}

@@ -1,0 +1,29 @@
+{
+  "id": "2a0f449f-7983-4e91-af34-cc300423f33a",
+  "reference": "AN-ZYTM2RDP",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1776948225,
+  "prix": 381965,
+  "surface": 208,
+  "nb_pieces": 4,
+  "nb_chambres": 6,
+  "dpe": "A",
+  "adresse": "123 rue Pasteur",
+  "description": "Appartement spacieux de 208 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Marie Girard",
+    "email": "marie.girard61@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-ZYTM2RDP/1.jpg",
+    "https://exemple-images.test/AN-ZYTM2RDP/2.jpg",
+    "https://exemple-images.test/AN-ZYTM2RDP/3.jpg",
+    "https://exemple-images.test/AN-ZYTM2RDP/4.jpg"
+  ],
+  "particulier": true
+}

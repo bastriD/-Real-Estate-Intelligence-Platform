@@ -1,0 +1,22 @@
+{
+  "id": "1b560ec2-6539-4817-9a61-7d4ac6169380",
+  "reference": "AN-K5R54DBF",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2026-03-13",
+  "prix": 388061,
+  "surface": 119,
+  "nb_pieces": 5,
+  "nb_chambres": 7,
+  "dpe": "C",
+  "adresse": "38 allée des Platanes",
+  "description": "Appartement au calme de 119 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Claire Perrin",
+    "telephone": "0595592107"
+  },
+  "exclusivite": true
+}

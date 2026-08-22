@@ -1,0 +1,22 @@
+{
+  "id": "cc1cb4a1-1d88-4046-8f35-576bfe9da523",
+  "reference": "AN-QLGJEBOM",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial lumineux à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2025-10-05T16:32:45",
+  "prix": "355756 €",
+  "surface_m2": 220,
+  "nb_pieces": 3,
+  "dpe": "G",
+  "latitude": 48.891614,
+  "longitude": 2.334592,
+  "description": "Local commercial avec vue dégagée de 220 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Marie Perrin",
+    "telephone": "0237456163",
+    "email": "marie.perrin44@example.com"
+  }
+}

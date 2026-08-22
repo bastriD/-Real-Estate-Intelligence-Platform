@@ -1,0 +1,30 @@
+{
+  "id": "9420acf1-3f94-4df4-a340-400c4cf66dd6",
+  "reference": "AN-Y7S100X2",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "03-20-2025",
+  "prix": 155337,
+  "surface": 103,
+  "nb_pieces": 8,
+  "etage": 3,
+  "dpe": "G",
+  "latitude": 43.265134,
+  "longitude": 5.340503,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Perrin",
+    "telephone": "0970455199"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-Y7S100X2/1.jpg",
+    "https://exemple-images.test/AN-Y7S100X2/2.jpg",
+    "https://exemple-images.test/AN-Y7S100X2/3.jpg",
+    "https://exemple-images.test/AN-Y7S100X2/4.jpg",
+    "https://exemple-images.test/AN-Y7S100X2/5.jpg"
+  ],
+  "exclusivite": false
+}

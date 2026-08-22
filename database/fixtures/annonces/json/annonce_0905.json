@@ -1,0 +1,28 @@
+{
+  "id": "a7ede75e-0daf-42e0-b87f-8daec9682a25",
+  "reference": "AN-CWEUEB5X",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-09-10T10:45:45",
+  "prix": 140075,
+  "surface": 161,
+  "nb_pieces": 8,
+  "dpe": "A",
+  "adresse": "113 chemin des Vignes",
+  "latitude": 43.312114,
+  "longitude": 5.411032,
+  "description": "Château à rafraîchir de 161 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Lefevre",
+    "telephone": "0826995175",
+    "email": "luc.lefevre52@example.com",
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": true
+}

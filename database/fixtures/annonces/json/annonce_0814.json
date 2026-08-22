@@ -1,0 +1,24 @@
+{
+  "id": "453d9de8-1f98-44d0-bac0-9cbbd3dab159",
+  "reference": "AN-V44JOHQO",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1747671705,
+  "prix": 125540,
+  "surface": 90,
+  "nb_pieces": 6,
+  "meuble": true,
+  "dpe": "A",
+  "annee_construction": 1878,
+  "latitude": 43.264573,
+  "longitude": 5.381393,
+  "vue": true,
+  "calme": true,
+  "photos": [
+    "https://exemple-images.test/AN-V44JOHQO/1.jpg"
+  ],
+  "exclusivite": true
+}

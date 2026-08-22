@@ -1,0 +1,24 @@
+{
+  "id": "acdd9820-8421-4151-9c4c-e9f7536c4927",
+  "reference": "AN-NMAXPCVI",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2026-07-03",
+  "prix": 276469,
+  "surface": 153,
+  "nb_pieces": 4,
+  "nb_chambres": 7,
+  "dpe": "D",
+  "description": "Appartement spacieux de 153 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "photos": [
+    "https://exemple-images.test/AN-NMAXPCVI/1.jpg",
+    "https://exemple-images.test/AN-NMAXPCVI/2.jpg",
+    "https://exemple-images.test/AN-NMAXPCVI/3.jpg",
+    "https://exemple-images.test/AN-NMAXPCVI/4.jpg",
+    "https://exemple-images.test/AN-NMAXPCVI/5.jpg"
+  ],
+  "particulier": true
+}

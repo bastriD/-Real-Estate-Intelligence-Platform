@@ -1,0 +1,22 @@
+{
+  "id": "27676e83-8371-4088-af17-5896c9fcc92d",
+  "reference": "AN-SVPULDZG",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "14/06/2026",
+  "prix": 244881,
+  "charges_mensuelles": 375.52,
+  "surface_m2": 101,
+  "nb_pieces": 3,
+  "nb_chambres": 4,
+  "etage": 3,
+  "adresse": "128 rue Victor Hugo",
+  "contact": {
+    "nom": "Marc Girard",
+    "telephone": "0274319992",
+    "email": "marc.girard94@example.com"
+  }
+}

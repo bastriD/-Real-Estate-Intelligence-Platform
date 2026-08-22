@@ -1,0 +1,21 @@
+{
+  "id": "a860b77e-3951-4d46-bc6f-ff31a7423218",
+  "reference": "AN-3CCDDY2U",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial rénové à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "2026-02-06",
+  "prix": 328613,
+  "surface": 136,
+  "nb_pieces": 4,
+  "etage": 1,
+  "meuble": false,
+  "description": "Local commercial avec vue dégagée de 136 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0074263596",
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": false
+}

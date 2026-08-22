@@ -1,0 +1,25 @@
+{
+  "id": "3d5acfb8-d732-4105-b0ad-d0a9c3cffd2a",
+  "reference": "AN-01CC7EH3",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "04/09/2024",
+  "prix": 137083,
+  "surface": 38,
+  "nb_pieces": 7,
+  "nb_chambres": 4,
+  "dpe": "A",
+  "description": "Château atypique de 38 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0370996365"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-01CC7EH3/1.jpg",
+    "https://exemple-images.test/AN-01CC7EH3/2.jpg"
+  ]
+}

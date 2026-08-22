@@ -1,0 +1,22 @@
+{
+  "id": "0c626075-41d3-4d04-ac86-08f38a74bebb",
+  "reference": "AN-HEBH23SA",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château au calme à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "03-22-2026",
+  "prix": 85715,
+  "surface": 104,
+  "nb_pieces": 8,
+  "nb_chambres": 0,
+  "dpe": "A",
+  "description": "Château spacieux de 104 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "contact": {
+    "telephone": "0253864419",
+    "agence": "Clé en Main Immo"
+  },
+  "particulier": true
+}

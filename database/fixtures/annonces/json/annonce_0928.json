@@ -1,0 +1,28 @@
+{
+  "id": "d21ece26-717d-480a-ba6f-ee281615d33c",
+  "reference": "AN-W1VX1OBV",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "01-11-2025",
+  "prix": 135365,
+  "surface": 155,
+  "nb_pieces": 5,
+  "nb_chambres": 1,
+  "etage": 3,
+  "dpe": "A",
+  "annee_construction": 1984,
+  "description": "Château atypique de 155 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Girard",
+    "telephone": "0142158377",
+    "email": "karim.girard9@example.com",
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": false
+}

@@ -1,0 +1,22 @@
+{
+  "id": "6f3b35b6-1cb5-4116-89b3-347f872ad8d5",
+  "reference": "AN-8KRID8M6",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain spacieux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-08-24",
+  "prix": 1697677,
+  "surface_m2": 162,
+  "adresse": "131 quai de la Loire",
+  "latitude": 43.673572,
+  "longitude": 7.243472,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Roche",
+    "telephone": "0894513036",
+    "email": "marie.roche88@example.com"
+  },
+  "particulier": true
+}

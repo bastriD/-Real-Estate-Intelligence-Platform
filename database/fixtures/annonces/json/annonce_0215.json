@@ -1,0 +1,26 @@
+{
+  "id": "2d05aeee-988c-4194-859f-ffbd161e0e74",
+  "reference": "AN-RMLAHKX5",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement à rafraîchir à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-04-12",
+  "prix": 383740,
+  "surface": 191,
+  "nb_pieces": 3,
+  "nb_chambres": 7,
+  "etage": 2,
+  "meuble": false,
+  "dpe": "E",
+  "annee_construction": 1898,
+  "latitude": 47.343299,
+  "longitude": 4.9999,
+  "description": "Appartement en excellent état de 191 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Jean Dubois",
+    "telephone": "0011039151",
+    "agence": "ImmoPlus"
+  }
+}

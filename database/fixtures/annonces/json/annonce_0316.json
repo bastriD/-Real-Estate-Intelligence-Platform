@@ -1,0 +1,31 @@
+{
+  "id": "694c3cdd-3a4e-46f9-add4-60f107d3019a",
+  "reference": "AN-BEU2QNL9",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-02-21",
+  "prix": 276622,
+  "surface": 213,
+  "nb_pieces": 5,
+  "nb_chambres": 7,
+  "etage": 4,
+  "annee_construction": 1896,
+  "adresse": "179 rue Pasteur",
+  "latitude": 47.359365,
+  "longitude": 4.998844,
+  "description": "Appartement atypique de 213 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "telephone": "0534837963"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-BEU2QNL9/1.jpg",
+    "https://exemple-images.test/AN-BEU2QNL9/2.jpg",
+    "https://exemple-images.test/AN-BEU2QNL9/3.jpg",
+    "https://exemple-images.test/AN-BEU2QNL9/4.jpg",
+    "https://exemple-images.test/AN-BEU2QNL9/5.jpg"
+  ],
+  "particulier": true
+}

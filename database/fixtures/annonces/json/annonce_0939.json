@@ -1,0 +1,25 @@
+{
+  "id": "05d80df4-ff40-45c2-8de8-acb4c76537bf",
+  "reference": "AN-1COH0OIG",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1785636105,
+  "prix": 94937,
+  "surface": 166,
+  "nb_pieces": 7,
+  "nb_chambres": 2,
+  "etage": "dernier étage",
+  "dpe": "A",
+  "adresse": "69 rue du Commerce",
+  "description": "Château atypique de 166 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "contact": {
+    "telephone": "0758661510",
+    "email": "contact56@example.com"
+  },
+  "particulier": true
+}

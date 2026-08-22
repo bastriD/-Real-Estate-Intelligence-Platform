@@ -1,0 +1,24 @@
+{
+  "id": "e024faf6-c034-4912-b13d-4b362e7a3b77",
+  "reference": "AN-GFYKADBI",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "14/02/2026",
+  "prix": "122992 €",
+  "surface": 169,
+  "nb_pieces": 2,
+  "nb_chambres": 5,
+  "annee_construction": 1921,
+  "latitude": 43.326023,
+  "longitude": 5.347059,
+  "description": "Studio en excellent état de 169 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Bernard",
+    "telephone": "0888573932"
+  }
+}

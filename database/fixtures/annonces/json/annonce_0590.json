@@ -1,0 +1,26 @@
+{
+  "id": "1f4aa7a5-7fbf-4659-a457-773792bf1901",
+  "reference": "AN-UC0PZCFN",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "10-08-2024",
+  "prix": 1395874,
+  "surface": 227,
+  "latitude": 43.668778,
+  "longitude": 7.237644,
+  "description": "Terrain en excellent état de 227 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Dubois",
+    "telephone": "0694985762"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-UC0PZCFN/1.jpg",
+    "https://exemple-images.test/AN-UC0PZCFN/2.jpg",
+    "https://exemple-images.test/AN-UC0PZCFN/3.jpg"
+  ]
+}

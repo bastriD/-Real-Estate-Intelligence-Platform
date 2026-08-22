@@ -1,0 +1,27 @@
+{
+  "id": "c5ee3052-bf9c-482c-a743-626213818791",
+  "reference": "AN-T2WKCH9G",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement atypique à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "22 mars 2025",
+  "prix": 328463,
+  "charges_mensuelles": 245.54,
+  "surface_m2": 101,
+  "nb_pieces": 1,
+  "nb_chambres": 5,
+  "adresse": "29 rue Victor Hugo",
+  "contact": {
+    "nom": "Claire Lefevre",
+    "telephone": "0401110865",
+    "agence": "Toit & Vous"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-T2WKCH9G/1.jpg",
+    "https://exemple-images.test/AN-T2WKCH9G/2.jpg",
+    "https://exemple-images.test/AN-T2WKCH9G/3.jpg",
+    "https://exemple-images.test/AN-T2WKCH9G/4.jpg"
+  ]
+}

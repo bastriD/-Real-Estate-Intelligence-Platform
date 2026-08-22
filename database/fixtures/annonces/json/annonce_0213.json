@@ -1,0 +1,27 @@
+{
+  "id": "8ab22cf1-2dea-407d-855b-42b499bbdecb",
+  "reference": "AN-W1HB7VCG",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement rénové à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1751030325,
+  "prix": 228258,
+  "surface": 159,
+  "nb_pieces": 3,
+  "nb_chambres": 4,
+  "etage": 2,
+  "meuble": false,
+  "dpe": "E",
+  "annee_construction": 1931,
+  "latitude": 47.30307,
+  "longitude": 5.067133,
+  "description": "Appartement rénové de 159 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0195508914",
+    "email": "contact53@example.com",
+    "agence": "Century Habitat"
+  },
+  "exclusivite": false
+}

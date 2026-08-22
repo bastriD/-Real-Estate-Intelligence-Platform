@@ -1,0 +1,26 @@
+{
+  "id": "f1a31b42-eb95-4d40-af83-96b91bc9b389",
+  "reference": "AN-LQ46BVER",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "24 avril 2026",
+  "prix": 117482,
+  "charges_mensuelles": 50.28,
+  "surface": 96,
+  "nb_pieces": 5,
+  "dpe": "A",
+  "annee_construction": 1889,
+  "latitude": 43.285677,
+  "longitude": 5.328695,
+  "description": "Château au calme de 96 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Martin",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": true
+}

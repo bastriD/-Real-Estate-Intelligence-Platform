@@ -1,0 +1,24 @@
+{
+  "id": "2c79da20-97fb-40b5-b06f-316495c34ffd",
+  "reference": "AN-2VVXF82C",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1778110065,
+  "prix": "146506 €",
+  "surface": 219,
+  "nb_pieces": 8,
+  "latitude": 43.297132,
+  "longitude": 5.359179,
+  "description": "Studio avec vue dégagée de 219 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Karim Moreau",
+    "telephone": "0510177016",
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": true
+}

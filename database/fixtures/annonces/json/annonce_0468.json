@@ -1,0 +1,27 @@
+{
+  "id": "4890b814-5c00-4483-9dce-c17f044928e7",
+  "reference": "AN-B9POSWUE",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "10/11/2025",
+  "prix": 1160751,
+  "surface": 162,
+  "latitude": 43.690987,
+  "longitude": 7.215462,
+  "description": "Terrain rénové de 162 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0905156972"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-B9POSWUE/1.jpg",
+    "https://exemple-images.test/AN-B9POSWUE/2.jpg",
+    "https://exemple-images.test/AN-B9POSWUE/3.jpg",
+    "https://exemple-images.test/AN-B9POSWUE/4.jpg"
+  ],
+  "particulier": true
+}

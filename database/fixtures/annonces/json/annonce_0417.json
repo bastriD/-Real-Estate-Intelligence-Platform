@@ -1,0 +1,22 @@
+{
+  "id": "9ed55722-b303-499c-81fc-1b20867089c0",
+  "reference": "AN-PIHUGWPO",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2024-12-23T02:31:45",
+  "prix": 1229962,
+  "surface": 154,
+  "adresse": "158 allée des Platanes",
+  "description": "Terrain au calme de 154 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Dubois",
+    "telephone": "0104299073",
+    "email": "ahmed.dubois24@example.com"
+  },
+  "exclusivite": true
+}

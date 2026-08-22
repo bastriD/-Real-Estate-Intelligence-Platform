@@ -1,0 +1,24 @@
+{
+  "id": "d159ef54-a1d6-4db5-9e8e-2946d1ee7765",
+  "reference": "AN-EGU1GRQQ",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain spacieux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1747093185,
+  "prix": "1114136 €",
+  "charges_mensuelles": 290.34,
+  "surface": 166,
+  "adresse": "15 rue Jean Jaurès",
+  "latitude": 43.699795,
+  "longitude": 7.310485,
+  "description": "Terrain à rafraîchir de 166 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Marie Moreau",
+    "email": "marie.moreau4@example.com",
+    "agence": "Clé en Main Immo"
+  }
+}

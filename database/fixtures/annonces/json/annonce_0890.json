@@ -1,0 +1,27 @@
+{
+  "id": "4fe66e3b-6bb8-467f-9340-ad403b29d5a1",
+  "reference": "AN-D58EKB57",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1736737305,
+  "prix": 111172,
+  "charges_mensuelles": 177.56,
+  "surface": 167,
+  "nb_pieces": 8,
+  "nb_chambres": 4,
+  "etage": "dernier étage",
+  "dpe": "A",
+  "annee_construction": 1920,
+  "latitude": 43.334995,
+  "longitude": 5.321488,
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Faure"
+  },
+  "exclusivite": false
+}

@@ -1,0 +1,23 @@
+{
+  "id": "d235a2e9-c243-4d51-b8f6-67c1ac784b9d",
+  "reference": "AN-L5VJ5DH6",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial au calme à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "03-12-2025",
+  "prix": 403626,
+  "surface": 236,
+  "nb_pieces": 4,
+  "nb_chambres": 3,
+  "etage": "dernier étage",
+  "annee_construction": 1856,
+  "adresse": "60 impasse des Lilas",
+  "description": "Local commercial charmant de 236 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marie Martin",
+    "telephone": "0576511407",
+    "email": "marie.martin87@example.com"
+  }
+}

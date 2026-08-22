@@ -1,0 +1,29 @@
+{
+  "id": "84a5561d-83b2-4f7a-a352-6d800deb2e82",
+  "reference": "AN-VM8KJVHJ",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1781742705,
+  "prix": 130949,
+  "surface": 168,
+  "nb_pieces": 6,
+  "nb_chambres": 4,
+  "etage": 3,
+  "dpe": "A",
+  "annee_construction": 1944,
+  "adresse": "55 impasse des Lilas",
+  "latitude": 43.320098,
+  "longitude": 5.408874,
+  "description": "Château à rafraîchir de 168 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Lefevre",
+    "telephone": "0702887559"
+  },
+  "particulier": true
+}

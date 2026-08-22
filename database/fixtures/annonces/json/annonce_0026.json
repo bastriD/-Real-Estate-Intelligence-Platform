@@ -1,0 +1,23 @@
+{
+  "id": "0211241a-e4d0-4fdd-88df-e97f6f3ae048",
+  "reference": "AN-Y62XQ53U",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-01-03T20:44:45",
+  "prix": "111728 €",
+  "surface": 123,
+  "nb_pieces": 6,
+  "meuble": false,
+  "latitude": 43.334263,
+  "longitude": 5.395229,
+  "description": "Studio avec vue dégagée de 123 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0713832199"
+  },
+  "particulier": true
+}

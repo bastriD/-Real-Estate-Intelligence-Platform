@@ -1,0 +1,25 @@
+{
+  "id": "6ddedf6d-f132-4c6a-9e97-b4d1d8fd02ff",
+  "reference": "AN-58NLZFE3",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1753957305,
+  "prix": 184776,
+  "surface": 215,
+  "nb_pieces": 2,
+  "dpe": "E",
+  "annee_construction": 1934,
+  "latitude": 43.337048,
+  "longitude": 5.375495,
+  "description": "Studio spacieux de 215 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "contact": {
+    "nom": "Ahmed Lefevre",
+    "telephone": "0107429461",
+    "email": "ahmed.lefevre67@example.com"
+  },
+  "exclusivite": true
+}

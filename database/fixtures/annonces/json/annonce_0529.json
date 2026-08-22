@@ -1,0 +1,27 @@
+{
+  "id": "853502ae-e060-4ce5-8704-b3280f5a0bd9",
+  "reference": "AN-4CDOR3GV",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "03/01/2025",
+  "prix": "1407877 €",
+  "surface": 228,
+  "adresse": "135 rue Victor Hugo",
+  "latitude": 43.746492,
+  "longitude": 7.234971,
+  "description": "Terrain charmant de 228 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Moreau",
+    "email": "claire.moreau27@example.com",
+    "agence": "Toit & Vous"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-4CDOR3GV/1.jpg"
+  ],
+  "exclusivite": false
+}

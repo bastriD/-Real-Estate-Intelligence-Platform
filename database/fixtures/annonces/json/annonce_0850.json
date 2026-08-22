@@ -1,0 +1,32 @@
+{
+  "id": "3a7746c4-3b0c-4f6a-9a0a-773410d05503",
+  "reference": "AN-EQYG5E7B",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "17 mai 2025",
+  "prix": 108737,
+  "surface": 26,
+  "nb_pieces": 4,
+  "nb_chambres": 1,
+  "etage": 5,
+  "dpe": "A",
+  "adresse": "28 boulevard Gambetta",
+  "latitude": 43.322507,
+  "longitude": 5.417885,
+  "description": "Château lumineux de 26 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Girard",
+    "telephone": "0740799358",
+    "email": "ahmed.girard65@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-EQYG5E7B/1.jpg"
+  ],
+  "exclusivite": false
+}

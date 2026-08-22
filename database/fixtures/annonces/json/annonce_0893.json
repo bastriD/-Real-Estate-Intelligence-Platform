@@ -1,0 +1,28 @@
+{
+  "id": "29bf7a81-70d7-457a-8fed-f1bab65beb6d",
+  "reference": "AN-WHFIDFQQ",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "18/12/2024",
+  "prix": 144337,
+  "surface": 142,
+  "nb_pieces": 5,
+  "nb_chambres": 2,
+  "dpe": "C",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "email": "contact66@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-WHFIDFQQ/1.jpg",
+    "https://exemple-images.test/AN-WHFIDFQQ/2.jpg",
+    "https://exemple-images.test/AN-WHFIDFQQ/3.jpg"
+  ],
+  "exclusivite": false
+}

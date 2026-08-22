@@ -1,0 +1,29 @@
+{
+  "id": "5562b4de-5ebf-40ad-bcff-a6c0600789fa",
+  "reference": "AN-7QEQ7U1Y",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial charmant à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "20 novembre 2024",
+  "prix": 298955,
+  "charges_mensuelles": 320.96,
+  "surface": 233,
+  "nb_pieces": 4,
+  "nb_chambres": 3,
+  "etage": 3,
+  "adresse": "87 allée des Platanes",
+  "latitude": 48.861301,
+  "longitude": 2.3504,
+  "description": "Local commercial lumineux de 233 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0863234312",
+    "email": "contact95@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-7QEQ7U1Y/1.jpg",
+    "https://exemple-images.test/AN-7QEQ7U1Y/2.jpg"
+  ],
+  "exclusivite": false
+}

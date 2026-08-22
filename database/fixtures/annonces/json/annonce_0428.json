@@ -1,0 +1,23 @@
+{
+  "id": "ffba87cd-48ae-4da0-ab94-dda6fc718e5a",
+  "reference": "AN-Z6RF4Y0M",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain charmant à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-06-16",
+  "prix": 1376815,
+  "surface": 262,
+  "adresse": "106 place de la Mairie",
+  "latitude": 43.755127,
+  "longitude": 7.217332,
+  "description": "Terrain en excellent état de 262 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "contact": {
+    "nom": "Karim Fontaine",
+    "telephone": "0994747366",
+    "email": "karim.fontaine24@example.com"
+  },
+  "particulier": true
+}

@@ -1,0 +1,21 @@
+{
+  "id": "47c76768-179e-4fd4-9816-19a8186a1137",
+  "reference": "AN-F7UCEXHA",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement spacieux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "24 mars 2025",
+  "prix": 318354,
+  "surface": 155,
+  "nb_pieces": 2,
+  "nb_chambres": 7,
+  "annee_construction": 2024,
+  "adresse": "88 avenue des Champs",
+  "contact": {
+    "nom": "Ahmed Faure",
+    "telephone": "0628888861"
+  },
+  "exclusivite": true
+}

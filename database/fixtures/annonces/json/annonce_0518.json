@@ -1,0 +1,29 @@
+{
+  "id": "ac82a824-261b-48e0-907d-d797e593ca33",
+  "reference": "AN-NR8UB9JJ",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1754794005,
+  "prix": 1741909,
+  "surface": 147,
+  "adresse": "98 rue Victor Hugo",
+  "latitude": 43.729466,
+  "longitude": 7.275995,
+  "description": "Terrain charmant de 147 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Claire Lefevre",
+    "telephone": "0994682553",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-NR8UB9JJ/1.jpg",
+    "https://exemple-images.test/AN-NR8UB9JJ/2.jpg",
+    "https://exemple-images.test/AN-NR8UB9JJ/3.jpg",
+    "https://exemple-images.test/AN-NR8UB9JJ/4.jpg",
+    "https://exemple-images.test/AN-NR8UB9JJ/5.jpg"
+  ]
+}

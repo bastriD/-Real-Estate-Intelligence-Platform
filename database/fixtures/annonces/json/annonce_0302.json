@@ -1,0 +1,24 @@
+{
+  "id": "90636cbe-e3a7-47c4-b453-a2d5ace81996",
+  "reference": "AN-07UB5BSE",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement spacieux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "5 juillet 2025",
+  "prix": 232015,
+  "surface_m2": 170,
+  "nb_pieces": 3,
+  "nb_chambres": 4,
+  "etage": 5,
+  "dpe": "B",
+  "adresse": "84 rue du Commerce",
+  "latitude": 47.280509,
+  "longitude": 5.047452,
+  "description": "Appartement en excellent état de 170 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Roche"
+  },
+  "exclusivite": false
+}

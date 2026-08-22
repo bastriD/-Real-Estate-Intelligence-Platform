@@ -1,0 +1,21 @@
+{
+  "id": "2f52fea1-67c2-4a68-9451-5f3010ff7fa5",
+  "reference": "AN-0CJTN6SG",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement en excellent état à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "10-07-2025",
+  "prix": 358732,
+  "surface": 147,
+  "nb_pieces": 2,
+  "nb_chambres": 6,
+  "etage": "RDC",
+  "description": "Appartement avec vue dégagée de 147 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marc Perrin",
+    "telephone": "0939200857"
+  },
+  "exclusivite": false
+}

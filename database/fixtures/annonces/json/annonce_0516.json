@@ -1,0 +1,22 @@
+{
+  "id": "48d27cb0-2657-4f05-925b-d75562f55f11",
+  "reference": "AN-NCFCEBG7",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1741681005,
+  "prix": "1623257 €",
+  "surface": 207,
+  "latitude": 43.664944,
+  "longitude": 7.280091,
+  "description": "Terrain en excellent état de 207 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Faure",
+    "telephone": "0146059537",
+    "email": "nadia.faure17@example.com"
+  }
+}

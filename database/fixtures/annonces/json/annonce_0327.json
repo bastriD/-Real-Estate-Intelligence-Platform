@@ -1,0 +1,20 @@
+{
+  "id": "51c34d36-0a88-4ffd-9f9b-02aa5dc5efd8",
+  "reference": "AN-NBTPZJDL",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement rénové à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2026-02-06",
+  "prix": 378351,
+  "surface": 137,
+  "nb_pieces": 1,
+  "nb_chambres": 6,
+  "contact": {
+    "nom": "Nadia Girard",
+    "telephone": "0043315762",
+    "agence": "ImmoPlus"
+  },
+  "exclusivite": true
+}

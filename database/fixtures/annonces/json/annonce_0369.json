@@ -1,0 +1,28 @@
+{
+  "id": "eb681ff5-91ad-4f2c-8102-235083746588",
+  "reference": "AN-K82CUMBA",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement lumineux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "28 novembre 2024",
+  "prix": 387031,
+  "surface": 70,
+  "nb_pieces": 1,
+  "nb_chambres": 6,
+  "adresse": "123 allée des Platanes",
+  "latitude": 47.284573,
+  "longitude": 5.056952,
+  "description": "Appartement au calme de 70 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0979886134",
+    "email": "contact56@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-K82CUMBA/1.jpg",
+    "https://exemple-images.test/AN-K82CUMBA/2.jpg",
+    "https://exemple-images.test/AN-K82CUMBA/3.jpg"
+  ],
+  "exclusivite": false
+}

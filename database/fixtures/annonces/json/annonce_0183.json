@@ -1,0 +1,28 @@
+{
+  "id": "88249fcf-beb5-402f-8c5b-5feed2c131d2",
+  "reference": "AN-6GVLCK4K",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "10-01-2025",
+  "prix": "140639 €",
+  "surface": 139,
+  "nb_pieces": 6,
+  "nb_chambres": 2,
+  "annee_construction": 2022,
+  "terrasse": true,
+  "contact": {
+    "telephone": "0772089877",
+    "email": "contact85@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-6GVLCK4K/1.jpg",
+    "https://exemple-images.test/AN-6GVLCK4K/2.jpg",
+    "https://exemple-images.test/AN-6GVLCK4K/3.jpg",
+    "https://exemple-images.test/AN-6GVLCK4K/4.jpg",
+    "https://exemple-images.test/AN-6GVLCK4K/5.jpg"
+  ],
+  "exclusivite": true
+}

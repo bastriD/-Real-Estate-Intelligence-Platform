@@ -1,0 +1,23 @@
+{
+  "id": "da7de9f4-f695-496d-b3b7-9a6e8a135629",
+  "reference": "AN-QS8PBUKR",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2024-10-09T15:23:45",
+  "prix": 184339,
+  "charges_mensuelles": 314.66,
+  "surface_m2": 190,
+  "nb_pieces": 4,
+  "latitude": 43.310762,
+  "longitude": 5.364283,
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Ahmed Girard",
+    "email": "ahmed.girard91@example.com",
+    "agence": "Clé en Main Immo"
+  }
+}

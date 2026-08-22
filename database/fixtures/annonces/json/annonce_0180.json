@@ -1,0 +1,22 @@
+{
+  "id": "667c411c-7457-4f50-afb7-87876bb222b7",
+  "reference": "AN-L6FMUWAI",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "03-20-2026",
+  "prix": 152624,
+  "surface": 127,
+  "dpe": "A",
+  "adresse": "175 quai de la Loire",
+  "description": "Studio au calme de 127 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Roche",
+    "telephone": "0665941007"
+  },
+  "exclusivite": true
+}

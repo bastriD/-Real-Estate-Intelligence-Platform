@@ -1,0 +1,24 @@
+{
+  "id": "bcece2aa-9177-4962-85fb-ec2db71dfb6c",
+  "reference": "AN-96BQH03P",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement charmant à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2026-02-27",
+  "prix": 362828,
+  "charges_mensuelles": 368.54,
+  "surface": 190,
+  "nb_pieces": 1,
+  "nb_chambres": 6,
+  "etage": 1,
+  "latitude": 47.311691,
+  "longitude": 5.054604,
+  "contact": {
+    "nom": "Claire Dubois",
+    "telephone": "0768677791",
+    "email": "claire.dubois91@example.com"
+  },
+  "exclusivite": false
+}

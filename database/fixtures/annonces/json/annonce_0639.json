@@ -1,0 +1,23 @@
+{
+  "id": "44e74b4d-4ddb-4791-97ec-1b7228ca2f97",
+  "reference": "AN-JL0UK5K1",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial rénové à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "12-07-2025",
+  "prix": 277800,
+  "surface_m2": 145,
+  "nb_pieces": 2,
+  "nb_chambres": 1,
+  "dpe": "B",
+  "annee_construction": 2000,
+  "description": "Local commercial atypique de 145 m² situé à Paris. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Sophie Martin",
+    "telephone": "0554842840",
+    "email": "sophie.martin13@example.com"
+  },
+  "exclusivite": true
+}

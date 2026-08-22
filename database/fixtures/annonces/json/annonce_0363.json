@@ -1,0 +1,23 @@
+{
+  "id": "7c5cc7b6-1822-46c0-9a5f-f6245b69e278",
+  "reference": "AN-6EL8HBO5",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement atypique à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1742245005,
+  "prix": 379172,
+  "surface": 71,
+  "nb_pieces": 1,
+  "nb_chambres": 7,
+  "annee_construction": 1865,
+  "latitude": 47.323387,
+  "longitude": 5.051092,
+  "description": "Appartement avec vue dégagée de 71 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Marc Girard",
+    "telephone": "0399610738",
+    "agence": "Nid Doré"
+  }
+}

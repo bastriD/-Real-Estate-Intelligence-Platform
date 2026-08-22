@@ -1,0 +1,28 @@
+{
+  "id": "e4d6dc2c-0e2c-4a3e-bce7-0aa17cdf01ab",
+  "reference": "AN-7VAECRRF",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château lumineux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "18 juillet 2025",
+  "prix": 112318,
+  "surface": 45,
+  "nb_pieces": 4,
+  "nb_chambres": 5,
+  "meuble": false,
+  "dpe": "A",
+  "adresse": "188 rue Pasteur",
+  "latitude": 43.27754,
+  "longitude": 5.405578,
+  "description": "Château en excellent état de 45 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Lefevre",
+    "agence": "Nid Doré"
+  },
+  "exclusivite": true
+}

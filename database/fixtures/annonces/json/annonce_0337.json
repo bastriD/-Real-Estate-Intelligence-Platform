@@ -1,0 +1,24 @@
+{
+  "id": "68d2fbe8-5982-4104-a86c-64fcb066518f",
+  "reference": "AN-UQDGVHRN",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement lumineux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-09-30",
+  "prix": 326849,
+  "charges_mensuelles": 100.52,
+  "surface": 78,
+  "nb_pieces": 4,
+  "nb_chambres": 4,
+  "dpe": "C",
+  "annee_construction": 1968,
+  "adresse": "122 allée des Platanes",
+  "description": "Appartement à rafraîchir de 78 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0083838677",
+    "agence": "Provence Immobilier"
+  },
+  "particulier": true
+}

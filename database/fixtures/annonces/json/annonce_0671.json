@@ -1,0 +1,21 @@
+{
+  "id": "04f0af8b-0449-459a-ac97-fc8b19510546",
+  "reference": "AN-XWNTTL45",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial rénové à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "09-02-2025",
+  "prix": 275624,
+  "surface": 173,
+  "nb_pieces": 2,
+  "adresse": "182 quai de la Loire",
+  "description": "Local commercial rénové de 173 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Nadia Girard",
+    "email": "nadia.girard26@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": true
+}

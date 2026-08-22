@@ -1,0 +1,23 @@
+{
+  "id": "4f7bd3dd-88cb-4fe4-aba4-cc19ae7a82f6",
+  "reference": "AN-6J4RFF3F",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain atypique à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "04-19-2025",
+  "prix": 1041049,
+  "surface_m2": 145,
+  "latitude": 43.688554,
+  "longitude": 7.262527,
+  "description": "Terrain rénové de 145 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0744673083",
+    "email": "contact1@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "exclusivite": false
+}

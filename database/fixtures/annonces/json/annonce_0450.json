@@ -1,0 +1,24 @@
+{
+  "id": "f7f5ab2c-dc44-4093-9e5d-95124593b83e",
+  "reference": "AN-Q0DNCJ9T",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain en excellent état à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-06-09T10:21:45",
+  "prix": 1329923,
+  "surface": 247,
+  "adresse": "124 rue de la République",
+  "latitude": 43.741286,
+  "longitude": 7.302834,
+  "description": "Terrain au calme de 247 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Luc Moreau",
+    "telephone": "0287998161",
+    "email": "luc.moreau19@example.com",
+    "agence": "Toit & Vous"
+  }
+}

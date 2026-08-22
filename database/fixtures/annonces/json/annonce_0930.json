@@ -1,0 +1,30 @@
+{
+  "id": "9ea46cd5-b822-4aa0-90b8-72259337aca3",
+  "reference": "AN-J4FUF9Y8",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2026-08-08",
+  "prix": 100026,
+  "surface": 108,
+  "nb_pieces": 7,
+  "nb_chambres": 1,
+  "etage": 4,
+  "dpe": "A",
+  "annee_construction": 1934,
+  "adresse": "161 rue Jean Jaurès",
+  "description": "Château atypique de 108 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0921195582",
+    "email": "contact57@example.com",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-J4FUF9Y8/1.jpg"
+  ]
+}

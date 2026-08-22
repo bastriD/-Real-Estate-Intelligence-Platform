@@ -1,0 +1,19 @@
+{
+  "id": "49a13533-04d6-441d-8001-3a36dffaaee5",
+  "reference": "AN-EAM475Z0",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2025-06-07",
+  "prix": "251200 €",
+  "surface": 137,
+  "nb_pieces": 4,
+  "nb_chambres": 6,
+  "adresse": "117 boulevard Gambetta",
+  "contact": {
+    "telephone": "0955312704"
+  },
+  "particulier": true
+}

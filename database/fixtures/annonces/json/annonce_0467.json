@@ -1,0 +1,28 @@
+{
+  "id": "0732068c-693e-4dac-ad5d-d86691ed770d",
+  "reference": "AN-2QJ5ONIJ",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain avec vue dégagée à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2026-04-06",
+  "prix": 1631234,
+  "charges_mensuelles": 275.41,
+  "surface": 173,
+  "adresse": "141 impasse des Lilas",
+  "latitude": 43.669221,
+  "longitude": 7.273016,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Fontaine",
+    "email": "nadia.fontaine38@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-2QJ5ONIJ/1.jpg",
+    "https://exemple-images.test/AN-2QJ5ONIJ/2.jpg",
+    "https://exemple-images.test/AN-2QJ5ONIJ/3.jpg"
+  ],
+  "particulier": true
+}

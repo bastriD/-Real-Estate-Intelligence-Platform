@@ -1,0 +1,18 @@
+{
+  "id": "76b5e951-3cd8-4fcd-a186-739247a54836",
+  "reference": "AN-B58KNE90",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1736784525,
+  "prix": "1527975 €",
+  "surface": 238,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0057804038"
+  },
+  "exclusivite": true
+}

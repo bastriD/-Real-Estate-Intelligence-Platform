@@ -1,0 +1,17 @@
+{
+  "id": "cf0a073a-8767-4939-89eb-431d999536b4",
+  "reference": "AN-X5YBQTVZ",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "11 juillet 2025",
+  "prix": 1796784,
+  "surface": 132,
+  "description": "Terrain spacieux de 132 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0176070085"
+  },
+  "particulier": true
+}

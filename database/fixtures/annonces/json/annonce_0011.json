@@ -1,0 +1,27 @@
+{
+  "id": "0d2389e4-4bfe-4043-9a3b-362af4e64fef",
+  "reference": "AN-SQZMS2Q1",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1733832585,
+  "prix": 174485,
+  "surface_m2": 95,
+  "nb_chambres": 4,
+  "meuble": false,
+  "adresse": "121 rue Jean Jaurès",
+  "latitude": 43.270393,
+  "longitude": 5.346861,
+  "description": "Studio atypique de 95 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Faure",
+    "telephone": "0069642559",
+    "email": "jean.faure7@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "particulier": true
+}

@@ -1,0 +1,28 @@
+{
+  "id": "651fa540-d50e-4aab-ab20-fa9a2e81ea9f",
+  "reference": "AN-DL8Z6LTJ",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1737899865,
+  "prix": 75045,
+  "surface": 164,
+  "nb_pieces": 8,
+  "nb_chambres": 3,
+  "etage": 5,
+  "annee_construction": 1924,
+  "latitude": 43.267424,
+  "longitude": 5.325984,
+  "description": "Château spacieux de 164 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Claire Lefevre",
+    "telephone": "0866955738",
+    "agence": "Nid Doré"
+  },
+  "exclusivite": false
+}

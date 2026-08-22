@@ -1,0 +1,20 @@
+{
+  "id": "e1e6fd08-eff9-4c0b-8a34-4f9c007d1e87",
+  "reference": "AN-YCXXPX1G",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "13/11/2024",
+  "prix": 152352,
+  "surface": 127,
+  "nb_chambres": 5,
+  "description": "Studio lumineux de 127 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0027241171",
+    "email": "contact34@example.com",
+    "agence": "Century Habitat"
+  },
+  "exclusivite": false
+}

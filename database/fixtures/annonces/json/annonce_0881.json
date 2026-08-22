@@ -1,0 +1,22 @@
+{
+  "id": "97801a8a-7b44-43de-b167-b9483ab44010",
+  "reference": "AN-N07ZPULX",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "08-06-2026",
+  "prix": 83021,
+  "charges_mensuelles": 160.3,
+  "surface": 33,
+  "nb_pieces": 8,
+  "nb_chambres": 0,
+  "meuble": true,
+  "dpe": "A",
+  "description": "Château en excellent état de 33 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "exclusivite": true
+}

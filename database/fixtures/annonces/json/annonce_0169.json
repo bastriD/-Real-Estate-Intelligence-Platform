@@ -1,0 +1,22 @@
+{
+  "id": "d373697e-c6bc-4c88-ad7b-ce2ef941835d",
+  "reference": "AN-SA69KV2J",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-04-30T03:05:45",
+  "prix": 109220,
+  "surface": 216,
+  "nb_pieces": 6,
+  "etage": 2,
+  "annee_construction": 1882,
+  "latitude": 43.317225,
+  "longitude": 5.406128,
+  "description": "Studio rénové de 216 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Karim Moreau"
+  }
+}

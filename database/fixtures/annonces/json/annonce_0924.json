@@ -1,0 +1,26 @@
+{
+  "id": "6148d075-04da-4033-8482-bb2fb7946980",
+  "reference": "AN-W8YK7JPT",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "24 mars 2026",
+  "prix": 108562,
+  "surface_m2": 157,
+  "nb_pieces": 6,
+  "etage": 4,
+  "dpe": "A",
+  "adresse": "186 rue de la République",
+  "latitude": 43.332058,
+  "longitude": 5.403282,
+  "description": "Château rénové de 157 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0042840783"
+  },
+  "particulier": true
+}

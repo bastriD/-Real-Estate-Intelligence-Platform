@@ -1,0 +1,24 @@
+{
+  "id": "3520f7c0-47fd-4923-b05e-9f6b56361222",
+  "reference": "AN-HVBFJLC4",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-08-19T02:46:45",
+  "prix": 110399,
+  "surface": 122,
+  "nb_pieces": 7,
+  "nb_chambres": 0,
+  "meuble": true,
+  "dpe": "A",
+  "annee_construction": 1918,
+  "jardin": true,
+  "vue": true,
+  "contact": {
+    "nom": "Nadia Faure",
+    "telephone": "0208141212"
+  },
+  "particulier": true
+}

@@ -1,0 +1,22 @@
+{
+  "id": "8c2b35e2-d17d-4b56-af59-ad050221cde9",
+  "reference": "AN-0M3G9I8M",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château à rafraîchir à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "20 décembre 2024",
+  "prix": 78974,
+  "surface": 61,
+  "nb_pieces": 8,
+  "dpe": "A",
+  "adresse": "111 allée des Platanes",
+  "description": "Château en excellent état de 61 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "jardin": true,
+  "contact": {
+    "nom": "Ahmed Roche",
+    "telephone": "0877243454",
+    "email": "ahmed.roche55@example.com"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "ccae2a51-d1e0-44fe-a33f-a0356952ef3c",
+  "reference": "AN-VXP9CIPP",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "13/06/2025",
+  "prix": 119923,
+  "surface": 93,
+  "nb_pieces": 1,
+  "etage": 1,
+  "meuble": true,
+  "dpe": "C",
+  "adresse": "69 rue Jean Jaurès",
+  "latitude": 43.301941,
+  "longitude": 5.384813,
+  "description": "Studio à rafraîchir de 93 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Marie Moreau",
+    "telephone": "0980422799"
+  },
+  "exclusivite": false
+}

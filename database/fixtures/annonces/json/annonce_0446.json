@@ -1,0 +1,29 @@
+{
+  "id": "fbddd0a0-fac5-4f2b-8a36-8883b6013a82",
+  "reference": "AN-86S9JT0A",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain lumineux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2025-05-12",
+  "prix": 1313228,
+  "surface": 207,
+  "adresse": "31 rue de la République",
+  "latitude": 43.687961,
+  "longitude": 7.271623,
+  "description": "Terrain au calme de 207 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Faure",
+    "telephone": "0282054090",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-86S9JT0A/1.jpg",
+    "https://exemple-images.test/AN-86S9JT0A/2.jpg",
+    "https://exemple-images.test/AN-86S9JT0A/3.jpg"
+  ],
+  "exclusivite": true
+}

@@ -1,0 +1,19 @@
+{
+  "id": "457c93b7-a8e8-4cc3-985d-a206ebdb90e7",
+  "reference": "AN-V0KCPVXL",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain charmant à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": "2026-04-04T21:30:45",
+  "prix": 1606123,
+  "surface": 136,
+  "description": "Terrain à rafraîchir de 136 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Lefevre"
+  },
+  "photos": []
+}

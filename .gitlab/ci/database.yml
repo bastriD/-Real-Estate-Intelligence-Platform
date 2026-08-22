@@ -13,6 +13,7 @@ database:validate:
     - test -f database/legacy/PgSQL.sql
     - test -f database/oltp/001_operational_queries.sql
     - test -f database/oltp/002_explain_analyze.sql
+    - test -f database/oltp/003_raw_ingestion_schema.sql
 
     - grep -q "CREATE SCHEMA IF NOT EXISTS real_estate;" database/migrations/001_initial_schema.sql
     - grep -q "CREATE TABLE real_estate.client" database/migrations/001_initial_schema.sql
@@ -27,6 +28,7 @@ database:validate:
     - grep -q "OLTP constraints enforced successfully" database/tests/003_oltp_constraints.sql
     - grep -q "Current workload by chasseur" database/oltp/001_operational_queries.sql
     - grep -q "EXPLAIN (" database/oltp/002_explain_analyze.sql
+    - grep -q "CREATE SCHEMA IF NOT EXISTS raw;" database/oltp/003_raw_ingestion_schema.sql
   rules:
     - changes:
         - database/**/*
@@ -300,6 +302,31 @@ database:explain-oltp:
           -d real_estate \
           -v ON_ERROR_STOP=1 \
           < database/oltp/002_explain_analyze.sql
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
+
+database:create-raw-schema:
+  stage: database
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl -n real-estate get deploy real-estate-postgresql
+
+    - |
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/oltp/003_raw_ingestion_schema.sql
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'

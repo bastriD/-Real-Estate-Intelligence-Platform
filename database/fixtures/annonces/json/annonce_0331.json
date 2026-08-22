@@ -1,0 +1,22 @@
+{
+  "id": "9db80271-2c37-4cdb-b064-6d792114a323",
+  "reference": "AN-YCXPEK07",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement de standing à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2024-11-13",
+  "prix": 341440,
+  "surface": 86,
+  "nb_pieces": 5,
+  "nb_chambres": 7,
+  "adresse": "60 rue du Commerce",
+  "latitude": 47.330339,
+  "longitude": 4.991972,
+  "description": "Appartement en excellent état de 86 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0526267039"
+  },
+  "exclusivite": true
+}

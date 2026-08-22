@@ -1,0 +1,27 @@
+{
+  "id": "e96edf0a-dbfc-409f-a23a-b84e15f274d8",
+  "reference": "AN-L9ICHDS3",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château atypique à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "24 février 2025",
+  "prix": 110129,
+  "surface": 95,
+  "nb_pieces": 7,
+  "nb_chambres": 2,
+  "meuble": true,
+  "dpe": "D",
+  "latitude": 43.291749,
+  "longitude": 5.320675,
+  "description": "Château avec vue dégagée de 95 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Jean Moreau",
+    "telephone": "0536598342",
+    "email": "jean.moreau17@example.com"
+  },
+  "exclusivite": false
+}

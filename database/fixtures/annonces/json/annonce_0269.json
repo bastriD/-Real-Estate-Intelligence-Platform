@@ -1,0 +1,24 @@
+{
+  "id": "f38c8216-e117-4dc4-869b-9adf14596c8c",
+  "reference": "AN-Q54RVUKY",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2024-09-19T13:04:45",
+  "prix": 201085,
+  "surface": 189,
+  "nb_pieces": 4,
+  "nb_chambres": 6,
+  "etage": 4,
+  "dpe": "D",
+  "annee_construction": 1925,
+  "adresse": "155 rue de la République",
+  "description": "Appartement de standing de 189 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0363255672",
+    "email": "contact39@example.com"
+  },
+  "particulier": true
+}

@@ -1,0 +1,21 @@
+{
+  "id": "ca4b6480-6f4a-4acc-ae8b-e7f8d39878b3",
+  "reference": "AN-S6QW8KCZ",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "05-21-2025",
+  "prix": 315645,
+  "surface": 215,
+  "nb_pieces": 5,
+  "nb_chambres": 4,
+  "meuble": true,
+  "description": "Local commercial charmant de 215 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Julie Martin",
+    "email": "julie.martin71@example.com"
+  },
+  "exclusivite": true
+}

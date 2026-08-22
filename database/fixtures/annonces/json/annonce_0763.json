@@ -1,0 +1,23 @@
+{
+  "id": "ee1f2147-b947-4133-ad0f-2bdc3aa1b9e8",
+  "reference": "AN-W49W2WAQ",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial au calme à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "11-01-2025",
+  "prix": 309336,
+  "surface": 183,
+  "nb_pieces": 4,
+  "nb_chambres": 4,
+  "latitude": 48.885224,
+  "longitude": 2.382419,
+  "description": "Local commercial en excellent état de 183 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Jean Martin",
+    "telephone": "0453045578",
+    "email": "jean.martin81@example.com"
+  },
+  "exclusivite": false
+}

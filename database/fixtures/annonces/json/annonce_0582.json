@@ -1,0 +1,21 @@
+{
+  "id": "c0399ea9-27a4-4a27-a9a5-d0ee649638c1",
+  "reference": "AN-8U8FSWWM",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain lumineux à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1776617805,
+  "prix": 1165700,
+  "charges_mensuelles": 162.92,
+  "surface": 156,
+  "latitude": 43.672697,
+  "longitude": 7.263232,
+  "description": "Terrain lumineux de 156 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "agence": "Century Habitat"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "edfa131f-08bf-45af-aaed-9aac6230b723",
+  "reference": "AN-W1C479Z6",
+  "recherche_ref": "REC-CD5PL9OF",
+  "type_bien": "Château",
+  "titre": "Château charmant à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": 1727359065,
+  "prix": "133833 €",
+  "surface": 73,
+  "nb_pieces": 8,
+  "etage": 3,
+  "meuble": true,
+  "dpe": "A",
+  "annee_construction": 1926,
+  "latitude": 43.263231,
+  "longitude": 5.356474,
+  "description": "Château charmant de 73 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "jardin": true,
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0359799402",
+    "email": "contact18@example.com",
+    "agence": "Toit & Vous"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-W1C479Z6/1.jpg",
+    "https://exemple-images.test/AN-W1C479Z6/2.jpg",
+    "https://exemple-images.test/AN-W1C479Z6/3.jpg"
+  ]
+}

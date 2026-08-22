@@ -1,0 +1,24 @@
+{
+  "id": "c924c6c7-3a11-4dde-b2d9-c48dc0865e3f",
+  "reference": "AN-T8GKUE68",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial en excellent état à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "10/12/2024",
+  "prix": 371245,
+  "surface": 244,
+  "nb_pieces": 2,
+  "nb_chambres": 5,
+  "etage": 3,
+  "meuble": false,
+  "latitude": 48.835909,
+  "longitude": 2.330382,
+  "description": "Local commercial de standing de 244 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Sophie Moreau",
+    "telephone": "0454832625"
+  },
+  "photos": []
+}

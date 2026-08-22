@@ -1,0 +1,22 @@
+{
+  "id": "16992371-7faf-4815-baf5-68c18c34d4c2",
+  "reference": "AN-4NSI26RJ",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1785130425,
+  "prix": 227622,
+  "surface": 173,
+  "nb_pieces": 5,
+  "nb_chambres": 0,
+  "etage": 5,
+  "annee_construction": 1933,
+  "adresse": "91 boulevard Gambetta",
+  "description": "Local commercial spacieux de 173 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0495645643"
+  },
+  "exclusivite": false
+}

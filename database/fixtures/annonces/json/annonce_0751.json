@@ -1,0 +1,29 @@
+{
+  "id": "bbfe53e2-8e45-46ce-8aed-2e1f744586c5",
+  "reference": "AN-1EIGS09Y",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial au calme à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "29/05/2026",
+  "prix": 302233,
+  "surface": 163,
+  "nb_pieces": 2,
+  "annee_construction": 1890,
+  "adresse": "177 impasse des Lilas",
+  "description": "Local commercial charmant de 163 m² situé à Paris. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0666935031",
+    "email": "contact43@example.com",
+    "agence": "ImmoPlus"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-1EIGS09Y/1.jpg",
+    "https://exemple-images.test/AN-1EIGS09Y/2.jpg",
+    "https://exemple-images.test/AN-1EIGS09Y/3.jpg",
+    "https://exemple-images.test/AN-1EIGS09Y/4.jpg",
+    "https://exemple-images.test/AN-1EIGS09Y/5.jpg"
+  ],
+  "exclusivite": true
+}

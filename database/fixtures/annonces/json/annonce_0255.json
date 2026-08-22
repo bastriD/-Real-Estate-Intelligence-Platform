@@ -1,0 +1,22 @@
+{
+  "id": "82a45461-7c50-41d9-8ac0-7971eaf7e9e5",
+  "reference": "AN-RBHWPQ1Y",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement charmant à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "06/03/2026",
+  "prix": 382995,
+  "surface": 107,
+  "nb_pieces": 3,
+  "nb_chambres": 6,
+  "etage": "dernier étage",
+  "annee_construction": 1900,
+  "latitude": 47.283634,
+  "longitude": 5.042398,
+  "description": "Appartement de standing de 107 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0087639035"
+  }
+}

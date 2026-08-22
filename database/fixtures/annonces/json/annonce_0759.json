@@ -1,0 +1,24 @@
+{
+  "id": "762e6cb2-0333-49dc-b892-17fba35bfdb7",
+  "reference": "AN-1SULAUR5",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial à rafraîchir à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": 1735537065,
+  "prix": 402682,
+  "surface": 150,
+  "nb_pieces": 3,
+  "etage": 3,
+  "dpe": "G",
+  "adresse": "177 quai de la Loire",
+  "latitude": 48.865881,
+  "longitude": 2.313942,
+  "contact": {
+    "nom": "Jean Bernard",
+    "telephone": "0240484328",
+    "email": "jean.bernard8@example.com"
+  },
+  "exclusivite": false
+}

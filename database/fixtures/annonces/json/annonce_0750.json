@@ -1,0 +1,21 @@
+{
+  "id": "dbedbdd6-5cc6-46f9-8095-e6ccbebf6973",
+  "reference": "AN-XVMCOSFU",
+  "recherche_ref": "REC-Q8F6L9KY",
+  "type_bien": "Local commercial",
+  "titre": "Local commercial charmant à Paris",
+  "ville": "Paris",
+  "code_postal": "75000",
+  "date_publication": "22/05/2026",
+  "prix": 410841,
+  "charges_mensuelles": 389.24,
+  "surface": 127,
+  "nb_pieces": 4,
+  "etage": 4,
+  "adresse": "177 chemin des Vignes",
+  "contact": {
+    "telephone": "0312626224",
+    "email": "contact64@example.com"
+  },
+  "exclusivite": false
+}

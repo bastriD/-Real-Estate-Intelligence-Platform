@@ -1,0 +1,22 @@
+{
+  "id": "073e7c38-4d68-475a-98b7-9aa169fce8de",
+  "reference": "AN-9C5109RL",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement spacieux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "2026-02-21T00:09:45",
+  "prix": 325301,
+  "surface": 97,
+  "nb_pieces": 1,
+  "nb_chambres": 5,
+  "meuble": true,
+  "description": "Appartement avec vue dégagée de 97 m² situé à Dijon. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Ahmed Faure",
+    "telephone": "0148419768",
+    "email": "ahmed.faure11@example.com",
+    "agence": "Provence Immobilier"
+  }
+}

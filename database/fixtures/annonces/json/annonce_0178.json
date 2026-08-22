@@ -1,0 +1,21 @@
+{
+  "id": "374912ca-b359-488b-9329-64f9dd14d710",
+  "reference": "AN-9901ZYCY",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio de standing à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "04-25-2026",
+  "prix": 128676,
+  "surface": 93,
+  "etage": 3,
+  "meuble": false,
+  "description": "Studio à rafraîchir de 93 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "terrasse": true,
+  "contact": {
+    "email": "contact17@example.com",
+    "agence": "Clé en Main Immo"
+  },
+  "exclusivite": false
+}

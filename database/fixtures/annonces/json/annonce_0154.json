@@ -1,0 +1,26 @@
+{
+  "id": "e7b498f6-6054-47c1-ab28-19eeb6b2eec9",
+  "reference": "AN-BA6Z0OUE",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio spacieux à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "2025-01-30",
+  "prix": "207754 €",
+  "surface": 118,
+  "nb_pieces": 4,
+  "meuble": true,
+  "dpe": "G",
+  "latitude": 43.254808,
+  "longitude": 5.323395,
+  "description": "Studio au calme de 118 m² situé à Marseille. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "calme": true,
+  "contact": {
+    "telephone": "0483040476",
+    "email": "contact69@example.com",
+    "agence": "Provence Immobilier"
+  },
+  "exclusivite": true
+}

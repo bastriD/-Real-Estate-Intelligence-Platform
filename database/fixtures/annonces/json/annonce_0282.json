@@ -1,0 +1,26 @@
+{
+  "id": "0fbe117c-f0f7-4de2-bc02-d072b3b2eb5b",
+  "reference": "AN-CEDGZUOO",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement atypique à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "4 décembre 2025",
+  "prix": 236602,
+  "surface": 73,
+  "nb_pieces": 5,
+  "nb_chambres": 6,
+  "dpe": "G",
+  "annee_construction": 1902,
+  "adresse": "43 quai de la Loire",
+  "latitude": 47.285841,
+  "longitude": 5.068157,
+  "description": "Appartement charmant de 73 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Marie Dubois",
+    "telephone": "0378761807",
+    "email": "marie.dubois63@example.com"
+  },
+  "particulier": true
+}

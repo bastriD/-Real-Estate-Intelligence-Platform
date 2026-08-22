@@ -1,0 +1,21 @@
+{
+  "id": "8b70ebb3-91a0-4fa3-8f0b-22dd00ea92c0",
+  "reference": "AN-ZMHVHGFY",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain à rafraîchir à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1784961825,
+  "prix": "922949 €",
+  "surface": 206,
+  "description": "Terrain avec vue dégagée de 206 m² situé à Nice. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "calme": true,
+  "contact": {
+    "nom": "Claire Roche",
+    "telephone": "0121392984",
+    "email": "claire.roche82@example.com",
+    "agence": "Nid Doré"
+  },
+  "particulier": true
+}

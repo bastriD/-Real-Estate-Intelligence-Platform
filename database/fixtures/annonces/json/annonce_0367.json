@@ -1,0 +1,24 @@
+{
+  "id": "a22a80a0-3a30-4dcd-9f70-2789c109f607",
+  "reference": "AN-F8HJZOYK",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement au calme à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "11 septembre 2025",
+  "prix": 310624,
+  "charges_mensuelles": 214.35,
+  "surface": 203,
+  "nb_pieces": 1,
+  "nb_chambres": 6,
+  "meuble": true,
+  "adresse": "1 rue Jean Jaurès",
+  "latitude": 47.338009,
+  "longitude": 5.067484,
+  "description": "Appartement rénové de 203 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "contact": {
+    "nom": "Nadia Dubois"
+  },
+  "exclusivite": false
+}

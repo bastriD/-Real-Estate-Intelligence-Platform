@@ -1,0 +1,24 @@
+{
+  "id": "7903de7c-5ec6-4e01-89ef-e4083e59b401",
+  "reference": "AN-SAD35MTA",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement spacieux à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": 1747772985,
+  "prix": 201336,
+  "surface": 181,
+  "nb_pieces": 3,
+  "nb_chambres": 7,
+  "etage": 2,
+  "annee_construction": 2021,
+  "latitude": 47.296573,
+  "longitude": 5.066182,
+  "description": "Appartement à rafraîchir de 181 m² situé à Dijon. Cave et parking inclus. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "telephone": "0236477964",
+    "email": "contact80@example.com",
+    "agence": "Provence Immobilier"
+  }
+}

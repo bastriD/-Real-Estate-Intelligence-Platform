@@ -1,0 +1,20 @@
+{
+  "id": "085898b4-5dd5-4c16-86b5-0ac5de43abde",
+  "reference": "AN-CMM3HLW9",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1786726845,
+  "prix": 1630395,
+  "surface": 148,
+  "description": "Terrain avec vue dégagée de 148 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Nadia Roche",
+    "telephone": "0975227150",
+    "email": "nadia.roche89@example.com"
+  }
+}

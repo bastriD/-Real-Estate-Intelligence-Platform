@@ -1,0 +1,30 @@
+{
+  "id": "a93e1cfe-2780-4aef-bc25-13516a90f977",
+  "reference": "AN-45QYFDSR",
+  "recherche_ref": "REC-Y4HU00HU",
+  "type_bien": "Appartement",
+  "titre": "Appartement avec vue dégagée à Dijon",
+  "ville": "Dijon",
+  "code_postal": "21000",
+  "date_publication": "23 août 2025",
+  "prix": "214270 €",
+  "surface": 191,
+  "nb_pieces": 1,
+  "nb_chambres": 5,
+  "dpe": "B",
+  "latitude": 47.279446,
+  "longitude": 5.026854,
+  "contact": {
+    "nom": "Claire Bernard",
+    "telephone": "0274553695",
+    "email": "claire.bernard32@example.com"
+  },
+  "photos": [
+    "https://exemple-images.test/AN-45QYFDSR/1.jpg",
+    "https://exemple-images.test/AN-45QYFDSR/2.jpg",
+    "https://exemple-images.test/AN-45QYFDSR/3.jpg",
+    "https://exemple-images.test/AN-45QYFDSR/4.jpg",
+    "https://exemple-images.test/AN-45QYFDSR/5.jpg"
+  ],
+  "exclusivite": false
+}

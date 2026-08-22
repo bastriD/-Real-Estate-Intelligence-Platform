@@ -1,0 +1,24 @@
+{
+  "id": "82fbc5bf-e800-4f9f-9169-ecb4f52ecb35",
+  "reference": "AN-VY0RVRSI",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio en excellent état à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "21 mars 2025",
+  "prix": 157285,
+  "surface_m2": 180,
+  "nb_pieces": 3,
+  "etage": 0,
+  "meuble": false,
+  "latitude": 43.260394,
+  "longitude": 5.39177,
+  "description": "Studio avec vue dégagée de 180 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "contact": {
+    "nom": "Karim Perrin",
+    "telephone": "0670328858"
+  },
+  "photos": [],
+  "exclusivite": false
+}

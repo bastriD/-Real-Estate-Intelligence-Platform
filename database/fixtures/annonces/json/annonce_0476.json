@@ -1,0 +1,20 @@
+{
+  "id": "ece41219-fac3-4624-a66d-7a2c07689ae8",
+  "reference": "AN-5K0KYP3A",
+  "recherche_ref": "REC-WRRG42NP",
+  "type_bien": "Terrain",
+  "titre": "Terrain de standing à Nice",
+  "ville": "Nice",
+  "code_postal": "06000",
+  "date_publication": 1766934105,
+  "prix": 1345410,
+  "surface": 214,
+  "latitude": 43.682856,
+  "longitude": 7.296066,
+  "description": "Terrain au calme de 214 m² situé à Nice. Proche de toutes commodités, transports et écoles. À visiter sans tarder.",
+  "vue": true,
+  "calme": true,
+  "contact": {
+    "nom": "Julie Faure"
+  }
+}

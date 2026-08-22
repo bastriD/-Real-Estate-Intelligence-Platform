@@ -1,0 +1,23 @@
+{
+  "id": "b2f23de3-d2f4-434b-938c-279471d1a6a4",
+  "reference": "AN-BK1R312D",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio rénové à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "27 décembre 2024",
+  "prix": 192770,
+  "surface": 201,
+  "nb_pieces": 7,
+  "etage": 4,
+  "dpe": "F",
+  "adresse": "110 boulevard Gambetta",
+  "description": "Studio lumineux de 201 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "terrasse": true,
+  "contact": {
+    "telephone": "0454089798",
+    "email": "contact89@example.com",
+    "agence": "Provence Immobilier"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "id": "68bd3dba-6a20-4e11-b8e6-42a01d79cb59",
+  "reference": "AN-3JMHZLOO",
+  "recherche_ref": "REC-R8HA1NA2",
+  "type_bien": "Studio",
+  "titre": "Studio avec vue dégagée à Marseille",
+  "ville": "Marseille",
+  "code_postal": "13000",
+  "date_publication": "23 juillet 2025",
+  "prix": "168311 €",
+  "surface": 131,
+  "nb_pieces": 4,
+  "nb_chambres": 3,
+  "etage": 1,
+  "dpe": "D",
+  "annee_construction": 1865,
+  "adresse": "129 rue Pasteur",
+  "latitude": 43.299707,
+  "longitude": 5.336548,
+  "description": "Studio rénové de 131 m² situé à Marseille. Proche de toutes commodités, transports et écoles. À visiter sans tarder. Travaux à prévoir.",
+  "calme": true,
+  "contact": {
+    "nom": "Sophie Bernard",
+    "telephone": "0854146719",
+    "agence": "Toit & Vous"
+  },
+  "exclusivite": false
+}
