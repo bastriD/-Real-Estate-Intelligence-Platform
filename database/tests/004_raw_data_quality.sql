@@ -9,13 +9,6 @@
 --   - 5 recherches
 --   - 1000 annonces
 --
--- Validation principles:
---   - no silent data loss
---   - mandatory matching fields must be present
---   - references must be unique inside the batch
---   - recherche_ref must resolve to a recherche in the same batch
---   - quality metrics are surfaced explicitly
---
 -- Runtime variable:
 --   ingestion_batch
 --
@@ -30,18 +23,36 @@
 
 
 -- =============================================================================
+-- INITIALIZE SESSION BATCH VARIABLE
+--
+-- psql variables cannot safely be referenced directly from inside a
+-- PL/pgSQL DO $$ ... $$ body.
+--
+-- Store the supplied psql variable as a session setting first.
+-- Every DO block can then retrieve it using current_setting().
+-- =============================================================================
+
+SELECT set_config(
+    'real_estate.ingestion_batch',
+    :'ingestion_batch',
+    false
+);
+
+SELECT
+    current_setting('real_estate.ingestion_batch') AS ingestion_batch;
+
+
+-- =============================================================================
 -- 0. BATCH EXISTENCE
 -- =============================================================================
 
 DO $$
 DECLARE
-    v_batch TEXT := :'ingestion_batch';
+    v_batch TEXT := current_setting('real_estate.ingestion_batch');
     v_count BIGINT;
 BEGIN
-    SELECT
-        COUNT(*)
-    INTO
-        v_count
+    SELECT COUNT(*)
+    INTO v_count
     FROM raw.annonces
     WHERE ingestion_batch = v_batch;
 
@@ -64,13 +75,11 @@ $$;
 
 DO $$
 DECLARE
-    v_batch TEXT := :'ingestion_batch';
+    v_batch TEXT := current_setting('real_estate.ingestion_batch');
     v_count BIGINT;
 BEGIN
-    SELECT
-        COUNT(*)
-    INTO
-        v_count
+    SELECT COUNT(*)
+    INTO v_count
     FROM raw.recherches
     WHERE ingestion_batch = v_batch;
 
@@ -94,13 +103,11 @@ $$;
 
 DO $$
 DECLARE
-    v_batch TEXT := :'ingestion_batch';
+    v_batch TEXT := current_setting('real_estate.ingestion_batch');
     v_count BIGINT;
 BEGIN
-    SELECT
-        COUNT(*)
-    INTO
-        v_count
+    SELECT COUNT(*)
+    INTO v_count
     FROM raw.annonces
     WHERE ingestion_batch = v_batch;
 
@@ -124,16 +131,13 @@ $$;
 
 DO $$
 DECLARE
-    v_batch TEXT := :'ingestion_batch';
+    v_batch TEXT := current_setting('real_estate.ingestion_batch');
     v_duplicates BIGINT;
 BEGIN
-    SELECT
-        COUNT(*)
-    INTO
-        v_duplicates
+    SELECT COUNT(*)
+    INTO v_duplicates
     FROM (
-        SELECT
-            reference
+        SELECT reference
         FROM raw.recherches
         WHERE ingestion_batch = v_batch
         GROUP BY reference
@@ -158,16 +162,13 @@ $$;
 
 DO $$
 DECLARE
-    v_batch TEXT := :'ingestion_batch';
+    v_batch TEXT := current_setting('real_estate.ingestion_batch');
     v_duplicates BIGINT;
 BEGIN
-    SELECT
-        COUNT(*)
-    INTO
-        v_duplicates
+    SELECT COUNT(*)
+    INTO v_duplicates
     FROM (
-        SELECT
-            reference
+        SELECT reference
         FROM raw.annonces
         WHERE ingestion_batch = v_batch
         GROUP BY reference
@@ -199,13 +200,11 @@ $$;
 
 DO $$
 DECLARE
-    v_batch TEXT := :'ingestion_batch';
+    v_batch TEXT := current_setting('real_estate.ingestion_batch');
     v_invalid BIGINT;
 BEGIN
-    SELECT
-        COUNT(*)
-    INTO
-        v_invalid
+    SELECT COUNT(*)
+    INTO v_invalid
     FROM raw.recherches
     WHERE ingestion_batch = v_batch
       AND (
@@ -236,24 +235,22 @@ $$;
 -- =============================================================================
 -- 6. MANDATORY ANNONCE MATCHING FIELDS
 --
--- According to the generator, the guaranteed matching attributes are:
+-- Guaranteed matching attributes:
 --   reference
 --   recherche_ref
 --   ville
 --   type_bien
 --   prix
---   surface
+--   surface OR surface_m2
 -- =============================================================================
 
 DO $$
 DECLARE
-    v_batch TEXT := :'ingestion_batch';
+    v_batch TEXT := current_setting('real_estate.ingestion_batch');
     v_invalid BIGINT;
 BEGIN
-    SELECT
-        COUNT(*)
-    INTO
-        v_invalid
+    SELECT COUNT(*)
+    INTO v_invalid
     FROM raw.annonces
     WHERE ingestion_batch = v_batch
       AND (
@@ -298,13 +295,11 @@ $$;
 
 DO $$
 DECLARE
-    v_batch TEXT := :'ingestion_batch';
+    v_batch TEXT := current_setting('real_estate.ingestion_batch');
     v_orphans BIGINT;
 BEGIN
-    SELECT
-        COUNT(*)
-    INTO
-        v_orphans
+    SELECT COUNT(*)
+    INTO v_orphans
     FROM raw.annonces a
     LEFT JOIN raw.recherches r
       ON r.reference = a.recherche_ref
@@ -327,22 +322,19 @@ $$;
 -- =============================================================================
 -- 8. BASIC PRICE PARSEABILITY
 --
--- RAW may contain values such as:
+-- RAW values may contain:
 --   320000
 --   320000 €
---
--- We only verify that removing common formatting leaves a numeric value.
+--   320 000 €
 -- =============================================================================
 
 DO $$
 DECLARE
-    v_batch TEXT := :'ingestion_batch';
+    v_batch TEXT := current_setting('real_estate.ingestion_batch');
     v_invalid BIGINT;
 BEGIN
-    SELECT
-        COUNT(*)
-    INTO
-        v_invalid
+    SELECT COUNT(*)
+    INTO v_invalid
     FROM raw.annonces
     WHERE ingestion_batch = v_batch
       AND prix IS NOT NULL
@@ -350,14 +342,18 @@ BEGIN
       AND REPLACE(
             REPLACE(
                 REPLACE(
-                    REPLACE(BTRIM(prix), '€', ''),
+                    REPLACE(
+                        BTRIM(prix),
+                        '€',
+                        ''
+                    ),
                     ' ',
                     ''
                 ),
                 ',',
                 '.'
             ),
-            E'\u00A0',
+            CHR(160),
             ''
           ) !~ '^[0-9]+([.][0-9]+)?$';
 
@@ -376,19 +372,17 @@ $$;
 -- =============================================================================
 -- 9. BASIC SURFACE PARSEABILITY
 --
--- Use surface first; surface_m2 is the fallback field generated by some
--- heterogeneous source variants.
+-- surface is preferred.
+-- surface_m2 acts as fallback.
 -- =============================================================================
 
 DO $$
 DECLARE
-    v_batch TEXT := :'ingestion_batch';
+    v_batch TEXT := current_setting('real_estate.ingestion_batch');
     v_invalid BIGINT;
 BEGIN
-    SELECT
-        COUNT(*)
-    INTO
-        v_invalid
+    SELECT COUNT(*)
+    INTO v_invalid
     FROM raw.annonces
     WHERE ingestion_batch = v_batch
       AND COALESCE(
@@ -427,8 +421,8 @@ $$;
 -- =============================================================================
 -- 10. QUALITY METRICS
 --
--- These are informational at RAW level.
--- Optional source fields may legitimately be absent.
+-- Informational metrics.
+-- Optional source attributes may legitimately be absent.
 -- =============================================================================
 
 SELECT
@@ -475,7 +469,8 @@ SELECT
     ) AS missing_longitude
 
 FROM raw.annonces
-WHERE ingestion_batch = :'ingestion_batch';
+WHERE ingestion_batch =
+    current_setting('real_estate.ingestion_batch');
 
 
 -- =============================================================================
@@ -486,7 +481,8 @@ SELECT
     type_bien,
     COUNT(*) AS annonces
 FROM raw.annonces
-WHERE ingestion_batch = :'ingestion_batch'
+WHERE ingestion_batch =
+    current_setting('real_estate.ingestion_batch')
 GROUP BY type_bien
 ORDER BY annonces DESC, type_bien;
 
@@ -499,7 +495,8 @@ SELECT
     ville,
     COUNT(*) AS annonces
 FROM raw.annonces
-WHERE ingestion_batch = :'ingestion_batch'
+WHERE ingestion_batch =
+    current_setting('real_estate.ingestion_batch')
 GROUP BY ville
 ORDER BY annonces DESC, ville;
 
@@ -510,5 +507,7 @@ ORDER BY annonces DESC, ville;
 
 SELECT
     'PASS' AS status,
-    :'ingestion_batch' AS ingestion_batch,
+    current_setting(
+        'real_estate.ingestion_batch'
+    ) AS ingestion_batch,
     'RAW data quality validated successfully' AS result;
