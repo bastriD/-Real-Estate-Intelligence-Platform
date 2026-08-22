@@ -6,13 +6,20 @@ database:validate:
 
   script:
     - test -f database/migrations/001_initial_schema.sql
+    - test -f database/migrations/002_migrate_legacy_data.sql
     - test -f database/tests/001_schema_structure.sql
     - test -f database/legacy/PgSQL.sql
+
     - grep -q "CREATE SCHEMA IF NOT EXISTS real_estate;" database/migrations/001_initial_schema.sql
     - grep -q "CREATE TABLE real_estate.client" database/migrations/001_initial_schema.sql
     - grep -q "CREATE TABLE real_estate.paiement" database/migrations/001_initial_schema.sql
+
+    - grep -q "CREATE SCHEMA IF NOT EXISTS migration_control;" database/migrations/002_migrate_legacy_data.sql
+    - grep -q "Migration 002" database/migrations/002_migrate_legacy_data.sql
+
     - grep -q '^DROP SCHEMA IF EXISTS "Fil_Rouge_Depart" CASCADE;' database/legacy/PgSQL.sql
     - grep -q "^COMMIT;" database/migrations/001_initial_schema.sql
+    - grep -q "^COMMIT;" database/migrations/002_migrate_legacy_data.sql
 
   rules:
     - changes:
@@ -21,7 +28,7 @@ database:validate:
         - .gitlab/ci/database.yml
 
 
-database:migrate:
+database:migrate-001:
   stage: database
   tags:
     - shell
@@ -33,7 +40,6 @@ database:migrate:
     - kubectl version --client
     - kubectl get namespace real-estate
     - kubectl -n real-estate get deploy real-estate-postgresql
-    - kubectl -n real-estate get pods
 
     - |
       ALREADY_APPLIED="$(
@@ -55,8 +61,6 @@ database:migrate:
       fi
 
     - |
-      echo "Applying migration 001_initial_schema.sql..."
-
       kubectl -n real-estate exec deploy/real-estate-postgresql \
         -i -- \
         psql \
@@ -64,8 +68,6 @@ database:migrate:
           -d real_estate \
           -v ON_ERROR_STOP=1 \
           < database/migrations/001_initial_schema.sql
-
-    - echo "Migration 001 completed successfully."
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
@@ -108,8 +110,6 @@ database:load-legacy:
       fi
 
     - |
-      echo "Loading official StarterPack legacy fixture..."
-
       kubectl -n real-estate exec deploy/real-estate-postgresql \
         -i -- \
         psql \
@@ -118,7 +118,31 @@ database:load-legacy:
           -v ON_ERROR_STOP=1 \
           < database/legacy/PgSQL.sql
 
-    - echo "Legacy fixture loaded successfully."
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
+
+
+database:migrate-002:
+  stage: database
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl -n real-estate get deploy real-estate-postgresql
+
+    - |
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/migrations/002_migrate_legacy_data.sql
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
