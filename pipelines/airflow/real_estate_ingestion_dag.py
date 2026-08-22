@@ -247,10 +247,45 @@ with DAG(
     is_delete_operator_pod=True,
 )
 
-    transform_staging_task = PythonOperator(
-        task_id="transform_staging",
-        python_callable=transform_staging,
-    )
+    transform_staging_task = KubernetesPodOperator(
+    task_id="transform_staging",
+    name="real-estate-transform-staging",
+    namespace="airflow",
+    image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
+
+    image_pull_secrets=[
+        k8s.V1LocalObjectReference(
+            name="gitlab-registry"
+        )
+    ],
+
+    cmds=["/bin/sh", "-c"],
+
+    arguments=[
+        """
+        set -e
+
+        export INGESTION_BATCH="generated-{{ ts_nodash }}"
+
+        echo "Transforming RAW -> STAGING batch: ${INGESTION_BATCH}"
+
+        python /app/database/seeds/transform_raw_to_staging.py
+
+        echo "STAGING transformation completed."
+        """
+    ],
+
+    env_from=[
+        k8s.V1EnvFromSource(
+            secret_ref=k8s.V1SecretEnvSource(
+                name="real-estate-postgresql-secret"
+            )
+        )
+    ],
+
+    get_logs=True,
+    is_delete_operator_pod=True,
+)
 
     validate_staging_task = PythonOperator(
         task_id="validate_staging",

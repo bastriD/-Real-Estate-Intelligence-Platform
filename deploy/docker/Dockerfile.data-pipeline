@@ -21,6 +21,7 @@ COPY database/seeds/upload_generated_to_s3.py /app/database/seeds/upload_generat
 COPY database/seeds/download_generated_from_s3.py /app/database/seeds/download_generated_from_s3.py
 
 COPY database/tests/004_raw_data_quality.sql /app/database/tests/004_raw_data_quality.sql
+COPY database/seeds/transform_raw_to_staging.py /app/database/seeds/transform_raw_to_staging.py
 
 RUN mkdir -p /app/database/fixtures/annonces/json
 
