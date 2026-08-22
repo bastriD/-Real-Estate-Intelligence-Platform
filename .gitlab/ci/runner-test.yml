@@ -18,3 +18,12 @@ runner:shell-smoke:
     - hostname
     - whoami
     - uname -a
+runner:kubernetes-smoke:
+  stage: validate
+  tags:
+    - shell
+  script:
+    - kubectl version --client
+    - kubectl get namespace real-estate
+    - kubectl -n real-estate get deploy real-estate-postgresql
+    - kubectl -n real-estate get pods
