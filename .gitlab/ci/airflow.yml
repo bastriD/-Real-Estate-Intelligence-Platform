@@ -3,6 +3,10 @@ airflow:publish-dags:
   tags:
     - shell
 
+  needs:
+    - job: database:validate
+      artifacts: false
+
   script:
     - git --version
     - test -d pipelines/airflow
