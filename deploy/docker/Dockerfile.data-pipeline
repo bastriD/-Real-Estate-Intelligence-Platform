@@ -1,0 +1,19 @@
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PIP_NO_CACHE_DIR=1
+
+WORKDIR /app
+
+COPY requirements.txt /app/requirements.txt
+
+RUN pip install --upgrade pip \
+    && pip install -r /app/requirements.txt
+
+COPY database/seeds/generer_annonces.py /app/database/seeds/generer_annonces.py
+COPY database/seeds/load_raw_generated_data.py /app/database/seeds/load_raw_generated_data.py
+
+RUN mkdir -p /app/database/fixtures/annonces/json
+
+ENTRYPOINT ["python"]

@@ -1,0 +1,33 @@
+data-pipeline:build-image:
+  stage: deploy
+  tags:
+    - docker
+
+  image: docker:27.5.1
+
+  variables:
+    IMAGE_NAME: "$CI_REGISTRY_IMAGE/data-pipeline"
+    IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+    DOCKER_HOST: "unix:///var/run/docker.sock"
+
+  before_script:
+    - docker version
+    - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
+
+  script:
+    - docker build
+      -f deploy/docker/Dockerfile.data-pipeline
+      -t "$IMAGE_NAME:$IMAGE_TAG"
+      -t "$IMAGE_NAME:latest"
+      .
+    - docker push "$IMAGE_NAME:$IMAGE_TAG"
+    - docker push "$IMAGE_NAME:latest"
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - deploy/docker/Dockerfile.data-pipeline
+        - database/seeds/**/*
+        - requirements.txt
+        - .gitlab/ci/data-pipeline-image.yml
+        - .gitlab-ci.yml
