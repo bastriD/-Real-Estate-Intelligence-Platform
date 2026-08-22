@@ -7,9 +7,11 @@ database:validate:
   script:
     - test -f database/migrations/001_initial_schema.sql
     - test -f database/tests/001_schema_structure.sql
+    - test -f database/legacy/PgSQL.sql
     - grep -q "CREATE SCHEMA IF NOT EXISTS real_estate;" database/migrations/001_initial_schema.sql
     - grep -q "CREATE TABLE real_estate.client" database/migrations/001_initial_schema.sql
     - grep -q "CREATE TABLE real_estate.paiement" database/migrations/001_initial_schema.sql
+    - grep -q '^DROP SCHEMA IF EXISTS "Fil_Rouge_Depart" CASCADE;' database/legacy/PgSQL.sql
     - grep -q "^COMMIT;" database/migrations/001_initial_schema.sql
 
   rules:
@@ -64,6 +66,59 @@ database:migrate:
           < database/migrations/001_initial_schema.sql
 
     - echo "Migration 001 completed successfully."
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
+
+
+database:load-legacy:
+  stage: database
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl -n real-estate get deploy real-estate-postgresql
+
+    - |
+      LEGACY_EXISTS="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT CASE
+               WHEN EXISTS (
+                 SELECT 1
+                 FROM information_schema.schemata
+                 WHERE schema_name = 'Fil_Rouge_Depart'
+               )
+               THEN 'yes'
+               ELSE 'no'
+             END;"
+      )"
+
+      if [ "$LEGACY_EXISTS" = "yes" ]; then
+        echo "Legacy schema Fil_Rouge_Depart already exists - skipping import."
+        exit 0
+      fi
+
+    - |
+      echo "Loading official StarterPack legacy fixture..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/legacy/PgSQL.sql
+
+    - echo "Legacy fixture loaded successfully."
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
