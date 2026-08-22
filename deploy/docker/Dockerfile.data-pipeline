@@ -6,6 +6,10 @@ ENV PIP_NO_CACHE_DIR=1
 
 WORKDIR /app
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt /app/requirements.txt
 
 RUN pip install --upgrade pip \
@@ -15,6 +19,8 @@ COPY database/seeds/generer_annonces.py /app/database/seeds/generer_annonces.py
 COPY database/seeds/load_raw_generated_data.py /app/database/seeds/load_raw_generated_data.py
 COPY database/seeds/upload_generated_to_s3.py /app/database/seeds/upload_generated_to_s3.py
 COPY database/seeds/download_generated_from_s3.py /app/database/seeds/download_generated_from_s3.py
+
+COPY database/tests/004_raw_data_quality.sql /app/database/tests/004_raw_data_quality.sql
 
 RUN mkdir -p /app/database/fixtures/annonces/json
 
