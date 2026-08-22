@@ -118,7 +118,11 @@ with DAG(
         name="real-estate-generate-source-data",
         namespace="airflow",
         image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
-
+        image_pull_secrets=[
+            k8s.V1LocalObjectReference(
+            name="gitlab-registry"
+        )
+        ],
         cmds=["/bin/sh", "-c"],
 
         arguments=[
