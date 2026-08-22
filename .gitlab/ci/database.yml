@@ -14,13 +14,10 @@ database:validate:
     - test -f database/oltp/001_operational_queries.sql
     - test -f database/oltp/002_explain_analyze.sql
     - test -f database/oltp/003_raw_ingestion_schema.sql
+    - test -f database/oltp/004_staging_schema.sql
     - test -f database/seeds/load_raw_generated_data.py
     - test -f requirements.txt
-    - test -f database/oltp/004_staging_schema.sql
 
-
-    - grep -q "CREATE SCHEMA IF NOT EXISTS staging;" database/oltp/004_staging_schema.sql
-    - grep -q "CREATE TABLE IF NOT EXISTS staging.annonces" database/oltp/004_staging_schema.sql
     - grep -q "CREATE SCHEMA IF NOT EXISTS real_estate;" database/migrations/001_initial_schema.sql
     - grep -q "CREATE TABLE real_estate.client" database/migrations/001_initial_schema.sql
     - grep -q "CREATE TABLE real_estate.paiement" database/migrations/001_initial_schema.sql
@@ -31,16 +28,20 @@ database:validate:
     - grep -q '^DROP SCHEMA IF EXISTS "Fil_Rouge_Depart" CASCADE;' database/legacy/PgSQL.sql
     - grep -q "^COMMIT;" database/migrations/001_initial_schema.sql
     - grep -q "^COMMIT;" database/migrations/002_migrate_legacy_data.sql
+
     - grep -q "OLTP constraints enforced successfully" database/tests/003_oltp_constraints.sql
     - grep -q "Current workload by chasseur" database/oltp/001_operational_queries.sql
     - grep -q "EXPLAIN (" database/oltp/002_explain_analyze.sql
     - grep -q "CREATE SCHEMA IF NOT EXISTS raw;" database/oltp/003_raw_ingestion_schema.sql
+    - grep -q "CREATE SCHEMA IF NOT EXISTS staging;" database/oltp/004_staging_schema.sql
+    - grep -q "CREATE TABLE IF NOT EXISTS staging.annonces" database/oltp/004_staging_schema.sql
+
   rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
     - changes:
         - database/**/*
         - .gitlab-ci.yml
         - .gitlab/ci/database.yml
-
 
 database:migrate-001:
   stage: database
