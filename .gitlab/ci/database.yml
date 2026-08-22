@@ -6,6 +6,7 @@ database:validate:
 
   script:
     - test -f database/migrations/001_initial_schema.sql
+    - test -f database/tests/001_schema_structure.sql
     - grep -q "CREATE SCHEMA IF NOT EXISTS real_estate;" database/migrations/001_initial_schema.sql
     - grep -q "CREATE TABLE real_estate.client" database/migrations/001_initial_schema.sql
     - grep -q "CREATE TABLE real_estate.paiement" database/migrations/001_initial_schema.sql
@@ -39,6 +40,31 @@ database:migrate:
           -d real_estate \
           -v ON_ERROR_STOP=1 \
           < database/migrations/001_initial_schema.sql
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
+
+
+database:test-schema:
+  stage: database
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl -n real-estate get deploy real-estate-postgresql
+    - |
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/tests/001_schema_structure.sql
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
