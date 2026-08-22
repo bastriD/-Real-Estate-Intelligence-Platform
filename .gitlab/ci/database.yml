@@ -14,6 +14,8 @@ database:validate:
     - test -f database/oltp/001_operational_queries.sql
     - test -f database/oltp/002_explain_analyze.sql
     - test -f database/oltp/003_raw_ingestion_schema.sql
+    - test -f database/seeds/load_raw_generated_data.py
+    - test -f requirements.txt
 
     - grep -q "CREATE SCHEMA IF NOT EXISTS real_estate;" database/migrations/001_initial_schema.sql
     - grep -q "CREATE TABLE real_estate.client" database/migrations/001_initial_schema.sql
@@ -327,6 +329,58 @@ database:create-raw-schema:
           -d real_estate \
           -v ON_ERROR_STOP=1 \
           < database/oltp/003_raw_ingestion_schema.sql
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
+
+database:load-raw-generated:
+  stage: database
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  before_script:
+    - python3 --version
+    - python3 -m pip install --user --upgrade pip
+    - python3 -m pip install --user -r requirements.txt
+
+  script:
+    - kubectl -n real-estate get deploy real-estate-postgresql
+    - kubectl -n real-estate get secret real-estate-postgresql-secret
+
+    - |
+      export POSTGRES_HOST="$(
+        kubectl -n real-estate get secret real-estate-postgresql-secret \
+          -o jsonpath='{.data.POSTGRES_HOST}' | base64 -d
+      )"
+
+      export POSTGRES_PORT="$(
+        kubectl -n real-estate get secret real-estate-postgresql-secret \
+          -o jsonpath='{.data.POSTGRES_PORT}' | base64 -d
+      )"
+
+      export POSTGRES_DB="$(
+        kubectl -n real-estate get secret real-estate-postgresql-secret \
+          -o jsonpath='{.data.POSTGRES_DB}' | base64 -d
+      )"
+
+      export POSTGRES_USER="$(
+        kubectl -n real-estate get secret real-estate-postgresql-secret \
+          -o jsonpath='{.data.POSTGRES_USER}' | base64 -d
+      )"
+
+      export POSTGRES_PASSWORD="$(
+        kubectl -n real-estate get secret real-estate-postgresql-secret \
+          -o jsonpath='{.data.POSTGRES_PASSWORD}' | base64 -d
+      )"
+
+      export INGESTION_BATCH="generated-1000-v1"
+
+      python3 database/seeds/load_raw_generated_data.py
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
