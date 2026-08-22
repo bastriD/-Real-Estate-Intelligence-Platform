@@ -13,6 +13,7 @@ RUN pip install --upgrade pip \
 
 COPY database/seeds/generer_annonces.py /app/database/seeds/generer_annonces.py
 COPY database/seeds/load_raw_generated_data.py /app/database/seeds/load_raw_generated_data.py
+COPY database/seeds/upload_generated_to_s3.py /app/database/seeds/upload_generated_to_s3.py
 
 RUN mkdir -p /app/database/fixtures/annonces/json
 

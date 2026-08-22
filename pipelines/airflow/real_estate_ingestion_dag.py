@@ -6,6 +6,7 @@ from airflow import DAG
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
 from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
+from kubernetes.client import models as k8s
 
 
 DAG_ID = "real_estate_ingestion"
@@ -113,23 +114,45 @@ with DAG(
     )
 
     generate_source_data_task = KubernetesPodOperator(
-    task_id="generate_source_data",
-    name="real-estate-generate-source-data",
-    namespace="airflow",
-    image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
-    cmds=["python"],
-    arguments=[
-        "/app/database/seeds/generer_annonces.py",
-        "-r",
-        "5",
-        "--min-annonces",
-        "200",
-        "--max-annonces",
-        "200",
-    ],
-    get_logs=True,
-    is_delete_operator_pod=True,
-)
+        task_id="generate_source_data",
+        name="real-estate-generate-source-data",
+        namespace="airflow",
+        image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
+
+        cmds=["/bin/sh", "-c"],
+
+        arguments=[
+            """
+            set -e
+
+            export INGESTION_BATCH="generated-{{ ts_nodash }}"
+
+            echo "Generating source dataset..."
+
+            python /app/database/seeds/generer_annonces.py \
+              -r 5 \
+              --min-annonces 200 \
+              --max-annonces 200
+
+            echo "Uploading generated dataset to MinIO..."
+
+            python /app/database/seeds/upload_generated_to_s3.py
+
+            echo "Source generation and upload completed."
+            """
+        ],
+
+        env_from=[
+            k8s.V1EnvFromSource(
+                secret_ref=k8s.V1SecretEnvSource(
+                    name="real-estate-s3"
+                )
+            )
+        ],
+
+        get_logs=True,
+        is_delete_operator_pod=True,
+    )
 
     load_raw_task = PythonOperator(
         task_id="load_raw",
@@ -176,4 +199,3 @@ with DAG(
         >> validate_oltp_task
         >> end
     )
-# CI publish trigger
