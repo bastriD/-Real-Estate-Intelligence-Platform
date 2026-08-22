@@ -1,5 +1,6 @@
 stages:
   - validate
+  - database
 
 include:
-  - local: .gitlab/ci/runner-test.yml
+  - local: .gitlab/ci/database.yml
