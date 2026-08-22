@@ -5,6 +5,7 @@ from datetime import datetime
 from airflow import DAG
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
+from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
 
 
 DAG_ID = "real_estate_ingestion"
@@ -14,17 +15,6 @@ DEFAULT_ARGS = {
     "depends_on_past": False,
     "retries": 1,
 }
-
-
-def generate_source_data() -> None:
-    """
-    Placeholder.
-
-    Later:
-    - execute database/seeds/generer_annonces.py
-    - or consume already-generated source data
-    """
-    print("generate_source_data")
 
 
 def load_raw() -> None:
@@ -65,7 +55,6 @@ def transform_staging() -> None:
     - preserve quality errors
     """
     print("transform_staging")
-
 
 def validate_staging() -> None:
     """
@@ -123,10 +112,24 @@ with DAG(
         task_id="start",
     )
 
-    generate_source_data_task = PythonOperator(
-        task_id="generate_source_data",
-        python_callable=generate_source_data,
-    )
+    generate_source_data_task = KubernetesPodOperator(
+    task_id="generate_source_data",
+    name="real-estate-generate-source-data",
+    namespace="airflow",
+    image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
+    cmds=["python"],
+    arguments=[
+        "/app/database/seeds/generer_annonces.py",
+        "-r",
+        "5",
+        "--min-annonces",
+        "200",
+        "--max-annonces",
+        "200",
+    ],
+    get_logs=True,
+    is_delete_operator_pod=True,
+)
 
     load_raw_task = PythonOperator(
         task_id="load_raw",
