@@ -27,6 +27,8 @@ Behavior:
     - Uses transactions.
 """
 
+#!/usr/bin/env python3
+
 from __future__ import annotations
 
 import csv
@@ -36,9 +38,13 @@ import uuid
 from pathlib import Path
 
 import psycopg
+from dotenv import load_dotenv
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+load_dotenv(PROJECT_ROOT / ".env")
+
 
 RECHERCHES_CSV = (
     PROJECT_ROOT / "database" / "fixtures" / "annonces" / "recherches.csv"
@@ -47,7 +53,6 @@ RECHERCHES_CSV = (
 ANNONCES_CSV = (
     PROJECT_ROOT / "database" / "fixtures" / "annonces" / "annonces.csv"
 )
-
 
 RECHERCHES_COLUMNS = [
     "id",
