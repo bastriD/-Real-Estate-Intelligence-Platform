@@ -173,3 +173,4 @@ with DAG(
         >> validate_oltp_task
         >> end
     )
+# CI publish trigger
