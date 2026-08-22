@@ -158,10 +158,6 @@ with DAG(
         is_delete_operator_pod=True,
     )
 
-    load_raw_task = PythonOperator(
-        task_id="load_raw",
-        python_callable=load_raw,
-    )
 
     load_raw_task = KubernetesPodOperator(
     task_id="load_raw",
