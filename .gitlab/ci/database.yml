@@ -9,6 +9,7 @@ database:validate:
     - test -f database/migrations/002_migrate_legacy_data.sql
     - test -f database/tests/001_schema_structure.sql
     - test -f database/tests/002_legacy_migration.sql
+    - test -f database/tests/003_oltp_constraints.sql
     - test -f database/legacy/PgSQL.sql
 
     - grep -q "CREATE SCHEMA IF NOT EXISTS real_estate;" database/migrations/001_initial_schema.sql
@@ -21,6 +22,7 @@ database:validate:
     - grep -q '^DROP SCHEMA IF EXISTS "Fil_Rouge_Depart" CASCADE;' database/legacy/PgSQL.sql
     - grep -q "^COMMIT;" database/migrations/001_initial_schema.sql
     - grep -q "^COMMIT;" database/migrations/002_migrate_legacy_data.sql
+    - grep -q "OLTP constraints enforced successfully" database/tests/003_oltp_constraints.sql
 
   rules:
     - changes:
@@ -219,6 +221,32 @@ database:test-legacy-migration:
           -d real_estate \
           -v ON_ERROR_STOP=1 \
           < database/tests/002_legacy_migration.sql
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
+
+
+database:test-oltp-constraints:
+  stage: database
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl -n real-estate get deploy real-estate-postgresql
+
+    - |
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/tests/003_oltp_constraints.sql
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
