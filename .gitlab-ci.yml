@@ -1,6 +1,8 @@
 stages:
   - validate
   - database
+  - deploy
 
 include:
   - local: .gitlab/ci/database.yml
+  - local: .gitlab/ci/airflow.yml

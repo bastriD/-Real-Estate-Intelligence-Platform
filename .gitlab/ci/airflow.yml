@@ -1,0 +1,40 @@
+airflow:publish-dags:
+  stage: deploy
+  tags:
+    - shell
+
+  script:
+    - git --version
+    - test -d pipelines/airflow
+    - test -f pipelines/airflow/real_estate_ingestion_dag.py
+
+    - rm -rf /tmp/chasse-airflow-dags
+
+    - |
+      git clone \
+        "https://${AIRFLOW_DAGS_GIT_USER}:${AIRFLOW_DAGS_GIT_TOKEN}@gitlab.local/root/airflow-dags.git" \
+        /tmp/chasse-airflow-dags
+
+    - mkdir -p /tmp/chasse-airflow-dags/dags
+    - cp pipelines/airflow/*.py /tmp/chasse-airflow-dags/dags/
+
+    - cd /tmp/chasse-airflow-dags
+    - git config user.name "chasse-immobiliere-ci"
+    - git config user.email "gitlab-ci@lab.local"
+    - git add dags/
+
+    - |
+      if git diff --cached --quiet; then
+        echo "No Airflow DAG changes to publish."
+        exit 0
+      fi
+
+    - git commit -m "deploy: publish real-estate Airflow DAGs"
+    - git push origin main
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - pipelines/airflow/**/*
+        - .gitlab/ci/airflow.yml
+        - .gitlab-ci.yml
