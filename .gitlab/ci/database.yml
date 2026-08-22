@@ -8,6 +8,7 @@ database:validate:
     - test -f database/migrations/001_initial_schema.sql
     - test -f database/migrations/002_migrate_legacy_data.sql
     - test -f database/tests/001_schema_structure.sql
+    - test -f database/tests/002_legacy_migration.sql
     - test -f database/legacy/PgSQL.sql
 
     - grep -q "CREATE SCHEMA IF NOT EXISTS real_estate;" database/migrations/001_initial_schema.sql
@@ -136,6 +137,29 @@ database:migrate-002:
     - kubectl -n real-estate get deploy real-estate-postgresql
 
     - |
+      MIGRATION_002_APPLIED="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT CASE
+               WHEN EXISTS (
+                 SELECT 1
+                 FROM migration_control.schema_version
+                 WHERE version = '002'
+               )
+               THEN 'yes'
+               ELSE 'no'
+             END;" 2>/dev/null || true
+      )"
+
+      if [ "$MIGRATION_002_APPLIED" = "yes" ]; then
+        echo "Migration 002 already applied - skipping safely."
+        exit 0
+      fi
+
+    - |
       kubectl -n real-estate exec deploy/real-estate-postgresql \
         -i -- \
         psql \
@@ -169,6 +193,32 @@ database:test-schema:
           -d real_estate \
           -v ON_ERROR_STOP=1 \
           < database/tests/001_schema_structure.sql
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
+
+
+database:test-legacy-migration:
+  stage: database
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl -n real-estate get deploy real-estate-postgresql
+
+    - |
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/tests/002_legacy_migration.sql
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
