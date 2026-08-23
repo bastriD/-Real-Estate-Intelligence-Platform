@@ -335,10 +335,45 @@ with DAG(
     is_delete_operator_pod=True,
 )
 
-    load_oltp_task = PythonOperator(
-        task_id="load_oltp",
-        python_callable=load_oltp,
-    )
+    load_oltp_task = KubernetesPodOperator(
+    task_id="load_oltp",
+    name="real-estate-load-oltp",
+    namespace="airflow",
+    image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
+
+    image_pull_secrets=[
+        k8s.V1LocalObjectReference(
+            name="gitlab-registry"
+        )
+    ],
+
+    cmds=["/bin/sh", "-c"],
+
+    arguments=[
+        """
+        set -e
+
+        export INGESTION_BATCH="generated-{{ ts_nodash }}"
+
+        echo "Loading STAGING -> OLTP batch: ${INGESTION_BATCH}"
+
+        python /app/database/seeds/load_staging_to_oltp.py
+
+        echo "OLTP load completed."
+        """
+    ],
+
+    env_from=[
+        k8s.V1EnvFromSource(
+            secret_ref=k8s.V1SecretEnvSource(
+                name="real-estate-postgresql-secret"
+            )
+        )
+    ],
+
+    get_logs=True,
+    is_delete_operator_pod=True,
+)
 
     validate_oltp_task = PythonOperator(
         task_id="validate_oltp",
