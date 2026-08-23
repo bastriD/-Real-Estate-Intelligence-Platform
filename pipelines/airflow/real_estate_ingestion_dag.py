@@ -376,52 +376,93 @@ with DAG(
 )
 
     validate_oltp_task = KubernetesPodOperator(
-    task_id="validate_oltp",
-    name="real-estate-validate-oltp",
-    namespace="airflow",
-    image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
+        task_id="validate_oltp",
+        name="real-estate-validate-oltp",
+        namespace="airflow",
+        image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
 
-    image_pull_secrets=[
-        k8s.V1LocalObjectReference(
-            name="gitlab-registry"
-        )
-    ],
-
-    cmds=["/bin/sh", "-c"],
-
-    arguments=[
-        """
-        set -e
-
-        export INGESTION_BATCH="generated-{{ ts_nodash }}"
-
-        echo "Validating OLTP batch: ${INGESTION_BATCH}"
-
-        PGPASSWORD="${POSTGRES_PASSWORD}" \
-        psql \
-          -h "${POSTGRES_HOST}" \
-          -p "${POSTGRES_PORT}" \
-          -U "${POSTGRES_USER}" \
-          -d "${POSTGRES_DB}" \
-          -v ON_ERROR_STOP=1 \
-          -v ingestion_batch="${INGESTION_BATCH}" \
-          -f /app/database/tests/006_oltp_data_quality.sql
-
-        echo "OLTP validation completed."
-        """
-    ],
-
-    env_from=[
-        k8s.V1EnvFromSource(
-            secret_ref=k8s.V1SecretEnvSource(
-                name="real-estate-postgresql-secret"
+        image_pull_secrets=[
+            k8s.V1LocalObjectReference(
+                name="gitlab-registry"
             )
-        )
-    ],
+        ],
 
-    get_logs=True,
-    is_delete_operator_pod=True,
-)
+        cmds=["/bin/sh", "-c"],
+
+        arguments=[
+            """
+            set -e
+
+            export INGESTION_BATCH="generated-{{ ts_nodash }}"
+
+            echo "Validating OLTP batch: ${INGESTION_BATCH}"
+
+            PGPASSWORD="${POSTGRES_PASSWORD}" \
+            psql \
+              -h "${POSTGRES_HOST}" \
+              -p "${POSTGRES_PORT}" \
+              -U "${POSTGRES_USER}" \
+              -d "${POSTGRES_DB}" \
+              -v ON_ERROR_STOP=1 \
+              -v ingestion_batch="${INGESTION_BATCH}" \
+              -f /app/database/tests/006_oltp_data_quality.sql
+
+            echo "OLTP validation completed."
+            """
+        ],
+
+        env_from=[
+            k8s.V1EnvFromSource(
+                secret_ref=k8s.V1SecretEnvSource(
+                    name="real-estate-postgresql-secret"
+                )
+            )
+        ],
+
+        get_logs=True,
+        is_delete_operator_pod=True,
+    )
+
+    load_warehouse_task = KubernetesPodOperator(
+        task_id="load_warehouse",
+        name="real-estate-load-warehouse",
+        namespace="airflow",
+        image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
+
+        image_pull_secrets=[
+            k8s.V1LocalObjectReference(
+                name="gitlab-registry"
+            )
+        ],
+
+        cmds=["/bin/sh", "-c"],
+
+        arguments=[
+            """
+            set -e
+
+            export INGESTION_BATCH="generated-{{ ts_nodash }}"
+
+            echo "Loading OLTP -> WAREHOUSE..."
+            echo "Ingestion batch: ${INGESTION_BATCH}"
+
+            python /app/database/olap/load_warehouse.py
+
+            echo "WAREHOUSE load completed."
+            """
+        ],
+
+        env_from=[
+            k8s.V1EnvFromSource(
+                secret_ref=k8s.V1SecretEnvSource(
+                    name="real-estate-postgresql-secret"
+                )
+            )
+        ],
+
+        get_logs=True,
+        is_delete_operator_pod=True,
+    )
 
     end = EmptyOperator(
         task_id="end",
@@ -436,5 +477,6 @@ with DAG(
         >> validate_staging_task
         >> load_oltp_task
         >> validate_oltp_task
+        >> load_warehouse_task
         >> end
     )
