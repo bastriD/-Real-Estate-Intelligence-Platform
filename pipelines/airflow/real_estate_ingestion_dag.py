@@ -463,7 +463,7 @@ with DAG(
         get_logs=True,
         is_delete_operator_pod=True,
     )
-        validate_warehouse_task = KubernetesPodOperator(
+    validate_warehouse_task = KubernetesPodOperator(
         task_id="validate_warehouse",
         name="real-estate-validate-warehouse",
         namespace="airflow",
