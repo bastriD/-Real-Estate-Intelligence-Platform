@@ -380,8 +380,29 @@ DATE_FORMATS = (
     "%d/%m/%Y",
     "%Y/%m/%d",
     "%d-%m-%Y",
+    "%m-%d-%Y",
     "%d.%m.%Y",
 )
+
+
+FRENCH_MONTHS = {
+    "janvier": 1,
+    "février": 2,
+    "fevrier": 2,
+    "mars": 3,
+    "avril": 4,
+    "mai": 5,
+    "juin": 6,
+    "juillet": 7,
+    "août": 8,
+    "aout": 8,
+    "septembre": 9,
+    "octobre": 10,
+    "novembre": 11,
+    "décembre": 12,
+    "decembre": 12,
+}
+
 
 DATETIME_FORMATS = (
     "%Y-%m-%d %H:%M:%S",
@@ -420,11 +441,37 @@ def parse_date(
         except ValueError:
             continue
 
+    # French textual date:
+    # 11 avril 2025
+    # 12 décembre 2024
+    french_match = re.fullmatch(
+        r"(\d{1,2})\s+([A-Za-zÀ-ÿ]+)\s+(\d{4})",
+        text,
+        flags=re.IGNORECASE,
+    )
+
+    if french_match:
+        day = int(french_match.group(1))
+        month_name = french_match.group(2).lower()
+        year = int(french_match.group(3))
+
+        month = FRENCH_MONTHS.get(month_name)
+
+        if month is not None:
+            try:
+                return date(
+                    year,
+                    month,
+                    day,
+                )
+
+            except ValueError:
+                pass
+
     # Unix timestamp.
     try:
         timestamp = float(text)
 
-        # Millisecond epoch.
         if timestamp > 10_000_000_000:
             timestamp /= 1000
 
@@ -472,6 +519,7 @@ def parse_datetime(
     except ValueError:
         pass
 
+    # Datetime formats.
     for fmt in DATETIME_FORMATS:
         try:
             result = datetime.strptime(
@@ -486,7 +534,7 @@ def parse_datetime(
         except ValueError:
             continue
 
-    # Date-only values.
+    # Date-only formats.
     for fmt in DATE_FORMATS:
         try:
             result = datetime.strptime(
@@ -500,6 +548,34 @@ def parse_datetime(
 
         except ValueError:
             continue
+
+    # French textual date:
+    # 11 avril 2025
+    # 12 décembre 2024
+    french_match = re.fullmatch(
+        r"(\d{1,2})\s+([A-Za-zÀ-ÿ]+)\s+(\d{4})",
+        text,
+        flags=re.IGNORECASE,
+    )
+
+    if french_match:
+        day = int(french_match.group(1))
+        month_name = french_match.group(2).lower()
+        year = int(french_match.group(3))
+
+        month = FRENCH_MONTHS.get(month_name)
+
+        if month is not None:
+            try:
+                return datetime(
+                    year,
+                    month,
+                    day,
+                    tzinfo=timezone.utc,
+                )
+
+            except ValueError:
+                pass
 
     # Unix timestamp seconds or milliseconds.
     try:
@@ -524,7 +600,6 @@ def parse_datetime(
     )
 
     return None
-
 
 # =============================================================================
 # JSON / LIST PARSING
