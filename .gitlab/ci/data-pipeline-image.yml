@@ -7,6 +7,9 @@ data-pipeline:build-image:
     - job: database:validate
       artifacts: false
 
+    - job: warehouse:validate
+      artifacts: false
+
   image: docker:27.5.1
 
   variables:

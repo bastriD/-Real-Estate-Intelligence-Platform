@@ -24,7 +24,7 @@ COPY database/seeds/transform_raw_to_staging.py /app/database/seeds/transform_ra
 COPY database/tests/005_staging_data_quality.sql /app/database/tests/005_staging_data_quality.sql
 COPY database/seeds/load_staging_to_oltp.py /app/database/seeds/load_staging_to_oltp.py
 COPY database/tests/006_oltp_data_quality.sql /app/database/tests/006_oltp_data_quality.sql
-
+COPY database/olap/load_warehouse.py /app/database/olap/load_warehouse.py
 RUN mkdir -p /app/database/fixtures/annonces/json
 
 ENTRYPOINT ["python"]
