@@ -923,9 +923,29 @@ class GovernanceEngine:
                 [],
             ):
 
-                domain_name = assignment[
-                    "domain"
-                ]
+                domain_name = assignment["domain"]
+
+                domain_entity = (
+                    created_domains.get(domain_name)
+                    or self.client.get_by_name(
+                        "/v1/domains",
+                        domain_name,
+                    )
+                )
+
+                if not domain_entity:
+                    raise RuntimeError(
+                        f"Domain does not exist: {domain_name}"
+                    )
+
+                domain_fqn = domain_entity.get(
+                    "fullyQualifiedName"
+                )
+
+                if not domain_fqn:
+                    raise RuntimeError(
+                        f"Domain has no fullyQualifiedName: {domain_name}"
+                    )
 
                 entity_type = assignment[
                     "entity_type"
@@ -964,10 +984,10 @@ class GovernanceEngine:
                 ):
 
                     self.client.assign_domain_to_entity(
-                        endpoint,
-                        target,
-                        domain_name,
-                    )
+                    endpoint,
+                    target,
+                    domain_fqn,
+                )
 
         logger.info(
             "Domain governance completed"
