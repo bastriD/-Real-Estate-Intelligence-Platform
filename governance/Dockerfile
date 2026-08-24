@@ -16,7 +16,9 @@ COPY quality /app/quality
 COPY scripts /app/scripts
 COPY tagging /app/tagging
 COPY apply-governance.sh /app/apply-governance.sh
-
+COPY domains /app/domains
+COPY data-products /app/data-products
+COPY lineage /app/lineage
 RUN chmod +x /app/apply-governance.sh
 
 ENTRYPOINT ["/app/apply-governance.sh"]
