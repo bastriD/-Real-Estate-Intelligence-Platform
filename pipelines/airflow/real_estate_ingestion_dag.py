@@ -507,6 +507,97 @@ with DAG(
         get_logs=True,
         is_delete_operator_pod=True,
     )
+    dbt_run_task = KubernetesPodOperator(
+        task_id="dbt_run",
+        name="real-estate-dbt-run",
+        namespace="airflow",
+        image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
+
+        image_pull_secrets=[
+            k8s.V1LocalObjectReference(
+                name="gitlab-registry"
+            )
+        ],
+
+        cmds=["/bin/sh", "-c"],
+
+        arguments=[
+            """
+            set -e
+
+            echo "Preparing dbt profile..."
+
+            cp /app/pipelines/dbt/profiles.yml.example \
+               /app/pipelines/dbt/profiles.yml
+
+            cd /app/pipelines/dbt
+
+            echo "Running dbt models..."
+
+            dbt run \
+              --profiles-dir .
+
+            echo "dbt run completed."
+            """
+        ],
+
+        env_from=[
+            k8s.V1EnvFromSource(
+                secret_ref=k8s.V1SecretEnvSource(
+                    name="real-estate-postgresql-secret"
+                )
+            )
+        ],
+
+        get_logs=True,
+        is_delete_operator_pod=True,
+    )
+
+    dbt_test_task = KubernetesPodOperator(
+        task_id="dbt_test",
+        name="real-estate-dbt-test",
+        namespace="airflow",
+        image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
+
+        image_pull_secrets=[
+            k8s.V1LocalObjectReference(
+                name="gitlab-registry"
+            )
+        ],
+
+        cmds=["/bin/sh", "-c"],
+
+        arguments=[
+            """
+            set -e
+
+            echo "Preparing dbt profile..."
+
+            cp /app/pipelines/dbt/profiles.yml.example \
+               /app/pipelines/dbt/profiles.yml
+
+            cd /app/pipelines/dbt
+
+            echo "Running dbt tests..."
+
+            dbt test \
+              --profiles-dir .
+
+            echo "dbt tests completed."
+            """
+        ],
+
+        env_from=[
+            k8s.V1EnvFromSource(
+                secret_ref=k8s.V1SecretEnvSource(
+                    name="real-estate-postgresql-secret"
+                )
+            )
+        ],
+
+        get_logs=True,
+        is_delete_operator_pod=True,
+    )
 
     end = EmptyOperator(
         task_id="end",
@@ -523,5 +614,7 @@ with DAG(
         >> validate_oltp_task
         >> load_warehouse_task
         >> validate_warehouse_task
+        >> dbt_run_task
+        >> dbt_test_task
         >> end
     )
