@@ -134,15 +134,19 @@ class OpenMetadataClient:
         )
 
     def put(
-        self,
-        endpoint: str,
-        payload: Any,
-    ) -> requests.Response:
-        return self.request(
-            "PUT",
-            endpoint,
-            payload=payload,
-        )
+    self,
+    endpoint: str,
+    payload: Any,
+    *,
+    params: dict[str, Any] | None = None,
+) -> requests.Response:
+
+     return self.request(
+        "PUT",
+        endpoint,
+        payload=payload,
+        params=params,
+    )
 
     def post(
         self,
@@ -210,6 +214,11 @@ class OpenMetadataClient:
         parent_id: str | None = None,
     ) -> dict[str, Any]:
 
+        domain_type = domain.get(
+            "domain_type",
+            "Aggregate",
+        )
+
         payload = {
             "name": domain["name"],
             "displayName": domain.get(
@@ -220,11 +229,17 @@ class OpenMetadataClient:
         }
 
         if parent_id:
-            payload["parent"] = parent_id
+            payload["parent"] = {
+                "id": parent_id,
+                "type": "domain",
+            }
 
         response = self.put(
             "/v1/domains",
             payload,
+            params={
+                "domainType": domain_type,
+            },
         )
 
         entity = response.json()
