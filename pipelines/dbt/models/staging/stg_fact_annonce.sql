@@ -1,0 +1,20 @@
+select
+    fa.annonce_fact_key,
+    fa.bien_key,
+    fa.source_key,
+    fa.localisation_key,
+    fa.publication_date_key,
+    fa.collection_date_key,
+    fa.prix,
+    fa.surface,
+    fa.prix_m2,
+    fa.nb_pieces,
+    fa.nb_chambres,
+    fa.annonce_count,
+    fa.reference_externe,
+    fa.ingestion_batch,
+    fa.source_file,
+    fa.date_collecte_exacte,
+    fa.date_publication_exacte,
+    fa.dw_loaded_at
+from {{ source('warehouse', 'fact_annonce') }} as fa

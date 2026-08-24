@@ -1,0 +1,23 @@
+name: real_estate_analytics
+version: "1.0.0"
+config-version: 2
+
+profile: real_estate_analytics
+
+model-paths:
+  - models
+
+test-paths:
+  - tests
+
+clean-targets:
+  - target
+  - dbt_packages
+
+models:
+  real_estate_analytics:
+    staging:
+      +materialized: view
+
+    marts:
+      +materialized: view

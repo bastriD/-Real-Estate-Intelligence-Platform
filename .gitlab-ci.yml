@@ -8,3 +8,4 @@ include:
   - local: .gitlab/ci/airflow.yml
   - local: .gitlab/ci/data-pipeline-image.yml
   - local: .gitlab/ci/warehouse.yml
+  - local: .gitlab/ci/openmetadata.yml

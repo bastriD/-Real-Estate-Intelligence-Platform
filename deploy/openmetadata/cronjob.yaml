@@ -1,0 +1,126 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: real-estate-postgresql-ingestion
+  namespace: openmetadata
+  labels:
+    app.kubernetes.io/component: ingestion
+    app.kubernetes.io/name: openmetadata
+    app.kubernetes.io/part-of: openmetadata
+
+spec:
+  schedule: "10 2 * * *"
+  suspend: true
+
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+
+      template:
+        metadata:
+          labels:
+            app: real-estate-postgresql-ingestion
+
+        spec:
+          restartPolicy: Never
+
+          containers:
+            - name: real-estate-postgresql-ingestion
+              image: docker.getcollate.io/openmetadata/ingestion:1.12.11
+              imagePullPolicy: IfNotPresent
+
+              command:
+                - /bin/bash
+                - -c
+
+              args:
+                - |
+                  set -euo pipefail
+
+                  envsubst \
+                    < /config/real-estate-postgresql-ingestion.yaml.template \
+                    > /tmp/real-estate-postgresql-ingestion.yaml
+
+                  metadata ingest \
+                    -c /tmp/real-estate-postgresql-ingestion.yaml
+
+              envFrom:
+                - secretRef:
+                    name: openmetadata-ingestion-secrets
+
+              volumeMounts:
+                - name: ingestion-config
+                  mountPath: /config
+                  readOnly: true
+
+          volumes:
+            - name: ingestion-config
+              configMap:
+                name: real-estate-postgresql-ingestion-config
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: real-estate-postgresql-profiler
+  namespace: openmetadata
+  labels:
+    app.kubernetes.io/component: profiler
+    app.kubernetes.io/name: openmetadata
+    app.kubernetes.io/part-of: openmetadata
+
+spec:
+  schedule: "45 2 * * *"
+  suspend: true
+
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+
+      template:
+        metadata:
+          labels:
+            app: real-estate-postgresql-profiler
+
+        spec:
+          restartPolicy: Never
+
+          containers:
+            - name: real-estate-postgresql-profiler
+              image: docker.getcollate.io/openmetadata/ingestion:1.12.11
+              imagePullPolicy: IfNotPresent
+
+              command:
+                - /bin/bash
+                - -c
+
+              args:
+                - |
+                  set -euo pipefail
+
+                  envsubst \
+                    < /config/real-estate-postgresql-profiler.yaml.template \
+                    > /tmp/real-estate-postgresql-profiler.yaml
+
+                  metadata profile \
+                    -c /tmp/real-estate-postgresql-profiler.yaml
+
+              envFrom:
+                - secretRef:
+                    name: openmetadata-ingestion-secrets
+
+              volumeMounts:
+                - name: profiler-config
+                  mountPath: /config
+                  readOnly: true
+
+          volumes:
+            - name: profiler-config
+              configMap:
+                name: real-estate-postgresql-profiler-config

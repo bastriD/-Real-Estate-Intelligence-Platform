@@ -1,0 +1,56 @@
+version: 2
+
+sources:
+  - name: warehouse
+    description: >
+      PostgreSQL analytical warehouse populated from the real_estate OLTP
+      and ingestion pipeline.
+
+    schema: warehouse
+
+    tables:
+      - name: dim_date
+        description: Shared calendar dimension.
+
+      - name: dim_source
+        description: Historised property data-source dimension.
+
+      - name: dim_localisation
+        description: Geographical dimension for market analytics.
+
+      - name: dim_bien
+        description: Historised property dimension.
+
+      - name: dim_client
+        description: Pseudonymised customer analytical dimension.
+
+      - name: dim_chasseur
+        description: Chasseur analytical dimension without direct contact PII.
+
+      - name: dim_secteur
+        description: Business search-sector dimension.
+
+      - name: dim_demande_version
+        description: Historical versions of customer search criteria.
+
+      - name: fact_annonce
+        description: >
+          Market observation fact table. One row represents one property
+          advertisement observation for one ingestion batch.
+
+      - name: fact_mandat
+        description: >
+          Business fact table at one row per mandate.
+
+      - name: bridge_mandat_secteur
+        description: >
+          Bridge preserving the many-to-many relationship between mandates
+          and business sectors.
+
+      - name: fact_presentation
+        description: >
+          Matching fact table at one property presentation per search version.
+
+      - name: fact_paiement
+        description: >
+          Financial fact table at one row per OLTP payment.

@@ -1,0 +1,112 @@
+openmetadata:publish-gitops:
+  stage: deploy
+  tags:
+    - shell
+
+  needs:
+    - job: warehouse:validate
+      artifacts: false
+
+  script:
+    - git --version
+    - kubectl version --client
+
+    - test -d deploy/openmetadata
+    - test -f deploy/openmetadata/configmap.yaml
+    - test -f deploy/openmetadata/cronjob.yaml
+    - test -f deploy/openmetadata/kustomization.yaml
+
+    - kubectl -n openmetadata get secret lab-gitops-git-credentials
+
+    - rm -rf /tmp/chasse-lab-gitops
+    - rm -f /tmp/.netrc
+
+    - |
+      export LAB_GITOPS_GIT_USER="$(
+        kubectl -n openmetadata get secret lab-gitops-git-credentials \
+          -o jsonpath='{.data.GIT_USERNAME}' | base64 -d
+      )"
+
+      export LAB_GITOPS_GIT_TOKEN="$(
+        kubectl -n openmetadata get secret lab-gitops-git-credentials \
+          -o jsonpath='{.data.GIT_TOKEN}' | base64 -d
+      )"
+
+      test -n "$LAB_GITOPS_GIT_USER"
+      test -n "$LAB_GITOPS_GIT_TOKEN"
+
+      cat > /tmp/.netrc <<EOF
+      machine gitlab.local
+      login ${LAB_GITOPS_GIT_USER}
+      password ${LAB_GITOPS_GIT_TOKEN}
+      EOF
+
+      chmod 600 /tmp/.netrc
+
+    - |
+      HOME=/tmp \
+      GIT_SSL_NO_VERIFY=true \
+      git clone \
+        "https://gitlab.local/root/lab-gitops.git" \
+        /tmp/chasse-lab-gitops
+
+    - mkdir -p /tmp/chasse-lab-gitops/workloads/openmetadata/ingestions/real-estate-postgresql
+
+    - |
+      cp \
+        deploy/openmetadata/configmap.yaml \
+        /tmp/chasse-lab-gitops/workloads/openmetadata/ingestions/real-estate-postgresql/configmap.yaml
+
+      cp \
+        deploy/openmetadata/cronjob.yaml \
+        /tmp/chasse-lab-gitops/workloads/openmetadata/ingestions/real-estate-postgresql/cronjob.yaml
+
+      cp \
+        deploy/openmetadata/kustomization.yaml \
+        /tmp/chasse-lab-gitops/workloads/openmetadata/ingestions/real-estate-postgresql/kustomization.yaml
+
+    - cd /tmp/chasse-lab-gitops
+
+    - |
+      if ! grep -qE '^[[:space:]]*-[[:space:]]*real-estate-postgresql/?[[:space:]]*$' \
+        workloads/openmetadata/ingestions/kustomization.yaml; then
+
+        echo "Adding real-estate-postgresql to parent OpenMetadata kustomization..."
+
+        printf '\n  - real-estate-postgresql\n' \
+          >> workloads/openmetadata/ingestions/kustomization.yaml
+      else
+        echo "real-estate-postgresql already present in parent kustomization."
+      fi
+
+    - git config user.name "chasse-immobiliere-ci"
+    - git config user.email "gitlab-ci@lab.local"
+
+    - git add workloads/openmetadata/ingestions/
+
+    - |
+      if git diff --cached --quiet; then
+        echo "No OpenMetadata GitOps changes to publish."
+        rm -f /tmp/.netrc
+        exit 0
+      fi
+
+    - git status --short
+
+    - git commit -m "deploy: publish real-estate OpenMetadata ingestions"
+
+    - |
+      HOME=/tmp \
+      GIT_SSL_NO_VERIFY=true \
+      git push origin main
+
+  after_script:
+    - rm -f /tmp/.netrc
+    - rm -rf /tmp/chasse-lab-gitops
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - deploy/openmetadata/**/*
+        - .gitlab/ci/openmetadata.yml
+        - .gitlab-ci.yml

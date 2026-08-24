@@ -1,0 +1,136 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: real-estate-postgresql-ingestion-config
+  namespace: openmetadata
+  labels:
+    app.kubernetes.io/component: ingestion
+    app.kubernetes.io/name: openmetadata
+    app.kubernetes.io/part-of: openmetadata
+
+data:
+  real-estate-postgresql-ingestion.yaml.template: |-
+    source:
+      type: postgres
+      serviceName: real-estate-postgresql
+
+      serviceConnection:
+        config:
+          type: Postgres
+          username: real_estate_user
+          authType:
+            password: "${REAL_ESTATE_POSTGRES_PASSWORD}"
+          hostPort: real-estate-postgresql.real-estate.svc.cluster.local:5432
+          database: real_estate
+          sslMode: disable
+
+      sourceConfig:
+        config:
+          type: DatabaseMetadata
+
+          includeTables: true
+          includeViews: true
+          includeTags: true
+          includeOwners: true
+
+          schemaFilterPattern:
+            includes:
+              - "^raw$"
+              - "^staging$"
+              - "^real_estate$"
+              - "^warehouse$"
+              - "^analytics$"
+
+            excludes:
+              - "^information_schema$"
+              - "^pg_catalog$"
+              - "^Fil_Rouge_Depart$"
+
+    sink:
+      type: metadata-rest
+      config: {}
+
+    workflowConfig:
+      openMetadataServerConfig:
+        hostPort: http://openmetadata.openmetadata.svc.cluster.local:8585/api
+        authProvider: openmetadata
+        securityConfig:
+          jwtToken: "${OM_JWT_TOKEN}"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: real-estate-postgresql-profiler-config
+  namespace: openmetadata
+  labels:
+    app.kubernetes.io/component: profiler
+    app.kubernetes.io/name: openmetadata
+    app.kubernetes.io/part-of: openmetadata
+
+data:
+  real-estate-postgresql-profiler.yaml.template: |-
+    source:
+      type: postgres
+      serviceName: real-estate-postgresql
+
+      serviceConnection:
+        config:
+          type: Postgres
+          username: real_estate_user
+          authType:
+            password: "${REAL_ESTATE_POSTGRES_PASSWORD}"
+          hostPort: real-estate-postgresql.real-estate.svc.cluster.local:5432
+          database: real_estate
+          sslMode: disable
+
+      sourceConfig:
+        config:
+          type: Profiler
+
+          schemaFilterPattern:
+            includes:
+              - "^warehouse$"
+
+          tableFilterPattern:
+            includes:
+              - "^dim_date$"
+              - "^dim_source$"
+              - "^dim_localisation$"
+              - "^dim_bien$"
+              - "^dim_client$"
+              - "^dim_chasseur$"
+              - "^dim_secteur$"
+              - "^dim_demande_version$"
+              - "^fact_annonce$"
+              - "^fact_mandat$"
+              - "^fact_presentation$"
+              - "^fact_paiement$"
+              - "^bridge_mandat_secteur$"
+
+    processor:
+      type: orm-profiler
+      config:
+        tableConfig:
+          - fullyQualifiedName: real-estate-postgresql.real_estate.warehouse.dim_bien
+            profileSample: 100
+
+          - fullyQualifiedName: real-estate-postgresql.real_estate.warehouse.fact_annonce
+            profileSample: 100
+
+          - fullyQualifiedName: real-estate-postgresql.real_estate.warehouse.fact_mandat
+            profileSample: 100
+
+          - fullyQualifiedName: real-estate-postgresql.real_estate.warehouse.dim_demande_version
+            profileSample: 100
+
+    sink:
+      type: metadata-rest
+      config: {}
+
+    workflowConfig:
+      openMetadataServerConfig:
+        hostPort: http://openmetadata.openmetadata.svc.cluster.local:8585/api
+        authProvider: openmetadata
+        securityConfig:
+          jwtToken: "${OM_JWT_TOKEN}"

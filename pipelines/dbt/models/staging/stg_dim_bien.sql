@@ -1,0 +1,18 @@
+select
+    db.bien_key,
+    db.id_bien_source,
+    db.id_source_source,
+    db.reference_externe,
+    db.titre,
+    db.type_bien,
+    db.adresse,
+    db.latitude,
+    db.longitude,
+    db.dpe,
+    db.statut,
+    db.valid_from,
+    db.valid_to,
+    db.is_current,
+    db.dw_created_at,
+    db.dw_updated_at
+from {{ source('warehouse', 'dim_bien') }} as db

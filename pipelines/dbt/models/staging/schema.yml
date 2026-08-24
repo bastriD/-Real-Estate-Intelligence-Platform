@@ -1,0 +1,85 @@
+version: 2
+
+models:
+  - name: stg_fact_annonce
+    description: >
+      Staging dbt model exposing validated warehouse advertisement facts
+      for downstream analytical marts.
+
+    columns:
+      - name: annonce_fact_key
+        description: Warehouse surrogate key for the advertisement fact.
+        tests:
+          - not_null
+          - unique
+
+      - name: bien_key
+        description: Foreign key to the warehouse property dimension.
+        tests:
+          - not_null
+
+      - name: source_key
+        description: Foreign key to the warehouse source dimension.
+        tests:
+          - not_null
+
+      - name: localisation_key
+        description: Foreign key to the warehouse location dimension.
+        tests:
+          - not_null
+
+      - name: prix
+        description: Observed property price.
+        tests:
+          - not_null
+
+      - name: surface
+        description: Observed property surface.
+        tests:
+          - not_null
+
+      - name: prix_m2
+        description: Calculated price per square meter.
+        tests:
+          - not_null
+
+      - name: reference_externe
+        description: External source reference for the property advertisement.
+        tests:
+          - not_null
+
+      - name: ingestion_batch
+        description: Ingestion batch providing source-to-warehouse traceability.
+        tests:
+          - not_null
+
+  - name: stg_dim_bien
+    description: >
+      Staging dbt model exposing the historised warehouse property dimension.
+
+    columns:
+      - name: bien_key
+        description: Warehouse surrogate property key.
+        tests:
+          - not_null
+          - unique
+
+      - name: reference_externe
+        description: External property reference.
+        tests:
+          - not_null
+
+      - name: id_source_source
+        description: OLTP/source system identifier.
+        tests:
+          - not_null
+
+      - name: type_bien
+        description: Property type.
+        tests:
+          - not_null
+
+      - name: is_current
+        description: Indicates the current SCD member.
+        tests:
+          - not_null

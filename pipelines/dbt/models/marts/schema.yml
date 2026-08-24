@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: mart_market_by_city
+    description: >
+      Analytical market mart aggregated by country, city and postal code.
+      Used for BI, KPI, market analysis, OpenMetadata documentation,
+      and future feasibility/matching analysis.
+
+    columns:
+      - name: pays
+        description: Country of the observed real-estate market.
+        tests:
+          - not_null
+
+      - name: ville
+        description: City used as the main geographical analytical axis.
+        tests:
+          - not_null
+
+      - name: nb_annonces
+        description: Number of advertisement observations for the location.
+        tests:
+          - not_null
+
+      - name: prix_moyen
+        description: Average observed property price.
+
+      - name: prix_min
+        description: Minimum observed property price.
+
+      - name: prix_max
+        description: Maximum observed property price.
+
+      - name: surface_moyenne
+        description: Average observed property surface.
+
+      - name: prix_m2_moyen
+        description: Average observed price per square meter.
+
+      - name: premiere_publication
+        description: Earliest publication timestamp represented in the mart.
+
+      - name: derniere_publication
+        description: Latest publication timestamp represented in the mart.
