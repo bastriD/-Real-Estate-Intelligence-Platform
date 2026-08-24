@@ -1,6 +1,9 @@
 governance:validate:
   stage: validate
 
+  tags:
+    - docker
+
   image: python:3.12-slim
 
   before_script:
@@ -10,10 +13,8 @@ governance:validate:
   script:
     - echo "Validating Governance-as-Code files..."
 
-    # Validate Python syntax
     - python -m py_compile governance/scripts/main.py
 
-    # Validate all JSON governance definitions
     - python -m json.tool governance/docs/governance-config.json > /dev/null
     - python -m json.tool governance/glossary/real_estate_glossary.json > /dev/null
     - python -m json.tool governance/ownership/real_estate_ownership.json > /dev/null
@@ -33,35 +34,34 @@ governance:validate:
 governance:build-image:
   stage: deploy
 
-  image: docker:27.3.1
-
-  services:
-    - name: docker:27.3.1-dind
-
-  variables:
-    DOCKER_TLS_CERTDIR: "/certs"
-    GOVERNANCE_IMAGE: "$CI_REGISTRY_IMAGE/real-estate-governance"
+  tags:
+    - docker
 
   needs:
     - job: governance:validate
+      artifacts: false
+
+  image: docker:27.5.1
+
+  variables:
+    IMAGE_NAME: "$CI_REGISTRY_IMAGE/real-estate-governance"
+    IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+    DOCKER_HOST: "unix:///var/run/docker.sock"
 
   before_script:
+    - docker version
     - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
 
   script:
-    - echo "Building Real Estate Governance image..."
-    - docker build -f governance/Dockerfile -t "$GOVERNANCE_IMAGE:$CI_COMMIT_SHORT_SHA" governance
+    - |
+      docker build \
+        -f governance/Dockerfile \
+        -t "$IMAGE_NAME:$IMAGE_TAG" \
+        -t "$IMAGE_NAME:latest" \
+        governance
 
-    - echo "Tagging latest image..."
-    - docker tag "$GOVERNANCE_IMAGE:$CI_COMMIT_SHORT_SHA" "$GOVERNANCE_IMAGE:latest"
-
-    - echo "Pushing commit image..."
-    - docker push "$GOVERNANCE_IMAGE:$CI_COMMIT_SHORT_SHA"
-
-    - echo "Pushing latest image..."
-    - docker push "$GOVERNANCE_IMAGE:latest"
-
-    - echo "Governance image published successfully."
+    - docker push "$IMAGE_NAME:$IMAGE_TAG"
+    - docker push "$IMAGE_NAME:latest"
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
