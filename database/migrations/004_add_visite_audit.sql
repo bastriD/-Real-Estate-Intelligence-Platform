@@ -1,5 +1,5 @@
 -- =============================================================================
--- 003_add_visite_audit.sql
+-- 004_add_visite_audit.sql
 -- Real Estate Intelligence Platform
 --
 -- Purpose:
@@ -19,6 +19,7 @@
 --   - Does NOT invent historical visits.
 --   - Does NOT migrate legacy rows because no corresponding legacy
 --     entities exist.
+--   - Registers migration version 004 in migration_control.schema_version.
 -- =============================================================================
 
 BEGIN;
@@ -27,7 +28,7 @@ BEGIN;
 -- VISITE
 -- =============================================================================
 
-CREATE TABLE real_estate.visite (
+CREATE TABLE IF NOT EXISTS real_estate.visite (
     id_visite BIGINT GENERATED ALWAYS AS IDENTITY,
 
     date_visite TIMESTAMPTZ NOT NULL,
@@ -74,10 +75,10 @@ CREATE TABLE real_estate.visite (
         )
 );
 
-CREATE INDEX idx_visite_id_presentation
+CREATE INDEX IF NOT EXISTS idx_visite_id_presentation
     ON real_estate.visite(id_presentation);
 
-CREATE INDEX idx_visite_date
+CREATE INDEX IF NOT EXISTS idx_visite_date
     ON real_estate.visite(date_visite);
 
 
@@ -85,7 +86,7 @@ CREATE INDEX idx_visite_date
 -- AUDIT_LOG
 -- =============================================================================
 
-CREATE TABLE real_estate.audit_log (
+CREATE TABLE IF NOT EXISTS real_estate.audit_log (
     id_audit BIGINT GENERATED ALWAYS AS IDENTITY,
 
     date_evenement TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -124,17 +125,33 @@ CREATE TABLE real_estate.audit_log (
         )
 );
 
-CREATE INDEX idx_audit_log_date_evenement
+CREATE INDEX IF NOT EXISTS idx_audit_log_date_evenement
     ON real_estate.audit_log(date_evenement);
 
-CREATE INDEX idx_audit_log_table_name
+CREATE INDEX IF NOT EXISTS idx_audit_log_table_name
     ON real_estate.audit_log(table_name);
 
-CREATE INDEX idx_audit_log_record
+CREATE INDEX IF NOT EXISTS idx_audit_log_record
     ON real_estate.audit_log(
         schema_name,
         table_name,
         record_id
     );
+
+
+-- =============================================================================
+-- MIGRATION REGISTRY
+-- =============================================================================
+
+INSERT INTO migration_control.schema_version (
+    version,
+    description
+)
+VALUES (
+    '004',
+    'Add visite and audit_log to real_estate OLTP schema'
+)
+ON CONFLICT (version) DO NOTHING;
+
 
 COMMIT;

@@ -60,10 +60,12 @@ database:validate:
     # Migration 004 validation
     # -------------------------------------------------------------------------
 
-    - grep -q "CREATE TABLE real_estate.visite" database/migrations/004_add_visite_audit.sql
-    - grep -q "CREATE TABLE real_estate.audit_log" database/migrations/004_add_visite_audit.sql
+    - grep -q "CREATE TABLE IF NOT EXISTS real_estate.visite" database/migrations/004_add_visite_audit.sql
+    - grep -q "CREATE TABLE IF NOT EXISTS real_estate.audit_log" database/migrations/004_add_visite_audit.sql
     - grep -q "fk_visite_presentation" database/migrations/004_add_visite_audit.sql
     - grep -q "ck_audit_log_operation" database/migrations/004_add_visite_audit.sql
+    - grep -q "'004'" database/migrations/004_add_visite_audit.sql
+    - grep -q "migration_control.schema_version" database/migrations/004_add_visite_audit.sql
     - grep -q "^COMMIT;" database/migrations/004_add_visite_audit.sql
 
     # -------------------------------------------------------------------------
@@ -259,10 +261,10 @@ database:migrate-002:
 
 
 # =============================================================================
-# MIGRATION 003 - VISITE + AUDIT LOG
+# MIGRATION 004 - VISITE + AUDIT LOG
 # =============================================================================
 
-database:migrate-003:
+database:migrate-004:
   stage: database
 
   tags:
@@ -275,34 +277,41 @@ database:migrate-003:
     - kubectl -n real-estate get deploy real-estate-postgresql
 
     # -------------------------------------------------------------------------
-    # Check whether migration is already effectively installed.
-    #
-    # We deliberately check BOTH tables. If only one exists, the migration
-    # must NOT be silently considered complete.
+    # Check migration registry
     # -------------------------------------------------------------------------
 
     - |
-      MIGRATION_003_APPLIED="$(
+      MIGRATION_004_APPLIED="$(
         kubectl -n real-estate exec deploy/real-estate-postgresql -- \
           psql \
             -U real_estate_user \
             -d real_estate \
             -tAc \
             "SELECT CASE
-               WHEN to_regclass('real_estate.visite') IS NOT NULL
-                AND to_regclass('real_estate.audit_log') IS NOT NULL
+               WHEN EXISTS (
+                 SELECT 1
+                 FROM migration_control.schema_version
+                 WHERE version = '004'
+               )
                THEN 'yes'
                ELSE 'no'
-             END;"
+             END;" 2>/dev/null || true
       )"
 
-      if [ "$MIGRATION_003_APPLIED" = "yes" ]; then
-        echo "Migration 003 already applied - skipping safely."
+      if [ "$MIGRATION_004_APPLIED" = "yes" ]; then
+        echo "Migration 004 already applied - skipping safely."
         exit 0
       fi
 
     # -------------------------------------------------------------------------
     # Apply migration
+    #
+    # The migration is idempotent:
+    #   CREATE TABLE IF NOT EXISTS
+    #   CREATE INDEX IF NOT EXISTS
+    #
+    # This also repairs an installation where visite/audit_log exist
+    # physically but migration version 004 is not yet registered.
     # -------------------------------------------------------------------------
 
     - |
@@ -315,7 +324,7 @@ database:migrate-003:
           < database/migrations/004_add_visite_audit.sql
 
     # -------------------------------------------------------------------------
-    # Post-migration verification
+    # Verify physical objects
     # -------------------------------------------------------------------------
 
     - |
@@ -328,6 +337,25 @@ database:migrate-003:
             SELECT
               to_regclass('real_estate.visite') AS visite,
               to_regclass('real_estate.audit_log') AS audit_log;
+          "
+
+    # -------------------------------------------------------------------------
+    # Verify migration registry
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              version,
+              description,
+              applied_at
+            FROM migration_control.schema_version
+            WHERE version = '004';
           "
 
   rules:
