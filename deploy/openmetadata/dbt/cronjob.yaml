@@ -1,0 +1,151 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: real-estate-dbt-ingestion
+  namespace: openmetadata
+  labels:
+    app.kubernetes.io/component: ingestion
+    app.kubernetes.io/name: openmetadata
+    app.kubernetes.io/part-of: openmetadata
+
+spec:
+  schedule: "30 3 * * *"
+  suspend: true
+
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+
+      template:
+        metadata:
+          labels:
+            app: real-estate-dbt-ingestion
+
+        spec:
+          restartPolicy: Never
+
+          imagePullSecrets:
+            - name: gitlab-registry-auth
+
+          volumes:
+            - name: dbt-workspace
+              emptyDir: {}
+
+          initContainers:
+            - name: generate-dbt-artifacts
+              image: gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest
+              imagePullPolicy: Always
+
+              command:
+                - /bin/sh
+                - -c
+
+              args:
+                - |
+                  set -euo pipefail
+
+                  echo "Preparing Real Estate dbt project..."
+
+                  cp -R /app/pipelines/dbt /workspace/real-estate-dbt
+
+                  cp \
+                    /workspace/real-estate-dbt/profiles.yml.example \
+                    /workspace/real-estate-dbt/profiles.yml
+
+                  cd /workspace/real-estate-dbt
+
+                  echo "Running dbt models..."
+
+                  dbt run \
+                    --profiles-dir . \
+                    --project-dir .
+
+                  echo "Running dbt tests..."
+
+                  dbt test \
+                    --profiles-dir . \
+                    --project-dir .
+
+                  echo "Generating dbt documentation artifacts..."
+
+                  dbt docs generate \
+                    --profiles-dir . \
+                    --project-dir .
+
+                  echo "Generated dbt artifacts:"
+
+                  ls -lah /workspace/real-estate-dbt/target
+
+                  echo "Fixing workspace permissions..."
+
+                  chmod -R 777 /workspace/real-estate-dbt
+
+                  echo "dbt artifact generation completed."
+
+              env:
+                - name: POSTGRES_HOST
+                  value: real-estate-postgresql.real-estate.svc.cluster.local
+
+                - name: POSTGRES_PORT
+                  value: "5432"
+
+                - name: POSTGRES_USER
+                  value: real_estate_user
+
+                - name: POSTGRES_DB
+                  value: real_estate
+
+                - name: POSTGRES_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: openmetadata-ingestion-secrets
+                      key: REAL_ESTATE_POSTGRES_PASSWORD
+
+              volumeMounts:
+                - name: dbt-workspace
+                  mountPath: /workspace
+
+          containers:
+            - name: real-estate-dbt-ingestion
+              image: docker.getcollate.io/openmetadata/ingestion:1.12.11
+              imagePullPolicy: IfNotPresent
+
+              command:
+                - /bin/bash
+                - -c
+
+              args:
+                - |
+                  set -euo pipefail
+
+                  echo "Injecting OpenMetadata dbt configuration..."
+
+                  cat >> /workspace/real-estate-dbt/dbt_project.yml <<EOF
+
+                  vars:
+                    openmetadata_jwt_token: "{{ env_var('OM_JWT_TOKEN') }}"
+                    openmetadata_host_port: "http://openmetadata.openmetadata.svc.cluster.local:8585/api"
+                    openmetadata_service_name: "real-estate-postgresql"
+                  EOF
+
+                  echo "dbt artifacts available:"
+
+                  ls -lah /workspace/real-estate-dbt/target
+
+                  echo "Starting OpenMetadata dbt ingestion..."
+
+                  metadata ingest-dbt \
+                    -c /workspace/real-estate-dbt
+
+                  echo "OpenMetadata dbt ingestion completed."
+
+              envFrom:
+                - secretRef:
+                    name: openmetadata-ingestion-secrets
+
+              volumeMounts:
+                - name: dbt-workspace
+                  mountPath: /workspace

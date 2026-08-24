@@ -1,39 +1,68 @@
 openmetadata:publish-gitops:
   stage: deploy
+
   tags:
     - shell
 
   needs:
-    - job: warehouse:validate
+    - job: database:validate
       artifacts: false
 
   script:
+    # ---------------------------------------------------------
+    # 1. Validate required tools and source files
+    # ---------------------------------------------------------
+
     - "git --version"
     - "kubectl version --client"
 
     - "test -d deploy/openmetadata"
+
+    # PostgreSQL metadata ingestion / profiler
     - "test -f deploy/openmetadata/configmap.yaml"
     - "test -f deploy/openmetadata/cronjob.yaml"
     - "test -f deploy/openmetadata/kustomization.yaml"
 
-    - "kubectl -n openmetadata get secret lab-gitops-git-credentials"
+    # dbt -> OpenMetadata ingestion
+    - "test -f deploy/openmetadata/dbt/cronjob.yaml"
+    - "test -f deploy/openmetadata/dbt/kustomization.yaml"
+
+    # ---------------------------------------------------------
+    # 2. Verify GitOps credentials secret exists
+    # ---------------------------------------------------------
+
+    - |
+      kubectl -n openmetadata get secret \
+        lab-gitops-git-credentials
+
+    # ---------------------------------------------------------
+    # 3. Prepare temporary workspace
+    # ---------------------------------------------------------
 
     - "rm -rf /tmp/chasse-lab-gitops"
     - "rm -f /tmp/.netrc"
 
+    # ---------------------------------------------------------
+    # 4. Load Git credentials from Kubernetes Secret
+    # ---------------------------------------------------------
+
     - |
       export LAB_GITOPS_GIT_USER="$(
-        kubectl -n openmetadata get secret lab-gitops-git-credentials \
-          -o jsonpath='{.data.GIT_USERNAME}' | base64 -d
+        kubectl -n openmetadata get secret \
+          lab-gitops-git-credentials \
+          -o jsonpath='{.data.GIT_USERNAME}' \
+        | base64 -d
       )"
 
       export LAB_GITOPS_GIT_TOKEN="$(
-        kubectl -n openmetadata get secret lab-gitops-git-credentials \
-          -o jsonpath='{.data.GIT_TOKEN}' | base64 -d
+        kubectl -n openmetadata get secret \
+          lab-gitops-git-credentials \
+          -o jsonpath='{.data.GIT_TOKEN}' \
+        | base64 -d
       )"
 
-      test -n "$LAB_GITOPS_GIT_USER"
-      test -n "$LAB_GITOPS_GIT_TOKEN"
+      test -n "${LAB_GITOPS_GIT_USER}"
+      test -n "${LAB_GITOPS_GIT_TOKEN}"
 
       cat > /tmp/.netrc <<EOF
       machine gitlab.local
@@ -43,16 +72,29 @@ openmetadata:publish-gitops:
 
       chmod 600 /tmp/.netrc
 
+    # ---------------------------------------------------------
+    # 5. Clone lab-gitops
+    # ---------------------------------------------------------
+
     - |
+      echo "Cloning lab-gitops repository..."
+
       HOME=/tmp \
       GIT_SSL_NO_VERIFY=true \
       git clone \
         "https://gitlab.local/root/lab-gitops.git" \
         /tmp/chasse-lab-gitops
 
-    - "mkdir -p /tmp/chasse-lab-gitops/workloads/openmetadata/ingestions/real-estate-postgresql"
+    # ---------------------------------------------------------
+    # 6. Publish PostgreSQL ingestion / profiler manifests
+    # ---------------------------------------------------------
 
     - |
+      echo "Publishing Real Estate PostgreSQL OpenMetadata manifests..."
+
+      mkdir -p \
+        /tmp/chasse-lab-gitops/workloads/openmetadata/ingestions/real-estate-postgresql
+
       cp \
         deploy/openmetadata/configmap.yaml \
         /tmp/chasse-lab-gitops/workloads/openmetadata/ingestions/real-estate-postgresql/configmap.yaml
@@ -65,10 +107,37 @@ openmetadata:publish-gitops:
         deploy/openmetadata/kustomization.yaml \
         /tmp/chasse-lab-gitops/workloads/openmetadata/ingestions/real-estate-postgresql/kustomization.yaml
 
-    - "cd /tmp/chasse-lab-gitops"
+    # ---------------------------------------------------------
+    # 7. Publish dbt ingestion manifests
+    # ---------------------------------------------------------
 
     - |
-      if ! grep -qE '^[[:space:]]*-[[:space:]]*real-estate-postgresql/?[[:space:]]*$' \
+      echo "Publishing Real Estate dbt OpenMetadata manifests..."
+
+      mkdir -p \
+        /tmp/chasse-lab-gitops/workloads/openmetadata/ingestions/real-estate-dbt
+
+      cp \
+        deploy/openmetadata/dbt/cronjob.yaml \
+        /tmp/chasse-lab-gitops/workloads/openmetadata/ingestions/real-estate-dbt/cronjob.yaml
+
+      cp \
+        deploy/openmetadata/dbt/kustomization.yaml \
+        /tmp/chasse-lab-gitops/workloads/openmetadata/ingestions/real-estate-dbt/kustomization.yaml
+
+    # ---------------------------------------------------------
+    # 8. Enter GitOps repository
+    # ---------------------------------------------------------
+
+    - "cd /tmp/chasse-lab-gitops"
+
+    # ---------------------------------------------------------
+    # 9. Register PostgreSQL bundle in parent kustomization
+    # ---------------------------------------------------------
+
+    - |
+      if ! grep -qE \
+        '^[[:space:]]*-[[:space:]]*real-estate-postgresql/?[[:space:]]*$' \
         workloads/openmetadata/ingestions/kustomization.yaml; then
 
         echo "Adding real-estate-postgresql to parent OpenMetadata kustomization."
@@ -79,21 +148,76 @@ openmetadata:publish-gitops:
         echo "real-estate-postgresql already present in parent kustomization."
       fi
 
+    # ---------------------------------------------------------
+    # 10. Register dbt bundle in parent kustomization
+    # ---------------------------------------------------------
+
+    - |
+      if ! grep -qE \
+        '^[[:space:]]*-[[:space:]]*real-estate-dbt/?[[:space:]]*$' \
+        workloads/openmetadata/ingestions/kustomization.yaml; then
+
+        echo "Adding real-estate-dbt to parent OpenMetadata kustomization."
+
+        printf '\n  - real-estate-dbt\n' \
+          >> workloads/openmetadata/ingestions/kustomization.yaml
+      else
+        echo "real-estate-dbt already present in parent kustomization."
+      fi
+
+    # ---------------------------------------------------------
+    # 11. Show resulting GitOps structure
+    # ---------------------------------------------------------
+
+    - |
+      echo "OpenMetadata GitOps files:"
+
+      find workloads/openmetadata/ingestions \
+        -maxdepth 2 \
+        -type f \
+        | sort
+
+    - |
+      echo "Parent OpenMetadata kustomization:"
+
+      cat workloads/openmetadata/ingestions/kustomization.yaml
+
+    # ---------------------------------------------------------
+    # 12. Configure Git
+    # ---------------------------------------------------------
+
     - 'git config user.name "chasse-immobiliere-ci"'
     - 'git config user.email "gitlab-ci@lab.local"'
 
-    - "git add workloads/openmetadata/ingestions/"
+    # ---------------------------------------------------------
+    # 13. Stage changes
+    # ---------------------------------------------------------
+
+    - "git add workloads/openmetadata/ingestions"
+
+    - |
+      echo "Git status:"
+      git status --short
+
+    # ---------------------------------------------------------
+    # 14. Skip safely when nothing changed
+    # ---------------------------------------------------------
 
     - |
       if git diff --cached --quiet; then
         echo "No OpenMetadata GitOps changes to publish."
-        rm -f /tmp/.netrc
         exit 0
       fi
 
-    - "git status --short"
+    # ---------------------------------------------------------
+    # 15. Commit GitOps change
+    # ---------------------------------------------------------
 
-    - 'git commit -m "deploy: publish real-estate OpenMetadata ingestions"'
+    - 'git commit -m "deploy: publish real-estate OpenMetadata configuration"'
+
+    # ---------------------------------------------------------
+    # 16. Push to lab-gitops
+    # ---------------------------------------------------------
 
     - |
       HOME=/tmp \
@@ -101,6 +225,10 @@ openmetadata:publish-gitops:
       git push origin main
 
   after_script:
+    # ---------------------------------------------------------
+    # Never leave credentials/workspace behind on shell runner
+    # ---------------------------------------------------------
+
     - "rm -f /tmp/.netrc"
     - "rm -rf /tmp/chasse-lab-gitops"
 
@@ -109,4 +237,3 @@ openmetadata:publish-gitops:
       changes:
         - deploy/openmetadata/**/*
         - .gitlab/ci/openmetadata.yml
-        - .gitlab-ci.yml
