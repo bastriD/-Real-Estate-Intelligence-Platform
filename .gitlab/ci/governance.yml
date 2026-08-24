@@ -1,4 +1,36 @@
-governance_build:
+governance:validate:
+  stage: validate
+
+  image: python:3.12-slim
+
+  before_script:
+    - python --version
+    - pip install --no-cache-dir -r governance/requirements.txt
+
+  script:
+    - echo "Validating Governance-as-Code files..."
+
+    # Validate Python syntax
+    - python -m py_compile governance/scripts/main.py
+
+    # Validate all JSON governance definitions
+    - python -m json.tool governance/docs/governance-config.json > /dev/null
+    - python -m json.tool governance/glossary/real_estate_glossary.json > /dev/null
+    - python -m json.tool governance/ownership/real_estate_ownership.json > /dev/null
+    - python -m json.tool governance/quality/real_estate_quality.json > /dev/null
+    - python -m json.tool governance/tagging/real_estate_tags.json > /dev/null
+
+    - echo "Governance validation completed successfully."
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - governance/**/*
+        - .gitlab/ci/governance.yml
+        - .gitlab-ci.yml
+
+
+governance:build-image:
   stage: deploy
 
   image: docker:27.3.1
@@ -10,16 +42,30 @@ governance_build:
     DOCKER_TLS_CERTDIR: "/certs"
     GOVERNANCE_IMAGE: "$CI_REGISTRY_IMAGE/real-estate-governance"
 
+  needs:
+    - job: governance:validate
+
   before_script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
 
   script:
+    - echo "Building Real Estate Governance image..."
     - docker build -f governance/Dockerfile -t "$GOVERNANCE_IMAGE:$CI_COMMIT_SHORT_SHA" governance
+
+    - echo "Tagging latest image..."
     - docker tag "$GOVERNANCE_IMAGE:$CI_COMMIT_SHORT_SHA" "$GOVERNANCE_IMAGE:latest"
+
+    - echo "Pushing commit image..."
     - docker push "$GOVERNANCE_IMAGE:$CI_COMMIT_SHORT_SHA"
+
+    - echo "Pushing latest image..."
     - docker push "$GOVERNANCE_IMAGE:latest"
 
+    - echo "Governance image published successfully."
+
   rules:
-    - changes:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
         - governance/**/*
         - .gitlab/ci/governance.yml
+        - .gitlab-ci.yml
