@@ -1,35 +1,89 @@
 database:validate:
   stage: validate
+
   tags:
     - docker
+
   image: postgres:16
 
   script:
+    # -------------------------------------------------------------------------
+    # Migration files
+    # -------------------------------------------------------------------------
+
     - test -f database/migrations/001_initial_schema.sql
     - test -f database/migrations/002_migrate_legacy_data.sql
+    - test -f database/migrations/003_add_visite_audit.sql
+
+    # -------------------------------------------------------------------------
+    # Database tests
+    # -------------------------------------------------------------------------
+
     - test -f database/tests/001_schema_structure.sql
     - test -f database/tests/002_legacy_migration.sql
     - test -f database/tests/003_oltp_constraints.sql
+    - test -f database/tests/008_visite_audit.sql
+
+    # -------------------------------------------------------------------------
+    # Legacy / OLTP / seed files
+    # -------------------------------------------------------------------------
+
     - test -f database/legacy/PgSQL.sql
+
     - test -f database/oltp/001_operational_queries.sql
     - test -f database/oltp/002_explain_analyze.sql
     - test -f database/oltp/003_raw_ingestion_schema.sql
     - test -f database/oltp/004_staging_schema.sql
+
     - test -f database/seeds/load_raw_generated_data.py
+
     - test -f requirements.txt
+
+    # -------------------------------------------------------------------------
+    # Migration 001 validation
+    # -------------------------------------------------------------------------
 
     - grep -q "CREATE SCHEMA IF NOT EXISTS real_estate;" database/migrations/001_initial_schema.sql
     - grep -q "CREATE TABLE real_estate.client" database/migrations/001_initial_schema.sql
     - grep -q "CREATE TABLE real_estate.paiement" database/migrations/001_initial_schema.sql
+    - grep -q "^COMMIT;" database/migrations/001_initial_schema.sql
+
+    # -------------------------------------------------------------------------
+    # Migration 002 validation
+    # -------------------------------------------------------------------------
 
     - grep -q "CREATE SCHEMA IF NOT EXISTS migration_control;" database/migrations/002_migrate_legacy_data.sql
     - grep -q "Migration 002" database/migrations/002_migrate_legacy_data.sql
-
-    - grep -q '^DROP SCHEMA IF EXISTS "Fil_Rouge_Depart" CASCADE;' database/legacy/PgSQL.sql
-    - grep -q "^COMMIT;" database/migrations/001_initial_schema.sql
     - grep -q "^COMMIT;" database/migrations/002_migrate_legacy_data.sql
 
+    # -------------------------------------------------------------------------
+    # Migration 003 validation
+    # -------------------------------------------------------------------------
+
+    - grep -q "CREATE TABLE real_estate.visite" database/migrations/003_add_visite_audit.sql
+    - grep -q "CREATE TABLE real_estate.audit_log" database/migrations/003_add_visite_audit.sql
+    - grep -q "fk_visite_presentation" database/migrations/003_add_visite_audit.sql
+    - grep -q "ck_audit_log_operation" database/migrations/003_add_visite_audit.sql
+    - grep -q "^COMMIT;" database/migrations/003_add_visite_audit.sql
+
+    # -------------------------------------------------------------------------
+    # Legacy fixture validation
+    # -------------------------------------------------------------------------
+
+    - grep -q '^DROP SCHEMA IF EXISTS "Fil_Rouge_Depart" CASCADE;' database/legacy/PgSQL.sql
+
+    # -------------------------------------------------------------------------
+    # Test validation
+    # -------------------------------------------------------------------------
+
     - grep -q "OLTP constraints enforced successfully" database/tests/003_oltp_constraints.sql
+    - grep -q "real_estate.visite" database/tests/008_visite_audit.sql
+    - grep -q "real_estate.audit_log" database/tests/008_visite_audit.sql
+
+    # -------------------------------------------------------------------------
+    # OLTP validation
+    # -------------------------------------------------------------------------
+
     - grep -q "Current workload by chasseur" database/oltp/001_operational_queries.sql
     - grep -q "EXPLAIN (" database/oltp/002_explain_analyze.sql
     - grep -q "CREATE SCHEMA IF NOT EXISTS raw;" database/oltp/003_raw_ingestion_schema.sql
@@ -43,8 +97,14 @@ database:validate:
         - .gitlab-ci.yml
         - .gitlab/ci/database.yml
 
+
+# =============================================================================
+# MIGRATION 001
+# =============================================================================
+
 database:migrate-001:
   stage: database
+
   tags:
     - shell
 
@@ -90,8 +150,13 @@ database:migrate-001:
       allow_failure: false
 
 
+# =============================================================================
+# LOAD LEGACY DATABASE
+# =============================================================================
+
 database:load-legacy:
   stage: database
+
   tags:
     - shell
 
@@ -139,8 +204,13 @@ database:load-legacy:
       allow_failure: false
 
 
+# =============================================================================
+# MIGRATION 002
+# =============================================================================
+
 database:migrate-002:
   stage: database
+
   tags:
     - shell
 
@@ -188,8 +258,91 @@ database:migrate-002:
       allow_failure: false
 
 
+# =============================================================================
+# MIGRATION 003 - VISITE + AUDIT LOG
+# =============================================================================
+
+database:migrate-003:
+  stage: database
+
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl -n real-estate get deploy real-estate-postgresql
+
+    # -------------------------------------------------------------------------
+    # Check whether migration is already effectively installed.
+    #
+    # We deliberately check BOTH tables. If only one exists, the migration
+    # must NOT be silently considered complete.
+    # -------------------------------------------------------------------------
+
+    - |
+      MIGRATION_003_APPLIED="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT CASE
+               WHEN to_regclass('real_estate.visite') IS NOT NULL
+                AND to_regclass('real_estate.audit_log') IS NOT NULL
+               THEN 'yes'
+               ELSE 'no'
+             END;"
+      )"
+
+      if [ "$MIGRATION_003_APPLIED" = "yes" ]; then
+        echo "Migration 003 already applied - skipping safely."
+        exit 0
+      fi
+
+    # -------------------------------------------------------------------------
+    # Apply migration
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/migrations/003_add_visite_audit.sql
+
+    # -------------------------------------------------------------------------
+    # Post-migration verification
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              to_regclass('real_estate.visite') AS visite,
+              to_regclass('real_estate.audit_log') AS audit_log;
+          "
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
+
+
+# =============================================================================
+# TEST BASE SCHEMA
+# =============================================================================
+
 database:test-schema:
   stage: database
+
   tags:
     - shell
 
@@ -214,8 +367,13 @@ database:test-schema:
       allow_failure: false
 
 
+# =============================================================================
+# TEST LEGACY MIGRATION
+# =============================================================================
+
 database:test-legacy-migration:
   stage: database
+
   tags:
     - shell
 
@@ -240,8 +398,13 @@ database:test-legacy-migration:
       allow_failure: false
 
 
+# =============================================================================
+# TEST OLTP CONSTRAINTS
+# =============================================================================
+
 database:test-oltp-constraints:
   stage: database
+
   tags:
     - shell
 
@@ -265,8 +428,45 @@ database:test-oltp-constraints:
       when: manual
       allow_failure: false
 
+
+# =============================================================================
+# TEST VISITE + AUDIT LOG
+# =============================================================================
+
+database:test-visite-audit:
+  stage: database
+
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl -n real-estate get deploy real-estate-postgresql
+
+    - |
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/tests/008_visite_audit.sql
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
+
+
+# =============================================================================
+# TEST OPERATIONAL QUERIES
+# =============================================================================
+
 database:test-oltp-queries:
   stage: database
+
   tags:
     - shell
 
@@ -290,8 +490,14 @@ database:test-oltp-queries:
       when: manual
       allow_failure: false
 
+
+# =============================================================================
+# EXPLAIN ANALYZE
+# =============================================================================
+
 database:explain-oltp:
   stage: database
+
   tags:
     - shell
 
@@ -315,8 +521,14 @@ database:explain-oltp:
       when: manual
       allow_failure: false
 
+
+# =============================================================================
+# CREATE RAW SCHEMA
+# =============================================================================
+
 database:create-raw-schema:
   stage: database
+
   tags:
     - shell
 
@@ -340,8 +552,14 @@ database:create-raw-schema:
       when: manual
       allow_failure: false
 
+
+# =============================================================================
+# LOAD GENERATED RAW DATA
+# =============================================================================
+
 database:load-raw-generated:
   stage: database
+
   tags:
     - shell
 
@@ -417,8 +635,14 @@ database:load-raw-generated:
       when: manual
       allow_failure: false
 
+
+# =============================================================================
+# CREATE STAGING SCHEMA
+# =============================================================================
+
 database:create-staging-schema:
   stage: database
+
   tags:
     - shell
 
