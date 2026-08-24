@@ -37,7 +37,9 @@ CONFIG_FILE = BASE_DIR / "docs" / "governance-config.json"
 
 def load_json(path: Path) -> dict[str, Any]:
     if not path.exists():
-        raise FileNotFoundError(f"Configuration file not found: {path}")
+        raise FileNotFoundError(
+            f"Configuration file not found: {path}"
+        )
 
     with path.open("r", encoding="utf-8") as file:
         return json.load(file)
@@ -63,7 +65,12 @@ def normalize_base_url(url: str) -> str:
 # =============================================================================
 
 class OpenMetadataClient:
-    def __init__(self, base_url: str, token: str) -> None:
+    def __init__(
+        self,
+        base_url: str,
+        token: str,
+    ) -> None:
+
         self.base_url = normalize_base_url(base_url)
 
         self.session = requests.Session()
@@ -76,7 +83,11 @@ class OpenMetadataClient:
             }
         )
 
-    def url(self, endpoint: str) -> str:
+    def url(
+        self,
+        endpoint: str,
+    ) -> str:
+
         return f"{self.base_url}/{endpoint.lstrip('/')}"
 
     def request(
@@ -114,7 +125,11 @@ class OpenMetadataClient:
                 endpoint,
                 response.status_code,
             )
-            logger.error(response.text)
+
+            logger.error(
+                response.text
+            )
+
             response.raise_for_status()
 
         return response
@@ -126,6 +141,7 @@ class OpenMetadataClient:
         params: dict[str, Any] | None = None,
         allow_status: tuple[int, ...] = (),
     ) -> requests.Response:
+
         return self.request(
             "GET",
             endpoint,
@@ -134,19 +150,16 @@ class OpenMetadataClient:
         )
 
     def put(
-    self,
-    endpoint: str,
-    payload: Any,
-    *,
-    params: dict[str, Any] | None = None,
-) -> requests.Response:
+        self,
+        endpoint: str,
+        payload: Any,
+    ) -> requests.Response:
 
-     return self.request(
-        "PUT",
-        endpoint,
-        payload=payload,
-        params=params,
-    )
+        return self.request(
+            "PUT",
+            endpoint,
+            payload=payload,
+        )
 
     def post(
         self,
@@ -155,6 +168,7 @@ class OpenMetadataClient:
         *,
         allow_status: tuple[int, ...] = (),
     ) -> requests.Response:
+
         return self.request(
             "POST",
             endpoint,
@@ -167,6 +181,7 @@ class OpenMetadataClient:
         endpoint: str,
         operations: list[dict[str, Any]],
     ) -> requests.Response:
+
         return self.request(
             "PATCH",
             endpoint,
@@ -186,7 +201,10 @@ class OpenMetadataClient:
         fields: str | None = None,
     ) -> dict[str, Any] | None:
 
-        encoded_fqn = quote(fqn, safe="")
+        encoded_fqn = quote(
+            fqn,
+            safe="",
+        )
 
         params = {}
 
@@ -211,13 +229,8 @@ class OpenMetadataClient:
     def upsert_domain(
         self,
         domain: dict[str, Any],
-        parent_id: str | None = None,
+        parent_fqn: str | None = None,
     ) -> dict[str, Any]:
-
-        domain_type = domain.get(
-            "domain_type",
-            "Aggregate",
-        )
 
         payload = {
             "name": domain["name"],
@@ -226,20 +239,18 @@ class OpenMetadataClient:
                 domain["name"],
             ),
             "description": domain["description"],
+            "domainType": domain.get(
+                "domain_type",
+                "Aggregate",
+            ),
         }
 
-        if parent_id:
-            payload["parent"] = {
-                "id": parent_id,
-                "type": "domain",
-            }
+        if parent_fqn:
+            payload["parent"] = parent_fqn
 
         response = self.put(
             "/v1/domains",
             payload,
-            params={
-                "domainType": domain_type,
-            },
         )
 
         entity = response.json()
@@ -272,6 +283,7 @@ class OpenMetadataClient:
                 "Domain assignment target not found: %s",
                 fqn,
             )
+
             return
 
         domain = self.get_by_name(
@@ -284,20 +296,27 @@ class OpenMetadataClient:
                 f"Domain does not exist: {domain_name}"
             )
 
-        current_domains = entity.get("domains") or []
+        current_domains = entity.get(
+            "domains"
+        ) or []
 
-        if any(
-            item.get("id") == domain["id"]
-            for item in current_domains
-        ):
+        domain_already_present = any(
+            current_domain.get("id") == domain["id"]
+            for current_domain in current_domains
+        )
+
+        if domain_already_present:
             logger.info(
                 "Domain already assigned: %s -> %s",
                 fqn,
                 domain_name,
             )
+
             return
 
-        desired_domains = list(current_domains)
+        desired_domains = list(
+            current_domains
+        )
 
         desired_domains.append(
             {
@@ -306,7 +325,11 @@ class OpenMetadataClient:
             }
         )
 
-        operation = "replace" if current_domains else "add"
+        operation = (
+            "replace"
+            if current_domains
+            else "add"
+        )
 
         patch = [
             {
@@ -331,11 +354,16 @@ class OpenMetadataClient:
     # Glossary
     # =========================================================================
 
-    def upsert_glossary(self, glossary: dict[str, Any]) -> dict[str, Any]:
+    def upsert_glossary(
+        self,
+        glossary: dict[str, Any],
+    ) -> dict[str, Any]:
 
         payload = {
             "name": glossary["name"],
-            "displayName": glossary.get("display_name"),
+            "displayName": glossary.get(
+                "display_name"
+            ),
             "description": glossary["description"],
             "mutuallyExclusive": glossary.get(
                 "mutually_exclusive",
@@ -352,7 +380,10 @@ class OpenMetadataClient:
 
         logger.info(
             "Glossary applied: %s",
-            entity.get("fullyQualifiedName", glossary["name"]),
+            entity.get(
+                "fullyQualifiedName",
+                glossary["name"],
+            ),
         )
 
         return entity
@@ -373,7 +404,9 @@ class OpenMetadataClient:
             "glossary": glossary_name,
         }
 
-        synonyms = term.get("synonyms")
+        synonyms = term.get(
+            "synonyms"
+        )
 
         if synonyms:
             payload["synonyms"] = synonyms
@@ -486,6 +519,7 @@ class OpenMetadataClient:
                 "Team already exists: %s",
                 team["name"],
             )
+
             return existing
 
         payload = {
@@ -508,6 +542,7 @@ class OpenMetadataClient:
         )
 
         if response.status_code == 409:
+
             existing = self.get_by_name(
                 "/v1/teams",
                 team["name"],
@@ -517,7 +552,8 @@ class OpenMetadataClient:
                 return existing
 
             raise RuntimeError(
-                f"Team conflict but team cannot be retrieved: {team['name']}"
+                "Team conflict but team cannot "
+                f"be retrieved: {team['name']}"
             )
 
         entity = response.json()
@@ -551,6 +587,7 @@ class OpenMetadataClient:
                 "Ownership target not found: %s",
                 fqn,
             )
+
             return
 
         team = self.get_by_name(
@@ -568,7 +605,9 @@ class OpenMetadataClient:
             "type": "team",
         }
 
-        current_owners = entity.get("owners") or []
+        current_owners = entity.get(
+            "owners"
+        ) or []
 
         owner_already_present = any(
             owner.get("id") == team["id"]
@@ -581,15 +620,22 @@ class OpenMetadataClient:
                 fqn,
                 team_name,
             )
+
             return
 
-        operation = "replace" if current_owners else "add"
+        operation = (
+            "replace"
+            if current_owners
+            else "add"
+        )
 
         patch = [
             {
                 "op": operation,
                 "path": "/owners",
-                "value": [desired_owner],
+                "value": [
+                    desired_owner
+                ],
             }
         ]
 
@@ -625,9 +671,12 @@ class OpenMetadataClient:
                 "Tagging target not found: %s",
                 fqn,
             )
+
             return
 
-        existing_tags = entity.get("tags") or []
+        existing_tags = entity.get(
+            "tags"
+        ) or []
 
         existing_fqns = {
             tag.get("tagFQN")
@@ -635,7 +684,10 @@ class OpenMetadataClient:
             if tag.get("tagFQN")
         }
 
-        new_tags = list(existing_tags)
+        new_tags = list(
+            existing_tags
+        )
+
         changed = False
 
         for tag_fqn in required_tags:
@@ -651,7 +703,10 @@ class OpenMetadataClient:
                 }
             )
 
-            existing_fqns.add(tag_fqn)
+            existing_fqns.add(
+                tag_fqn
+            )
+
             changed = True
 
         if not changed:
@@ -659,9 +714,14 @@ class OpenMetadataClient:
                 "Required tags already present: %s",
                 fqn,
             )
+
             return
 
-        operation = "replace" if existing_tags else "add"
+        operation = (
+            "replace"
+            if existing_tags
+            else "add"
+        )
 
         patch = [
             {
@@ -692,6 +752,7 @@ class GovernanceEngine:
         config: dict[str, Any],
         client: OpenMetadataClient,
     ) -> None:
+
         self.config = config
         self.client = client
 
@@ -699,7 +760,9 @@ class GovernanceEngine:
     # Connectivity
     # =========================================================================
 
-    def validate_connection(self) -> None:
+    def validate_connection(
+        self,
+    ) -> None:
 
         logger.info(
             "Checking OpenMetadata connectivity..."
@@ -711,7 +774,10 @@ class GovernanceEngine:
 
         version_payload = response.json()
 
-        if isinstance(version_payload, dict):
+        if isinstance(
+            version_payload,
+            dict,
+        ):
             version = (
                 version_payload.get("version")
                 or version_payload.get("versionString")
@@ -729,46 +795,91 @@ class GovernanceEngine:
     # Domains
     # =========================================================================
 
-    def apply_domains(self) -> None:
+    def apply_domains(
+        self,
+    ) -> None:
 
-        governance_config = self.config["governance"].get(
-            "domains",
-            {},
+        governance_config = (
+            self.config["governance"].get(
+                "domains",
+                {},
+            )
         )
 
-        if not governance_config.get("enabled", False):
-            logger.info("Domain governance disabled")
+        if not governance_config.get(
+            "enabled",
+            False,
+        ):
+            logger.info(
+                "Domain governance disabled"
+            )
+
             return
 
-        created_domains: dict[str, dict[str, Any]] = {}
+        created_domains: dict[
+            str,
+            dict[str, Any],
+        ] = {}
 
-        for relative_path in governance_config.get("files", []):
+        for relative_path in governance_config.get(
+            "files",
+            [],
+        ):
 
-            path = BASE_DIR / relative_path
-            data = load_json(path)
+            path = (
+                BASE_DIR
+                / relative_path
+            )
 
-            domains = data.get("domains", [])
+            data = load_json(
+                path
+            )
 
-            # First pass: root domains
+            domains = data.get(
+                "domains",
+                [],
+            )
+
+            # -----------------------------------------------------------------
+            # First pass:
+            # Create root domains first.
+            # -----------------------------------------------------------------
+
             for domain in domains:
-                if domain.get("parent"):
+
+                if domain.get(
+                    "parent"
+                ):
                     continue
 
-                entity = self.client.upsert_domain(
-                    domain
+                entity = (
+                    self.client.upsert_domain(
+                        domain
+                    )
                 )
 
-                created_domains[domain["name"]] = entity
+                created_domains[
+                    domain["name"]
+                ] = entity
 
-            # Second pass: child domains
+            # -----------------------------------------------------------------
+            # Second pass:
+            # Create child domains after their parent exists.
+            # -----------------------------------------------------------------
+
             for domain in domains:
-                parent_name = domain.get("parent")
+
+                parent_name = domain.get(
+                    "parent"
+                )
 
                 if not parent_name:
                     continue
 
                 parent = (
-                    created_domains.get(parent_name)
+                    created_domains.get(
+                        parent_name
+                    )
                     or self.client.get_by_name(
                         "/v1/domains",
                         parent_name,
@@ -777,42 +888,81 @@ class GovernanceEngine:
 
                 if not parent:
                     raise RuntimeError(
-                        f"Parent domain does not exist: {parent_name}"
+                        "Parent domain does not exist: "
+                        f"{parent_name}"
                     )
 
-                entity = self.client.upsert_domain(
-                    domain,
-                    parent_id=parent["id"],
+                parent_fqn = parent.get(
+                    "fullyQualifiedName"
                 )
 
-                created_domains[domain["name"]] = entity
+                if not parent_fqn:
+                    raise RuntimeError(
+                        "Parent domain does not expose "
+                        f"a fullyQualifiedName: {parent_name}"
+                    )
 
-            # Assign domains to schemas/entities
+                entity = (
+                    self.client.upsert_domain(
+                        domain,
+                        parent_fqn=parent_fqn,
+                    )
+                )
+
+                created_domains[
+                    domain["name"]
+                ] = entity
+
+            # -----------------------------------------------------------------
+            # Third pass:
+            # Assign domains to OpenMetadata entities.
+            # -----------------------------------------------------------------
+
             for assignment in data.get(
                 "assignments",
                 [],
             ):
 
-                domain_name = assignment["domain"]
-                entity_type = assignment["entity_type"]
+                domain_name = assignment[
+                    "domain"
+                ]
+
+                entity_type = assignment[
+                    "entity_type"
+                ]
 
                 if entity_type == "databaseSchema":
-                    endpoint = "/v1/databaseSchemas"
+
+                    endpoint = (
+                        "/v1/databaseSchemas"
+                    )
 
                 elif entity_type == "table":
-                    endpoint = "/v1/tables"
+
+                    endpoint = (
+                        "/v1/tables"
+                    )
 
                 elif entity_type == "database":
-                    endpoint = "/v1/databases"
+
+                    endpoint = (
+                        "/v1/databases"
+                    )
 
                 else:
                     logger.warning(
-                        "Unsupported domain assignment entity type: %s",
+                        "Unsupported domain assignment "
+                        "entity type: %s",
                         entity_type,
                     )
+
                     continue
 
-                for target in assignment.get("targets", []):
+                for target in assignment.get(
+                    "targets",
+                    [],
+                ):
+
                     self.client.assign_domain_to_entity(
                         endpoint,
                         target,
@@ -827,21 +977,50 @@ class GovernanceEngine:
     # Glossary
     # =========================================================================
 
-    def apply_glossary(self) -> None:
+    def apply_glossary(
+        self,
+    ) -> None:
 
-        governance_config = self.config["governance"]["glossary"]
+        governance_config = (
+            self.config[
+                "governance"
+            ][
+                "glossary"
+            ]
+        )
 
-        if not governance_config.get("enabled", False):
-            logger.info("Glossary governance disabled")
+        if not governance_config.get(
+            "enabled",
+            False,
+        ):
+            logger.info(
+                "Glossary governance disabled"
+            )
+
             return
 
-        path = BASE_DIR / governance_config["file"]
-        data = load_json(path)
-        glossary = data["glossary"]
+        path = (
+            BASE_DIR
+            / governance_config["file"]
+        )
 
-        self.client.upsert_glossary(glossary)
+        data = load_json(
+            path
+        )
 
-        for term in data.get("terms", []):
+        glossary = data[
+            "glossary"
+        ]
+
+        self.client.upsert_glossary(
+            glossary
+        )
+
+        for term in data.get(
+            "terms",
+            [],
+        ):
+
             self.client.upsert_glossary_term(
                 glossary["name"],
                 term,
@@ -849,28 +1028,56 @@ class GovernanceEngine:
 
         logger.info(
             "Glossary governance completed: %s terms",
-            len(data.get("terms", [])),
+            len(
+                data.get(
+                    "terms",
+                    [],
+                )
+            ),
         )
 
     # =========================================================================
     # Classifications
     # =========================================================================
 
-    def apply_classifications(self) -> None:
+    def apply_classifications(
+        self,
+    ) -> None:
 
-        governance_config = self.config["governance"]["classification"]
+        governance_config = (
+            self.config[
+                "governance"
+            ][
+                "classification"
+            ]
+        )
 
-        if not governance_config.get("enabled", False):
-            logger.info("Classification governance disabled")
+        if not governance_config.get(
+            "enabled",
+            False,
+        ):
+            logger.info(
+                "Classification governance disabled"
+            )
+
             return
 
         classification_count = 0
         tag_count = 0
 
-        for relative_path in governance_config.get("files", []):
+        for relative_path in governance_config.get(
+            "files",
+            [],
+        ):
 
-            path = BASE_DIR / relative_path
-            data = load_json(path)
+            path = (
+                BASE_DIR
+                / relative_path
+            )
+
+            data = load_json(
+                path
+            )
 
             for classification in data.get(
                 "classifications",
@@ -906,44 +1113,89 @@ class GovernanceEngine:
     # Ownership
     # =========================================================================
 
-    def apply_ownership(self) -> None:
+    def apply_ownership(
+        self,
+    ) -> None:
 
-        governance_config = self.config["governance"]["ownership"]
+        governance_config = (
+            self.config[
+                "governance"
+            ][
+                "ownership"
+            ]
+        )
 
-        if not governance_config.get("enabled", False):
-            logger.info("Ownership governance disabled")
+        if not governance_config.get(
+            "enabled",
+            False,
+        ):
+            logger.info(
+                "Ownership governance disabled"
+            )
+
             return
 
-        for relative_path in governance_config.get("files", []):
+        for relative_path in governance_config.get(
+            "files",
+            [],
+        ):
 
-            path = BASE_DIR / relative_path
-            data = load_json(path)
+            path = (
+                BASE_DIR
+                / relative_path
+            )
 
-            for team in data.get("teams", []):
-                self.client.ensure_team(team)
+            data = load_json(
+                path
+            )
+
+            for team in data.get(
+                "teams",
+                [],
+            ):
+
+                self.client.ensure_team(
+                    team
+                )
 
             for rule in data.get(
                 "ownership_rules",
                 [],
             ):
 
-                owner = rule["owner"]
-                entity_type = rule["entity_type"]
+                owner = rule[
+                    "owner"
+                ]
+
+                entity_type = rule[
+                    "entity_type"
+                ]
 
                 if entity_type == "table":
-                    endpoint = "/v1/tables"
+
+                    endpoint = (
+                        "/v1/tables"
+                    )
 
                 elif entity_type == "schema":
-                    endpoint = "/v1/databaseSchemas"
+
+                    endpoint = (
+                        "/v1/databaseSchemas"
+                    )
 
                 else:
                     logger.warning(
-                        "Unsupported ownership entity type: %s",
+                        "Unsupported ownership "
+                        "entity type: %s",
                         entity_type,
                     )
+
                     continue
 
-                for target in rule.get("targets", []):
+                for target in rule.get(
+                    "targets",
+                    [],
+                ):
 
                     self.client.apply_owner(
                         endpoint,
@@ -959,25 +1211,50 @@ class GovernanceEngine:
     # Quality metadata
     # =========================================================================
 
-    def apply_quality_governance(self) -> None:
+    def apply_quality_governance(
+        self,
+    ) -> None:
 
-        governance_config = self.config["governance"]["data_quality"]
+        governance_config = (
+            self.config[
+                "governance"
+            ][
+                "data_quality"
+            ]
+        )
 
-        if not governance_config.get("enabled", False):
-            logger.info("Data Quality governance disabled")
+        if not governance_config.get(
+            "enabled",
+            False,
+        ):
+            logger.info(
+                "Data Quality governance disabled"
+            )
+
             return
 
-        for relative_path in governance_config.get("files", []):
+        for relative_path in governance_config.get(
+            "files",
+            [],
+        ):
 
-            path = BASE_DIR / relative_path
-            data = load_json(path)
+            path = (
+                BASE_DIR
+                / relative_path
+            )
+
+            data = load_json(
+                path
+            )
 
             for rule in data.get(
                 "asset_rules",
                 [],
             ):
 
-                entity = rule["entity"]
+                entity = rule[
+                    "entity"
+                ]
 
                 tags = rule.get(
                     "tags",
@@ -1006,12 +1283,16 @@ class GovernanceEngine:
 
     def verify_required_lineage(
         self,
-        requirements: list[dict[str, Any]],
+        requirements: list[
+            dict[str, Any]
+        ],
     ) -> None:
 
         for requirement in requirements:
 
-            fqn = requirement["entity"]
+            fqn = requirement[
+                "entity"
+            ]
 
             entity = self.client.get_by_name(
                 "/v1/tables",
@@ -1020,12 +1301,16 @@ class GovernanceEngine:
 
             if not entity:
                 logger.warning(
-                    "Cannot verify lineage: entity not found: %s",
+                    "Cannot verify lineage: "
+                    "entity not found: %s",
                     fqn,
                 )
+
                 continue
 
-            entity_id = entity["id"]
+            entity_id = entity[
+                "id"
+            ]
 
             response = self.client.get(
                 f"/v1/lineage/table/{entity_id}",
@@ -1037,6 +1322,7 @@ class GovernanceEngine:
                     "No lineage found for: %s",
                     fqn,
                 )
+
                 continue
 
             lineage = response.json()
@@ -1052,9 +1338,13 @@ class GovernanceEngine:
             )
 
             node_names = {
-                node.get("fullyQualifiedName")
+                node.get(
+                    "fullyQualifiedName"
+                )
                 for node in nodes
-                if node.get("fullyQualifiedName")
+                if node.get(
+                    "fullyQualifiedName"
+                )
             }
 
             expected = set(
@@ -1064,14 +1354,23 @@ class GovernanceEngine:
                 )
             )
 
-            missing = expected - node_names
+            missing = (
+                expected
+                - node_names
+            )
 
             if missing:
                 logger.warning(
-                    "Lineage verification incomplete for %s. Missing: %s",
+                    "Lineage verification incomplete "
+                    "for %s. Missing: %s",
                     fqn,
-                    ", ".join(sorted(missing)),
+                    ", ".join(
+                        sorted(
+                            missing
+                        )
+                    ),
                 )
+
             else:
                 logger.info(
                     "Required lineage verified: %s",
@@ -1081,31 +1380,45 @@ class GovernanceEngine:
             logger.debug(
                 "Lineage edge count for %s: %s",
                 fqn,
-                len(upstream_nodes),
+                len(
+                    upstream_nodes
+                ),
             )
 
     # =========================================================================
     # Main execution
     # =========================================================================
 
-    def run(self) -> None:
+    def run(
+        self,
+    ) -> None:
 
-        project = self.config["project"]
+        project = self.config[
+            "project"
+        ]
 
         logger.info(
             "============================================================"
         )
+
         logger.info(
             "Real Estate Governance-as-Code"
         )
+
         logger.info(
             "Project: %s",
-            project["display_name"],
+            project[
+                "display_name"
+            ],
         )
+
         logger.info(
             "Governance version: %s",
-            project["governance_version"],
+            project[
+                "governance_version"
+            ],
         )
+
         logger.info(
             "============================================================"
         )
@@ -1115,34 +1428,41 @@ class GovernanceEngine:
         logger.info(
             "Step 1/5 - Applying domains"
         )
+
         self.apply_domains()
 
         logger.info(
             "Step 2/5 - Applying business glossary"
         )
+
         self.apply_glossary()
 
         logger.info(
             "Step 3/5 - Applying classifications and tags"
         )
+
         self.apply_classifications()
 
         logger.info(
             "Step 4/5 - Applying ownership"
         )
+
         self.apply_ownership()
 
         logger.info(
             "Step 5/5 - Applying Data Quality governance"
         )
+
         self.apply_quality_governance()
 
         logger.info(
             "============================================================"
         )
+
         logger.info(
             "Governance-as-Code execution completed successfully"
         )
+
         logger.info(
             "============================================================"
         )
@@ -1155,15 +1475,29 @@ class GovernanceEngine:
 def main() -> int:
 
     try:
-        config = load_json(CONFIG_FILE)
+        config = load_json(
+            CONFIG_FILE
+        )
 
-        openmetadata_config = config["openmetadata"]
+        openmetadata_config = config[
+            "openmetadata"
+        ]
 
-        url_env = openmetadata_config["base_url_env"]
-        token_env = openmetadata_config["token_env"]
+        url_env = openmetadata_config[
+            "base_url_env"
+        ]
 
-        base_url = required_env(url_env)
-        token = required_env(token_env)
+        token_env = openmetadata_config[
+            "token_env"
+        ]
+
+        base_url = required_env(
+            url_env
+        )
+
+        token = required_env(
+            token_env
+        )
 
         logger.info(
             "Governance configuration loaded: %s",
@@ -1185,18 +1519,24 @@ def main() -> int:
         return 0
 
     except KeyboardInterrupt:
+
         logger.warning(
             "Governance execution interrupted"
         )
+
         return 130
 
     except Exception as exc:
+
         logger.exception(
             "Governance execution failed: %s",
             exc,
         )
+
         return 1
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(
+        main()
+    )
