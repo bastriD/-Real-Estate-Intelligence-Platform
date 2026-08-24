@@ -13,7 +13,7 @@ database:validate:
 
     - test -f database/migrations/001_initial_schema.sql
     - test -f database/migrations/002_migrate_legacy_data.sql
-    - test -f database/migrations/003_add_visite_audit.sql
+    - test -f database/migrations/004_add_visite_audit.sql
 
     # -------------------------------------------------------------------------
     # Database tests
@@ -57,14 +57,14 @@ database:validate:
     - grep -q "^COMMIT;" database/migrations/002_migrate_legacy_data.sql
 
     # -------------------------------------------------------------------------
-    # Migration 003 validation
+    # Migration 004 validation
     # -------------------------------------------------------------------------
 
-    - grep -q "CREATE TABLE real_estate.visite" database/migrations/003_add_visite_audit.sql
-    - grep -q "CREATE TABLE real_estate.audit_log" database/migrations/003_add_visite_audit.sql
-    - grep -q "fk_visite_presentation" database/migrations/003_add_visite_audit.sql
-    - grep -q "ck_audit_log_operation" database/migrations/003_add_visite_audit.sql
-    - grep -q "^COMMIT;" database/migrations/003_add_visite_audit.sql
+    - grep -q "CREATE TABLE real_estate.visite" database/migrations/004_add_visite_audit.sql
+    - grep -q "CREATE TABLE real_estate.audit_log" database/migrations/004_add_visite_audit.sql
+    - grep -q "fk_visite_presentation" database/migrations/004_add_visite_audit.sql
+    - grep -q "ck_audit_log_operation" database/migrations/004_add_visite_audit.sql
+    - grep -q "^COMMIT;" database/migrations/004_add_visite_audit.sql
 
     # -------------------------------------------------------------------------
     # Legacy fixture validation
@@ -312,7 +312,7 @@ database:migrate-003:
           -U real_estate_user \
           -d real_estate \
           -v ON_ERROR_STOP=1 \
-          < database/migrations/003_add_visite_audit.sql
+          < database/migrations/004_add_visite_audit.sql
 
     # -------------------------------------------------------------------------
     # Post-migration verification

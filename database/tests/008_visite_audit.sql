@@ -4,7 +4,7 @@
 --
 -- Purpose:
 --   Validate the schema objects introduced by:
---   database/migrations/003_add_visite_audit.sql
+--   database/migrations/004_add_visite_audit.sql
 --
 -- Scope:
 --   - real_estate.visite
