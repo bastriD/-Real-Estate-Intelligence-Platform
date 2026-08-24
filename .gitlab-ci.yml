@@ -1,6 +1,7 @@
 stages:
   - validate
   - database
+  - build
   - deploy
 
 include:
@@ -8,5 +9,5 @@ include:
   - local: .gitlab/ci/airflow.yml
   - local: .gitlab/ci/data-pipeline-image.yml
   - local: .gitlab/ci/warehouse.yml
-  - local: .gitlab/ci/openmetadata.yml
   - local: .gitlab/ci/governance.yml
+  - local: .gitlab/ci/openmetadata.yml

@@ -13,8 +13,10 @@ governance:validate:
   script:
     - echo "Validating Governance-as-Code files..."
 
+    # Python syntax
     - python -m py_compile governance/scripts/main.py
 
+    # JSON syntax
     - python -m json.tool governance/docs/governance-config.json > /dev/null
     - python -m json.tool governance/glossary/real_estate_glossary.json > /dev/null
     - python -m json.tool governance/ownership/real_estate_ownership.json > /dev/null
@@ -32,7 +34,7 @@ governance:validate:
 
 
 governance:build-image:
-  stage: deploy
+  stage: build
 
   tags:
     - docker
@@ -53,6 +55,8 @@ governance:build-image:
     - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
 
   script:
+    - echo "Building Real Estate Governance image..."
+
     - |
       docker build \
         -f governance/Dockerfile \
@@ -60,8 +64,11 @@ governance:build-image:
         -t "$IMAGE_NAME:latest" \
         governance
 
+    - echo "Pushing governance image..."
     - docker push "$IMAGE_NAME:$IMAGE_TAG"
     - docker push "$IMAGE_NAME:latest"
+
+    - echo "Governance image published successfully."
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'

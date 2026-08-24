@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: real-estate-governance-apply
+  namespace: openmetadata
+  labels:
+    app: real-estate-governance-apply
+    component: governance
+    project: real-estate
+
+spec:
+  backoffLimit: 0
+
+  template:
+    metadata:
+      labels:
+        app: real-estate-governance-apply
+        component: governance
+        project: real-estate
+
+    spec:
+      restartPolicy: Never
+
+      imagePullSecrets:
+        - name: gitlab-registry-auth
+
+      containers:
+        - name: governance-apply
+          image: gitlab.local:4567/root/chasse_immobiliere/real-estate-governance:latest
+          imagePullPolicy: Always
+
+          env:
+            - name: OM_URL
+              value: "http://openmetadata:8585/api"
+
+            - name: OM_JWT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: om-admin-token
+                  key: jwtToken
