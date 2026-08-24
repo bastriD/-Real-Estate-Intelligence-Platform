@@ -9,3 +9,4 @@ include:
   - local: .gitlab/ci/data-pipeline-image.yml
   - local: .gitlab/ci/warehouse.yml
   - local: .gitlab/ci/openmetadata.yml
+  - local: .gitlab/ci/governance.yml

@@ -1,0 +1,163 @@
+{
+  "glossary": {
+    "name": "RealEstateBusinessGlossary",
+    "display_name": "Real Estate Business Glossary",
+    "description": "Glossaire métier de la plateforme Chasse Immobilière. Il définit les concepts fonctionnels utilisés dans les couches OLTP, warehouse, analytics et gouvernance.",
+    "mutually_exclusive": false
+  },
+  "terms": [
+    {
+      "name": "Client",
+      "display_name": "Client",
+      "description": "Particulier ayant signé un mandat de recherche avec un chasseur immobilier.",
+      "synonyms": [
+        "Acquéreur"
+      ]
+    },
+    {
+      "name": "Prospect",
+      "display_name": "Prospect",
+      "description": "Particulier en phase de recherche ou de qualification avant signature d'un mandat."
+    },
+    {
+      "name": "Chasseur",
+      "display_name": "Chasseur immobilier",
+      "description": "Professionnel mandaté par un client pour rechercher un bien immobilier correspondant à ses critères."
+    },
+    {
+      "name": "Mandat",
+      "display_name": "Mandat de recherche",
+      "description": "Contrat liant un client et un chasseur immobilier pour une mission de recherche. Le mandat est valide six mois et peut être renouvelé."
+    },
+    {
+      "name": "MandatExclusif",
+      "display_name": "Mandat exclusif",
+      "description": "Mandat pour lequel le client confie exclusivement sa recherche au chasseur concerné."
+    },
+    {
+      "name": "MandatNonExclusif",
+      "display_name": "Mandat non exclusif",
+      "description": "Mandat permettant au client de solliciter plusieurs professionnels ou de rechercher lui-même un bien."
+    },
+    {
+      "name": "Demande",
+      "display_name": "Demande de recherche",
+      "description": "Expression structurée des critères immobiliers d'un client pour un mandat donné."
+    },
+    {
+      "name": "VersionDemande",
+      "display_name": "Version de demande",
+      "description": "État historisé d'une demande de recherche à un instant donné. Une nouvelle version est créée lorsque les critères évoluent."
+    },
+    {
+      "name": "Bien",
+      "display_name": "Bien immobilier",
+      "description": "Logement ou propriété pouvant être analysé, proposé ou présenté dans le cadre d'une recherche immobilière."
+    },
+    {
+      "name": "Annonce",
+      "display_name": "Annonce immobilière",
+      "description": "Publication provenant d'une source externe décrivant un bien immobilier avec son prix, sa surface, sa localisation et d'autres caractéristiques."
+    },
+    {
+      "name": "Source",
+      "display_name": "Source de données",
+      "description": "Origine d'une annonce ou d'un ensemble de données immobilières ingéré par la plateforme."
+    },
+    {
+      "name": "Secteur",
+      "display_name": "Secteur géographique",
+      "description": "Zone géographique utilisée pour définir ou analyser un périmètre de recherche immobilière."
+    },
+    {
+      "name": "Presentation",
+      "display_name": "Présentation",
+      "description": "Action par laquelle un chasseur soumet un bien à un client dans le contexte d'une demande de recherche."
+    },
+    {
+      "name": "Visite",
+      "display_name": "Visite",
+      "description": "Inspection ou visite d'un bien immobilier effectuée dans le cadre d'une recherche."
+    },
+    {
+      "name": "Commentaire",
+      "display_name": "Commentaire",
+      "description": "Avis, retour ou annotation porté sur un bien dans le contexte d'une demande."
+    },
+    {
+      "name": "Prix",
+      "display_name": "Prix du bien",
+      "description": "Montant demandé ou observé pour un bien immobilier."
+    },
+    {
+      "name": "PrixM2",
+      "display_name": "Prix au mètre carré",
+      "description": "Indicateur calculé en divisant le prix du bien par sa surface."
+    },
+    {
+      "name": "Surface",
+      "display_name": "Surface",
+      "description": "Surface du bien immobilier, exprimée en mètres carrés."
+    },
+    {
+      "name": "DPE",
+      "display_name": "Diagnostic de performance énergétique",
+      "description": "Classe énergétique d'un logement, généralement comprise entre A et G."
+    },
+    {
+      "name": "Honoraires",
+      "display_name": "Honoraires",
+      "description": "Somme versée par le client à l'entreprise lors de la finalisation d'une transaction immobilière."
+    },
+    {
+      "name": "Commission",
+      "display_name": "Commission du chasseur",
+      "description": "Part des honoraires revenant au chasseur immobilier selon le barème applicable."
+    },
+    {
+      "name": "BaremeCommission",
+      "display_name": "Barème de commission",
+      "description": "Règle de rémunération définissant la commission d'un chasseur selon des tranches de montant et une période de validité."
+    },
+    {
+      "name": "Paiement",
+      "display_name": "Paiement",
+      "description": "Enregistrement financier associé au versement d'honoraires ou à la rémunération du chasseur."
+    },
+    {
+      "name": "PerformanceChasseur",
+      "display_name": "Performance du chasseur",
+      "description": "Indicateur métier calculé notamment à partir du délai de réalisation, du type de mandat, du nombre de ventes, du nombre de mandats et du nombre de visites."
+    },
+    {
+      "name": "IngestionBatch",
+      "display_name": "Lot d'ingestion",
+      "description": "Identifiant technique permettant de tracer les données introduites lors d'une même exécution du pipeline."
+    },
+    {
+      "name": "SourceFile",
+      "display_name": "Fichier source",
+      "description": "Référence technique du fichier ou objet d'origine à partir duquel une donnée a été ingérée."
+    },
+    {
+      "name": "DataQuality",
+      "display_name": "Qualité des données",
+      "description": "Ensemble des contrôles destinés à vérifier la complétude, l'unicité, la cohérence, la validité et l'intégrité des données."
+    },
+    {
+      "name": "OLTP",
+      "display_name": "OLTP",
+      "description": "Couche transactionnelle utilisée pour enregistrer les opérations métier courantes de la plateforme."
+    },
+    {
+      "name": "Warehouse",
+      "display_name": "Entrepôt de données",
+      "description": "Couche analytique structurée pour l'historisation, l'analyse et l'exploitation décisionnelle."
+    },
+    {
+      "name": "Analytics",
+      "display_name": "Couche Analytics",
+      "description": "Couche contenant les modèles analytiques et marts produits notamment avec dbt."
+    }
+  ]
+}

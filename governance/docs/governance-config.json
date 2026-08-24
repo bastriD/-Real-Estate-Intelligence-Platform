@@ -1,0 +1,57 @@
+{
+  "project": {
+    "name": "chasse-immobiliere",
+    "display_name": "Enterprise Real Estate Intelligence Platform",
+    "domain": "real-estate",
+    "environment": "homelab",
+    "governance_version": "1.0.0"
+  },
+  "openmetadata": {
+    "base_url_env": "OM_URL",
+    "token_env": "OM_JWT_TOKEN",
+    "database_service": "real-estate-postgresql",
+    "database": "real_estate"
+  },
+  "governance": {
+    "glossary": {
+      "enabled": true,
+      "file": "glossary/real_estate_glossary.json"
+    },
+    "classification": {
+      "enabled": true,
+      "files": [
+        "tagging/real_estate_tags.json"
+      ]
+    },
+    "ownership": {
+      "enabled": true,
+      "files": [
+        "ownership/real_estate_ownership.json"
+      ]
+    },
+    "data_quality": {
+      "enabled": true,
+      "files": [
+        "quality/real_estate_quality.json"
+      ]
+    }
+  },
+  "target_schemas": [
+    "real_estate",
+    "warehouse",
+    "analytics"
+  ],
+  "protected_schemas": [
+    "raw",
+    "staging",
+    "migration_control",
+    "Fil_Rouge_Depart"
+  ],
+  "policies": {
+    "least_privilege": true,
+    "privacy_by_design": true,
+    "technical_accounts_are_not_business_owners": true,
+    "do_not_modify_source_data": true,
+    "do_not_delete_existing_metadata": true
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "teams": [
+    {
+      "name": "RealEstateDataTeam",
+      "display_name": "Real Estate Data Team",
+      "description": "Equipe responsable de la plateforme de données, des pipelines, de la qualité, du warehouse, de dbt et de la gouvernance technique.",
+      "team_type": "Group"
+    },
+    {
+      "name": "RealEstateBusiness",
+      "display_name": "Real Estate Business",
+      "description": "Equipe représentant la responsabilité métier sur les données de chasse immobilière.",
+      "team_type": "Group"
+    },
+    {
+      "name": "RealEstateAnalytics",
+      "display_name": "Real Estate Analytics",
+      "description": "Equipe responsable des modèles analytiques, indicateurs et usages décisionnels.",
+      "team_type": "Group"
+    }
+  ],
+  "ownership_rules": [
+    {
+      "id": "OWN-001",
+      "description": "Les tables transactionnelles métier sont placées sous responsabilité métier.",
+      "entity_type": "table",
+      "owner_type": "team",
+      "owner": "RealEstateBusiness",
+      "targets": [
+        "real-estate-postgresql.real_estate.real_estate.client",
+        "real-estate-postgresql.real_estate.real_estate.chasseur",
+        "real-estate-postgresql.real_estate.real_estate.secteur",
+        "real-estate-postgresql.real_estate.real_estate.mandat",
+        "real-estate-postgresql.real_estate.real_estate.mandat_secteur",
+        "real-estate-postgresql.real_estate.real_estate.demande",
+        "real-estate-postgresql.real_estate.real_estate.demande_version",
+        "real-estate-postgresql.real_estate.real_estate.bien",
+        "real-estate-postgresql.real_estate.real_estate.commentaire",
+        "real-estate-postgresql.real_estate.real_estate.document",
+        "real-estate-postgresql.real_estate.real_estate.paiement",
+        "real-estate-postgresql.real_estate.real_estate.presentation",
+        "real-estate-postgresql.real_estate.real_estate.visite"
+      ]
+    },
+    {
+      "id": "OWN-002",
+      "description": "Les objets de gestion technique et d'audit sont placés sous responsabilité de l'équipe Data.",
+      "entity_type": "table",
+      "owner_type": "team",
+      "owner": "RealEstateDataTeam",
+      "targets": [
+        "real-estate-postgresql.real_estate.real_estate.source",
+        "real-estate-postgresql.real_estate.real_estate.audit_log"
+      ]
+    },
+    {
+      "id": "OWN-003",
+      "description": "Les tables et vues du warehouse sont sous responsabilité de l'équipe Data.",
+      "entity_type": "schema",
+      "owner_type": "team",
+      "owner": "RealEstateDataTeam",
+      "targets": [
+        "real-estate-postgresql.real_estate.warehouse"
+      ]
+    },
+    {
+      "id": "OWN-004",
+      "description": "Les modèles analytiques et marts sont sous responsabilité de l'équipe Analytics.",
+      "entity_type": "schema",
+      "owner_type": "team",
+      "owner": "RealEstateAnalytics",
+      "targets": [
+        "real-estate-postgresql.real_estate.analytics"
+      ]
+    }
+  ],
+  "policies": {
+    "technical_database_accounts_are_not_owners": true,
+    "business_entities_require_business_ownership": true,
+    "warehouse_requires_data_ownership": true,
+    "analytics_requires_analytics_ownership": true
+  }
+}

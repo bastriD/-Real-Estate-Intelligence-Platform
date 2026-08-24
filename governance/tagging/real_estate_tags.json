@@ -1,0 +1,159 @@
+{
+  "classifications": [
+    {
+      "name": "RealEstateDataSensitivity",
+      "display_name": "Real Estate Data Sensitivity",
+      "description": "Classification de sensibilité des données de la plateforme immobilière.",
+      "mutually_exclusive": true,
+      "tags": [
+        {
+          "name": "Public",
+          "display_name": "Public",
+          "description": "Donnée pouvant être exposée publiquement sans risque particulier."
+        },
+        {
+          "name": "Internal",
+          "display_name": "Interne",
+          "description": "Donnée réservée aux usages internes de l'entreprise."
+        },
+        {
+          "name": "Confidential",
+          "display_name": "Confidentiel",
+          "description": "Donnée métier nécessitant un accès restreint."
+        },
+        {
+          "name": "Restricted",
+          "display_name": "Accès restreint",
+          "description": "Donnée dont l'accès doit être limité selon le principe du moindre privilège."
+        }
+      ]
+    },
+    {
+      "name": "RealEstatePrivacy",
+      "display_name": "Real Estate Privacy",
+      "description": "Classification permettant d'identifier les données personnelles et les données nécessitant des mesures de protection RGPD.",
+      "mutually_exclusive": false,
+      "tags": [
+        {
+          "name": "PersonalData",
+          "display_name": "Donnée personnelle",
+          "description": "Information se rapportant directement ou indirectement à une personne physique."
+        },
+        {
+          "name": "DirectIdentifier",
+          "display_name": "Identifiant direct",
+          "description": "Information permettant d'identifier directement une personne, par exemple nom, email ou téléphone."
+        },
+        {
+          "name": "IndirectIdentifier",
+          "display_name": "Identifiant indirect",
+          "description": "Information pouvant contribuer à identifier une personne lorsqu'elle est combinée avec d'autres données."
+        },
+        {
+          "name": "FinancialData",
+          "display_name": "Donnée financière",
+          "description": "Information relative au budget, aux honoraires, commissions, paiements ou transactions."
+        },
+        {
+          "name": "RequiresPseudonymisation",
+          "display_name": "Pseudonymisation requise",
+          "description": "Donnée personnelle devant être pseudonymisée avant certains usages analytiques ou IA."
+        },
+        {
+          "name": "AIRestricted",
+          "display_name": "Accès IA restreint",
+          "description": "Donnée ne devant pas être exposée directement à un modèle d'IA sans contrôle, filtrage ou pseudonymisation."
+        }
+      ]
+    },
+    {
+      "name": "RealEstateDataLayer",
+      "display_name": "Real Estate Data Layer",
+      "description": "Classification de la couche architecturale dans laquelle la donnée est utilisée.",
+      "mutually_exclusive": true,
+      "tags": [
+        {
+          "name": "Legacy",
+          "display_name": "Legacy",
+          "description": "Donnée issue du système hérité."
+        },
+        {
+          "name": "Raw",
+          "display_name": "Raw",
+          "description": "Donnée brute telle qu'elle a été ingérée depuis la source."
+        },
+        {
+          "name": "Staging",
+          "display_name": "Staging",
+          "description": "Donnée intermédiaire validée ou transformée avant chargement métier."
+        },
+        {
+          "name": "OLTP",
+          "display_name": "OLTP",
+          "description": "Donnée transactionnelle constituant la source de vérité métier."
+        },
+        {
+          "name": "Warehouse",
+          "display_name": "Warehouse",
+          "description": "Donnée préparée pour les usages décisionnels et analytiques."
+        },
+        {
+          "name": "Analytics",
+          "display_name": "Analytics",
+          "description": "Donnée analytique dérivée destinée aux indicateurs, analyses et futurs usages IA."
+        }
+      ]
+    },
+    {
+      "name": "RealEstateDataQuality",
+      "display_name": "Real Estate Data Quality",
+      "description": "Classification fonctionnelle du statut ou du rôle d'une donnée dans le dispositif de qualité.",
+      "mutually_exclusive": false,
+      "tags": [
+        {
+          "name": "QualityControlled",
+          "display_name": "Qualité contrôlée",
+          "description": "Dataset couvert par des contrôles automatisés de qualité."
+        },
+        {
+          "name": "CriticalDataset",
+          "display_name": "Dataset critique",
+          "description": "Dataset dont une dégradation peut affecter un processus métier ou analytique important."
+        },
+        {
+          "name": "SourceOfTruth",
+          "display_name": "Source de vérité",
+          "description": "Dataset faisant autorité pour l'information métier concernée."
+        },
+        {
+          "name": "DerivedData",
+          "display_name": "Donnée dérivée",
+          "description": "Donnée obtenue par transformation ou calcul à partir d'autres datasets."
+        }
+      ]
+    },
+    {
+      "name": "RealEstateTechnicalMetadata",
+      "display_name": "Real Estate Technical Metadata",
+      "description": "Classification des métadonnées utilisées pour la traçabilité technique des pipelines.",
+      "mutually_exclusive": false,
+      "tags": [
+        {
+          "name": "LineageMetadata",
+          "display_name": "Métadonnée de lineage",
+          "description": "Information permettant de tracer l'origine ou les transformations d'une donnée."
+        },
+        {
+          "name": "IngestionMetadata",
+          "display_name": "Métadonnée d'ingestion",
+          "description": "Information décrivant l'exécution ou le lot ayant introduit une donnée."
+        },
+        {
+          "name": "AuditMetadata",
+          "display_name": "Métadonnée d'audit",
+          "description": "Information permettant de tracer une action ou une modification."
+        }
+      ]
+    }
+  ]
+}

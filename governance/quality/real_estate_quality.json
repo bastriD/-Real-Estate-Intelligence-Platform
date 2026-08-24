@@ -1,0 +1,195 @@
+{
+  "quality_framework": {
+    "name": "RealEstateDataQuality",
+    "display_name": "Real Estate Data Quality",
+    "description": "Référentiel de gouvernance reliant les actifs OpenMetadata aux contrôles de qualité réellement exécutés par les pipelines Airflow, SQL et dbt.",
+    "version": "1.0.0"
+  },
+  "quality_domains": [
+    {
+      "id": "DQ-RAW",
+      "name": "Raw Data Quality",
+      "layer": "raw",
+      "description": "Contrôles appliqués après ingestion des données sources avant transformation.",
+      "execution": {
+        "orchestrator": "Airflow",
+        "dag": "real_estate_ingestion",
+        "task": "validate_raw"
+      },
+      "checks": [
+        "présence des datasets attendus",
+        "présence des colonnes obligatoires",
+        "validité structurelle des données ingérées",
+        "cohérence minimale avant passage en staging"
+      ]
+    },
+    {
+      "id": "DQ-STAGING",
+      "name": "Staging Data Quality",
+      "layer": "staging",
+      "description": "Contrôles de validité et de cohérence après normalisation des annonces.",
+      "execution": {
+        "orchestrator": "Airflow",
+        "dag": "real_estate_ingestion",
+        "task": "validate_staging"
+      },
+      "checks": [
+        "référence obligatoire",
+        "type de bien obligatoire",
+        "ville obligatoire",
+        "code postal obligatoire",
+        "prix obligatoire",
+        "surface obligatoire",
+        "date de publication obligatoire",
+        "prix supérieur à zéro",
+        "surface supérieure à zéro",
+        "unicité fonctionnelle des références",
+        "contrôle du statut quality_valid"
+      ]
+    },
+    {
+      "id": "DQ-OLTP",
+      "name": "OLTP Data Quality",
+      "layer": "real_estate",
+      "description": "Contrôles appliqués après chargement dans le modèle transactionnel métier.",
+      "execution": {
+        "orchestrator": "Airflow",
+        "dag": "real_estate_ingestion",
+        "task": "validate_oltp"
+      },
+      "checks": [
+        "intégrité référentielle",
+        "unicité des références externes de biens",
+        "présence des relations métier obligatoires",
+        "cohérence entre staging valide et biens chargés",
+        "absence de doublons anormaux"
+      ]
+    },
+    {
+      "id": "DQ-WAREHOUSE",
+      "name": "Warehouse Data Quality",
+      "layer": "warehouse",
+      "description": "Contrôles appliqués après alimentation de la couche analytique.",
+      "execution": {
+        "orchestrator": "Airflow",
+        "dag": "real_estate_ingestion",
+        "task": "validate_warehouse"
+      },
+      "checks": [
+        "présence des dimensions attendues",
+        "présence de la table de faits",
+        "cohérence des clés dimensionnelles",
+        "intégrité des relations fait-dimensions",
+        "contrôle des volumes chargés"
+      ]
+    },
+    {
+      "id": "DQ-DBT",
+      "name": "dbt Analytics Quality",
+      "layer": "analytics",
+      "description": "Contrôles déclaratifs exécutés sur les modèles dbt de la couche analytics.",
+      "execution": {
+        "orchestrator": "Airflow",
+        "dag": "real_estate_ingestion",
+        "task": "dbt_test",
+        "tool": "dbt"
+      },
+      "validated_result": {
+        "tests_total": 19,
+        "tests_passed": 19,
+        "tests_failed": 0
+      },
+      "models": [
+        "analytics.stg_dim_bien",
+        "analytics.stg_fact_annonce",
+        "analytics.mart_market_by_city"
+      ]
+    }
+  ],
+  "asset_rules": [
+    {
+      "id": "ASSET-DQ-001",
+      "entity": "real-estate-postgresql.real_estate.real_estate.bien",
+      "criticality": "high",
+      "tags": [
+        "RealEstateDataQuality.QualityControlled",
+        "RealEstateDataQuality.CriticalDataset",
+        "RealEstateDataQuality.SourceOfTruth"
+      ],
+      "quality_domains": [
+        "DQ-OLTP"
+      ]
+    },
+    {
+      "id": "ASSET-DQ-002",
+      "entity": "real-estate-postgresql.real_estate.warehouse.fact_annonce",
+      "criticality": "high",
+      "tags": [
+        "RealEstateDataQuality.QualityControlled",
+        "RealEstateDataQuality.CriticalDataset"
+      ],
+      "quality_domains": [
+        "DQ-WAREHOUSE"
+      ]
+    },
+    {
+      "id": "ASSET-DQ-003",
+      "entity": "real-estate-postgresql.real_estate.analytics.stg_fact_annonce",
+      "criticality": "high",
+      "tags": [
+        "RealEstateDataQuality.QualityControlled",
+        "RealEstateDataQuality.DerivedData"
+      ],
+      "quality_domains": [
+        "DQ-DBT"
+      ]
+    },
+    {
+      "id": "ASSET-DQ-004",
+      "entity": "real-estate-postgresql.real_estate.analytics.stg_dim_bien",
+      "criticality": "medium",
+      "tags": [
+        "RealEstateDataQuality.QualityControlled",
+        "RealEstateDataQuality.DerivedData"
+      ],
+      "quality_domains": [
+        "DQ-DBT"
+      ]
+    },
+    {
+      "id": "ASSET-DQ-005",
+      "entity": "real-estate-postgresql.real_estate.analytics.mart_market_by_city",
+      "criticality": "high",
+      "tags": [
+        "RealEstateDataQuality.QualityControlled",
+        "RealEstateDataQuality.CriticalDataset",
+        "RealEstateDataQuality.DerivedData"
+      ],
+      "quality_domains": [
+        "DQ-DBT"
+      ]
+    }
+  ],
+  "lineage_requirements": [
+    {
+      "entity": "real-estate-postgresql.real_estate.analytics.stg_fact_annonce",
+      "required_upstream": [
+        "real-estate-postgresql.real_estate.warehouse.fact_annonce"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.analytics.mart_market_by_city",
+      "required_upstream": [
+        "real-estate-postgresql.real_estate.analytics.stg_fact_annonce",
+        "real-estate-postgresql.real_estate.warehouse.dim_localisation"
+      ]
+    }
+  ],
+  "policies": {
+    "pipeline_failure_on_quality_error": true,
+    "quality_checks_must_be_traceable": true,
+    "critical_assets_require_quality_controls": true,
+    "analytics_assets_require_lineage": true,
+    "do_not_create_unverified_quality_claims": true
+  }
+}

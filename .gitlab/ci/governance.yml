@@ -1,0 +1,25 @@
+governance_build:
+  stage: deploy
+
+  image: docker:27.3.1
+
+  services:
+    - name: docker:27.3.1-dind
+
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    GOVERNANCE_IMAGE: "$CI_REGISTRY_IMAGE/real-estate-governance"
+
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
+
+  script:
+    - docker build -f governance/Dockerfile -t "$GOVERNANCE_IMAGE:$CI_COMMIT_SHORT_SHA" governance
+    - docker tag "$GOVERNANCE_IMAGE:$CI_COMMIT_SHORT_SHA" "$GOVERNANCE_IMAGE:latest"
+    - docker push "$GOVERNANCE_IMAGE:$CI_COMMIT_SHORT_SHA"
+    - docker push "$GOVERNANCE_IMAGE:latest"
+
+  rules:
+    - changes:
+        - governance/**/*
+        - .gitlab/ci/governance.yml
