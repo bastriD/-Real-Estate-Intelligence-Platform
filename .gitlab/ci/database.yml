@@ -596,7 +596,7 @@ database:load-raw-generated:
 
   before_script:
     - python3 --version
-    - python3 -m pip install --user -r requirements.txt
+    - python3 -m pip install --user -r requirements-ingestion.txt
 
   script:
     - kubectl -n real-estate get deploy real-estate-postgresql
