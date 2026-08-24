@@ -1,0 +1,59 @@
+{
+  "domains": [
+    {
+      "name": "RealEstateIntelligence",
+      "display_name": "Real Estate Intelligence",
+      "description": "Domaine principal regroupant les données opérationnelles, analytiques, de gouvernance et de qualité de la plateforme Enterprise Real Estate Intelligence Platform.",
+      "domain_type": "Aggregate"
+    },
+    {
+      "name": "RealEstateOperational",
+      "display_name": "Real Estate Operational",
+      "description": "Domaine fonctionnel couvrant les données transactionnelles métier de chasse immobilière : clients, chasseurs, mandats, demandes, biens, présentations, visites, paiements et commissions.",
+      "domain_type": "Aggregate",
+      "parent": "RealEstateIntelligence"
+    },
+    {
+      "name": "RealEstateDataPlatform",
+      "display_name": "Real Estate Data Platform",
+      "description": "Domaine technique couvrant l'ingestion, la transformation, les couches RAW/STAGING, le warehouse, les métadonnées et les mécanismes de gouvernance.",
+      "domain_type": "Aggregate",
+      "parent": "RealEstateIntelligence"
+    },
+    {
+      "name": "RealEstateAnalytics",
+      "display_name": "Real Estate Analytics",
+      "description": "Domaine analytique couvrant les modèles warehouse, les vues dbt, les marts et les indicateurs utilisés pour l'analyse du marché immobilier et des performances métier.",
+      "domain_type": "Aggregate",
+      "parent": "RealEstateIntelligence"
+    }
+  ],
+
+  "assignments": [
+    {
+      "domain": "RealEstateOperational",
+      "entity_type": "databaseSchema",
+      "targets": [
+        "real-estate-postgresql.real_estate.real_estate"
+      ]
+    },
+    {
+      "domain": "RealEstateDataPlatform",
+      "entity_type": "databaseSchema",
+      "targets": [
+        "real-estate-postgresql.real_estate.raw",
+        "real-estate-postgresql.real_estate.staging",
+        "real-estate-postgresql.real_estate.migration_control",
+        "real-estate-postgresql.real_estate.Fil_Rouge_Depart",
+        "real-estate-postgresql.real_estate.warehouse"
+      ]
+    },
+    {
+      "domain": "RealEstateAnalytics",
+      "entity_type": "databaseSchema",
+      "targets": [
+        "real-estate-postgresql.real_estate.analytics"
+      ]
+    }
+  ]
+}
