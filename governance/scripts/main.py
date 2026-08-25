@@ -547,6 +547,7 @@ class OpenMetadataClient:
             desired_tags.append(
                 {
                     "tagFQN": term_fqn,
+                    "source": "Glossary",
                     "labelType": "Manual",
                     "state": "Confirmed",
                 }
@@ -676,6 +677,7 @@ class OpenMetadataClient:
                     "tagFQN": term_fqn,
                     "labelType": "Manual",
                     "state": "Confirmed",
+                    "source": "Glossary"
                 }
             )
 
