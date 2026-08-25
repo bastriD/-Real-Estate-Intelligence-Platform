@@ -1,0 +1,282 @@
+{
+  "privacy_governance": {
+    "name": "RealEstatePrivacyAssignments",
+    "display_name": "Real Estate Privacy Assignments",
+    "description": "Règles déclaratives de classification RGPD, sensibilité et restriction IA appliquées aux colonnes de la plateforme immobilière.",
+    "version": "1.0.0"
+  },
+
+  "column_assignments": [
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.client",
+      "column": "id_client",
+      "tags": [
+        "RealEstatePrivacy.PersonalData",
+        "RealEstatePrivacy.IndirectIdentifier",
+        "RealEstatePrivacy.RequiresPseudonymisation",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.client",
+      "column": "nom",
+      "tags": [
+        "RealEstatePrivacy.PersonalData",
+        "RealEstatePrivacy.DirectIdentifier",
+        "RealEstatePrivacy.RequiresPseudonymisation",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Restricted"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.client",
+      "column": "prenom",
+      "tags": [
+        "RealEstatePrivacy.PersonalData",
+        "RealEstatePrivacy.DirectIdentifier",
+        "RealEstatePrivacy.RequiresPseudonymisation",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Restricted"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.client",
+      "column": "email",
+      "tags": [
+        "RealEstatePrivacy.PersonalData",
+        "RealEstatePrivacy.DirectIdentifier",
+        "RealEstatePrivacy.RequiresPseudonymisation",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Restricted"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.client",
+      "column": "telephone",
+      "tags": [
+        "RealEstatePrivacy.PersonalData",
+        "RealEstatePrivacy.DirectIdentifier",
+        "RealEstatePrivacy.RequiresPseudonymisation",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Restricted"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.client",
+      "column": "ville",
+      "tags": [
+        "RealEstatePrivacy.PersonalData",
+        "RealEstatePrivacy.IndirectIdentifier",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.client",
+      "column": "consentement_contact",
+      "tags": [
+        "RealEstatePrivacy.PersonalData",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.chasseur",
+      "column": "id_chasseur",
+      "tags": [
+        "RealEstatePrivacy.PersonalData",
+        "RealEstatePrivacy.IndirectIdentifier",
+        "RealEstatePrivacy.RequiresPseudonymisation",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.chasseur",
+      "column": "nom",
+      "tags": [
+        "RealEstatePrivacy.PersonalData",
+        "RealEstatePrivacy.DirectIdentifier",
+        "RealEstatePrivacy.RequiresPseudonymisation",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Restricted"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.chasseur",
+      "column": "prenom",
+      "tags": [
+        "RealEstatePrivacy.PersonalData",
+        "RealEstatePrivacy.DirectIdentifier",
+        "RealEstatePrivacy.RequiresPseudonymisation",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Restricted"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.chasseur",
+      "column": "email",
+      "tags": [
+        "RealEstatePrivacy.PersonalData",
+        "RealEstatePrivacy.DirectIdentifier",
+        "RealEstatePrivacy.RequiresPseudonymisation",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Restricted"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.chasseur",
+      "column": "telephone",
+      "tags": [
+        "RealEstatePrivacy.PersonalData",
+        "RealEstatePrivacy.DirectIdentifier",
+        "RealEstatePrivacy.RequiresPseudonymisation",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Restricted"
+      ]
+    },
+
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.demande_version",
+      "column": "budget_min",
+      "tags": [
+        "RealEstatePrivacy.PersonalData",
+        "RealEstatePrivacy.FinancialData",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.demande_version",
+      "column": "budget_max",
+      "tags": [
+        "RealEstatePrivacy.PersonalData",
+        "RealEstatePrivacy.FinancialData",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.demande_version",
+      "column": "criteres_souhaites",
+      "tags": [
+        "RealEstatePrivacy.PersonalData",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.demande_version",
+      "column": "description_recherche_legacy",
+      "tags": [
+        "RealEstatePrivacy.PersonalData",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Restricted"
+      ]
+    },
+
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.paiement",
+      "column": "montant_achat",
+      "tags": [
+        "RealEstatePrivacy.FinancialData",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.paiement",
+      "column": "montant_honoraires",
+      "tags": [
+        "RealEstatePrivacy.FinancialData",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.paiement",
+      "column": "montant_chasseur",
+      "tags": [
+        "RealEstatePrivacy.FinancialData",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.document",
+      "column": "chemin_stockage",
+      "tags": [
+        "RealEstateDataSensitivity.Restricted",
+        "RealEstatePrivacy.AIRestricted"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.document",
+      "column": "classification",
+      "tags": [
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.document",
+      "column": "indexable_ia",
+      "tags": [
+        "RealEstatePrivacy.AIRestricted"
+      ]
+    },
+
+    {
+      "entity": "real-estate-postgresql.real_estate.warehouse.dim_client",
+      "column": "id_client_source",
+      "tags": [
+        "RealEstatePrivacy.IndirectIdentifier",
+        "RealEstatePrivacy.RequiresPseudonymisation",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Restricted"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.warehouse.dim_chasseur",
+      "column": "id_chasseur_source",
+      "tags": [
+        "RealEstatePrivacy.IndirectIdentifier",
+        "RealEstatePrivacy.RequiresPseudonymisation",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Restricted"
+      ]
+    },
+
+    {
+      "entity": "real-estate-postgresql.real_estate.warehouse.fact_paiement",
+      "column": "montant_achat",
+      "tags": [
+        "RealEstatePrivacy.FinancialData",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.warehouse.fact_paiement",
+      "column": "montant_honoraires",
+      "tags": [
+        "RealEstatePrivacy.FinancialData",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.warehouse.fact_paiement",
+      "column": "montant_chasseur",
+      "tags": [
+        "RealEstatePrivacy.FinancialData",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    }
+  ],
+
+  "policies": {
+    "preserve_existing_tags": true,
+    "missing_assets_are_reported": true,
+    "missing_columns_are_reported": true,
+    "missing_tags_are_errors": true,
+    "idempotent_execution": true,
+    "privacy_by_design": true,
+    "ai_access_requires_explicit_control": true
+  }
+}
