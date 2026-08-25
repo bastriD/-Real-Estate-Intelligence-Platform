@@ -54,3 +54,303 @@ sources:
       - name: fact_paiement
         description: >
           Financial fact table at one row per OLTP payment.
+
+  - name: real_estate_oltp
+    description: >
+      Operational PostgreSQL source of truth for the real-estate business domain.
+      Contains clients, hunters, mandates, search requests, properties,
+      presentations, visits, documents and financial records.
+
+    schema: real_estate
+
+    tables:
+      - name: client
+        description: >
+          Operational customer master data for the real-estate hunting platform.
+          Contains identity, contact, lifecycle status and contact-consent information.
+
+        columns:
+          - name: id_client
+            description: Technical unique identifier of the customer.
+
+          - name: nom
+            description: Customer family name.
+
+          - name: prenom
+            description: Customer given name.
+
+          - name: email
+            description: Primary customer email address used for business communications.
+
+          - name: telephone
+            description: Customer telephone number.
+
+          - name: ville
+            description: Customer city of residence or business attachment.
+
+          - name: date_creation
+            description: Timestamp when the customer record was created.
+
+          - name: statut
+            description: Current business status of the customer.
+
+          - name: consentement_contact
+            description: Indicates whether the customer has consented to being contacted.
+
+      - name: chasseur
+        description: >
+          Operational master data for real-estate hunters responsible for customer searches.
+
+        columns:
+          - name: id_chasseur
+            description: Technical unique identifier of the real-estate hunter.
+
+          - name: nom
+            description: Hunter family name.
+
+          - name: prenom
+            description: Hunter given name.
+
+          - name: email
+            description: Professional email address of the hunter.
+
+          - name: telephone
+            description: Professional telephone number of the hunter.
+
+          - name: date_entree
+            description: Date when the hunter joined the organisation.
+
+          - name: statut
+            description: Current professional status of the hunter.
+
+      - name: mandat
+        description: >
+          Search mandate linking a customer and a real-estate hunter for a defined mission.
+
+        columns:
+          - name: id_mandat
+            description: Technical unique identifier of the mandate.
+
+          - name: reference_mandat
+            description: Unique business reference of the mandate.
+
+          - name: type_mandat
+            description: Type of mandate, for example exclusive or non-exclusive.
+
+          - name: date_signature
+            description: Date when the mandate was signed.
+
+          - name: mode_signature
+            description: Signature method used for the mandate.
+
+          - name: date_debut
+            description: Mandate validity start date.
+
+          - name: date_fin
+            description: Mandate validity end date.
+
+          - name: statut
+            description: Current mandate status.
+
+          - name: commentaire
+            description: Business comment associated with the mandate.
+
+          - name: id_client
+            description: Foreign key referencing the customer who signed the mandate.
+
+          - name: id_chasseur
+            description: Foreign key referencing the hunter responsible for the mandate.
+
+      - name: demande
+        description: >
+          Customer property-search request associated with a mandate.
+          Historical criteria are stored in demande_version.
+
+        columns:
+          - name: id_demande
+            description: Technical unique identifier of the search request.
+
+          - name: reference_demande
+            description: Business reference of the search request.
+
+          - name: date_creation
+            description: Timestamp when the search request was created.
+
+          - name: statut
+            description: Current status of the search request.
+
+          - name: id_mandat
+            description: Foreign key referencing the parent mandate.
+
+      - name: demande_version
+        description: >
+          Historised version of customer property-search criteria.
+
+        columns:
+          - name: id_demande_version
+            description: Technical unique identifier of the request version.
+
+          - name: numero_version
+            description: Sequential version number.
+
+          - name: date_version
+            description: Timestamp when this version was created.
+
+          - name: motif_modification
+            description: Reason for the modification of the search criteria.
+
+          - name: ville
+            description: Target city for the property search.
+
+          - name: code_postal
+            description: Target postal code for the property search.
+
+          - name: type_bien
+            description: Type of property requested.
+
+          - name: budget_min
+            description: Minimum customer budget for the property search.
+
+          - name: budget_max
+            description: Maximum customer budget for the property search.
+
+          - name: surface_min
+            description: Minimum requested property surface in square metres.
+
+          - name: nb_pieces_min
+            description: Minimum requested number of rooms.
+
+          - name: nb_chambres_min
+            description: Minimum requested number of bedrooms.
+
+          - name: dpe_max
+            description: Maximum acceptable energy-performance rating.
+
+          - name: criteres_souhaites
+            description: Additional structured search criteria stored as JSON.
+
+          - name: description_recherche_legacy
+            description: Historical free-text search description retained from the legacy system.
+
+          - name: active
+            description: Indicates whether this request version is currently active.
+
+          - name: id_demande
+            description: Foreign key referencing the parent search request.
+
+          - name: auteur_client_id
+            description: Customer identifier when the version was authored by the customer.
+
+          - name: auteur_chasseur_id
+            description: Hunter identifier when the version was authored by the hunter.
+
+          - name: auteur_systeme
+            description: Indicates whether the version was created automatically by the system.
+
+      - name: bien
+        description: >
+          Operational property master table containing collected and normalised real-estate properties.
+
+      - name: presentation
+        description: >
+          Records a property presented to a customer in the context of a search request.
+
+      - name: visite
+        description: >
+          Records a property visit organised or completed for a customer.
+
+      - name: commentaire
+        description: >
+          Business comment or feedback associated with a property or search process.
+
+      - name: paiement
+        description: >
+          Financial records containing purchase amounts, fees and hunter remuneration
+          associated with a mandate.
+
+        columns:
+          - name: id_paiement
+            description: Technical unique identifier of the payment record.
+
+          - name: date_acte_authentique
+            description: Date of the authentic property sale deed.
+
+          - name: montant_achat
+            description: Property purchase amount.
+
+          - name: montant_honoraires
+            description: Total professional fees received.
+
+          - name: montant_chasseur
+            description: Amount payable to the real-estate hunter.
+
+          - name: date_reception_honoraires
+            description: Date when professional fees were received.
+
+          - name: date_paiement_chasseur
+            description: Date when the hunter was paid.
+
+          - name: statut
+            description: Current payment status.
+
+          - name: id_mandat
+            description: Foreign key referencing the related mandate.
+
+          - name: id_bareme
+            description: Foreign key referencing the commission scale applied.
+
+      - name: document
+        description: >
+          Metadata for documents associated with properties, including storage,
+          sensitivity classification and AI-indexing eligibility.
+
+        columns:
+          - name: id_document
+            description: Technical unique identifier of the document.
+
+          - name: nom_fichier
+            description: Stored file name.
+
+          - name: type_document
+            description: Functional document type.
+
+          - name: mime_type
+            description: MIME type of the stored document.
+
+          - name: chemin_stockage
+            description: Storage path or URI of the document.
+
+          - name: checksum
+            description: File checksum used for integrity verification.
+
+          - name: date_ajout
+            description: Timestamp when the document was added.
+
+          - name: classification
+            description: Document sensitivity classification.
+
+          - name: indexable_ia
+            description: Indicates whether the document is authorised for AI indexing.
+
+          - name: id_bien
+            description: Foreign key referencing the associated property.
+
+      - name: source
+        description: >
+          Reference data describing the external and internal property-data sources.
+
+      - name: secteur
+        description: >
+          Geographic business sector used to define search areas.
+
+      - name: bareme_commission
+        description: >
+          Commission scale defining hunter remuneration rules.
+
+      - name: audit_log
+        description: >
+          Technical audit trail recording significant operations and changes.
+
+      - name: mandat_secteur
+        description: >
+          Bridge table linking mandates to one or more geographic sectors.
