@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 
 import json
 import logging
@@ -189,6 +189,114 @@ class OpenMetadataClient:
             content_type="application/json-patch+json",
         )
 
+    def apply_tags_to_column(
+        self,
+        table_fqn: str,
+        column_name: str,
+        required_tags: list[str],
+    ) -> str:
+
+        entity = self.get_by_name(
+            "/v1/tables",
+            table_fqn,
+            fields="columns,tags",
+        )
+
+        if not entity:
+            logger.warning(
+                "Column tagging table target not found: %s",
+                table_fqn,
+            )
+            return "missing"
+
+        for tag_fqn in required_tags:
+            tag_entity = self.get_by_name(
+                "/v1/tags",
+                tag_fqn,
+            )
+
+            if not tag_entity:
+                raise RuntimeError(
+                    f"Classification tag does not exist: {tag_fqn}"
+                )
+
+        columns = entity.get("columns") or []
+
+        column_index = None
+        column = None
+
+        for index, current_column in enumerate(columns):
+            if current_column.get("name") == column_name:
+                column_index = index
+                column = current_column
+                break
+
+        if column is None or column_index is None:
+            logger.warning(
+                "Column tagging target not found: %s.%s",
+                table_fqn,
+                column_name,
+            )
+            return "missing"
+
+        existing_tags = column.get("tags") or []
+
+        existing_fqns = {
+            tag.get("tagFQN")
+            for tag in existing_tags
+            if tag.get("tagFQN")
+        }
+
+        desired_tags = list(existing_tags)
+        changed = False
+
+        for tag_fqn in required_tags:
+            if tag_fqn in existing_fqns:
+                continue
+
+            desired_tags.append(
+                {
+                    "tagFQN": tag_fqn,
+                    "source": "Classification",
+                    "labelType": "Manual",
+                    "state": "Confirmed",
+                }
+            )
+
+            existing_fqns.add(tag_fqn)
+            changed = True
+
+        if not changed:
+            logger.info(
+                "Privacy tags already assigned to column: %s.%s",
+                table_fqn,
+                column_name,
+            )
+            return "already"
+
+        operation = "replace" if existing_tags else "add"
+
+        patch = [
+            {
+                "op": operation,
+                "path": f"/columns/{column_index}/tags",
+                "value": desired_tags,
+            }
+        ]
+
+        self.patch(
+            f"/v1/tables/{entity['id']}",
+            patch,
+        )
+
+        logger.info(
+            "Privacy tags assigned to column: %s.%s -> %s",
+            table_fqn,
+            column_name,
+            ", ".join(required_tags),
+        )
+
+        return "changed"
     # =========================================================================
     # Entity lookup
     # =========================================================================
@@ -2128,99 +2236,181 @@ class GovernanceEngine:
         )
 
     # =========================================================================
-    # Main execution
+    # Privacy assignments
     # =========================================================================
 
-    def run(
+    def apply_privacy_assignments(
         self,
     ) -> None:
 
-        project = self.config[
-            "project"
-        ]
-
-        logger.info(
-            "============================================================"
+        governance_config = (
+            self.config["governance"].get(
+                "privacy_assignments",
+                {},
+            )
         )
 
-        logger.info(
-            "Real Estate Governance-as-Code"
-        )
+        if not governance_config.get(
+            "enabled",
+            False,
+        ):
+            logger.info(
+                "Privacy assignment governance disabled"
+            )
+            return
+
+        processed_count = 0
+        changed_count = 0
+        already_count = 0
+        missing_count = 0
+
+        for relative_path in governance_config.get(
+            "files",
+            [],
+        ):
+            path = BASE_DIR / relative_path
+            data = load_json(path)
+
+            for assignment in data.get(
+                "column_assignments",
+                [],
+            ):
+                entity_fqn = assignment["entity"]
+                column_name = assignment["column"]
+                tags = assignment.get("tags", [])
+
+                if not tags:
+                    logger.warning(
+                        "Privacy column assignment without tags: %s.%s",
+                        entity_fqn,
+                        column_name,
+                    )
+                    continue
+
+                result = self.client.apply_tags_to_column(
+                    entity_fqn,
+                    column_name,
+                    tags,
+                )
+
+                processed_count += 1
+
+                if result == "changed":
+                    changed_count += 1
+                elif result == "already":
+                    already_count += 1
+                elif result == "missing":
+                    missing_count += 1
 
         logger.info(
-            "Project: %s",
-            project[
-                "display_name"
-            ],
+            "Privacy assignment governance completed: "
+            "%s processed, %s changed, "
+            "%s already correct, %s missing",
+            processed_count,
+            changed_count,
+            already_count,
+            missing_count,
         )
 
-        logger.info(
-            "Governance version: %s",
-            project[
-                "governance_version"
-            ],
-        )
+    # =========================================================================
+    # Main execution
+    # =========================================================================
 
-        logger.info(
-            "============================================================"
-        )
+def run(
+    self,
+) -> None:
 
-        self.validate_connection()
+    project = self.config[
+        "project"
+    ]
 
-        logger.info(
-            "Step 1/7 - Applying domains"
-        )
+    logger.info(
+        "============================================================"
+    )
 
-        self.apply_domains()
+    logger.info(
+        "Real Estate Governance-as-Code"
+    )
 
-        logger.info(
-            "Step 2/7 - Applying business glossary"
-        )
+    logger.info(
+        "Project: %s",
+        project[
+            "display_name"
+        ],
+    )
 
-        self.apply_glossary()
+    logger.info(
+        "Governance version: %s",
+        project[
+            "governance_version"
+        ],
+    )
 
-        logger.info(
-            "Step 3/7 - Applying classifications and tags"
-        )
+    logger.info(
+        "============================================================"
+    )
 
-        self.apply_classifications()
+    self.validate_connection()
 
-        logger.info(
-            "Step 4/7 - Applying Data Layer governance"
-        )
+    logger.info(
+        "Step 1/8 - Applying domains"
+    )
 
-        self.apply_data_layers()
+    self.apply_domains()
 
-        logger.info(
-            "Step 5/7 - Applying ownership"
-        )
+    logger.info(
+        "Step 2/8 - Applying business glossary"
+    )
 
-        self.apply_ownership()
+    self.apply_glossary()
 
-        logger.info(
-            "Step 6/7 - Applying Data Quality governance"
-        )
+    logger.info(
+        "Step 3/8 - Applying classifications and tags"
+    )
 
-        self.apply_quality_governance()
+    self.apply_classifications()
 
-        logger.info(
-            "Step 7/7 - Applying glossary assignments"
-        )
+    logger.info(
+        "Step 4/8 - Applying Data Layer governance"
+    )
 
-        self.apply_glossary_assignments()
+    self.apply_data_layers()
 
-        logger.info(
-            "============================================================"
-        )
+    logger.info(
+        "Step 5/8 - Applying ownership"
+    )
 
-        logger.info(
-            "Governance-as-Code execution completed successfully"
-        )
+    self.apply_ownership()
 
-        logger.info(
-            "============================================================"
-        )
+    logger.info(
+        "Step 6/8 - Applying Data Quality governance"
+    )
 
+    self.apply_quality_governance()
+
+    logger.info(
+        "Step 7/8 - Applying glossary assignments"
+    )
+
+    self.apply_glossary_assignments()
+
+    logger.info(
+        "Step 8/8 - Applying privacy assignments"
+    )
+
+    self.apply_privacy_assignments()
+
+    logger.info(
+        "============================================================"
+    )
+
+    logger.info(
+        "Governance-as-Code execution completed successfully"
+    )
+
+    logger.info(
+        "============================================================"
+    )
 
 # =============================================================================
 # Entrypoint
