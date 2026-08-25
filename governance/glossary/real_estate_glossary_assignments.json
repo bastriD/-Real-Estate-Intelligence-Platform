@@ -1,0 +1,136 @@
+{
+  "glossary_assignment_governance": {
+    "name": "RealEstateGlossaryAssignments",
+    "display_name": "Real Estate Glossary Assignments",
+    "description": "Règles déclaratives reliant les concepts du glossaire métier aux actifs et colonnes OpenMetadata de la plateforme immobilière.",
+    "version": "1.0.0"
+  },
+
+  "table_assignments": [
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.client",
+      "terms": [
+        "RealEstateBusinessGlossary.Client"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.chasseur",
+      "terms": [
+        "RealEstateBusinessGlossary.Chasseur"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.mandat",
+      "terms": [
+        "RealEstateBusinessGlossary.Mandat"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.demande",
+      "terms": [
+        "RealEstateBusinessGlossary.Demande"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.demande_version",
+      "terms": [
+        "RealEstateBusinessGlossary.VersionDemande"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.bien",
+      "terms": [
+        "RealEstateBusinessGlossary.Bien"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.presentation",
+      "terms": [
+        "RealEstateBusinessGlossary.Presentation"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.visite",
+      "terms": [
+        "RealEstateBusinessGlossary.Visite"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.commentaire",
+      "terms": [
+        "RealEstateBusinessGlossary.Commentaire"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.paiement",
+      "terms": [
+        "RealEstateBusinessGlossary.Paiement"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.source",
+      "terms": [
+        "RealEstateBusinessGlossary.Source"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.secteur",
+      "terms": [
+        "RealEstateBusinessGlossary.Secteur"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.bareme_commission",
+      "terms": [
+        "RealEstateBusinessGlossary.BaremeCommission"
+      ]
+    }
+  ],
+
+  "column_assignments": [
+    {
+      "entity": "real-estate-postgresql.real_estate.analytics.mart_market_by_city",
+      "column": "prix_moyen",
+      "terms": [
+        "RealEstateBusinessGlossary.Prix"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.analytics.mart_market_by_city",
+      "column": "prix_min",
+      "terms": [
+        "RealEstateBusinessGlossary.Prix"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.analytics.mart_market_by_city",
+      "column": "prix_max",
+      "terms": [
+        "RealEstateBusinessGlossary.Prix"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.analytics.mart_market_by_city",
+      "column": "prix_m2_moyen",
+      "terms": [
+        "RealEstateBusinessGlossary.PrixM2"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.analytics.mart_market_by_city",
+      "column": "surface_moyenne",
+      "terms": [
+        "RealEstateBusinessGlossary.Surface"
+      ]
+    }
+  ],
+
+  "policies": {
+    "preserve_existing_tags": true,
+    "preserve_existing_glossary_terms": true,
+    "missing_assets_are_reported": true,
+    "missing_columns_are_reported": true,
+    "missing_terms_are_errors": true,
+    "idempotent_execution": true
+  }
+}

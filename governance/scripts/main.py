@@ -400,7 +400,7 @@ class OpenMetadataClient:
         )
 
     # =========================================================================
-    # Glossary
+    # Glossary definitions
     # =========================================================================
 
     def upsert_glossary(
@@ -476,6 +476,257 @@ class OpenMetadataClient:
         )
 
         return entity
+
+    # =========================================================================
+    # Glossary assignment helpers
+    # =========================================================================
+
+    def ensure_glossary_term_exists(
+        self,
+        term_fqn: str,
+    ) -> dict[str, Any]:
+
+        term = self.get_by_name(
+            "/v1/glossaryTerms",
+            term_fqn,
+        )
+
+        if not term:
+            raise RuntimeError(
+                f"Glossary term does not exist: {term_fqn}"
+            )
+
+        return term
+
+    def apply_glossary_terms_to_table(
+        self,
+        fqn: str,
+        required_terms: list[str],
+    ) -> str:
+
+        entity = self.get_by_name(
+            "/v1/tables",
+            fqn,
+            fields="tags",
+        )
+
+        if not entity:
+            logger.warning(
+                "Glossary table target not found: %s",
+                fqn,
+            )
+
+            return "missing"
+
+        for term_fqn in required_terms:
+            self.ensure_glossary_term_exists(
+                term_fqn
+            )
+
+        existing_tags = entity.get(
+            "tags"
+        ) or []
+
+        existing_fqns = {
+            tag.get("tagFQN")
+            for tag in existing_tags
+            if tag.get("tagFQN")
+        }
+
+        desired_tags = list(
+            existing_tags
+        )
+
+        changed = False
+
+        for term_fqn in required_terms:
+
+            if term_fqn in existing_fqns:
+                continue
+
+            desired_tags.append(
+                {
+                    "tagFQN": term_fqn,
+                    "labelType": "Manual",
+                    "state": "Confirmed",
+                }
+            )
+
+            existing_fqns.add(
+                term_fqn
+            )
+
+            changed = True
+
+        if not changed:
+            logger.info(
+                "Glossary terms already assigned to table: %s -> %s",
+                fqn,
+                ", ".join(
+                    required_terms
+                ),
+            )
+
+            return "already"
+
+        operation = (
+            "replace"
+            if existing_tags
+            else "add"
+        )
+
+        patch = [
+            {
+                "op": operation,
+                "path": "/tags",
+                "value": desired_tags,
+            }
+        ]
+
+        self.patch(
+            f"/v1/tables/{entity['id']}",
+            patch,
+        )
+
+        logger.info(
+            "Glossary terms assigned to table: %s -> %s",
+            fqn,
+            ", ".join(
+                required_terms
+            ),
+        )
+
+        return "changed"
+
+    def apply_glossary_terms_to_column(
+        self,
+        table_fqn: str,
+        column_name: str,
+        required_terms: list[str],
+    ) -> str:
+
+        entity = self.get_by_name(
+            "/v1/tables",
+            table_fqn,
+            fields="columns,tags",
+        )
+
+        if not entity:
+            logger.warning(
+                "Glossary column table target not found: %s",
+                table_fqn,
+            )
+
+            return "missing"
+
+        for term_fqn in required_terms:
+            self.ensure_glossary_term_exists(
+                term_fqn
+            )
+
+        columns = entity.get(
+            "columns"
+        ) or []
+
+        column_index: int | None = None
+        column: dict[str, Any] | None = None
+
+        for index, current_column in enumerate(
+            columns
+        ):
+            if current_column.get(
+                "name"
+            ) == column_name:
+                column_index = index
+                column = current_column
+                break
+
+        if column is None or column_index is None:
+            logger.warning(
+                "Glossary column target not found: %s.%s",
+                table_fqn,
+                column_name,
+            )
+
+            return "missing"
+
+        existing_tags = column.get(
+            "tags"
+        ) or []
+
+        existing_fqns = {
+            tag.get("tagFQN")
+            for tag in existing_tags
+            if tag.get("tagFQN")
+        }
+
+        desired_tags = list(
+            existing_tags
+        )
+
+        changed = False
+
+        for term_fqn in required_terms:
+
+            if term_fqn in existing_fqns:
+                continue
+
+            desired_tags.append(
+                {
+                    "tagFQN": term_fqn,
+                    "labelType": "Manual",
+                    "state": "Confirmed",
+                }
+            )
+
+            existing_fqns.add(
+                term_fqn
+            )
+
+            changed = True
+
+        if not changed:
+            logger.info(
+                "Glossary terms already assigned to column: "
+                "%s.%s -> %s",
+                table_fqn,
+                column_name,
+                ", ".join(
+                    required_terms
+                ),
+            )
+
+            return "already"
+
+        operation = (
+            "replace"
+            if existing_tags
+            else "add"
+        )
+
+        patch = [
+            {
+                "op": operation,
+                "path": f"/columns/{column_index}/tags",
+                "value": desired_tags,
+            }
+        ]
+
+        self.patch(
+            f"/v1/tables/{entity['id']}",
+            patch,
+        )
+
+        logger.info(
+            "Glossary terms assigned to column: %s.%s -> %s",
+            table_fqn,
+            column_name,
+            ", ".join(
+                required_terms
+            ),
+        )
+
+        return "changed"
 
     # =========================================================================
     # Classification / Tags
@@ -1156,7 +1407,7 @@ class GovernanceEngine:
         )
 
     # =========================================================================
-    # Glossary
+    # Glossary definitions
     # =========================================================================
 
     def apply_glossary(
@@ -1359,10 +1610,6 @@ class GovernanceEngine:
                 tag_fqn = rule[
                     "tag"
                 ]
-
-                # -------------------------------------------------------------
-                # Verify the declared tag exists before touching assets.
-                # -------------------------------------------------------------
 
                 tag_entity = self.client.get_by_name(
                     "/v1/tags",
@@ -1730,6 +1977,155 @@ class GovernanceEngine:
             )
 
     # =========================================================================
+    # Glossary assignment governance
+    # =========================================================================
+
+    def apply_glossary_assignments(
+        self,
+    ) -> None:
+
+        governance_config = (
+            self.config["governance"].get(
+                "glossary_assignments",
+                {},
+            )
+        )
+
+        if not governance_config.get(
+            "enabled",
+            False,
+        ):
+            logger.info(
+                "Glossary assignment governance disabled"
+            )
+
+            return
+
+        processed_count = 0
+        changed_count = 0
+        already_count = 0
+        missing_count = 0
+
+        for relative_path in governance_config.get(
+            "files",
+            [],
+        ):
+
+            path = (
+                BASE_DIR
+                / relative_path
+            )
+
+            data = load_json(
+                path
+            )
+
+            # -----------------------------------------------------------------
+            # Table-level assignments
+            # -----------------------------------------------------------------
+
+            for assignment in data.get(
+                "table_assignments",
+                [],
+            ):
+
+                entity_fqn = assignment[
+                    "entity"
+                ]
+
+                terms = assignment.get(
+                    "terms",
+                    [],
+                )
+
+                if not terms:
+                    logger.warning(
+                        "Glossary table assignment without terms: %s",
+                        entity_fqn,
+                    )
+
+                    continue
+
+                result = (
+                    self.client.apply_glossary_terms_to_table(
+                        entity_fqn,
+                        terms,
+                    )
+                )
+
+                processed_count += 1
+
+                if result == "changed":
+                    changed_count += 1
+
+                elif result == "already":
+                    already_count += 1
+
+                elif result == "missing":
+                    missing_count += 1
+
+            # -----------------------------------------------------------------
+            # Column-level assignments
+            # -----------------------------------------------------------------
+
+            for assignment in data.get(
+                "column_assignments",
+                [],
+            ):
+
+                entity_fqn = assignment[
+                    "entity"
+                ]
+
+                column_name = assignment[
+                    "column"
+                ]
+
+                terms = assignment.get(
+                    "terms",
+                    [],
+                )
+
+                if not terms:
+                    logger.warning(
+                        "Glossary column assignment without terms: "
+                        "%s.%s",
+                        entity_fqn,
+                        column_name,
+                    )
+
+                    continue
+
+                result = (
+                    self.client.apply_glossary_terms_to_column(
+                        entity_fqn,
+                        column_name,
+                        terms,
+                    )
+                )
+
+                processed_count += 1
+
+                if result == "changed":
+                    changed_count += 1
+
+                elif result == "already":
+                    already_count += 1
+
+                elif result == "missing":
+                    missing_count += 1
+
+        logger.info(
+            "Glossary assignment governance completed: "
+            "%s processed, %s changed, "
+            "%s already correct, %s missing",
+            processed_count,
+            changed_count,
+            already_count,
+            missing_count,
+        )
+
+    # =========================================================================
     # Main execution
     # =========================================================================
 
@@ -1770,40 +2166,46 @@ class GovernanceEngine:
         self.validate_connection()
 
         logger.info(
-            "Step 1/6 - Applying domains"
+            "Step 1/7 - Applying domains"
         )
 
         self.apply_domains()
 
         logger.info(
-            "Step 2/6 - Applying business glossary"
+            "Step 2/7 - Applying business glossary"
         )
 
         self.apply_glossary()
 
         logger.info(
-            "Step 3/6 - Applying classifications and tags"
+            "Step 3/7 - Applying classifications and tags"
         )
 
         self.apply_classifications()
 
         logger.info(
-            "Step 4/6 - Applying Data Layer governance"
+            "Step 4/7 - Applying Data Layer governance"
         )
 
         self.apply_data_layers()
 
         logger.info(
-            "Step 5/6 - Applying ownership"
+            "Step 5/7 - Applying ownership"
         )
 
         self.apply_ownership()
 
         logger.info(
-            "Step 6/6 - Applying Data Quality governance"
+            "Step 6/7 - Applying Data Quality governance"
         )
 
         self.apply_quality_governance()
+
+        logger.info(
+            "Step 7/7 - Applying glossary assignments"
+        )
+
+        self.apply_glossary_assignments()
 
         logger.info(
             "============================================================"
