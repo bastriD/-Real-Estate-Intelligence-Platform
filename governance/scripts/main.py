@@ -1273,6 +1273,100 @@ class OpenMetadataClient:
 
         return "changed"
 
+    # =========================================================================
+    # Data Products
+    # =========================================================================
+
+    def upsert_data_product(
+        self,
+        data_product: dict[str, Any],
+        *,
+        owner_id: str | None = None,
+    ) -> dict[str, Any]:
+
+        payload: dict[str, Any] = {
+            "name": data_product["name"],
+            "displayName": data_product.get(
+                "display_name",
+                data_product["name"],
+            ),
+            "description": data_product["description"],
+            "domain": data_product["domain"],
+        }
+
+        if owner_id:
+            payload["owners"] = [
+                {
+                    "id": owner_id,
+                    "type": "team",
+                }
+            ]
+
+        entity = self.put(
+            "/v1/dataProducts",
+            payload,
+        ).json()
+
+        logger.info(
+            "Data Product applied: %s",
+            entity.get(
+                "fullyQualifiedName",
+                data_product["name"],
+            ),
+        )
+
+        return entity
+
+    def add_assets_to_data_product(
+        self,
+        data_product_id: str,
+        asset_fqns: list[str],
+    ) -> tuple[int, int]:
+
+        data_product = self.get(
+            f"/v1/dataProducts/{data_product_id}",
+            params={"fields": "assets"},
+        ).json()
+
+        existing_asset_ids = {
+            asset.get("id")
+            for asset in data_product.get("assets") or []
+            if asset.get("id")
+        }
+        assets_to_add: list[dict[str, str]] = []
+        already_count = 0
+
+        for asset_fqn in asset_fqns:
+            asset = self.get_by_name(
+                "/v1/tables",
+                asset_fqn,
+            )
+
+            if not asset:
+                raise RuntimeError(
+                    f"Data Product asset does not exist: {asset_fqn}"
+                )
+
+            if asset["id"] in existing_asset_ids:
+                already_count += 1
+                continue
+
+            assets_to_add.append(
+                {
+                    "id": asset["id"],
+                    "type": "table",
+                }
+            )
+            existing_asset_ids.add(asset["id"])
+
+        if assets_to_add:
+            self.put(
+                f"/v1/dataProducts/{data_product_id}/assets/add",
+                assets_to_add,
+            )
+
+        return len(assets_to_add), already_count
+
 # =============================================================================
 # Governance engine
 # =============================================================================
