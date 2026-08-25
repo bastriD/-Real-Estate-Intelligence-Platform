@@ -223,6 +223,55 @@ class OpenMetadataClient:
         return response.json()
 
     # =========================================================================
+    # Table discovery
+    # =========================================================================
+
+    def list_tables_in_schema(
+        self,
+        schema_fqn: str,
+    ) -> list[dict[str, Any]]:
+
+        tables: list[dict[str, Any]] = []
+
+        params: dict[str, Any] = {
+            "databaseSchema": schema_fqn,
+            "limit": 100,
+        }
+
+        while True:
+            response = self.get(
+                "/v1/tables",
+                params=params,
+            )
+
+            payload = response.json()
+
+            current_tables = payload.get(
+                "data",
+                [],
+            )
+
+            tables.extend(
+                current_tables
+            )
+
+            paging = payload.get(
+                "paging",
+                {},
+            )
+
+            after = paging.get(
+                "after"
+            )
+
+            if not after:
+                break
+
+            params["after"] = after
+
+        return tables
+
+    # =========================================================================
     # Domains
     # =========================================================================
 
@@ -651,7 +700,7 @@ class OpenMetadataClient:
         )
 
     # =========================================================================
-    # Tags
+    # Generic table tags
     # =========================================================================
 
     def apply_tags_to_table(
@@ -740,6 +789,128 @@ class OpenMetadataClient:
             "Tags applied to: %s",
             fqn,
         )
+
+    # =========================================================================
+    # Data Layer tags
+    # =========================================================================
+
+    def apply_data_layer_to_table(
+        self,
+        fqn: str,
+        desired_tag_fqn: str,
+    ) -> str:
+
+        entity = self.get_by_name(
+            "/v1/tables",
+            fqn,
+            fields="tags",
+        )
+
+        if not entity:
+            logger.warning(
+                "DataLayer target not found: %s",
+                fqn,
+            )
+
+            return "missing"
+
+        existing_tags = entity.get(
+            "tags"
+        ) or []
+
+        data_layer_prefix = (
+            "RealEstateDataLayer."
+        )
+
+        current_data_layer_tags = [
+            tag
+            for tag in existing_tags
+            if (
+                tag.get("tagFQN")
+                and tag["tagFQN"].startswith(
+                    data_layer_prefix
+                )
+            )
+        ]
+
+        current_data_layer_fqns = {
+            tag["tagFQN"]
+            for tag in current_data_layer_tags
+        }
+
+        if current_data_layer_fqns == {
+            desired_tag_fqn
+        }:
+            logger.info(
+                "DataLayer already correct: %s -> %s",
+                fqn,
+                desired_tag_fqn,
+            )
+
+            return "already"
+
+        preserved_tags = [
+            tag
+            for tag in existing_tags
+            if not (
+                tag.get("tagFQN")
+                and tag["tagFQN"].startswith(
+                    data_layer_prefix
+                )
+            )
+        ]
+
+        desired_tags = list(
+            preserved_tags
+        )
+
+        desired_tags.append(
+            {
+                "tagFQN": desired_tag_fqn,
+                "labelType": "Manual",
+                "state": "Confirmed",
+            }
+        )
+
+        operation = (
+            "replace"
+            if existing_tags
+            else "add"
+        )
+
+        patch = [
+            {
+                "op": operation,
+                "path": "/tags",
+                "value": desired_tags,
+            }
+        ]
+
+        self.patch(
+            f"/v1/tables/{entity['id']}",
+            patch,
+        )
+
+        if current_data_layer_fqns:
+            logger.info(
+                "DataLayer corrected: %s | %s -> %s",
+                fqn,
+                ", ".join(
+                    sorted(
+                        current_data_layer_fqns
+                    )
+                ),
+                desired_tag_fqn,
+            )
+
+        else:
+            logger.info(
+                "DataLayer applied: %s -> %s",
+                fqn,
+                desired_tag_fqn,
+            )
+
+        return "changed"
 
 
 # =============================================================================
@@ -841,8 +1012,7 @@ class GovernanceEngine:
             )
 
             # -----------------------------------------------------------------
-            # First pass:
-            # Create root domains first.
+            # First pass: root domains
             # -----------------------------------------------------------------
 
             for domain in domains:
@@ -863,8 +1033,7 @@ class GovernanceEngine:
                 ] = entity
 
             # -----------------------------------------------------------------
-            # Second pass:
-            # Create child domains after their parent exists.
+            # Second pass: child domains
             # -----------------------------------------------------------------
 
             for domain in domains:
@@ -914,8 +1083,7 @@ class GovernanceEngine:
                 ] = entity
 
             # -----------------------------------------------------------------
-            # Third pass:
-            # Assign domains to OpenMetadata entities.
+            # Third pass: assignments
             # -----------------------------------------------------------------
 
             for assignment in data.get(
@@ -926,7 +1094,9 @@ class GovernanceEngine:
                 domain_name = assignment["domain"]
 
                 domain_entity = (
-                    created_domains.get(domain_name)
+                    created_domains.get(
+                        domain_name
+                    )
                     or self.client.get_by_name(
                         "/v1/domains",
                         domain_name,
@@ -944,7 +1114,8 @@ class GovernanceEngine:
 
                 if not domain_fqn:
                     raise RuntimeError(
-                        f"Domain has no fullyQualifiedName: {domain_name}"
+                        "Domain has no fullyQualifiedName: "
+                        f"{domain_name}"
                     )
 
                 entity_type = assignment[
@@ -952,22 +1123,13 @@ class GovernanceEngine:
                 ]
 
                 if entity_type == "databaseSchema":
-
-                    endpoint = (
-                        "/v1/databaseSchemas"
-                    )
+                    endpoint = "/v1/databaseSchemas"
 
                 elif entity_type == "table":
-
-                    endpoint = (
-                        "/v1/tables"
-                    )
+                    endpoint = "/v1/tables"
 
                 elif entity_type == "database":
-
-                    endpoint = (
-                        "/v1/databases"
-                    )
+                    endpoint = "/v1/databases"
 
                 else:
                     logger.warning(
@@ -984,10 +1146,10 @@ class GovernanceEngine:
                 ):
 
                     self.client.assign_domain_to_entity(
-                    endpoint,
-                    target,
-                    domain_fqn,
-                )
+                        endpoint,
+                        target,
+                        domain_fqn,
+                    )
 
         logger.info(
             "Domain governance completed"
@@ -1130,6 +1292,174 @@ class GovernanceEngine:
         )
 
     # =========================================================================
+    # Data Layer Governance
+    # =========================================================================
+
+    def apply_data_layers(
+        self,
+    ) -> None:
+
+        governance_config = (
+            self.config["governance"].get(
+                "data_layer",
+                {},
+            )
+        )
+
+        if not governance_config.get(
+            "enabled",
+            False,
+        ):
+            logger.info(
+                "Data Layer governance disabled"
+            )
+
+            return
+
+        openmetadata_config = self.config[
+            "openmetadata"
+        ]
+
+        database_service = openmetadata_config[
+            "database_service"
+        ]
+
+        database = openmetadata_config[
+            "database"
+        ]
+
+        changed_count = 0
+        already_count = 0
+        missing_count = 0
+        processed_count = 0
+
+        for relative_path in governance_config.get(
+            "files",
+            [],
+        ):
+
+            path = (
+                BASE_DIR
+                / relative_path
+            )
+
+            data = load_json(
+                path
+            )
+
+            for rule in data.get(
+                "layer_rules",
+                [],
+            ):
+
+                schema_name = rule[
+                    "schema"
+                ]
+
+                tag_fqn = rule[
+                    "tag"
+                ]
+
+                # -------------------------------------------------------------
+                # Verify the declared tag exists before touching assets.
+                # -------------------------------------------------------------
+
+                tag_entity = self.client.get_by_name(
+                    "/v1/tags",
+                    tag_fqn,
+                )
+
+                if not tag_entity:
+                    raise RuntimeError(
+                        "DataLayer tag does not exist: "
+                        f"{tag_fqn}"
+                    )
+
+                schema_fqn = (
+                    f"{database_service}."
+                    f"{database}."
+                    f"{schema_name}"
+                )
+
+                schema_entity = self.client.get_by_name(
+                    "/v1/databaseSchemas",
+                    schema_fqn,
+                )
+
+                if not schema_entity:
+                    logger.warning(
+                        "DataLayer schema not found: %s",
+                        schema_fqn,
+                    )
+
+                    missing_count += 1
+                    continue
+
+                tables = (
+                    self.client.list_tables_in_schema(
+                        schema_fqn
+                    )
+                )
+
+                if not tables:
+                    logger.warning(
+                        "No catalogued tables found for "
+                        "DataLayer schema: %s",
+                        schema_fqn,
+                    )
+
+                    continue
+
+                logger.info(
+                    "Applying %s to schema %s: %s tables discovered",
+                    tag_fqn,
+                    schema_fqn,
+                    len(tables),
+                )
+
+                for table in tables:
+
+                    table_fqn = table.get(
+                        "fullyQualifiedName"
+                    )
+
+                    if not table_fqn:
+                        logger.warning(
+                            "OpenMetadata table without "
+                            "fullyQualifiedName in schema: %s",
+                            schema_fqn,
+                        )
+
+                        continue
+
+                    result = (
+                        self.client.apply_data_layer_to_table(
+                            table_fqn,
+                            tag_fqn,
+                        )
+                    )
+
+                    processed_count += 1
+
+                    if result == "changed":
+                        changed_count += 1
+
+                    elif result == "already":
+                        already_count += 1
+
+                    elif result == "missing":
+                        missing_count += 1
+
+        logger.info(
+            "Data Layer governance completed: "
+            "%s processed, %s changed, %s already correct, %s missing",
+            processed_count,
+            changed_count,
+            already_count,
+            missing_count,
+        )
+
+    # =========================================================================
     # Ownership
     # =========================================================================
 
@@ -1192,16 +1522,10 @@ class GovernanceEngine:
                 ]
 
                 if entity_type == "table":
-
-                    endpoint = (
-                        "/v1/tables"
-                    )
+                    endpoint = "/v1/tables"
 
                 elif entity_type == "schema":
-
-                    endpoint = (
-                        "/v1/databaseSchemas"
-                    )
+                    endpoint = "/v1/databaseSchemas"
 
                 else:
                     logger.warning(
@@ -1446,31 +1770,37 @@ class GovernanceEngine:
         self.validate_connection()
 
         logger.info(
-            "Step 1/5 - Applying domains"
+            "Step 1/6 - Applying domains"
         )
 
         self.apply_domains()
 
         logger.info(
-            "Step 2/5 - Applying business glossary"
+            "Step 2/6 - Applying business glossary"
         )
 
         self.apply_glossary()
 
         logger.info(
-            "Step 3/5 - Applying classifications and tags"
+            "Step 3/6 - Applying classifications and tags"
         )
 
         self.apply_classifications()
 
         logger.info(
-            "Step 4/5 - Applying ownership"
+            "Step 4/6 - Applying Data Layer governance"
+        )
+
+        self.apply_data_layers()
+
+        logger.info(
+            "Step 5/6 - Applying ownership"
         )
 
         self.apply_ownership()
 
         logger.info(
-            "Step 5/5 - Applying Data Quality governance"
+            "Step 6/6 - Applying Data Quality governance"
         )
 
         self.apply_quality_governance()

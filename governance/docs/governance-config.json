@@ -4,7 +4,7 @@
     "display_name": "Enterprise Real Estate Intelligence Platform",
     "domain": "real-estate",
     "environment": "homelab",
-    "governance_version": "1.1.0"
+    "governance_version": "1.2.0"
   },
 
   "openmetadata": {
@@ -31,6 +31,13 @@
       "enabled": true,
       "files": [
         "tagging/real_estate_tags.json"
+      ]
+    },
+
+    "data_layer": {
+      "enabled": true,
+      "files": [
+        "tagging/real_estate_data_layers.json"
       ]
     },
 

@@ -1,0 +1,55 @@
+{
+  "data_layer_governance": {
+    "name": "RealEstateDataLayerGovernance",
+    "display_name": "Real Estate Data Layer Governance",
+    "description": "Règles déclaratives permettant d'identifier systématiquement la couche architecturale de chaque actif de données catalogué dans OpenMetadata.",
+    "version": "1.0.0"
+  },
+
+  "layer_rules": [
+    {
+      "id": "LAYER-LEGACY",
+      "schema": "Fil_Rouge_Depart",
+      "tag": "RealEstateDataLayer.Legacy",
+      "description": "Actifs provenant du système historique conservé comme source de migration."
+    },
+    {
+      "id": "LAYER-RAW",
+      "schema": "raw",
+      "tag": "RealEstateDataLayer.Raw",
+      "description": "Données brutes issues de l'ingestion avant transformation ou normalisation."
+    },
+    {
+      "id": "LAYER-STAGING",
+      "schema": "staging",
+      "tag": "RealEstateDataLayer.Staging",
+      "description": "Données intermédiaires nettoyées, validées ou transformées avant chargement métier."
+    },
+    {
+      "id": "LAYER-OLTP",
+      "schema": "real_estate",
+      "tag": "RealEstateDataLayer.OLTP",
+      "description": "Modèle transactionnel métier constituant la source de vérité opérationnelle."
+    },
+    {
+      "id": "LAYER-WAREHOUSE",
+      "schema": "warehouse",
+      "tag": "RealEstateDataLayer.Warehouse",
+      "description": "Entrepôt analytique contenant les dimensions et faits destinés aux usages décisionnels."
+    },
+    {
+      "id": "LAYER-ANALYTICS",
+      "schema": "analytics",
+      "tag": "RealEstateDataLayer.Analytics",
+      "description": "Modèles analytiques et marts dérivés produits notamment par dbt."
+    }
+  ],
+
+  "policies": {
+    "preserve_existing_tags": true,
+    "do_not_delete_existing_metadata": true,
+    "one_data_layer_per_asset": true,
+    "missing_assets_are_reported": true,
+    "idempotent_execution": true
+  }
+}
