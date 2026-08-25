@@ -129,7 +129,15 @@ spec:
                     openmetadata_jwt_token: "{{ env_var('OM_JWT_TOKEN') }}"
                     openmetadata_host_port: "http://openmetadata.openmetadata.svc.cluster.local:8585/api"
                     openmetadata_service_name: "real-estate-postgresql"
+
+                    openmetadata_dbt_update_descriptions: true
+                    openmetadata_dbt_update_owners: false
+                    openmetadata_include_tags: true
                   EOF
+
+                  echo "Effective dbt OpenMetadata configuration:"
+
+                  tail -n 15 /workspace/real-estate-dbt/dbt_project.yml
 
                   echo "dbt artifacts available:"
 
