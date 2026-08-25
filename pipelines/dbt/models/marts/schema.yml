@@ -18,6 +18,11 @@ models:
         tests:
           - not_null
 
+      - name: code_postal
+        description: Postal code used as a geographical analytical axis.
+        tests:
+          - not_null
+
       - name: nb_annonces
         description: Number of advertisement observations for the location.
         tests:
