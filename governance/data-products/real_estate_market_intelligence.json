@@ -1,0 +1,47 @@
+{
+  "data_products": [
+    {
+      "name": "RealEstateMarketIntelligence",
+      "display_name": "Real Estate Market Intelligence",
+      "description": "Produit de données analytique fournissant une vision consolidée du marché immobilier par localisation. Il expose les volumes d'annonces, les prix moyens, les prix au mètre carré, les surfaces moyennes et les périodes de publication afin de supporter les usages BI, pilotage métier et futurs cas d'usage IA.",
+      "domain": "RealEstateIntelligence.RealEstateAnalytics",
+
+      "primary_assets": [
+        "real-estate-postgresql.real_estate.analytics.mart_market_by_city"
+      ],
+
+      "supporting_assets": [
+        "real-estate-postgresql.real_estate.analytics.stg_fact_annonce",
+        "real-estate-postgresql.real_estate.analytics.stg_dim_bien",
+        "real-estate-postgresql.real_estate.warehouse.fact_annonce",
+        "real-estate-postgresql.real_estate.warehouse.dim_localisation",
+        "real-estate-postgresql.real_estate.warehouse.dim_bien",
+        "real-estate-postgresql.real_estate.warehouse.dim_source"
+      ],
+
+      "business_capabilities": [
+        "Analyse du marché immobilier",
+        "Analyse des prix moyens",
+        "Analyse du prix au mètre carré",
+        "Analyse du volume d'annonces",
+        "Analyse géographique par ville et code postal",
+        "Support aux futurs usages BI et IA"
+      ],
+
+      "governance": {
+        "owner": "RealEstateAnalytics",
+        "quality_controlled": true,
+        "privacy_reviewed": true,
+        "lineage_required": true,
+        "source_of_truth": "real-estate-postgresql.real_estate.analytics.mart_market_by_city"
+      }
+    }
+  ],
+
+  "policies": {
+    "preserve_existing_assets": true,
+    "missing_assets_are_errors": true,
+    "missing_domain_is_error": true,
+    "idempotent_execution": true
+  }
+}

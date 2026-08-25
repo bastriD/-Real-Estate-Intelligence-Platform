@@ -1273,7 +1273,138 @@ class OpenMetadataClient:
 
         return "changed"
 
+    # =========================================================================
+    # Data Products
+    # =========================================================================
 
+    def apply_data_products(
+        self,
+    ) -> None:
+
+        governance_config = (
+            self.config["governance"].get(
+                "data_products",
+                {},
+            )
+        )
+
+        if not governance_config.get(
+            "enabled",
+            False,
+        ):
+            logger.info(
+                "Data Product governance disabled"
+            )
+
+            return
+
+        processed_count = 0
+        added_asset_count = 0
+        already_asset_count = 0
+
+        for relative_path in governance_config.get(
+            "files",
+            [],
+        ):
+
+            path = (
+                BASE_DIR
+                / relative_path
+            )
+
+            data = load_json(
+                path
+            )
+
+            for data_product in data.get(
+                "data_products",
+                [],
+            ):
+
+                domain_fqn = data_product[
+                    "domain"
+                ]
+
+                domain = self.client.get_by_name(
+                    "/v1/domains",
+                    domain_fqn,
+                )
+
+                if not domain:
+                    raise RuntimeError(
+                        f"Data Product domain does not exist: {domain_fqn}"
+                    )
+
+                owner_name = (
+                    data_product.get(
+                        "governance",
+                        {},
+                    ).get(
+                        "owner"
+                    )
+                )
+
+                owner_id = None
+
+                if owner_name:
+                    owner = self.client.get_by_name(
+                        "/v1/teams",
+                        owner_name,
+                    )
+
+                    if not owner:
+                        raise RuntimeError(
+                            f"Data Product owner team does not exist: {owner_name}"
+                        )
+
+                    owner_id = owner[
+                        "id"
+                    ]
+
+                entity = (
+                    self.client.upsert_data_product(
+                        data_product,
+                        owner_id=owner_id,
+                    )
+                )
+
+                primary_assets = data_product.get(
+                    "primary_assets",
+                    [],
+                )
+
+                supporting_assets = data_product.get(
+                    "supporting_assets",
+                    [],
+                )
+
+                all_assets = list(
+                    dict.fromkeys(
+                        primary_assets
+                        + supporting_assets
+                    )
+                )
+
+                added, already = (
+                    self.client.add_assets_to_data_product(
+                        entity["id"],
+                        all_assets,
+                    )
+                )
+
+                processed_count += 1
+                added_asset_count += added
+                already_asset_count += already
+
+        logger.info(
+            "Data Product governance completed: "
+            "%s products processed, "
+            "%s assets added, "
+            "%s assets already assigned",
+            processed_count,
+            added_asset_count,
+            already_asset_count,
+        )
 # =============================================================================
 # Governance engine
 # =============================================================================
@@ -2353,51 +2484,79 @@ class GovernanceEngine:
         self.validate_connection()
 
         logger.info(
-            "Step 1/8 - Applying domains"
+            "Step 1/9 - Applying domains"
         )
 
         self.apply_domains()
 
         logger.info(
-            "Step 2/8 - Applying business glossary"
+            "Step 2/9 - Applying business glossary"
         )
 
         self.apply_glossary()
 
         logger.info(
-            "Step 3/8 - Applying classifications and tags"
+            "Step 3/9 - Applying classifications and tags"
         )
 
         self.apply_classifications()
 
         logger.info(
-            "Step 4/8 - Applying Data Layer governance"
+            "Step 4/9 - Applying Data Layer governance"
         )
 
         self.apply_data_layers()
 
         logger.info(
-            "Step 5/8 - Applying ownership"
+            "Step 5/9 - Applying ownership"
         )
 
         self.apply_ownership()
 
         logger.info(
-            "Step 6/8 - Applying Data Quality governance"
+            "Step 6/9 - Applying Data Quality governance"
         )
 
         self.apply_quality_governance()
 
         logger.info(
-            "Step 7/8 - Applying glossary assignments"
+            "Step 7/9 - Applying glossary assignments"
         )
 
         self.apply_glossary_assignments()
 
         logger.info(
-            "Step 8/8 - Applying privacy assignments"
+            "Step 8/9 - Applying privacy assignments"
+        )
+        logger.info(
+            "Step 7/9 - Applying glossary assignments"
         )
 
+        self.apply_glossary_assignments()
+
+        logger.info(
+            "Step 8/9 - Applying privacy assignments"
+        )
+
+        self.apply_privacy_assignments()
+
+        logger.info(
+            "Step 9/9 - Applying Data Products"
+        )
+
+        self.apply_data_products()
+
+        logger.info(
+            "============================================================"
+        )
+
+        logger.info(
+            "Governance-as-Code execution completed successfully"
+        )
+
+        logger.info(
+            "============================================================"
+        )
         self.apply_privacy_assignments()
 
         logger.info(
