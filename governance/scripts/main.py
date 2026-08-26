@@ -1304,10 +1304,7 @@ class OpenMetadataClient:
             ),
             "description": data_product["description"],
             "domains": [
-                {
-                    "id": domain["id"],
-                    "type": "domain",
-                }
+                domain_fqn
             ],
         }
 
