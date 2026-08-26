@@ -1154,132 +1154,124 @@ class OpenMetadataClient:
     # =========================================================================
     # Data Layer tags
     # =========================================================================
+  # =========================================================================
+    # Data Products
+    # =========================================================================
 
-    def apply_data_layer_to_table(
+    def apply_data_products(
         self,
-        fqn: str,
-        desired_tag_fqn: str,
-    ) -> str:
+    ) -> None:
 
-        entity = self.get_by_name(
-            "/v1/tables",
-            fqn,
-            fields="tags",
+        governance_config = (
+            self.config["governance"].get(
+                "data_products",
+                {},
+            )
         )
 
-        if not entity:
-            logger.warning(
-                "DataLayer target not found: %s",
-                fqn,
-            )
-
-            return "missing"
-
-        existing_tags = entity.get(
-            "tags"
-        ) or []
-
-        data_layer_prefix = (
-            "RealEstateDataLayer."
-        )
-
-        current_data_layer_tags = [
-            tag
-            for tag in existing_tags
-            if (
-                tag.get("tagFQN")
-                and tag["tagFQN"].startswith(
-                    data_layer_prefix
-                )
-            )
-        ]
-
-        current_data_layer_fqns = {
-            tag["tagFQN"]
-            for tag in current_data_layer_tags
-        }
-
-        if current_data_layer_fqns == {
-            desired_tag_fqn
-        }:
+        if not governance_config.get(
+            "enabled",
+            False,
+        ):
             logger.info(
-                "DataLayer already correct: %s -> %s",
-                fqn,
-                desired_tag_fqn,
+                "Data Product governance disabled"
+            )
+            return
+
+        processed_count = 0
+        added_count = 0
+        already_count = 0
+
+        for relative_path in governance_config.get(
+            "files",
+            [],
+        ):
+            path = (
+                GOVERNANCE_ROOT
+                / relative_path
             )
 
-            return "already"
+            data = load_json(
+                path
+            )
 
-        preserved_tags = [
-            tag
-            for tag in existing_tags
-            if not (
-                tag.get("tagFQN")
-                and tag["tagFQN"].startswith(
-                    data_layer_prefix
+            for data_product in data.get(
+                "data_products",
+                [],
+            ):
+                processed_count += 1
+
+                owner_id = None
+
+                owner_name = data_product.get(
+                    "owner"
                 )
-            )
-        ]
 
-        desired_tags = list(
-            preserved_tags
-        )
-
-        desired_tags.append(
-            {
-                "tagFQN": desired_tag_fqn,
-                "labelType": "Manual",
-                "state": "Confirmed",
-            }
-        )
-
-        operation = (
-            "replace"
-            if existing_tags
-            else "add"
-        )
-
-        patch = [
-            {
-                "op": operation,
-                "path": "/tags",
-                "value": desired_tags,
-            }
-        ]
-
-        self.patch(
-            f"/v1/tables/{entity['id']}",
-            patch,
-        )
-
-        if current_data_layer_fqns:
-            logger.info(
-                "DataLayer corrected: %s | %s -> %s",
-                fqn,
-                ", ".join(
-                    sorted(
-                        current_data_layer_fqns
+                if owner_name:
+                    owner = self.client.get_by_name(
+                        "/v1/teams",
+                        owner_name,
                     )
-                ),
-                desired_tag_fqn,
-            )
 
-        else:
-            logger.info(
-                "DataLayer applied: %s -> %s",
-                fqn,
-                desired_tag_fqn,
-            )
+                    if not owner:
+                        raise RuntimeError(
+                            "Data Product owner does not exist: "
+                            f"{owner_name}"
+                        )
 
+                    owner_id = owner[
+                        "id"
+                    ]
+
+                entity = self.client.upsert_data_product(
+                    data_product,
+                    owner_id=owner_id,
+                )
+
+                all_assets = data_product.get(
+                    "assets",
+                    [],
+                )
+
+                if all_assets:
+                    added, already = (
+                        self.client.add_assets_to_data_product(
+                            entity["name"],
+                            entity["id"],
+                            all_assets,
+                        )
+                    )
+
+                    added_count += added
+                    already_count += already
+
+                logger.info(
+                    "Data Product processed: %s",
+                    entity.get(
+                        "fullyQualifiedName",
+                        entity.get(
+                            "name",
+                            data_product["name"],
+                        ),
+                    ),
+                )
+
+        logger.info(
+            "Data Product governance completed: "
+            "%s products processed, "
+            "%s assets added, "
+            "%s assets already assigned",
+            processed_count,
+            added_count,
+            already_count,
+        )
         return "changed"
 
     # =========================================================================
     # Data Products
     # =========================================================================
 
-        # =========================================================================
-    # Data Products
-    # =========================================================================
+       
 
     def upsert_data_product(
         self,
