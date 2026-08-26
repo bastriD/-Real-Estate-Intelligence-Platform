@@ -1283,7 +1283,18 @@ class OpenMetadataClient:
         *,
         owner_id: str | None = None,
     ) -> dict[str, Any]:
+        domain_fqn = data_product["domain"]
 
+        domain = self.get_by_name(
+            "/v1/domains",
+            domain_fqn,
+        )
+
+        if not domain:
+            raise RuntimeError(
+                f"Data Product domain does not exist: {domain_fqn}"
+            )
+        
         payload: dict[str, Any] = {
             "name": data_product["name"],
             "displayName": data_product.get(
