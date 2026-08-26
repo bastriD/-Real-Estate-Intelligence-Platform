@@ -1303,9 +1303,7 @@ class OpenMetadataClient:
                 data_product["name"],
             ),
             "description": data_product["description"],
-            "domains": [
-                domain_fqn
-            ],
+            "domain": domain_fqn,
         }
 
         if owner_id:
@@ -1316,17 +1314,38 @@ class OpenMetadataClient:
                 }
             ]
 
-        entity = self.put(
+        self.put(
             "/v1/dataProducts",
             payload,
-        ).json()
+        )
+
+        data_product_fqn = (
+            f"{domain_fqn}.{data_product['name']}"
+        )
+
+        entity = self.get_by_name(
+            "/v1/dataProducts",
+            data_product_fqn,
+            fields="owners,domain,assets",
+        )
+
+        if not entity:
+            raise RuntimeError(
+                "Data Product was not persisted under the expected name: "
+                f"{data_product_fqn}"
+            )
+
+        persisted_domain = entity.get("domain") or {}
+
+        if persisted_domain.get("id") != domain["id"]:
+            raise RuntimeError(
+                "Data Product was persisted under an unexpected domain: "
+                f"{data_product_fqn}"
+            )
 
         logger.info(
             "Data Product applied: %s",
-            entity.get(
-                "fullyQualifiedName",
-                data_product["name"],
-            ),
+            entity["fullyQualifiedName"],
         )
 
         return entity
