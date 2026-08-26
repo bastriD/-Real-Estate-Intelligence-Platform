@@ -49,48 +49,6 @@ models:
       - name: derniere_publication
         description: Latest publication timestamp represented in the mart.
 
-  - name: mart_mandat_performance
-    description: >
-      Analytical mart for mandate performance.
-      Aggregates mandate volumes, client and hunter coverage,
-      exclusivity and mandate duration by status and mandate type.
-
-    columns:
-      - name: statut
-        description: Current mandate status.
-        tests:
-          - not_null
-
-      - name: type_mandat
-        description: Business type of mandate.
-        tests:
-          - not_null
-
-      - name: est_exclusif
-        description: Indicates whether the mandate is exclusive.
-        tests:
-          - not_null
-
-      - name: nb_mandats
-        description: Number of mandates in the aggregation.
-        tests:
-          - not_null
-
-      - name: nb_clients
-        description: Number of distinct clients represented.
-
-      - name: nb_chasseurs
-        description: Number of distinct chasseurs represented.
-
-      - name: duree_moyenne_jours
-        description: Average mandate duration in days.
-
-      - name: duree_min_jours
-        description: Minimum mandate duration in days.
-
-      - name: duree_max_jours
-        description: Maximum mandate duration in days.
-
   - name: mart_market_overview
     description: >
       Global Real Estate market overview mart.
