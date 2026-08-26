@@ -29,6 +29,7 @@ COPY database/tests/006_oltp_data_quality.sql /app/database/tests/006_oltp_data_
 COPY database/tests/007_warehouse_data_quality.sql /app/database/tests/007_warehouse_data_quality.sql
 COPY database/olap/load_warehouse.py /app/database/olap/load_warehouse.py
 COPY pipelines/dbt /app/pipelines/dbt
+COPY observability/metrics /app/observability/metrics
 RUN mkdir -p /app/database/fixtures/annonces/json
 
 ENTRYPOINT ["python"]

@@ -1,4 +1,4 @@
-version: 2
+version: 3
 
 models:
   - name: mart_market_by_city
@@ -48,3 +48,339 @@ models:
 
       - name: derniere_publication
         description: Latest publication timestamp represented in the mart.
+
+  - name: mart_mandat_performance
+    description: >
+      Analytical mart for mandate performance.
+      Aggregates mandate volumes, client and hunter coverage,
+      exclusivity and mandate duration by status and mandate type.
+
+    columns:
+      - name: statut
+        description: Current mandate status.
+        tests:
+          - not_null
+
+      - name: type_mandat
+        description: Business type of mandate.
+        tests:
+          - not_null
+
+      - name: est_exclusif
+        description: Indicates whether the mandate is exclusive.
+        tests:
+          - not_null
+
+      - name: nb_mandats
+        description: Number of mandates in the aggregation.
+        tests:
+          - not_null
+
+      - name: nb_clients
+        description: Number of distinct clients represented.
+
+      - name: nb_chasseurs
+        description: Number of distinct chasseurs represented.
+
+      - name: duree_moyenne_jours
+        description: Average mandate duration in days.
+
+      - name: duree_min_jours
+        description: Minimum mandate duration in days.
+
+      - name: duree_max_jours
+        description: Maximum mandate duration in days.
+
+  - name: mart_market_overview
+    description: >
+      Global Real Estate market overview mart.
+      Provides executive KPIs for market volume, prices, surface,
+      property characteristics and data freshness.
+
+    columns:
+      - name: total_annonces
+        description: Total number of advertisement observations.
+        tests:
+          - not_null
+
+      - name: total_biens_uniques
+        description: Total number of distinct property references.
+        tests:
+          - not_null
+
+      - name: total_batches
+        description: Number of distinct ingestion batches represented.
+        tests:
+          - not_null
+
+      - name: prix_moyen
+        description: Average observed property price.
+
+      - name: prix_median
+        description: Median observed property price.
+
+      - name: prix_min
+        description: Minimum observed property price.
+
+      - name: prix_max
+        description: Maximum observed property price.
+
+      - name: surface_moyenne
+        description: Average property surface in square metres.
+
+      - name: surface_mediane
+        description: Median property surface in square metres.
+
+      - name: prix_m2_moyen
+        description: Average observed price per square metre.
+
+      - name: prix_m2_median
+        description: Median observed price per square metre.
+
+      - name: nb_pieces_moyen
+        description: Average number of rooms.
+
+      - name: nb_chambres_moyen
+        description: Average number of bedrooms.
+
+      - name: premiere_publication
+        description: Earliest publication timestamp represented in the mart.
+
+      - name: derniere_publication
+        description: Latest publication timestamp represented in the mart.
+
+      - name: derniere_collecte
+        description: Timestamp of the most recent collected property observation.
+
+  - name: mart_market_by_property_type
+    description: >
+      Real Estate market analytics aggregated by property type.
+      Provides volume, price, price per square metre, surface and
+      property-characteristic KPIs for comparison between property types.
+
+    columns:
+      - name: type_bien
+        description: Property type used as the analytical grouping dimension.
+        tests:
+          - not_null
+
+      - name: nb_annonces
+        description: Number of advertisement observations for the property type.
+        tests:
+          - not_null
+
+      - name: nb_biens_uniques
+        description: Number of distinct property references for the property type.
+        tests:
+          - not_null
+
+      - name: prix_moyen
+        description: Average observed property price.
+
+      - name: prix_median
+        description: Median observed property price.
+
+      - name: prix_min
+        description: Minimum observed property price.
+
+      - name: prix_max
+        description: Maximum observed property price.
+
+      - name: surface_moyenne
+        description: Average property surface in square metres.
+
+      - name: prix_m2_moyen
+        description: Average observed price per square metre.
+
+      - name: nb_pieces_moyen
+        description: Average number of rooms.
+
+      - name: nb_chambres_moyen
+        description: Average number of bedrooms.
+
+      - name: premiere_publication
+        description: Earliest publication timestamp represented for the property type.
+
+      - name: derniere_publication
+        description: Latest publication timestamp represented for the property type.
+
+  - name: mart_market_by_dpe
+    description: >
+      Real Estate market analytics aggregated by Energy Performance
+      Diagnosis (DPE). Provides market volume, price, price per square
+      metre, surface and property-characteristic KPIs by energy rating.
+
+    columns:
+      - name: dpe
+        description: Energy Performance Diagnosis rating of the property.
+        tests:
+          - not_null
+
+      - name: nb_annonces
+        description: Number of advertisement observations for the DPE rating.
+        tests:
+          - not_null
+
+      - name: nb_biens_uniques
+        description: Number of distinct property references for the DPE rating.
+        tests:
+          - not_null
+
+      - name: prix_moyen
+        description: Average observed property price.
+
+      - name: prix_median
+        description: Median observed property price.
+
+      - name: prix_m2_moyen
+        description: Average observed price per square metre.
+
+      - name: surface_moyenne
+        description: Average property surface in square metres.
+
+      - name: nb_pieces_moyen
+        description: Average number of rooms.
+
+      - name: nb_chambres_moyen
+        description: Average number of bedrooms.
+
+      - name: premiere_publication
+        description: Earliest publication timestamp represented for the DPE rating.
+
+      - name: derniere_publication
+        description: Latest publication timestamp represented for the DPE rating.      
+
+  - name: mart_market_by_source
+    description: >
+      Real Estate market analytics aggregated by data source.
+      Provides ingestion volume, unique property coverage, pricing,
+      price per square metre and collection freshness KPIs for each
+      source feeding the Real Estate data platform.
+
+    columns:
+      - name: source_nom
+        description: Name of the source providing the property advertisements.
+        tests:
+          - not_null
+
+      - name: type_source
+        description: Type or category of the source.
+
+      - name: nb_annonces
+        description: Number of advertisement observations collected from the source.
+        tests:
+          - not_null
+
+      - name: nb_biens_uniques
+        description: Number of distinct property references collected from the source.
+        tests:
+          - not_null
+
+      - name: nb_batches
+        description: Number of distinct ingestion batches associated with the source.
+        tests:
+          - not_null
+
+      - name: prix_moyen
+        description: Average observed property price for the source.
+
+      - name: prix_median
+        description: Median observed property price for the source.
+
+      - name: prix_m2_moyen
+        description: Average observed price per square metre for the source.
+
+      - name: surface_moyenne
+        description: Average property surface in square metres for the source.
+
+      - name: premiere_collecte
+        description: Timestamp of the earliest collection represented for the source.
+
+      - name: derniere_collecte
+        description: Timestamp of the most recent collection represented for the source.
+
+  - name: mart_market_evolution
+    description: >
+      Time-series market analytics aggregated by collection date.
+      Provides daily ingestion volume, unique property coverage,
+      price evolution, price-per-square-metre evolution and
+      average surface trends for Grafana time-series dashboards.
+
+    columns:
+      - name: date_collecte
+        description: Collection date used as the time-series analytical axis.
+        tests:
+          - not_null
+          - unique
+
+      - name: nb_annonces
+        description: Number of advertisement observations collected on the date.
+        tests:
+          - not_null
+
+      - name: nb_biens_uniques
+        description: Number of distinct property references collected on the date.
+        tests:
+          - not_null
+
+      - name: prix_moyen
+        description: Average observed property price for the collection date.
+
+      - name: prix_median
+        description: Median observed property price for the collection date.
+
+      - name: prix_m2_moyen
+        description: Average observed price per square metre for the collection date.
+
+      - name: prix_m2_median
+        description: Median observed price per square metre for the collection date.
+
+      - name: surface_moyenne
+        description: Average property surface in square metres for the collection date.
+
+      - name: nb_batches
+        description: Number of distinct ingestion batches represented on the collection date.
+        tests:
+          - not_null
+
+  - name: mart_mandat_performance
+    description: >
+      Analytical mart for Real Estate mandate performance.
+      Aggregates mandate volumes, client coverage, hunter coverage,
+      exclusivity and mandate duration by mandate status and type.
+
+    columns:
+      - name: statut
+        description: Current business status of the mandate.
+        tests:
+          - not_null
+
+      - name: type_mandat
+        description: Business type of mandate.
+        tests:
+          - not_null
+
+      - name: est_exclusif
+        description: Indicates whether the mandate is exclusive.
+        tests:
+          - not_null
+
+      - name: nb_mandats
+        description: Number of mandates represented in the aggregation.
+        tests:
+          - not_null
+
+      - name: nb_clients
+        description: Number of distinct clients represented in the aggregation.
+
+      - name: nb_chasseurs
+        description: Number of distinct chasseurs represented in the aggregation.
+
+      - name: duree_moyenne_jours
+        description: Average mandate duration in days.
+
+      - name: duree_min_jours
+        description: Minimum mandate duration in days.
+
+      - name: duree_max_jours
+        description: Maximum mandate duration in days.
