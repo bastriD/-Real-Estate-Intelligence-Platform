@@ -1,0 +1,256 @@
+observability:validate:
+  stage: validate
+
+  tags:
+    - docker
+
+  image: python:3.12-slim
+
+  script:
+    - python --version
+    - test -f deploy/observability/grafana-dashboard-configmap.yaml
+    - test -f deploy/observability/kustomization.yaml
+
+    - |
+      python - <<'PY'
+      import json
+      from pathlib import Path
+
+      path = Path("deploy/observability/grafana-dashboard-configmap.yaml")
+      content = path.read_text(encoding="utf-8")
+
+      marker = "real-estate-platform.json: |"
+      if marker not in content:
+          raise SystemExit("Embedded Grafana JSON block not found")
+
+      raw_json = content.split(marker, 1)[1]
+      lines = raw_json.splitlines()
+
+      non_empty = [line for line in lines if line.strip()]
+      if not non_empty:
+          raise SystemExit("Embedded Grafana JSON is empty")
+
+      min_indent = min(
+          len(line) - len(line.lstrip())
+          for line in non_empty
+      )
+
+      json_text = "\n".join(
+          line[min_indent:] if line.strip() else ""
+          for line in lines
+      )
+
+      dashboard = json.loads(json_text)
+
+      required = ["title", "uid", "panels"]
+      for key in required:
+          if key not in dashboard:
+              raise SystemExit(f"Missing Grafana dashboard field: {key}")
+
+      print("Grafana dashboard JSON validation passed")
+      print(f"Title: {dashboard['title']}")
+      print(f"UID: {dashboard['uid']}")
+      print(f"Panels: {len(dashboard['panels'])}")
+      PY
+
+  rules:
+    - changes:
+        - observability/**/*
+        - deploy/observability/**/*
+        - .gitlab/ci/observability.yml
+        - .gitlab-ci.yml
+
+
+observability:publish-gitops:
+  stage: deploy
+
+  tags:
+    - shell
+
+  needs:
+    - job: observability:validate
+
+  script:
+    # ---------------------------------------------------------
+    # 1. Validate required tools
+    # ---------------------------------------------------------
+
+    - "git --version"
+    - "kubectl version --client"
+
+    # ---------------------------------------------------------
+    # 2. Validate source manifests
+    # ---------------------------------------------------------
+
+    - "test -f deploy/observability/grafana-dashboard-configmap.yaml"
+    - "test -f deploy/observability/kustomization.yaml"
+
+    # ---------------------------------------------------------
+    # 3. Verify GitOps credentials
+    # ---------------------------------------------------------
+
+    - |
+      kubectl -n openmetadata get secret \
+        lab-gitops-git-credentials
+
+    # ---------------------------------------------------------
+    # 4. Prepare workspace
+    # ---------------------------------------------------------
+
+    - "rm -rf /tmp/chasse-observability-gitops"
+    - "rm -f /tmp/.netrc"
+
+    # ---------------------------------------------------------
+    # 5. Load PAT credentials
+    # ---------------------------------------------------------
+
+    - |
+      export LAB_GITOPS_GIT_USER="$(
+        kubectl -n openmetadata get secret \
+          lab-gitops-git-credentials \
+          -o jsonpath='{.data.GIT_USERNAME}' \
+        | base64 -d
+      )"
+
+      export LAB_GITOPS_GIT_TOKEN="$(
+        kubectl -n openmetadata get secret \
+          lab-gitops-git-credentials \
+          -o jsonpath='{.data.GIT_TOKEN}' \
+        | base64 -d
+      )"
+
+      test -n "${LAB_GITOPS_GIT_USER}"
+      test -n "${LAB_GITOPS_GIT_TOKEN}"
+
+      cat > /tmp/.netrc <<EOF
+      machine gitlab.local
+      login ${LAB_GITOPS_GIT_USER}
+      password ${LAB_GITOPS_GIT_TOKEN}
+      EOF
+
+      chmod 600 /tmp/.netrc
+
+    # ---------------------------------------------------------
+    # 6. Clone lab-gitops
+    # ---------------------------------------------------------
+
+    - |
+      HOME=/tmp \
+      GIT_SSL_NO_VERIFY=true \
+      git clone \
+        "https://gitlab.local/root/lab-gitops.git" \
+        /tmp/chasse-observability-gitops
+
+    # ---------------------------------------------------------
+    # 7. Publish Real Estate observability bundle
+    # ---------------------------------------------------------
+
+    - |
+      mkdir -p \
+        /tmp/chasse-observability-gitops/workloads/monitoring/real-estate
+
+      cp \
+        deploy/observability/grafana-dashboard-configmap.yaml \
+        /tmp/chasse-observability-gitops/workloads/monitoring/real-estate/grafana-dashboard-configmap.yaml
+
+      cp \
+        deploy/observability/kustomization.yaml \
+        /tmp/chasse-observability-gitops/workloads/monitoring/real-estate/kustomization.yaml
+
+    # ---------------------------------------------------------
+    # 8. Register Real Estate bundle in monitoring
+    # ---------------------------------------------------------
+
+    - "cd /tmp/chasse-observability-gitops"
+
+    - |
+      if ! grep -qE \
+        '^[[:space:]]*-[[:space:]]*real-estate/?[[:space:]]*$' \
+        workloads/monitoring/kustomization.yaml; then
+
+        if grep -q '^resources:' workloads/monitoring/kustomization.yaml; then
+          printf '  - real-estate\n' \
+            >> workloads/monitoring/kustomization.yaml
+        else
+          printf '\nresources:\n  - real-estate\n' \
+            >> workloads/monitoring/kustomization.yaml
+        fi
+
+        echo "Added real-estate observability bundle."
+      else
+        echo "real-estate observability bundle already registered."
+      fi
+
+    # ---------------------------------------------------------
+    # 9. Show resulting GitOps structure
+    # ---------------------------------------------------------
+
+    - |
+      echo "Real Estate monitoring files:"
+
+      find workloads/monitoring/real-estate \
+        -maxdepth 2 \
+        -type f \
+        | sort
+
+    - |
+      echo "Monitoring parent kustomization:"
+      cat workloads/monitoring/kustomization.yaml
+
+    # ---------------------------------------------------------
+    # 10. Configure Git
+    # ---------------------------------------------------------
+
+    - 'git config user.name "chasse-immobiliere-ci"'
+    - 'git config user.email "gitlab-ci@lab.local"'
+
+    # ---------------------------------------------------------
+    # 11. Stage changes
+    # ---------------------------------------------------------
+
+    - |
+      git add \
+        workloads/monitoring
+
+    - |
+      echo "Git status:"
+      git status --short
+
+    # ---------------------------------------------------------
+    # 12. Skip when unchanged
+    # ---------------------------------------------------------
+
+    - |
+      if git diff --cached --quiet; then
+        echo "No observability GitOps changes to publish."
+        exit 0
+      fi
+
+    # ---------------------------------------------------------
+    # 13. Commit
+    # ---------------------------------------------------------
+
+    - |
+      git commit \
+        -m "deploy: publish real-estate observability configuration"
+
+    # ---------------------------------------------------------
+    # 14. Push
+    # ---------------------------------------------------------
+
+    - |
+      HOME=/tmp \
+      GIT_SSL_NO_VERIFY=true \
+      git push origin main
+
+  after_script:
+    - "rm -f /tmp/.netrc"
+    - "rm -rf /tmp/chasse-observability-gitops"
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - observability/**/*
+        - deploy/observability/**/*
+        - .gitlab/ci/observability.yml
+        - .gitlab-ci.yml

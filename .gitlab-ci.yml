@@ -11,3 +11,4 @@ include:
   - local: .gitlab/ci/warehouse.yml
   - local: .gitlab/ci/governance.yml
   - local: .gitlab/ci/openmetadata.yml
+  - local: .gitlab/ci/observability.yml
