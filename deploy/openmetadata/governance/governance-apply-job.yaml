@@ -1,12 +1,23 @@
 apiVersion: batch/v1
 kind: Job
+
 metadata:
   name: real-estate-governance-apply
   namespace: openmetadata
+
   labels:
     app: real-estate-governance-apply
     component: governance
     project: real-estate
+
+  annotations:
+    # Execute this Job during an Argo CD sync.
+    argocd.argoproj.io/hook: Sync
+
+    # Before a new execution, remove the previous Job.
+    # Successful Jobs are removed automatically.
+    # Failed Jobs remain available for troubleshooting until the next sync.
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
 
 spec:
   backoffLimit: 0
@@ -26,8 +37,12 @@ spec:
 
       containers:
         - name: governance-apply
-          image: gitlab.local:4567/root/chasse_immobiliere/real-estate-governance:latest
-          imagePullPolicy: Always
+
+          # Replaced by GitLab CI before publication to lab-gitops.
+          image: gitlab.local:4567/root/chasse_immobiliere/real-estate-governance:__GOVERNANCE_IMAGE_TAG__
+
+          # Immutable Git SHA tags mean we do not need :latest.
+          imagePullPolicy: IfNotPresent
 
           env:
             - name: OM_URL
