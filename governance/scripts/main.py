@@ -1154,9 +1154,6 @@ class OpenMetadataClient:
     # =========================================================================
     # Data Layer tags
     # =========================================================================
-      # =========================================================================
-    # Data Layer tags
-    # =========================================================================
 
     def apply_data_layer_to_table(
         self,
@@ -1280,114 +1277,6 @@ class OpenMetadataClient:
     # Data Products
     # =========================================================================
 
-    def apply_data_products(
-        self,
-    ) -> None:
-
-        governance_config = (
-            self.config["governance"].get(
-                "data_products",
-                {},
-            )
-        )
-
-        if not governance_config.get(
-            "enabled",
-            False,
-        ):
-            logger.info(
-                "Data Product governance disabled"
-            )
-            return
-
-        processed_count = 0
-        added_count = 0
-        already_count = 0
-
-        for relative_path in governance_config.get(
-            "files",
-            [],
-        ):
-            path = (
-                GOVERNANCE_ROOT
-                / relative_path
-            )
-
-            data = load_json(
-                path
-            )
-
-            for data_product in data.get(
-                "data_products",
-                [],
-            ):
-                processed_count += 1
-
-                owner_id = None
-
-                owner_name = data_product.get(
-                    "owner"
-                )
-
-                if owner_name:
-                    owner = self.client.get_by_name(
-                        "/v1/teams",
-                        owner_name,
-                    )
-
-                    if not owner:
-                        raise RuntimeError(
-                            "Data Product owner does not exist: "
-                            f"{owner_name}"
-                        )
-
-                    owner_id = owner[
-                        "id"
-                    ]
-
-                entity = self.client.upsert_data_product(
-                    data_product,
-                    owner_id=owner_id,
-                )
-
-                all_assets = data_product.get(
-                    "assets",
-                    [],
-                )
-
-                if all_assets:
-                    added, already = (
-                        self.client.add_assets_to_data_product(
-                            entity["name"],
-                            entity["id"],
-                            all_assets,
-                        )
-                    )
-
-                    added_count += added
-                    already_count += already
-
-                logger.info(
-                    "Data Product processed: %s",
-                    entity.get(
-                        "fullyQualifiedName",
-                        entity.get(
-                            "name",
-                            data_product["name"],
-                        ),
-                    ),
-                )
-
-        logger.info(
-            "Data Product governance completed: "
-            "%s products processed, "
-            "%s assets added, "
-            "%s assets already assigned",
-            processed_count,
-            added_count,
-            already_count,
-        )
-        return "changed"
 
     # =========================================================================
     # Data Products
@@ -2627,6 +2516,7 @@ class GovernanceEngine:
                 )
 
                 added, already = self.client.add_assets_to_data_product(
+                    entity["name"],
                     entity["id"],
                     all_assets,
                 )
