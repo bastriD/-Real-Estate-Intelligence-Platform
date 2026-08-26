@@ -1154,6 +1154,128 @@ class OpenMetadataClient:
     # =========================================================================
     # Data Layer tags
     # =========================================================================
+      # =========================================================================
+    # Data Layer tags
+    # =========================================================================
+
+    def apply_data_layer_to_table(
+        self,
+        fqn: str,
+        desired_tag_fqn: str,
+    ) -> str:
+
+        entity = self.get_by_name(
+            "/v1/tables",
+            fqn,
+            fields="tags",
+        )
+
+        if not entity:
+            logger.warning(
+                "DataLayer target not found: %s",
+                fqn,
+            )
+            return "missing"
+
+        existing_tags = entity.get(
+            "tags"
+        ) or []
+
+        data_layer_prefix = (
+            "RealEstateDataLayer."
+        )
+
+        current_data_layer_tags = [
+            tag
+            for tag in existing_tags
+            if (
+                tag.get("tagFQN")
+                and tag["tagFQN"].startswith(
+                    data_layer_prefix
+                )
+            )
+        ]
+
+        current_data_layer_fqns = {
+            tag["tagFQN"]
+            for tag in current_data_layer_tags
+        }
+
+        if current_data_layer_fqns == {
+            desired_tag_fqn
+        }:
+            logger.info(
+                "DataLayer already correct: %s -> %s",
+                fqn,
+                desired_tag_fqn,
+            )
+            return "already"
+
+        preserved_tags = [
+            tag
+            for tag in existing_tags
+            if not (
+                tag.get("tagFQN")
+                and tag["tagFQN"].startswith(
+                    data_layer_prefix
+                )
+            )
+        ]
+
+        desired_tags = list(
+            preserved_tags
+        )
+
+        desired_tags.append(
+            {
+                "tagFQN": desired_tag_fqn,
+                "labelType": "Manual",
+                "state": "Confirmed",
+            }
+        )
+
+        operation = (
+            "replace"
+            if existing_tags
+            else "add"
+        )
+
+        patch = [
+            {
+                "op": operation,
+                "path": "/tags",
+                "value": desired_tags,
+            }
+        ]
+
+        self.patch(
+            f"/v1/tables/{entity['id']}",
+            patch,
+        )
+
+        if current_data_layer_fqns:
+            logger.info(
+                "DataLayer corrected: %s | %s -> %s",
+                fqn,
+                ", ".join(
+                    sorted(
+                        current_data_layer_fqns
+                    )
+                ),
+                desired_tag_fqn,
+            )
+        else:
+            logger.info(
+                "DataLayer applied: %s -> %s",
+                fqn,
+                desired_tag_fqn,
+            )
+
+        return "changed"
+  
+  
+  
+  
   # =========================================================================
     # Data Products
     # =========================================================================
