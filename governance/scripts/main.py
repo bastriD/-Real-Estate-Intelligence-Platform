@@ -1277,78 +1277,64 @@ class OpenMetadataClient:
     # Data Products
     # =========================================================================
 
-    def upsert_data_product(
+    def add_assets_to_data_product(
         self,
-        data_product: dict[str, Any],
-        *,
-        owner_id: str | None = None,
-    ) -> dict[str, Any]:
+        data_product_name: str,
+        data_product_id: str,
+        asset_fqns: list[str],
+        ) -> tuple[int, int]:
 
-        domain_fqn = data_product["domain"]
+        data_product = self.get(
+            f"/v1/dataProducts/{data_product_id}",
+            params={"fields": "assets"},
+        ).json()
 
-        domain = self.get_by_name(
-            "/v1/domains",
-            domain_fqn,
-        )
-
-        if not domain:
-            raise RuntimeError(
-                f"Data Product domain does not exist: {domain_fqn}"
-            )
-
-        payload: dict[str, Any] = {
-            "name": data_product["name"],
-            "displayName": data_product.get(
-                "display_name",
-                data_product["name"],
-            ),
-            "description": data_product["description"],
-            "domain": domain_fqn,
+        existing_asset_ids = {
+            asset.get("id")
+            for asset in data_product.get("assets") or []
+            if asset.get("id")
         }
 
-        if owner_id:
-            payload["owners"] = [
+        assets_to_add: list[dict[str, str]] = []
+        already_count = 0
+
+        for asset_fqn in asset_fqns:
+            asset = self.get_by_name(
+                "/v1/tables",
+                asset_fqn,
+            )
+
+            if not asset:
+                raise RuntimeError(
+                    f"Data Product asset does not exist: {asset_fqn}"
+                )
+
+            if asset["id"] in existing_asset_ids:
+                already_count += 1
+                continue
+
+            assets_to_add.append(
                 {
-                    "id": owner_id,
-                    "type": "team",
+                    "id": asset["id"],
+                    "type": "table",
                 }
-            ]
-
-        self.put(
-            "/v1/dataProducts",
-            payload,
-        )
-
-        data_product_fqn = (
-            f"{domain_fqn}.{data_product['name']}"
-        )
-
-        entity = self.get_by_name(
-            "/v1/dataProducts",
-            data_product_fqn,
-            fields="owners,domain,assets",
-        )
-
-        if not entity:
-            raise RuntimeError(
-                "Data Product was not persisted under the expected name: "
-                f"{data_product_fqn}"
             )
 
-        persisted_domain = entity.get("domain") or {}
-
-        if persisted_domain.get("id") != domain["id"]:
-            raise RuntimeError(
-                "Data Product was persisted under an unexpected domain: "
-                f"{data_product_fqn}"
+            existing_asset_ids.add(
+                asset["id"]
             )
 
-        logger.info(
-            "Data Product applied: %s",
-            entity["fullyQualifiedName"],
-        )
+        if assets_to_add:
+            payload = {
+                "assets": assets_to_add
+            }
 
-        return entity
+            self.put(
+                f"/v1/dataProducts/{data_product_name}/assets/add",
+                payload,
+            )
+
+        return len(assets_to_add), already_count
 
     def add_assets_to_data_product(
         self,
