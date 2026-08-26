@@ -1283,6 +1283,7 @@ class OpenMetadataClient:
         *,
         owner_id: str | None = None,
     ) -> dict[str, Any]:
+
         domain_fqn = data_product["domain"]
 
         domain = self.get_by_name(
@@ -1294,7 +1295,7 @@ class OpenMetadataClient:
             raise RuntimeError(
                 f"Data Product domain does not exist: {domain_fqn}"
             )
-        
+
         payload: dict[str, Any] = {
             "name": data_product["name"],
             "displayName": data_product.get(
@@ -1302,7 +1303,12 @@ class OpenMetadataClient:
                 data_product["name"],
             ),
             "description": data_product["description"],
-            "domain": data_product["domain"],
+            "domains": [
+                {
+                    "id": domain["id"],
+                    "type": "domain",
+                }
+            ],
         }
 
         if owner_id:
