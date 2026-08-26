@@ -1374,9 +1374,13 @@ class OpenMetadataClient:
             existing_asset_ids.add(asset["id"])
 
         if assets_to_add:
+            payload = {
+                "assets": assets_to_add
+            }
+
             self.put(
                 f"/v1/dataProducts/{data_product_id}/assets/add",
-                assets_to_add,
+                payload,
             )
 
         return len(assets_to_add), already_count
