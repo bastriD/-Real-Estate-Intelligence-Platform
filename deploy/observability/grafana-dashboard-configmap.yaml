@@ -291,60 +291,60 @@ data:
     }
     },
     {
-      "id": 8,
-      "type": "barchart",
-      "title": "Average Price by City",
-      "description": "Average real-estate property price by city from analytics.mart_market_by_city",
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 10
-      },
-      "datasource": {
-        "type": "grafana-postgresql-datasource",
-        "uid": "real-estate-postgresql"
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "real-estate-postgresql"
-          },
-          "editorMode": "code",
-          "format": "table",
-          "rawQuery": true,
-          "rawSql": "SELECT ville, prix_moyen FROM analytics.mart_market_by_city ORDER BY prix_moyen DESC;"
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "unit": "currencyEUR",
-          "decimals": 0,
-          "color": {
-            "mode": "palette-classic"
-          },
-          "mappings": []
+    "id": 8,
+    "type": "barchart",
+    "title": "Average Price by City",
+    "description": "Average real-estate property price by city from analytics.mart_market_by_city",
+    "gridPos": {
+      "h": 8,
+      "w": 12,
+      "x": 12,
+      "y": 10
+    },
+    "datasource": {
+      "type": "grafana-postgresql-datasource",
+      "uid": "real-estate-postgresql"
+    },
+    "targets": [
+      {
+        "refId": "A",
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "real-estate-postgresql"
         },
-        "overrides": []
-      },
-      "options": {
-        "orientation": "horizontal",
-        "showValue": "always",
-        "stacking": "none",
-        "groupWidth": 0.7,
-        "barWidth": 0.8,
-        "legend": {
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "editorMode": "code",
+        "format": "table",
+        "rawQuery": true,
+        "rawSql": "SELECT ville, prix_moyen FROM analytics.mart_market_by_city ORDER BY prix_moyen DESC;"
       }
+    ],
+    "fieldConfig": {
+      "defaults": {
+        "unit": "currencyEUR",
+        "decimals": 0,
+        "color": {
+          "mode": "palette-classic"
+        },
+        "mappings": []
+      },
+      "overrides": []
+    },
+    "options": {
+      "orientation": "horizontal",
+      "showValue": "always",
+      "stacking": "none",
+      "groupWidth": 0.7,
+      "barWidth": 0.8,
+      "legend": {
+        "displayMode": "list",
+        "placement": "bottom",
+        "showLegend": false
+      },
+      "tooltip": {
+        "mode": "single",
+        "sort": "none"
+      }
+    }
     }
     ],
       "refresh": "30s",
