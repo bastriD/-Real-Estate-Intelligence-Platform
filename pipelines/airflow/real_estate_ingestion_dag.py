@@ -598,7 +598,48 @@ with DAG(
         get_logs=True,
         is_delete_operator_pod=True,
     )
+    collect_metrics_task = KubernetesPodOperator(
+        task_id="collect_metrics",
+        name="real-estate-collect-metrics",
+        namespace="airflow",
+        image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
 
+        image_pull_secrets=[
+            k8s.V1LocalObjectReference(
+                name="gitlab-registry"
+            )
+        ],
+
+        cmds=["/bin/sh", "-c"],
+
+        arguments=[
+            """
+            set -e
+
+            echo "Collecting Real Estate platform metrics..."
+
+            export PUSHGATEWAY_URL="http://retail-pushgateway.monitoring.svc.cluster.local:9091"
+            export PUSHGATEWAY_JOB="real_estate_data_platform"
+
+            cd /app/observability/metrics
+
+            python collect_metrics.py
+
+            echo "Real Estate metrics collection completed."
+            """
+        ],
+
+        env_from=[
+            k8s.V1EnvFromSource(
+                secret_ref=k8s.V1SecretEnvSource(
+                    name="real-estate-postgresql-secret"
+                )
+            )
+        ],
+
+        get_logs=True,
+        is_delete_operator_pod=True,
+    )
     end = EmptyOperator(
         task_id="end",
     )
@@ -616,5 +657,6 @@ with DAG(
         >> validate_warehouse_task
         >> dbt_run_task
         >> dbt_test_task
+        >> collect_metrics_task
         >> end
     )
