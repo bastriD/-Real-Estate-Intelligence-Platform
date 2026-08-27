@@ -1,0 +1,23 @@
+apiVersion: 1
+
+datasources:
+  - name: Real Estate PostgreSQL
+    type: postgres
+    uid: real-estate-postgresql
+    access: proxy
+
+    url: ${POSTGRES_HOST}:${POSTGRES_PORT}
+
+    user: ${POSTGRES_USER}
+    database: ${POSTGRES_DB}
+
+    jsonData:
+      database: ${POSTGRES_DB}
+      sslmode: disable
+      postgresVersion: 1600
+      timescaledb: false
+
+    secureJsonData:
+      password: ${POSTGRES_PASSWORD}
+
+    editable: false

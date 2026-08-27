@@ -103,6 +103,168 @@ observability:validate:
         - .gitlab/ci/observability.yml
         - .gitlab-ci.yml
 
+observability:provision-grafana-datasource:
+  stage: deploy
+
+  tags:
+    - shell
+
+  needs:
+    - job: observability:validate
+
+  script:
+    - "kubectl version --client"
+    - "test -f deploy/observability/grafana-datasource.yaml.template"
+
+       # ---------------------------------------------------------
+      # Read PostgreSQL Secret and render Grafana datasource
+      # ---------------------------------------------------------
+
+    - |
+      export POSTGRES_DB="$(
+        kubectl -n real-estate get secret \
+          real-estate-postgresql-secret \
+          -o jsonpath='{.data.POSTGRES_DB}' \
+        | base64 -d
+      )"
+
+      export POSTGRES_HOST="$(
+        kubectl -n real-estate get secret \
+          real-estate-postgresql-secret \
+          -o jsonpath='{.data.POSTGRES_HOST}' \
+        | base64 -d
+      )"
+
+      export POSTGRES_PORT="$(
+        kubectl -n real-estate get secret \
+          real-estate-postgresql-secret \
+          -o jsonpath='{.data.POSTGRES_PORT}' \
+        | base64 -d
+      )"
+
+      export POSTGRES_USER="$(
+        kubectl -n real-estate get secret \
+          real-estate-postgresql-secret \
+          -o jsonpath='{.data.POSTGRES_USER}' \
+        | base64 -d
+      )"
+
+      export POSTGRES_PASSWORD="$(
+        kubectl -n real-estate get secret \
+          real-estate-postgresql-secret \
+          -o jsonpath='{.data.POSTGRES_PASSWORD}' \
+        | base64 -d
+      )"
+
+      test -n "${POSTGRES_DB}"
+      test -n "${POSTGRES_HOST}"
+      test -n "${POSTGRES_PORT}"
+      test -n "${POSTGRES_USER}"
+      test -n "${POSTGRES_PASSWORD}"
+
+      python - <<'PY'
+      import os
+      from pathlib import Path
+
+      src = Path(
+          "deploy/observability/grafana-datasource.yaml.template"
+      )
+
+      dst = Path(
+          "/tmp/real-estate-grafana-datasource.yaml"
+      )
+
+      content = src.read_text(encoding="utf-8")
+
+      replacements = {
+          "${POSTGRES_DB}": os.environ["POSTGRES_DB"],
+          "${POSTGRES_HOST}": os.environ["POSTGRES_HOST"],
+          "${POSTGRES_PORT}": os.environ["POSTGRES_PORT"],
+          "${POSTGRES_USER}": os.environ["POSTGRES_USER"],
+          "${POSTGRES_PASSWORD}": os.environ["POSTGRES_PASSWORD"],
+      }
+
+      for old, new in replacements.items():
+          content = content.replace(old, new)
+
+      dst.write_text(content, encoding="utf-8")
+
+      print("Grafana datasource template rendered successfully.")
+      PY
+
+    # ---------------------------------------------------------
+    # Render Grafana datasource provisioning file
+    # ---------------------------------------------------------
+
+    - |
+      python - <<'PY'
+      import os
+      from pathlib import Path
+
+      src = Path(
+          "deploy/observability/grafana-datasource.yaml.template"
+      )
+
+      dst = Path(
+          "/tmp/real-estate-grafana-datasource.yaml"
+      )
+
+      content = src.read_text(encoding="utf-8")
+
+      replacements = {
+          "${POSTGRES_DB}": os.environ["POSTGRES_DB"],
+          "${POSTGRES_HOST}": os.environ["POSTGRES_HOST"],
+          "${POSTGRES_PORT}": os.environ["POSTGRES_PORT"],
+          "${POSTGRES_USER}": os.environ["POSTGRES_USER"],
+          "${POSTGRES_PASSWORD}": os.environ["POSTGRES_PASSWORD"],
+      }
+
+      for old, new in replacements.items():
+          content = content.replace(old, new)
+
+      dst.write_text(content, encoding="utf-8")
+
+      print("Grafana datasource template rendered.")
+      PY
+
+    # ---------------------------------------------------------
+    # Create/update Kubernetes Secret consumed by Grafana sidecar
+    # ---------------------------------------------------------
+
+    - |
+      kubectl -n monitoring create secret generic \
+        real-estate-grafana-datasource \
+        --from-file=datasource.yaml=/tmp/real-estate-grafana-datasource.yaml \
+        --dry-run=client \
+        -o yaml \
+      | kubectl apply -f -
+
+    - |
+      kubectl -n monitoring label secret \
+        real-estate-grafana-datasource \
+        grafana_datasource=1 \
+        --overwrite
+
+    # ---------------------------------------------------------
+    # Verify without exposing password
+    # ---------------------------------------------------------
+
+    - |
+      kubectl -n monitoring get secret \
+        real-estate-grafana-datasource \
+        -o custom-columns='NAME:.metadata.name,LABEL:.metadata.labels.grafana_datasource,TYPE:.type'
+
+  after_script:
+    - "rm -f /tmp/real-estate-grafana-datasource.yaml"
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - deploy/observability/**/*
+        - .gitlab/ci/observability.yml
+        - .gitlab-ci.yml
+
+
 
 observability:publish-gitops:
   stage: deploy
