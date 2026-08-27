@@ -235,8 +235,61 @@ data:
       },
       "textMode": "auto"
     }
+    },
+    {
+    "id": 7,
+    "type": "barchart",
+    "title": "Listings by City",
+    "description": "Number of real-estate listings by city from analytics.mart_market_by_city",
+    "gridPos": {
+      "h": 8,
+      "w": 12,
+      "x": 0,
+      "y": 10
+    },
+    "datasource": {
+      "type": "grafana-postgresql-datasource",
+      "uid": "real-estate-postgresql"
+    },
+    "targets": [
+      {
+        "refId": "A",
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "real-estate-postgresql"
+        },
+        "editorMode": "code",
+        "format": "table",
+        "rawQuery": true,
+        "rawSql": "SELECT ville, nb_annonces FROM analytics.mart_market_by_city ORDER BY nb_annonces DESC;"
+      }
+    ],
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "mappings": []
+      },
+      "overrides": []
+    },
+    "options": {
+      "orientation": "horizontal",
+      "showValue": "always",
+      "stacking": "none",
+      "groupWidth": 0.7,
+      "barWidth": 0.8,
+      "legend": {
+        "displayMode": "list",
+        "placement": "bottom",
+        "showLegend": false
+      },
+      "tooltip": {
+        "mode": "single",
+        "sort": "none"
+      }
     }
-
+    }
     ],
       "refresh": "30s",
       "schemaVersion": 41,
