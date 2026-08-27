@@ -199,7 +199,44 @@ data:
         },
         "textMode": "auto"
       }
+    },
+    {
+    "id": 6,
+    "type": "stat",
+    "title": "Average Property Price",
+    "gridPos": { "h": 5, "w": 8, "x": 0, "y": 5 },
+    "datasource": {
+      "type": "prometheus",
+      "uid": "prometheus"
+    },
+    "targets": [
+      {
+        "refId": "A",
+        "expr": "real_estate_market_average_price{exported_job=\"real_estate_data_platform_test\"}",
+        "instant": true
+      }
+    ],
+    "fieldConfig": {
+      "defaults": {
+        "unit": "currencyEUR",
+        "decimals": 2
+      },
+      "overrides": []
+    },
+    "options": {
+      "colorMode": "value",
+      "graphMode": "area",
+      "justifyMode": "auto",
+      "orientation": "auto",
+      "reduceOptions": {
+        "calcs": ["lastNotNull"],
+        "fields": "",
+        "values": false
+      },
+      "textMode": "auto"
     }
+    }
+
     ],
       "refresh": "30s",
       "schemaVersion": 41,
