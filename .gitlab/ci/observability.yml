@@ -116,9 +116,9 @@ observability:provision-grafana-datasource:
     - "kubectl version --client"
     - "test -f deploy/observability/grafana-datasource.yaml.template"
 
-       # ---------------------------------------------------------
-      # Read PostgreSQL Secret and render Grafana datasource
-      # ---------------------------------------------------------
+    # ---------------------------------------------------------
+    # Read PostgreSQL Secret and render Grafana datasource
+    # ---------------------------------------------------------
 
     - |
       export POSTGRES_DB="$(
@@ -162,71 +162,11 @@ observability:provision-grafana-datasource:
       test -n "${POSTGRES_USER}"
       test -n "${POSTGRES_PASSWORD}"
 
-      python - <<'PY'
-      import os
-      from pathlib import Path
+      envsubst \
+        < deploy/observability/grafana-datasource.yaml.template \
+        > /tmp/real-estate-grafana-datasource.yaml
 
-      src = Path(
-          "deploy/observability/grafana-datasource.yaml.template"
-      )
-
-      dst = Path(
-          "/tmp/real-estate-grafana-datasource.yaml"
-      )
-
-      content = src.read_text(encoding="utf-8")
-
-      replacements = {
-          "${POSTGRES_DB}": os.environ["POSTGRES_DB"],
-          "${POSTGRES_HOST}": os.environ["POSTGRES_HOST"],
-          "${POSTGRES_PORT}": os.environ["POSTGRES_PORT"],
-          "${POSTGRES_USER}": os.environ["POSTGRES_USER"],
-          "${POSTGRES_PASSWORD}": os.environ["POSTGRES_PASSWORD"],
-      }
-
-      for old, new in replacements.items():
-          content = content.replace(old, new)
-
-      dst.write_text(content, encoding="utf-8")
-
-      print("Grafana datasource template rendered successfully.")
-      PY
-
-    # ---------------------------------------------------------
-    # Render Grafana datasource provisioning file
-    # ---------------------------------------------------------
-
-    - |
-      python - <<'PY'
-      import os
-      from pathlib import Path
-
-      src = Path(
-          "deploy/observability/grafana-datasource.yaml.template"
-      )
-
-      dst = Path(
-          "/tmp/real-estate-grafana-datasource.yaml"
-      )
-
-      content = src.read_text(encoding="utf-8")
-
-      replacements = {
-          "${POSTGRES_DB}": os.environ["POSTGRES_DB"],
-          "${POSTGRES_HOST}": os.environ["POSTGRES_HOST"],
-          "${POSTGRES_PORT}": os.environ["POSTGRES_PORT"],
-          "${POSTGRES_USER}": os.environ["POSTGRES_USER"],
-          "${POSTGRES_PASSWORD}": os.environ["POSTGRES_PASSWORD"],
-      }
-
-      for old, new in replacements.items():
-          content = content.replace(old, new)
-
-      dst.write_text(content, encoding="utf-8")
-
-      print("Grafana datasource template rendered.")
-      PY
-
+      echo "Grafana datasource template rendered successfully."
     # ---------------------------------------------------------
     # Create/update Kubernetes Secret consumed by Grafana sidecar
     # ---------------------------------------------------------
