@@ -4,12 +4,30 @@ from datetime import datetime
 
 from airflow import DAG
 from airflow.operators.empty import EmptyOperator
-from airflow.operators.python import PythonOperator
 from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
+from airflow.utils.task_group import TaskGroup
 from kubernetes.client import models as k8s
 
 
+# =============================================================================
+# DAG CONFIGURATION
+# =============================================================================
+
 DAG_ID = "real_estate_ingestion"
+
+DATA_PIPELINE_IMAGE = (
+    "gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest"
+)
+
+AIRFLOW_NAMESPACE = "airflow"
+
+POSTGRES_SECRET = "real-estate-postgresql-secret"
+S3_SECRET = "real-estate-s3"
+REGISTRY_SECRET = "gitlab-registry"
+
+PUSHGATEWAY_URL = (
+    "http://retail-pushgateway.monitoring.svc.cluster.local:9091"
+)
 
 DEFAULT_ARGS = {
     "owner": "real-estate",
@@ -18,75 +36,56 @@ DEFAULT_ARGS = {
 }
 
 
-def validate_raw() -> None:
-    """
-    Placeholder.
+# =============================================================================
+# COMMON KUBERNETES CONFIGURATION
+# =============================================================================
 
-    Later:
-    - validate expected source counts
-    - validate mandatory matching fields
-    - detect duplicate references
-    - record DQ metrics
-    """
-    print("validate_raw")
+IMAGE_PULL_SECRETS = [
+    k8s.V1LocalObjectReference(
+        name=REGISTRY_SECRET,
+    )
+]
 
+POSTGRES_ENV = [
+    k8s.V1EnvFromSource(
+        secret_ref=k8s.V1SecretEnvSource(
+            name=POSTGRES_SECRET,
+        )
+    )
+]
 
-def transform_staging() -> None:
-    """
-    Placeholder.
+S3_ENV = [
+    k8s.V1EnvFromSource(
+        secret_ref=k8s.V1SecretEnvSource(
+            name=S3_SECRET,
+        )
+    )
+]
 
-    Later:
-    - parse heterogeneous date formats
-    - normalize price
-    - normalize surface / surface_m2
-    - normalize booleans
-    - normalize DPE
-    - normalize contact fields
-    - preserve quality errors
-    """
-    print("transform_staging")
-
-
-def validate_staging() -> None:
-    """
-    Placeholder.
-
-    Later:
-    - validate typed fields
-    - check rejected/invalid rows
-    - verify reconciliation RAW -> STAGING
-    """
-    print("validate_staging")
-
-
-def load_oltp() -> None:
-    """
-    Placeholder.
-
-    Later:
-    - create/update source records
-    - load clean staging announcements into real_estate.bien
-    - preserve source/reference traceability
-    """
-    print("load_oltp")
+S3_AND_POSTGRES_ENV = [
+    k8s.V1EnvFromSource(
+        secret_ref=k8s.V1SecretEnvSource(
+            name=S3_SECRET,
+        )
+    ),
+    k8s.V1EnvFromSource(
+        secret_ref=k8s.V1SecretEnvSource(
+            name=POSTGRES_SECRET,
+        )
+    ),
+]
 
 
-def validate_oltp() -> None:
-    """
-    Placeholder.
-
-    Later:
-    - validate row counts
-    - validate FK integrity
-    - validate unique source/reference pairs
-    - run matching-oriented DQ checks
-    """
-    print("validate_oltp")
-
+# =============================================================================
+# DAG
+# =============================================================================
 
 with DAG(
     dag_id=DAG_ID,
-    description="Real Estate RAW -> STAGING -> OLTP ingestion pipeline",
+    description=(
+        "Real Estate Medallion pipeline: "
+        "BRONZE -> SILVER -> GOLD -> OBSERVABILITY"
+    ),
     default_args=DEFAULT_ARGS,
     start_date=datetime(2026, 8, 1),
     schedule=None,
@@ -94,569 +93,538 @@ with DAG(
     tags=[
         "real-estate",
         "data-engineering",
+        "medallion",
+        "bronze",
+        "silver",
+        "gold",
         "postgresql",
-        "oltp",
+        "dbt",
+        "observability",
     ],
 ) as dag:
+
+    # =========================================================================
+    # START
+    # =========================================================================
 
     start = EmptyOperator(
         task_id="start",
     )
 
-    generate_source_data_task = KubernetesPodOperator(
-        task_id="generate_source_data",
-        name="real-estate-generate-source-data",
-        namespace="airflow",
-        image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
+    # =========================================================================
+    # BRONZE
+    #
+    # Physical layer:
+    #   - External/generated source
+    #   - MinIO object storage
+    #   - PostgreSQL RAW schema
+    #
+    # Responsibilities:
+    #   - Generate heterogeneous source data
+    #   - Persist source files in MinIO
+    #   - Load immutable/raw records
+    #   - Validate ingestion completeness and raw integrity
+    # =========================================================================
 
-        image_pull_secrets=[
-            k8s.V1LocalObjectReference(
-                name="gitlab-registry"
-            )
-        ],
+    with TaskGroup(
+        group_id="bronze",
+        tooltip="BRONZE - Source ingestion and RAW data",
+        prefix_group_id=False,
+    ) as bronze_group:
 
-        cmds=["/bin/sh", "-c"],
+        generate_source_data_task = KubernetesPodOperator(
+            task_id="generate_source_data",
+            name="real-estate-generate-source-data",
+            namespace=AIRFLOW_NAMESPACE,
+            image=DATA_PIPELINE_IMAGE,
+            image_pull_secrets=IMAGE_PULL_SECRETS,
+            cmds=["/bin/sh", "-c"],
+            arguments=[
+                """
+                set -e
 
-        arguments=[
-            """
-            set -e
+                export INGESTION_BATCH="generated-{{ ts_nodash }}"
 
-            export INGESTION_BATCH="generated-{{ ts_nodash }}"
+                echo "============================================================"
+                echo "BRONZE - GENERATE SOURCE DATA"
+                echo "============================================================"
+                echo "Ingestion batch: ${INGESTION_BATCH}"
 
-            echo "Generating source dataset..."
+                echo "Generating source dataset..."
 
-            python /app/database/seeds/generer_annonces.py \
-              -r 5 \
-              --min-annonces 200 \
-              --max-annonces 200
+                python /app/database/seeds/generer_annonces.py \
+                  -r 5 \
+                  --min-annonces 200 \
+                  --max-annonces 200
 
-            echo "Uploading generated dataset to MinIO..."
+                echo "Uploading generated dataset to MinIO..."
 
-            python /app/database/seeds/upload_generated_to_s3.py
+                python /app/database/seeds/upload_generated_to_s3.py
 
-            echo "Source generation and upload completed."
-            """
-        ],
-
-        env_from=[
-            k8s.V1EnvFromSource(
-                secret_ref=k8s.V1SecretEnvSource(
-                    name="real-estate-s3"
-                )
-            )
-        ],
-
-        get_logs=True,
-        is_delete_operator_pod=True,
-    )
-
-    load_raw_task = KubernetesPodOperator(
-        task_id="load_raw",
-        name="real-estate-load-raw",
-        namespace="airflow",
-        image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
-
-        image_pull_secrets=[
-            k8s.V1LocalObjectReference(
-                name="gitlab-registry"
-            )
-        ],
-
-        cmds=["/bin/sh", "-c"],
-
-        arguments=[
-            """
-            set -e
-
-            export INGESTION_BATCH="generated-{{ ts_nodash }}"
-
-            echo "Downloading generated CSVs from MinIO..."
-
-            python /app/database/seeds/download_generated_from_s3.py
-
-            echo "Loading RAW PostgreSQL tables..."
-
-            python /app/database/seeds/load_raw_generated_data.py
-
-            echo "RAW load completed."
-            """
-        ],
-
-        env_from=[
-            k8s.V1EnvFromSource(
-                secret_ref=k8s.V1SecretEnvSource(
-                    name="real-estate-s3"
-                )
-            ),
-            k8s.V1EnvFromSource(
-                secret_ref=k8s.V1SecretEnvSource(
-                    name="real-estate-postgresql-secret"
-                )
-            ),
-        ],
-
-        get_logs=True,
-        is_delete_operator_pod=True,
-    )
-
-    validate_raw_task = KubernetesPodOperator(
-    task_id="validate_raw",
-    name="real-estate-validate-raw",
-    namespace="airflow",
-    image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
-
-    image_pull_secrets=[
-        k8s.V1LocalObjectReference(
-            name="gitlab-registry"
+                echo "Source generation and upload completed."
+                """
+            ],
+            env_from=S3_ENV,
+            get_logs=True,
+            is_delete_operator_pod=True,
         )
-    ],
 
-    cmds=["/bin/sh", "-c"],
+        load_raw_task = KubernetesPodOperator(
+            task_id="load_raw",
+            name="real-estate-load-raw",
+            namespace=AIRFLOW_NAMESPACE,
+            image=DATA_PIPELINE_IMAGE,
+            image_pull_secrets=IMAGE_PULL_SECRETS,
+            cmds=["/bin/sh", "-c"],
+            arguments=[
+                """
+                set -e
 
-    arguments=[
-        """
-        set -e
+                export INGESTION_BATCH="generated-{{ ts_nodash }}"
 
-        export INGESTION_BATCH="generated-{{ ts_nodash }}"
+                echo "============================================================"
+                echo "BRONZE - LOAD RAW"
+                echo "============================================================"
+                echo "Ingestion batch: ${INGESTION_BATCH}"
 
-        echo "Validating RAW batch: ${INGESTION_BATCH}"
+                echo "Downloading generated CSVs from MinIO..."
 
-        PGPASSWORD="${POSTGRES_PASSWORD}" \
-        psql \
-          -h "${POSTGRES_HOST}" \
-          -p "${POSTGRES_PORT}" \
-          -U "${POSTGRES_USER}" \
-          -d "${POSTGRES_DB}" \
-          -v ON_ERROR_STOP=1 \
-          -v ingestion_batch="${INGESTION_BATCH}" \
-          -f /app/database/tests/004_raw_data_quality.sql
+                python /app/database/seeds/download_generated_from_s3.py
 
-        echo "RAW validation completed."
-        """
-    ],
+                echo "Loading RAW PostgreSQL tables..."
 
-    env_from=[
-        k8s.V1EnvFromSource(
-            secret_ref=k8s.V1SecretEnvSource(
-                name="real-estate-postgresql-secret"
-            )
+                python /app/database/seeds/load_raw_generated_data.py
+
+                echo "RAW load completed."
+                """
+            ],
+            env_from=S3_AND_POSTGRES_ENV,
+            get_logs=True,
+            is_delete_operator_pod=True,
         )
-    ],
 
-    get_logs=True,
-    is_delete_operator_pod=True,
-)
+        validate_raw_task = KubernetesPodOperator(
+            task_id="validate_raw",
+            name="real-estate-validate-raw",
+            namespace=AIRFLOW_NAMESPACE,
+            image=DATA_PIPELINE_IMAGE,
+            image_pull_secrets=IMAGE_PULL_SECRETS,
+            cmds=["/bin/sh", "-c"],
+            arguments=[
+                f"""
+                set -e
 
-    transform_staging_task = KubernetesPodOperator(
-    task_id="transform_staging",
-    name="real-estate-transform-staging",
-    namespace="airflow",
-    image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
+                export INGESTION_BATCH="generated-{{{{ ts_nodash }}}}"
+                export PUSHGATEWAY_URL="{PUSHGATEWAY_URL}"
+                export PUSHGATEWAY_JOB="real_estate_data_quality"
 
-    image_pull_secrets=[
-        k8s.V1LocalObjectReference(
-            name="gitlab-registry"
+                echo "============================================================"
+                echo "BRONZE - RAW DATA QUALITY"
+                echo "============================================================"
+                echo "Ingestion batch: ${{INGESTION_BATCH}}"
+
+                python /app/observability/metrics/dq_runner.py \
+                  --layer raw \
+                  --sql-file /app/database/tests/004_raw_data_quality.sql \
+                  --ingestion-batch "${{INGESTION_BATCH}}"
+
+                echo "RAW validation completed."
+                """
+            ],
+            env_from=POSTGRES_ENV,
+            get_logs=True,
+            is_delete_operator_pod=True,
         )
-    ],
 
-    cmds=["/bin/sh", "-c"],
-
-    arguments=[
-        """
-        set -e
-
-        export INGESTION_BATCH="generated-{{ ts_nodash }}"
-
-        echo "Transforming RAW -> STAGING batch: ${INGESTION_BATCH}"
-
-        python /app/database/seeds/transform_raw_to_staging.py
-
-        echo "STAGING transformation completed."
-        """
-    ],
-
-    env_from=[
-        k8s.V1EnvFromSource(
-            secret_ref=k8s.V1SecretEnvSource(
-                name="real-estate-postgresql-secret"
-            )
+        (
+            generate_source_data_task
+            >> load_raw_task
+            >> validate_raw_task
         )
-    ],
 
-    get_logs=True,
-    is_delete_operator_pod=True,
-)
+    # =========================================================================
+    # SILVER
+    #
+    # Physical layers:
+    #   - PostgreSQL STAGING schema
+    #   - PostgreSQL real_estate OLTP schema
+    #
+    # Responsibilities:
+    #   - Parse and normalize heterogeneous RAW values
+    #   - Validate typed and normalized records
+    #   - Load the normalized transactional model
+    #   - Validate OLTP integrity and reconciliation
+    # =========================================================================
 
-    validate_staging_task = KubernetesPodOperator(
-    task_id="validate_staging",
-    name="real-estate-validate-staging",
-    namespace="airflow",
-    image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
+    with TaskGroup(
+        group_id="silver",
+        tooltip="SILVER - STAGING normalization and OLTP integration",
+        prefix_group_id=False,
+    ) as silver_group:
 
-    image_pull_secrets=[
-        k8s.V1LocalObjectReference(
-            name="gitlab-registry"
+        transform_staging_task = KubernetesPodOperator(
+            task_id="transform_staging",
+            name="real-estate-transform-staging",
+            namespace=AIRFLOW_NAMESPACE,
+            image=DATA_PIPELINE_IMAGE,
+            image_pull_secrets=IMAGE_PULL_SECRETS,
+            cmds=["/bin/sh", "-c"],
+            arguments=[
+                """
+                set -e
+
+                export INGESTION_BATCH="generated-{{ ts_nodash }}"
+
+                echo "============================================================"
+                echo "SILVER - RAW -> STAGING"
+                echo "============================================================"
+                echo "Ingestion batch: ${INGESTION_BATCH}"
+
+                python /app/database/seeds/transform_raw_to_staging.py
+
+                echo "STAGING transformation completed."
+                """
+            ],
+            env_from=POSTGRES_ENV,
+            get_logs=True,
+            is_delete_operator_pod=True,
         )
-    ],
 
-    cmds=["/bin/sh", "-c"],
+        validate_staging_task = KubernetesPodOperator(
+            task_id="validate_staging",
+            name="real-estate-validate-staging",
+            namespace=AIRFLOW_NAMESPACE,
+            image=DATA_PIPELINE_IMAGE,
+            image_pull_secrets=IMAGE_PULL_SECRETS,
+            cmds=["/bin/sh", "-c"],
+            arguments=[
+                f"""
+                set -e
 
-    arguments=[
-        """
-        set -e
+                export INGESTION_BATCH="generated-{{{{ ts_nodash }}}}"
+                export PUSHGATEWAY_URL="{PUSHGATEWAY_URL}"
+                export PUSHGATEWAY_JOB="real_estate_data_quality"
 
-        export INGESTION_BATCH="generated-{{ ts_nodash }}"
+                echo "============================================================"
+                echo "SILVER - STAGING DATA QUALITY"
+                echo "============================================================"
+                echo "Ingestion batch: ${{INGESTION_BATCH}}"
 
-        echo "Validating STAGING batch: ${INGESTION_BATCH}"
+                python /app/observability/metrics/dq_runner.py \
+                  --layer staging \
+                  --sql-file /app/database/tests/005_staging_data_quality.sql \
+                  --ingestion-batch "${{INGESTION_BATCH}}"
 
-        PGPASSWORD="${POSTGRES_PASSWORD}" \
-        psql \
-          -h "${POSTGRES_HOST}" \
-          -p "${POSTGRES_PORT}" \
-          -U "${POSTGRES_USER}" \
-          -d "${POSTGRES_DB}" \
-          -v ON_ERROR_STOP=1 \
-          -v ingestion_batch="${INGESTION_BATCH}" \
-          -f /app/database/tests/005_staging_data_quality.sql
-
-        echo "STAGING validation completed."
-        """
-    ],
-
-    env_from=[
-        k8s.V1EnvFromSource(
-            secret_ref=k8s.V1SecretEnvSource(
-                name="real-estate-postgresql-secret"
-            )
+                echo "STAGING validation completed."
+                """
+            ],
+            env_from=POSTGRES_ENV,
+            get_logs=True,
+            is_delete_operator_pod=True,
         )
-    ],
 
-    get_logs=True,
-    is_delete_operator_pod=True,
-)
+        load_oltp_task = KubernetesPodOperator(
+            task_id="load_oltp",
+            name="real-estate-load-oltp",
+            namespace=AIRFLOW_NAMESPACE,
+            image=DATA_PIPELINE_IMAGE,
+            image_pull_secrets=IMAGE_PULL_SECRETS,
+            cmds=["/bin/sh", "-c"],
+            arguments=[
+                """
+                set -e
 
-    load_oltp_task = KubernetesPodOperator(
-    task_id="load_oltp",
-    name="real-estate-load-oltp",
-    namespace="airflow",
-    image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
+                export INGESTION_BATCH="generated-{{ ts_nodash }}"
 
-    image_pull_secrets=[
-        k8s.V1LocalObjectReference(
-            name="gitlab-registry"
+                echo "============================================================"
+                echo "SILVER - STAGING -> OLTP"
+                echo "============================================================"
+                echo "Ingestion batch: ${INGESTION_BATCH}"
+
+                python /app/database/seeds/load_staging_to_oltp.py
+
+                echo "OLTP load completed."
+                """
+            ],
+            env_from=POSTGRES_ENV,
+            get_logs=True,
+            is_delete_operator_pod=True,
         )
-    ],
 
-    cmds=["/bin/sh", "-c"],
+        validate_oltp_task = KubernetesPodOperator(
+            task_id="validate_oltp",
+            name="real-estate-validate-oltp",
+            namespace=AIRFLOW_NAMESPACE,
+            image=DATA_PIPELINE_IMAGE,
+            image_pull_secrets=IMAGE_PULL_SECRETS,
+            cmds=["/bin/sh", "-c"],
+            arguments=[
+                f"""
+                set -e
 
-    arguments=[
-        """
-        set -e
+                export INGESTION_BATCH="generated-{{{{ ts_nodash }}}}"
+                export PUSHGATEWAY_URL="{PUSHGATEWAY_URL}"
+                export PUSHGATEWAY_JOB="real_estate_data_quality"
 
-        export INGESTION_BATCH="generated-{{ ts_nodash }}"
+                echo "============================================================"
+                echo "SILVER - OLTP DATA QUALITY"
+                echo "============================================================"
+                echo "Ingestion batch: ${{INGESTION_BATCH}}"
 
-        echo "Loading STAGING -> OLTP batch: ${INGESTION_BATCH}"
+                python /app/observability/metrics/dq_runner.py \
+                  --layer oltp \
+                  --sql-file /app/database/tests/006_oltp_data_quality.sql \
+                  --ingestion-batch "${{INGESTION_BATCH}}"
 
-        python /app/database/seeds/load_staging_to_oltp.py
-
-        echo "OLTP load completed."
-        """
-    ],
-
-    env_from=[
-        k8s.V1EnvFromSource(
-            secret_ref=k8s.V1SecretEnvSource(
-                name="real-estate-postgresql-secret"
-            )
+                echo "OLTP validation completed."
+                """
+            ],
+            env_from=POSTGRES_ENV,
+            get_logs=True,
+            is_delete_operator_pod=True,
         )
-    ],
 
-    get_logs=True,
-    is_delete_operator_pod=True,
-)
+        (
+            transform_staging_task
+            >> validate_staging_task
+            >> load_oltp_task
+            >> validate_oltp_task
+        )
 
-    validate_oltp_task = KubernetesPodOperator(
-        task_id="validate_oltp",
-        name="real-estate-validate-oltp",
-        namespace="airflow",
-        image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
+    # =========================================================================
+    # GOLD
+    #
+    # Physical layers:
+    #   - PostgreSQL warehouse schema
+    #   - PostgreSQL analytics schema
+    #   - dbt staging/marts
+    #
+    # Responsibilities:
+    #   - Populate analytical dimensions/facts
+    #   - Validate OLTP -> Warehouse reconciliation
+    #   - Execute dbt transformations
+    #   - Validate analytical models
+    # =========================================================================
 
-        image_pull_secrets=[
-            k8s.V1LocalObjectReference(
-                name="gitlab-registry"
-            )
-        ],
+    with TaskGroup(
+        group_id="gold",
+        tooltip="GOLD - Warehouse and dbt analytics",
+        prefix_group_id=False,
+    ) as gold_group:
 
-        cmds=["/bin/sh", "-c"],
+        load_warehouse_task = KubernetesPodOperator(
+            task_id="load_warehouse",
+            name="real-estate-load-warehouse",
+            namespace=AIRFLOW_NAMESPACE,
+            image=DATA_PIPELINE_IMAGE,
+            image_pull_secrets=IMAGE_PULL_SECRETS,
+            cmds=["/bin/sh", "-c"],
+            arguments=[
+                """
+                set -e
 
-        arguments=[
-            """
-            set -e
+                export INGESTION_BATCH="generated-{{ ts_nodash }}"
 
-            export INGESTION_BATCH="generated-{{ ts_nodash }}"
+                echo "============================================================"
+                echo "GOLD - OLTP -> WAREHOUSE"
+                echo "============================================================"
+                echo "Ingestion batch: ${INGESTION_BATCH}"
 
-            echo "Validating OLTP batch: ${INGESTION_BATCH}"
+                python /app/database/olap/load_warehouse.py
 
-            PGPASSWORD="${POSTGRES_PASSWORD}" \
-            psql \
-              -h "${POSTGRES_HOST}" \
-              -p "${POSTGRES_PORT}" \
-              -U "${POSTGRES_USER}" \
-              -d "${POSTGRES_DB}" \
-              -v ON_ERROR_STOP=1 \
-              -v ingestion_batch="${INGESTION_BATCH}" \
-              -f /app/database/tests/006_oltp_data_quality.sql
+                echo "WAREHOUSE load completed."
+                """
+            ],
+            env_from=POSTGRES_ENV,
+            get_logs=True,
+            is_delete_operator_pod=True,
+        )
 
-            echo "OLTP validation completed."
-            """
-        ],
+        validate_warehouse_task = KubernetesPodOperator(
+            task_id="validate_warehouse",
+            name="real-estate-validate-warehouse",
+            namespace=AIRFLOW_NAMESPACE,
+            image=DATA_PIPELINE_IMAGE,
+            image_pull_secrets=IMAGE_PULL_SECRETS,
+            cmds=["/bin/sh", "-c"],
+            arguments=[
+                f"""
+                set -e
 
-        env_from=[
-            k8s.V1EnvFromSource(
-                secret_ref=k8s.V1SecretEnvSource(
-                    name="real-estate-postgresql-secret"
-                )
-            )
-        ],
+                export PUSHGATEWAY_URL="{PUSHGATEWAY_URL}"
+                export PUSHGATEWAY_JOB="real_estate_data_quality"
 
-        get_logs=True,
-        is_delete_operator_pod=True,
-    )
+                echo "============================================================"
+                echo "GOLD - WAREHOUSE DATA QUALITY"
+                echo "============================================================"
 
-    load_warehouse_task = KubernetesPodOperator(
-        task_id="load_warehouse",
-        name="real-estate-load-warehouse",
-        namespace="airflow",
-        image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
+                python /app/observability/metrics/dq_runner.py \
+                  --layer warehouse \
+                  --sql-file /app/database/tests/007_warehouse_data_quality.sql
 
-        image_pull_secrets=[
-            k8s.V1LocalObjectReference(
-                name="gitlab-registry"
-            )
-        ],
+                echo "WAREHOUSE validation completed."
+                """
+            ],
+            env_from=POSTGRES_ENV,
+            get_logs=True,
+            is_delete_operator_pod=True,
+        )
 
-        cmds=["/bin/sh", "-c"],
+        dbt_run_task = KubernetesPodOperator(
+            task_id="dbt_run",
+            name="real-estate-dbt-run",
+            namespace=AIRFLOW_NAMESPACE,
+            image=DATA_PIPELINE_IMAGE,
+            image_pull_secrets=IMAGE_PULL_SECRETS,
+            cmds=["/bin/sh", "-c"],
+            arguments=[
+                """
+                set -e
 
-        arguments=[
-            """
-            set -e
+                echo "============================================================"
+                echo "GOLD - DBT RUN"
+                echo "============================================================"
 
-            export INGESTION_BATCH="generated-{{ ts_nodash }}"
+                echo "Preparing dbt profile..."
 
-            echo "Loading OLTP -> WAREHOUSE..."
-            echo "Ingestion batch: ${INGESTION_BATCH}"
+                cp /app/pipelines/dbt/profiles.yml.example \
+                   /app/pipelines/dbt/profiles.yml
 
-            python /app/database/olap/load_warehouse.py
+                cd /app/pipelines/dbt
 
-            echo "WAREHOUSE load completed."
-            """
-        ],
+                echo "Running dbt models..."
 
-        env_from=[
-            k8s.V1EnvFromSource(
-                secret_ref=k8s.V1SecretEnvSource(
-                    name="real-estate-postgresql-secret"
-                )
-            )
-        ],
+                dbt run \
+                  --profiles-dir .
 
-        get_logs=True,
-        is_delete_operator_pod=True,
-    )
-    validate_warehouse_task = KubernetesPodOperator(
-        task_id="validate_warehouse",
-        name="real-estate-validate-warehouse",
-        namespace="airflow",
-        image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
+                echo "dbt run completed."
+                """
+            ],
+            env_from=POSTGRES_ENV,
+            get_logs=True,
+            is_delete_operator_pod=True,
+        )
 
-        image_pull_secrets=[
-            k8s.V1LocalObjectReference(
-                name="gitlab-registry"
-            )
-        ],
+        dbt_test_task = KubernetesPodOperator(
+            task_id="dbt_test",
+            name="real-estate-dbt-test",
+            namespace=AIRFLOW_NAMESPACE,
+            image=DATA_PIPELINE_IMAGE,
+            image_pull_secrets=IMAGE_PULL_SECRETS,
+            cmds=["/bin/sh", "-c"],
+            arguments=[
+                """
+                set -e
 
-        cmds=["/bin/sh", "-c"],
+                echo "============================================================"
+                echo "GOLD - DBT TEST"
+                echo "============================================================"
 
-        arguments=[
-            """
-            set -e
+                echo "Preparing dbt profile..."
 
-            echo "Validating WAREHOUSE..."
+                cp /app/pipelines/dbt/profiles.yml.example \
+                   /app/pipelines/dbt/profiles.yml
 
-            PGPASSWORD="${POSTGRES_PASSWORD}" \
-            psql \
-              -h "${POSTGRES_HOST}" \
-              -p "${POSTGRES_PORT}" \
-              -U "${POSTGRES_USER}" \
-              -d "${POSTGRES_DB}" \
-              -v ON_ERROR_STOP=1 \
-              -f /app/database/tests/007_warehouse_data_quality.sql
+                cd /app/pipelines/dbt
 
-            echo "WAREHOUSE validation completed."
-            """
-        ],
+                echo "Running dbt tests..."
 
-        env_from=[
-            k8s.V1EnvFromSource(
-                secret_ref=k8s.V1SecretEnvSource(
-                    name="real-estate-postgresql-secret"
-                )
-            )
-        ],
+                dbt test \
+                  --profiles-dir .
 
-        get_logs=True,
-        is_delete_operator_pod=True,
-    )
-    dbt_run_task = KubernetesPodOperator(
-        task_id="dbt_run",
-        name="real-estate-dbt-run",
-        namespace="airflow",
-        image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
+                echo "dbt tests completed."
+                """
+            ],
+            env_from=POSTGRES_ENV,
+            get_logs=True,
+            is_delete_operator_pod=True,
+        )
 
-        image_pull_secrets=[
-            k8s.V1LocalObjectReference(
-                name="gitlab-registry"
-            )
-        ],
+        (
+            load_warehouse_task
+            >> validate_warehouse_task
+            >> dbt_run_task
+            >> dbt_test_task
+        )
 
-        cmds=["/bin/sh", "-c"],
+    # =========================================================================
+    # OBSERVABILITY
+    #
+    # Responsibilities:
+    #   - Collect platform data volumes
+    #   - Collect OLTP/business KPIs
+    #   - Collect warehouse/analytics KPIs
+    #   - Push metrics to Prometheus Pushgateway
+    #
+    # DQ status metrics themselves are pushed by dq_runner.py immediately
+    # after each DQ validation, including when a validation fails.
+    # =========================================================================
 
-        arguments=[
-            """
-            set -e
+    with TaskGroup(
+        group_id="observability",
+        tooltip="Platform metrics and observability",
+        prefix_group_id=False,
+    ) as observability_group:
 
-            echo "Preparing dbt profile..."
+        collect_metrics_task = KubernetesPodOperator(
+            task_id="collect_metrics",
+            name="real-estate-collect-metrics",
+            namespace=AIRFLOW_NAMESPACE,
+            image=DATA_PIPELINE_IMAGE,
+            image_pull_secrets=IMAGE_PULL_SECRETS,
+            cmds=["/bin/sh", "-c"],
+            arguments=[
+                f"""
+                set -e
 
-            cp /app/pipelines/dbt/profiles.yml.example \
-               /app/pipelines/dbt/profiles.yml
+                echo "============================================================"
+                echo "OBSERVABILITY - COLLECT PLATFORM METRICS"
+                echo "============================================================"
 
-            cd /app/pipelines/dbt
+                export PUSHGATEWAY_URL="{PUSHGATEWAY_URL}"
+                export PUSHGATEWAY_JOB="real_estate_data_platform"
 
-            echo "Running dbt models..."
+                cd /app/observability/metrics
 
-            dbt run \
-              --profiles-dir .
+                python collect_metrics.py
 
-            echo "dbt run completed."
-            """
-        ],
+                echo "Real Estate metrics collection completed."
+                """
+            ],
+            env_from=POSTGRES_ENV,
+            get_logs=True,
+            is_delete_operator_pod=True,
+        )
 
-        env_from=[
-            k8s.V1EnvFromSource(
-                secret_ref=k8s.V1SecretEnvSource(
-                    name="real-estate-postgresql-secret"
-                )
-            )
-        ],
+    # =========================================================================
+    # END
+    # =========================================================================
 
-        get_logs=True,
-        is_delete_operator_pod=True,
-    )
-
-    dbt_test_task = KubernetesPodOperator(
-        task_id="dbt_test",
-        name="real-estate-dbt-test",
-        namespace="airflow",
-        image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
-
-        image_pull_secrets=[
-            k8s.V1LocalObjectReference(
-                name="gitlab-registry"
-            )
-        ],
-
-        cmds=["/bin/sh", "-c"],
-
-        arguments=[
-            """
-            set -e
-
-            echo "Preparing dbt profile..."
-
-            cp /app/pipelines/dbt/profiles.yml.example \
-               /app/pipelines/dbt/profiles.yml
-
-            cd /app/pipelines/dbt
-
-            echo "Running dbt tests..."
-
-            dbt test \
-              --profiles-dir .
-
-            echo "dbt tests completed."
-            """
-        ],
-
-        env_from=[
-            k8s.V1EnvFromSource(
-                secret_ref=k8s.V1SecretEnvSource(
-                    name="real-estate-postgresql-secret"
-                )
-            )
-        ],
-
-        get_logs=True,
-        is_delete_operator_pod=True,
-    )
-    collect_metrics_task = KubernetesPodOperator(
-        task_id="collect_metrics",
-        name="real-estate-collect-metrics",
-        namespace="airflow",
-        image="gitlab.local:4567/root/chasse_immobiliere/data-pipeline:latest",
-
-        image_pull_secrets=[
-            k8s.V1LocalObjectReference(
-                name="gitlab-registry"
-            )
-        ],
-
-        cmds=["/bin/sh", "-c"],
-
-        arguments=[
-            """
-            set -e
-
-            echo "Collecting Real Estate platform metrics..."
-
-            export PUSHGATEWAY_URL="http://retail-pushgateway.monitoring.svc.cluster.local:9091"
-            export PUSHGATEWAY_JOB="real_estate_data_platform"
-
-            cd /app/observability/metrics
-
-            python collect_metrics.py
-
-            echo "Real Estate metrics collection completed."
-            """
-        ],
-
-        env_from=[
-            k8s.V1EnvFromSource(
-                secret_ref=k8s.V1SecretEnvSource(
-                    name="real-estate-postgresql-secret"
-                )
-            )
-        ],
-
-        get_logs=True,
-        is_delete_operator_pod=True,
-    )
     end = EmptyOperator(
         task_id="end",
     )
 
+    # =========================================================================
+    # GLOBAL PIPELINE
+    #
+    # BRONZE
+    #   Source -> MinIO -> RAW
+    #
+    # SILVER
+    #   RAW -> STAGING -> OLTP
+    #
+    # GOLD
+    #   OLTP -> WAREHOUSE -> DBT -> ANALYTICS
+    #
+    # OBSERVABILITY
+    #   Prometheus / Pushgateway metrics
+    # =========================================================================
+
     (
         start
-        >> generate_source_data_task
-        >> load_raw_task
-        >> validate_raw_task
-        >> transform_staging_task
-        >> validate_staging_task
-        >> load_oltp_task
-        >> validate_oltp_task
-        >> load_warehouse_task
-        >> validate_warehouse_task
-        >> dbt_run_task
-        >> dbt_test_task
-        >> collect_metrics_task
+        >> bronze_group
+        >> silver_group
+        >> gold_group
+        >> observability_group
         >> end
     )
