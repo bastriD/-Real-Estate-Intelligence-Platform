@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import os
 import time
-from typing import Mapping
 
 from prometheus_client import (
     CollectorRegistry,
@@ -11,6 +10,10 @@ from prometheus_client import (
     push_to_gateway,
 )
 
+
+# =============================================================================
+# PUSHGATEWAY CONFIGURATION
+# =============================================================================
 
 PUSHGATEWAY_URL = os.getenv(
     "PUSHGATEWAY_URL",
@@ -26,127 +29,95 @@ PUSHGATEWAY_JOB = os.getenv(
 registry = CollectorRegistry()
 
 
-# ============================================================
+# =============================================================================
 # PIPELINE METRICS
-# ============================================================
+# =============================================================================
 
 pipeline_run_status = Gauge(
     "real_estate_pipeline_run_status",
-    "Status of the latest Real Estate pipeline execution: 1=success, 0=failure",
+    (
+        "Status of the latest Real Estate platform metrics collection: "
+        "1=success, 0=failure"
+    ),
     registry=registry,
 )
 
 pipeline_duration_seconds = Histogram(
     "real_estate_pipeline_duration_seconds",
-    "Real Estate pipeline execution duration in seconds",
+    "Duration of Real Estate platform metrics collection in seconds",
     registry=registry,
 )
 
 pipeline_last_run_timestamp = Gauge(
     "real_estate_pipeline_last_run_timestamp",
-    "Unix timestamp of the latest Real Estate pipeline execution",
+    "Unix timestamp of the latest Real Estate platform metrics collection",
     registry=registry,
 )
 
 pipeline_last_success_timestamp = Gauge(
     "real_estate_pipeline_last_success_timestamp",
-    "Unix timestamp of the latest successful Real Estate pipeline execution",
+    (
+        "Unix timestamp of the latest successful "
+        "Real Estate platform metrics collection"
+    ),
     registry=registry,
 )
 
 
-# ============================================================
-# DATA VOLUME METRICS
-# ============================================================
+# =============================================================================
+# MEDALLION DATA VOLUME METRICS
+#
+# BRONZE
+#   raw
+#
+# SILVER
+#   staging
+#   real_estate OLTP
+#
+# GOLD
+#   warehouse
+#   analytics
+# =============================================================================
 
 raw_table_rows = Gauge(
     "real_estate_raw_table_rows",
-    "Number of rows available in RAW tables",
-    ["table"],
+    "Number of rows available in BRONZE / RAW tables",
+    ["medallion", "table"],
     registry=registry,
 )
 
 staging_table_rows = Gauge(
     "real_estate_staging_table_rows",
-    "Number of rows available in STAGING tables or views",
-    ["table"],
+    "Number of rows available in SILVER / STAGING tables",
+    ["medallion", "table"],
     registry=registry,
 )
 
 oltp_table_rows = Gauge(
     "real_estate_oltp_table_rows",
-    "Number of rows available in Real Estate OLTP tables",
-    ["table"],
+    "Number of rows available in SILVER / OLTP tables",
+    ["medallion", "table"],
     registry=registry,
 )
 
 warehouse_table_rows = Gauge(
     "real_estate_warehouse_table_rows",
-    "Number of rows available in warehouse tables",
-    ["table"],
+    "Number of rows available in GOLD / WAREHOUSE tables",
+    ["medallion", "table"],
     registry=registry,
 )
 
 analytics_table_rows = Gauge(
     "real_estate_analytics_table_rows",
-    "Number of rows available in analytics models or views",
-    ["view"],
+    "Number of rows available in GOLD / analytics models",
+    ["medallion", "view"],
     registry=registry,
 )
 
 
-# ============================================================
-# DATA QUALITY METRICS
-# ============================================================
-
-dq_checks_total = Gauge(
-    "real_estate_dq_checks_total",
-    "Total number of Real Estate Data Quality checks executed",
-    registry=registry,
-)
-
-dq_checks_passed = Gauge(
-    "real_estate_dq_checks_passed",
-    "Number of Real Estate Data Quality checks passed",
-    registry=registry,
-)
-
-dq_checks_failed = Gauge(
-    "real_estate_dq_checks_failed",
-    "Number of Real Estate Data Quality checks failed",
-    registry=registry,
-)
-
-dq_success_ratio = Gauge(
-    "real_estate_dq_success_ratio",
-    "Ratio of successful Real Estate Data Quality checks between 0 and 1",
-    registry=registry,
-)
-
-dq_table_checks_total = Gauge(
-    "real_estate_dq_table_checks_total",
-    "Number of Data Quality checks executed by table",
-    ["layer", "table"],
-    registry=registry,
-)
-
-dq_table_checks_failed = Gauge(
-    "real_estate_dq_table_checks_failed",
-    "Number of failed Data Quality checks by table",
-    ["layer", "table"],
-    registry=registry,
-)
-
-dq_last_run_timestamp = Gauge(
-    "real_estate_dq_last_run_timestamp",
-    "Unix timestamp of the latest Real Estate Data Quality validation",
-    registry=registry,
-)
-
-
-# ============================================================
+# =============================================================================
 # BUSINESS / OLTP KPI METRICS
-# ============================================================
+# =============================================================================
 
 clients_total = Gauge(
     "real_estate_clients_total",
@@ -197,13 +168,13 @@ paiements_total = Gauge(
 )
 
 
-# ============================================================
+# =============================================================================
 # MARKET / ANALYTICS KPI METRICS
-# ============================================================
+# =============================================================================
 
 market_listings_total = Gauge(
     "real_estate_market_listings_total",
-    "Total number of listings represented in the analytics layer",
+    "Total number of listings represented in the GOLD analytics layer",
     registry=registry,
 )
 
@@ -226,99 +197,128 @@ market_average_surface = Gauge(
 )
 
 
-# ============================================================
+# =============================================================================
 # TIMING HELPERS
-# ============================================================
+# =============================================================================
 
 def start_timer() -> float:
+    """
+    Start a metrics collection timer.
+    """
+
     return time.time()
 
 
-def observe_pipeline_duration(start_time: float) -> float:
+def observe_pipeline_duration(
+    start_time: float,
+) -> float:
+    """
+    Record metrics collection duration.
+    """
+
     duration = time.time() - start_time
-    pipeline_duration_seconds.observe(duration)
+
+    pipeline_duration_seconds.observe(
+        duration
+    )
+
     return duration
 
 
-# ============================================================
-# PIPELINE HELPERS
-# ============================================================
+# =============================================================================
+# PIPELINE STATUS HELPERS
+# =============================================================================
 
 def mark_pipeline_success() -> None:
+    """
+    Mark platform metrics collection as successful.
+    """
+
     now = time.time()
 
     pipeline_run_status.set(1)
-    pipeline_last_run_timestamp.set(now)
-    pipeline_last_success_timestamp.set(now)
+
+    pipeline_last_run_timestamp.set(
+        now
+    )
+
+    pipeline_last_success_timestamp.set(
+        now
+    )
 
 
 def mark_pipeline_failure() -> None:
+    """
+    Mark platform metrics collection as failed.
+
+    This represents failure of the metrics collection task itself.
+    Airflow remains the authoritative source for full DAG execution status.
+    """
+
     pipeline_run_status.set(0)
-    pipeline_last_run_timestamp.set(time.time())
+
+    pipeline_last_run_timestamp.set(
+        time.time()
+    )
 
 
-# ============================================================
+# =============================================================================
 # DATA VOLUME HELPERS
-# ============================================================
+# =============================================================================
 
-def set_raw_count(table: str, count: int) -> None:
-    raw_table_rows.labels(table=table).set(count)
-
-
-def set_staging_count(table: str, count: int) -> None:
-    staging_table_rows.labels(table=table).set(count)
-
-
-def set_oltp_count(table: str, count: int) -> None:
-    oltp_table_rows.labels(table=table).set(count)
-
-
-def set_warehouse_count(table: str, count: int) -> None:
-    warehouse_table_rows.labels(table=table).set(count)
-
-
-def set_analytics_count(view: str, count: int) -> None:
-    analytics_table_rows.labels(view=view).set(count)
-
-
-# ============================================================
-# DATA QUALITY HELPERS
-# ============================================================
-
-def set_data_quality_metrics(
-    total_checks: int,
-    passed_checks: int,
-    failed_checks: int,
-    table_totals: Mapping[tuple[str, str], int] | None = None,
-    table_failures: Mapping[tuple[str, str], int] | None = None,
+def set_raw_count(
+    table: str,
+    count: int,
 ) -> None:
-    dq_checks_total.set(total_checks)
-    dq_checks_passed.set(passed_checks)
-    dq_checks_failed.set(failed_checks)
-
-    ratio = passed_checks / total_checks if total_checks > 0 else 0.0
-    dq_success_ratio.set(ratio)
-
-    dq_last_run_timestamp.set(time.time())
-
-    if table_totals:
-        for (layer, table), count in table_totals.items():
-            dq_table_checks_total.labels(
-                layer=layer,
-                table=table,
-            ).set(count)
-
-    if table_failures:
-        for (layer, table), count in table_failures.items():
-            dq_table_checks_failed.labels(
-                layer=layer,
-                table=table,
-            ).set(count)
+    raw_table_rows.labels(
+        medallion="bronze",
+        table=table,
+    ).set(count)
 
 
-# ============================================================
+def set_staging_count(
+    table: str,
+    count: int,
+) -> None:
+    staging_table_rows.labels(
+        medallion="silver",
+        table=table,
+    ).set(count)
+
+
+def set_oltp_count(
+    table: str,
+    count: int,
+) -> None:
+    oltp_table_rows.labels(
+        medallion="silver",
+        table=table,
+    ).set(count)
+
+
+def set_warehouse_count(
+    table: str,
+    count: int,
+) -> None:
+    warehouse_table_rows.labels(
+        medallion="gold",
+        table=table,
+    ).set(count)
+
+
+def set_analytics_count(
+    view: str,
+    count: int,
+) -> None:
+    analytics_table_rows.labels(
+        medallion="gold",
+        view=view,
+    ).set(count)
+
+
+# =============================================================================
 # BUSINESS KPI HELPERS
-# ============================================================
+# =============================================================================
 
 def set_business_metrics(
     *,
@@ -331,34 +331,51 @@ def set_business_metrics(
     visites: int | None = None,
     paiements: int | None = None,
 ) -> None:
+
     if clients is not None:
-        clients_total.set(clients)
+        clients_total.set(
+            clients
+        )
 
     if chasseurs is not None:
-        chasseurs_total.set(chasseurs)
+        chasseurs_total.set(
+            chasseurs
+        )
 
     if mandats is not None:
-        mandats_total.set(mandats)
+        mandats_total.set(
+            mandats
+        )
 
     if active_mandats_count is not None:
-        active_mandats.set(active_mandats_count)
+        active_mandats.set(
+            active_mandats_count
+        )
 
     if biens is not None:
-        biens_total.set(biens)
+        biens_total.set(
+            biens
+        )
 
     if presentations is not None:
-        presentations_total.set(presentations)
+        presentations_total.set(
+            presentations
+        )
 
     if visites is not None:
-        visites_total.set(visites)
+        visites_total.set(
+            visites
+        )
 
     if paiements is not None:
-        paiements_total.set(paiements)
+        paiements_total.set(
+            paiements
+        )
 
 
-# ============================================================
+# =============================================================================
 # MARKET KPI HELPERS
-# ============================================================
+# =============================================================================
 
 def set_market_metrics(
     *,
@@ -367,24 +384,42 @@ def set_market_metrics(
     average_price_m2: float | None = None,
     average_surface: float | None = None,
 ) -> None:
+
     if listings is not None:
-        market_listings_total.set(listings)
+        market_listings_total.set(
+            listings
+        )
 
     if average_price is not None:
-        market_average_price.set(average_price)
+        market_average_price.set(
+            average_price
+        )
 
     if average_price_m2 is not None:
-        market_average_price_m2.set(average_price_m2)
+        market_average_price_m2.set(
+            average_price_m2
+        )
 
     if average_surface is not None:
-        market_average_surface.set(average_surface)
+        market_average_surface.set(
+            average_surface
+        )
 
 
-# ============================================================
+# =============================================================================
 # PUSHGATEWAY
-# ============================================================
+# =============================================================================
 
 def push_metrics() -> None:
+    """
+    Push Real Estate platform metrics to Prometheus Pushgateway.
+
+    Data Quality metrics are intentionally NOT handled here.
+    They are published independently by dq_runner.py so that
+    failed DQ gates remain observable even when the Airflow DAG
+    stops before collect_metrics.
+    """
+
     push_to_gateway(
         gateway=PUSHGATEWAY_URL,
         job=PUSHGATEWAY_JOB,
