@@ -1,0 +1,121 @@
+{
+  "metrics": [
+    {
+      "name": "marketListingsTotal",
+      "display_name": "Market Listings",
+      "description": "Total number of validated real-estate listings available in the analytical market dataset.",
+      "metric_type": "COUNT",
+      "unit": "COUNT",
+      "granularity": "DAY",
+      "expression": "COUNT(*)",
+      "source": "real-estate-postgresql.real_estate.analytics.mart_market_overview",
+      "glossary_terms": [
+        "RealEstateBusinessGlossary.Annonce"
+      ]
+    },
+    {
+      "name": "averagePropertyPrice",
+      "display_name": "Average Property Price",
+      "description": "Average advertised price of properties represented in the analytical market dataset.",
+      "metric_type": "AVERAGE",
+      "unit": "EUR",
+      "granularity": "DAY",
+      "expression": "AVG(prix)",
+      "source": "real-estate-postgresql.real_estate.analytics.mart_market_overview",
+      "glossary_terms": [
+        "RealEstateBusinessGlossary.Bien"
+      ]
+    },
+    {
+      "name": "averagePricePerM2",
+      "display_name": "Average Price per m²",
+      "description": "Average advertised property price per square metre across the analytical market dataset.",
+      "metric_type": "AVERAGE",
+      "unit": "EUR_PER_M2",
+      "granularity": "DAY",
+      "expression": "AVG(prix / NULLIF(surface, 0))",
+      "source": "real-estate-postgresql.real_estate.analytics.mart_market_overview",
+      "glossary_terms": [
+        "RealEstateBusinessGlossary.Bien"
+      ]
+    },
+    {
+      "name": "averagePropertySurface",
+      "display_name": "Average Property Surface",
+      "description": "Average surface area of properties represented in the analytical market dataset.",
+      "metric_type": "AVERAGE",
+      "unit": "M2",
+      "granularity": "DAY",
+      "expression": "AVG(surface)",
+      "source": "real-estate-postgresql.real_estate.analytics.mart_market_overview",
+      "glossary_terms": [
+        "RealEstateBusinessGlossary.Bien"
+      ]
+    },
+    {
+      "name": "activeMandates",
+      "display_name": "Active Mandates",
+      "description": "Number of real-estate search mandates currently considered active.",
+      "metric_type": "COUNT",
+      "unit": "COUNT",
+      "granularity": "DAY",
+      "expression": "COUNT(active mandates)",
+      "source": "real-estate-postgresql.real_estate.analytics.mart_mandat_performance",
+      "glossary_terms": [
+        "RealEstateBusinessGlossary.Mandat"
+      ]
+    },
+    {
+      "name": "listingsByCity",
+      "display_name": "Listings by City",
+      "description": "Number of validated property listings grouped by city.",
+      "metric_type": "COUNT",
+      "unit": "COUNT",
+      "granularity": "DAY",
+      "expression": "COUNT(*) GROUP BY ville",
+      "source": "real-estate-postgresql.real_estate.analytics.mart_market_by_city",
+      "dimensions": [
+        "ville"
+      ]
+    },
+    {
+      "name": "listingsByDpe",
+      "display_name": "Listings by DPE",
+      "description": "Number of validated property listings grouped by energy performance classification.",
+      "metric_type": "COUNT",
+      "unit": "COUNT",
+      "granularity": "DAY",
+      "expression": "COUNT(*) GROUP BY dpe",
+      "source": "real-estate-postgresql.real_estate.analytics.mart_market_by_dpe",
+      "dimensions": [
+        "dpe"
+      ]
+    },
+    {
+      "name": "listingsByPropertyType",
+      "display_name": "Listings by Property Type",
+      "description": "Number of validated property listings grouped by property type.",
+      "metric_type": "COUNT",
+      "unit": "COUNT",
+      "granularity": "DAY",
+      "expression": "COUNT(*) GROUP BY type_bien",
+      "source": "real-estate-postgresql.real_estate.analytics.mart_market_by_property_type",
+      "dimensions": [
+        "type_bien"
+      ]
+    },
+    {
+      "name": "listingsBySource",
+      "display_name": "Listings by Source",
+      "description": "Number of validated property listings grouped by acquisition source.",
+      "metric_type": "COUNT",
+      "unit": "COUNT",
+      "granularity": "DAY",
+      "expression": "COUNT(*) GROUP BY source",
+      "source": "real-estate-postgresql.real_estate.analytics.mart_market_by_source",
+      "dimensions": [
+        "source"
+      ]
+    }
+  ]
+}

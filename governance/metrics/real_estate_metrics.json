@@ -3,12 +3,15 @@
     {
       "name": "marketListingsTotal",
       "display_name": "Market Listings",
-      "description": "Total number of validated real-estate listings available in the analytical market dataset.",
+      "description": "Total number of validated real-estate listings available in the analytical market dataset. This KPI measures the current volume of market observations available for real-estate intelligence and reporting.",
       "metric_type": "COUNT",
       "unit": "COUNT",
       "granularity": "DAY",
+      "expression_language": "SQL",
       "expression": "COUNT(*)",
       "source": "real-estate-postgresql.real_estate.analytics.mart_market_overview",
+      "owner": "RealEstateAnalytics",
+      "domain": "RealEstateIntelligence.RealEstateAnalytics",
       "glossary_terms": [
         "RealEstateBusinessGlossary.Annonce"
       ]
@@ -16,51 +19,66 @@
     {
       "name": "averagePropertyPrice",
       "display_name": "Average Property Price",
-      "description": "Average advertised price of properties represented in the analytical market dataset.",
+      "description": "Average advertised price of validated properties represented in the analytical market dataset. This KPI provides a high-level indicator of property market valuation.",
       "metric_type": "AVERAGE",
       "unit": "EUR",
       "granularity": "DAY",
+      "expression_language": "SQL",
       "expression": "AVG(prix)",
       "source": "real-estate-postgresql.real_estate.analytics.mart_market_overview",
+      "owner": "RealEstateAnalytics",
+      "domain": "RealEstateIntelligence.RealEstateAnalytics",
       "glossary_terms": [
-        "RealEstateBusinessGlossary.Bien"
+        "RealEstateBusinessGlossary.Bien",
+        "RealEstateBusinessGlossary.Prix"
       ]
     },
     {
       "name": "averagePricePerM2",
       "display_name": "Average Price per m²",
-      "description": "Average advertised property price per square metre across the analytical market dataset.",
+      "description": "Average advertised property price per square metre across validated real-estate listings. This KPI enables normalized comparison of property values independently of property surface.",
       "metric_type": "AVERAGE",
       "unit": "EUR_PER_M2",
       "granularity": "DAY",
+      "expression_language": "SQL",
       "expression": "AVG(prix / NULLIF(surface, 0))",
       "source": "real-estate-postgresql.real_estate.analytics.mart_market_overview",
+      "owner": "RealEstateAnalytics",
+      "domain": "RealEstateIntelligence.RealEstateAnalytics",
       "glossary_terms": [
-        "RealEstateBusinessGlossary.Bien"
+        "RealEstateBusinessGlossary.Bien",
+        "RealEstateBusinessGlossary.PrixM2"
       ]
     },
     {
       "name": "averagePropertySurface",
       "display_name": "Average Property Surface",
-      "description": "Average surface area of properties represented in the analytical market dataset.",
+      "description": "Average surface area in square metres of validated properties represented in the analytical market dataset.",
       "metric_type": "AVERAGE",
       "unit": "M2",
       "granularity": "DAY",
+      "expression_language": "SQL",
       "expression": "AVG(surface)",
       "source": "real-estate-postgresql.real_estate.analytics.mart_market_overview",
+      "owner": "RealEstateAnalytics",
+      "domain": "RealEstateIntelligence.RealEstateAnalytics",
       "glossary_terms": [
-        "RealEstateBusinessGlossary.Bien"
+        "RealEstateBusinessGlossary.Bien",
+        "RealEstateBusinessGlossary.Surface"
       ]
     },
     {
       "name": "activeMandates",
       "display_name": "Active Mandates",
-      "description": "Number of real-estate search mandates currently considered active.",
+      "description": "Number of real-estate search mandates currently considered active. This KPI represents the current operational portfolio of property searches handled by the real-estate service.",
       "metric_type": "COUNT",
       "unit": "COUNT",
       "granularity": "DAY",
+      "expression_language": "SQL",
       "expression": "COUNT(active mandates)",
       "source": "real-estate-postgresql.real_estate.analytics.mart_mandat_performance",
+      "owner": "RealEstateAnalytics",
+      "domain": "RealEstateIntelligence.RealEstateAnalytics",
       "glossary_terms": [
         "RealEstateBusinessGlossary.Mandat"
       ]
@@ -68,53 +86,81 @@
     {
       "name": "listingsByCity",
       "display_name": "Listings by City",
-      "description": "Number of validated property listings grouped by city.",
+      "description": "Number of validated real-estate listings grouped by city. This KPI provides a geographical view of market inventory and supports comparison of listing volumes between local markets.",
       "metric_type": "COUNT",
       "unit": "COUNT",
       "granularity": "DAY",
+      "expression_language": "SQL",
       "expression": "COUNT(*) GROUP BY ville",
       "source": "real-estate-postgresql.real_estate.analytics.mart_market_by_city",
+      "owner": "RealEstateAnalytics",
+      "domain": "RealEstateIntelligence.RealEstateAnalytics",
       "dimensions": [
         "ville"
+      ],
+      "glossary_terms": [
+        "RealEstateBusinessGlossary.Annonce",
+        "RealEstateBusinessGlossary.Secteur"
       ]
     },
     {
       "name": "listingsByDpe",
       "display_name": "Listings by DPE",
-      "description": "Number of validated property listings grouped by energy performance classification.",
+      "description": "Number of validated real-estate listings grouped by energy performance classification. This KPI supports analysis of the energy-efficiency profile of the available property market.",
       "metric_type": "COUNT",
       "unit": "COUNT",
       "granularity": "DAY",
+      "expression_language": "SQL",
       "expression": "COUNT(*) GROUP BY dpe",
       "source": "real-estate-postgresql.real_estate.analytics.mart_market_by_dpe",
+      "owner": "RealEstateAnalytics",
+      "domain": "RealEstateIntelligence.RealEstateAnalytics",
       "dimensions": [
         "dpe"
+      ],
+      "glossary_terms": [
+        "RealEstateBusinessGlossary.Annonce",
+        "RealEstateBusinessGlossary.DPE"
       ]
     },
     {
       "name": "listingsByPropertyType",
       "display_name": "Listings by Property Type",
-      "description": "Number of validated property listings grouped by property type.",
+      "description": "Number of validated real-estate listings grouped by property type. This KPI describes the composition of market inventory across the different categories of properties.",
       "metric_type": "COUNT",
       "unit": "COUNT",
       "granularity": "DAY",
+      "expression_language": "SQL",
       "expression": "COUNT(*) GROUP BY type_bien",
       "source": "real-estate-postgresql.real_estate.analytics.mart_market_by_property_type",
+      "owner": "RealEstateAnalytics",
+      "domain": "RealEstateIntelligence.RealEstateAnalytics",
       "dimensions": [
         "type_bien"
+      ],
+      "glossary_terms": [
+        "RealEstateBusinessGlossary.Annonce",
+        "RealEstateBusinessGlossary.Bien"
       ]
     },
     {
       "name": "listingsBySource",
       "display_name": "Listings by Source",
-      "description": "Number of validated property listings grouped by acquisition source.",
+      "description": "Number of validated real-estate listings grouped by acquisition source. This KPI provides visibility into the contribution of each data source to the analytical property market dataset.",
       "metric_type": "COUNT",
       "unit": "COUNT",
       "granularity": "DAY",
+      "expression_language": "SQL",
       "expression": "COUNT(*) GROUP BY source",
       "source": "real-estate-postgresql.real_estate.analytics.mart_market_by_source",
+      "owner": "RealEstateAnalytics",
+      "domain": "RealEstateIntelligence.RealEstateAnalytics",
       "dimensions": [
         "source"
+      ],
+      "glossary_terms": [
+        "RealEstateBusinessGlossary.Annonce",
+        "RealEstateBusinessGlossary.Source"
       ]
     }
   ]
