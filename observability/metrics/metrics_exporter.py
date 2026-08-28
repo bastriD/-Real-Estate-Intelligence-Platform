@@ -30,7 +30,7 @@ registry = CollectorRegistry()
 
 
 # =============================================================================
-# PIPELINE METRICS
+# PIPELINE / METRICS COLLECTION HEALTH
 # =============================================================================
 
 pipeline_run_status = Gauge(
@@ -65,7 +65,9 @@ pipeline_last_success_timestamp = Gauge(
 
 
 # =============================================================================
-# MEDALLION DATA VOLUME METRICS
+# DATA VOLUME METRICS
+#
+# Logical Medallion mapping:
 #
 # BRONZE
 #   raw
@@ -77,40 +79,47 @@ pipeline_last_success_timestamp = Gauge(
 # GOLD
 #   warehouse
 #   analytics
+#
+# IMPORTANT:
+# We intentionally DO NOT add a "medallion" label here.
+#
+# These metric families already identify their physical/logical layer.
+# Adding a new label to an existing metric creates a second Prometheus
+# time series and causes duplicate values in existing Grafana panels.
 # =============================================================================
 
 raw_table_rows = Gauge(
     "real_estate_raw_table_rows",
-    "Number of rows available in BRONZE / RAW tables",
-    ["medallion", "table"],
+    "Number of rows available in RAW tables",
+    ["table"],
     registry=registry,
 )
 
 staging_table_rows = Gauge(
     "real_estate_staging_table_rows",
-    "Number of rows available in SILVER / STAGING tables",
-    ["medallion", "table"],
+    "Number of rows available in STAGING tables or views",
+    ["table"],
     registry=registry,
 )
 
 oltp_table_rows = Gauge(
     "real_estate_oltp_table_rows",
-    "Number of rows available in SILVER / OLTP tables",
-    ["medallion", "table"],
+    "Number of rows available in Real Estate OLTP tables",
+    ["table"],
     registry=registry,
 )
 
 warehouse_table_rows = Gauge(
     "real_estate_warehouse_table_rows",
-    "Number of rows available in GOLD / WAREHOUSE tables",
-    ["medallion", "table"],
+    "Number of rows available in warehouse tables",
+    ["table"],
     registry=registry,
 )
 
 analytics_table_rows = Gauge(
     "real_estate_analytics_table_rows",
-    "Number of rows available in GOLD / analytics models",
-    ["medallion", "view"],
+    "Number of rows available in analytics models or views",
+    ["view"],
     registry=registry,
 )
 
@@ -174,7 +183,7 @@ paiements_total = Gauge(
 
 market_listings_total = Gauge(
     "real_estate_market_listings_total",
-    "Total number of listings represented in the GOLD analytics layer",
+    "Total number of listings represented in the analytics layer",
     registry=registry,
 )
 
@@ -203,7 +212,7 @@ market_average_surface = Gauge(
 
 def start_timer() -> float:
     """
-    Start a metrics collection timer.
+    Start a timer for the metrics collection process.
     """
 
     return time.time()
@@ -213,7 +222,7 @@ def observe_pipeline_duration(
     start_time: float,
 ) -> float:
     """
-    Record metrics collection duration.
+    Observe the duration of the metrics collection process.
     """
 
     duration = time.time() - start_time
@@ -232,6 +241,9 @@ def observe_pipeline_duration(
 def mark_pipeline_success() -> None:
     """
     Mark platform metrics collection as successful.
+
+    This metric represents the collect_metrics task itself.
+    Airflow remains authoritative for the complete DAG execution state.
     """
 
     now = time.time()
@@ -251,8 +263,7 @@ def mark_pipeline_failure() -> None:
     """
     Mark platform metrics collection as failed.
 
-    This represents failure of the metrics collection task itself.
-    Airflow remains the authoritative source for full DAG execution status.
+    This does not represent an upstream Airflow DAG failure.
     """
 
     pipeline_run_status.set(0)
@@ -271,7 +282,6 @@ def set_raw_count(
     count: int,
 ) -> None:
     raw_table_rows.labels(
-        medallion="bronze",
         table=table,
     ).set(count)
 
@@ -281,7 +291,6 @@ def set_staging_count(
     count: int,
 ) -> None:
     staging_table_rows.labels(
-        medallion="silver",
         table=table,
     ).set(count)
 
@@ -291,7 +300,6 @@ def set_oltp_count(
     count: int,
 ) -> None:
     oltp_table_rows.labels(
-        medallion="silver",
         table=table,
     ).set(count)
 
@@ -301,7 +309,6 @@ def set_warehouse_count(
     count: int,
 ) -> None:
     warehouse_table_rows.labels(
-        medallion="gold",
         table=table,
     ).set(count)
 
@@ -311,7 +318,6 @@ def set_analytics_count(
     count: int,
 ) -> None:
     analytics_table_rows.labels(
-        medallion="gold",
         view=view,
     ).set(count)
 
@@ -414,10 +420,26 @@ def push_metrics() -> None:
     """
     Push Real Estate platform metrics to Prometheus Pushgateway.
 
-    Data Quality metrics are intentionally NOT handled here.
-    They are published independently by dq_runner.py so that
-    failed DQ gates remain observable even when the Airflow DAG
-    stops before collect_metrics.
+    Data Quality metrics are intentionally not exported here.
+
+    DQ is handled independently by dq_runner.py because DQ metrics must
+    still be published when a blocking validation fails and prevents
+    collect_metrics from running.
+
+    DQ metric families therefore remain:
+
+        real_estate_dq_layer_status
+        real_estate_dq_layer_checks_total
+        real_estate_dq_layer_checks_passed
+        real_estate_dq_layer_checks_failed
+        real_estate_dq_layer_last_run_timestamp
+
+    with:
+
+        raw       -> bronze
+        staging   -> silver
+        oltp      -> silver
+        warehouse -> gold
     """
 
     push_to_gateway(
