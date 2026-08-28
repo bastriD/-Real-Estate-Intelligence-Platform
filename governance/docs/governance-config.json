@@ -27,6 +27,12 @@
         "data-products/real_estate_market_intelligence.json"
      ]
     },
+    "metrics": {
+      "enabled": true,
+      "files": [
+        "metrics/real_estate_metrics.json"
+      ]
+    },
 
     "privacy_assignments": {
       "enabled": true,

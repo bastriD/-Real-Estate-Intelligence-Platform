@@ -911,6 +911,90 @@ class OpenMetadataClient:
         return entity
 
     # =========================================================================
+    # Metrics
+    # =========================================================================
+
+    def upsert_metric(
+        self,
+        metric: dict[str, Any],
+        *,
+        owner_id: str | None = None,
+        domain_fqn: str | None = None,
+    ) -> dict[str, Any]:
+
+        unit = metric.get(
+            "unit",
+            "OTHER",
+        )
+
+        standard_units = {
+            "COUNT",
+            "DOLLARS",
+            "PERCENTAGE",
+            "OTHER",
+        }
+
+        if unit in standard_units:
+            unit_of_measurement = unit
+            custom_unit = None
+        else:
+            unit_of_measurement = "OTHER"
+            custom_unit = unit
+
+        payload: dict[str, Any] = {
+            "name": metric["name"],
+            "displayName": metric.get(
+                "display_name",
+                metric["name"],
+            ),
+            "description": metric["description"],
+            "metricExpressionLanguage": "SQL",
+            "metricExpressionCode": metric["expression"],
+            "metricType": metric.get(
+                "metric_type",
+                "OTHER",
+            ),
+            "granularity": metric.get(
+                "granularity",
+                "DAY",
+            ),
+            "unitOfMeasurement": unit_of_measurement,
+        }
+
+        if custom_unit:
+            payload["customUnitOfMeasurement"] = custom_unit
+
+        if owner_id:
+            payload["owners"] = [
+                {
+                    "id": owner_id,
+                    "type": "team",
+                }
+            ]
+
+        if domain_fqn:
+            payload["domains"] = [
+                domain_fqn
+            ]
+
+        response = self.put(
+            "/v1/metrics",
+            payload,
+        )
+
+        entity = response.json()
+
+        logger.info(
+            "Metric applied: %s",
+            entity.get(
+                "fullyQualifiedName",
+                metric["name"],
+            ),
+        )
+
+        return entity
+
+    # =========================================================================
     # Teams
     # =========================================================================
 
@@ -2536,6 +2620,115 @@ class GovernanceEngine:
         )
 
     # =========================================================================
+    # Metrics
+    # =========================================================================
+
+    def apply_metrics(
+        self,
+    ) -> None:
+
+        governance_config = self.config["governance"].get(
+            "metrics",
+            {},
+        )
+
+        if not governance_config.get(
+            "enabled",
+            False,
+        ):
+            logger.info(
+                "Metric governance disabled"
+            )
+            return
+
+        processed_count = 0
+
+        for relative_path in governance_config.get(
+            "files",
+            [],
+        ):
+            path = BASE_DIR / relative_path
+            data = load_json(path)
+
+            for metric in data.get(
+                "metrics",
+                [],
+            ):
+                owner_id = None
+                domain_fqn = None
+
+                owner_name = metric.get("owner")
+
+                if owner_name:
+                    owner = self.client.get_by_name(
+                        "/v1/teams",
+                        owner_name,
+                    )
+
+                    if not owner:
+                        raise RuntimeError(
+                            "Metric owner team does not exist: "
+                            f"{owner_name}"
+                        )
+
+                    owner_id = owner["id"]
+
+                domain_name = metric.get("domain")
+
+                if domain_name:
+                    domain = self.client.get_by_name(
+                        "/v1/domains",
+                        domain_name,
+                    )
+
+                    if not domain:
+                        raise RuntimeError(
+                            "Metric domain does not exist: "
+                            f"{domain_name}"
+                        )
+
+                    domain_fqn = (
+                        domain.get("fullyQualifiedName")
+                        or domain_name
+                    )
+
+                source_fqn = metric.get("source")
+
+                if source_fqn:
+                    source = self.client.get_by_name(
+                        "/v1/tables",
+                        source_fqn,
+                    )
+
+                    if not source:
+                        logger.warning(
+                            "Metric source asset not found in "
+                            "OpenMetadata: %s",
+                            source_fqn,
+                        )
+
+                for term_fqn in metric.get(
+                    "glossary_terms",
+                    [],
+                ):
+                    self.client.ensure_glossary_term_exists(
+                        term_fqn
+                    )
+
+                self.client.upsert_metric(
+                    metric,
+                    owner_id=owner_id,
+                    domain_fqn=domain_fqn,
+                )
+
+                processed_count += 1
+
+        logger.info(
+            "Metric governance completed: %s metrics processed",
+            processed_count,
+        )
+
+    # =========================================================================
     # Main execution
     # =========================================================================
 
@@ -2576,58 +2769,64 @@ class GovernanceEngine:
         self.validate_connection()
 
         logger.info(
-            "Step 1/9 - Applying domains"
+            "Step 1/10 - Applying domains"
         )
 
         self.apply_domains()
 
         logger.info(
-            "Step 2/9 - Applying business glossary"
+            "Step 2/10 - Applying business glossary"
         )
 
         self.apply_glossary()
 
         logger.info(
-            "Step 3/9 - Applying classifications and tags"
+            "Step 3/10 - Applying classifications and tags"
         )
 
         self.apply_classifications()
 
         logger.info(
-            "Step 4/9 - Applying Data Layer governance"
+            "Step 4/10 - Applying Data Layer governance"
         )
 
         self.apply_data_layers()
 
         logger.info(
-            "Step 5/9 - Applying ownership"
+            "Step 5/10 - Applying ownership"
         )
 
         self.apply_ownership()
 
         logger.info(
-            "Step 6/9 - Applying Data Quality governance"
+            "Step 6/10 - Applying Data Quality governance"
         )
 
         self.apply_quality_governance()
 
         logger.info(
-            "Step 7/9 - Applying glossary assignments"
+            "Step 7/10 - Applying glossary assignments"
         )
 
         self.apply_glossary_assignments()
 
         logger.info(
-            "Step 8/9 - Applying privacy assignments"
+            "Step 8/10 - Applying privacy assignments"
         )
 
         self.apply_privacy_assignments()
 
         logger.info(
-            "Step 9/9 - Applying Data Products"
+            "Step 9/10 - Applying Data Products"
         )
 
         self.apply_data_products()
+
+        logger.info(
+            "Step 10/10 - Applying Metrics"
+        )
+
+        self.apply_metrics()
 
         logger.info(
             "============================================================"
