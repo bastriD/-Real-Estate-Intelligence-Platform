@@ -941,24 +941,14 @@ class OpenMetadataClient:
             unit_of_measurement = "OTHER"
             custom_unit = unit
 
-        payload: dict[str, Any] = {
+        payload = {
             "name": metric["name"],
-            "displayName": metric.get(
-                "display_name",
-                metric["name"],
-            ),
+            "displayName": metric.get("display_name", metric["name"]),
             "description": metric["description"],
-            "metricExpressionLanguage": "SQL",
-            "metricExpressionCode": metric["expression"],
-            "metricType": metric.get(
-                "metric_type",
-                "OTHER",
-            ),
-            "granularity": metric.get(
-                "granularity",
-                "DAY",
-            ),
-            "unitOfMeasurement": unit_of_measurement,
+            "metricExpression": metric["expression"],
+            "metricType": metric_type,
+            "granularity": granularity,
+            "unitOfMeasurement": unit,
         }
 
         if custom_unit:
