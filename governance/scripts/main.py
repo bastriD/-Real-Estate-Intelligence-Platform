@@ -842,90 +842,69 @@ class OpenMetadataClient:
     # Classification / Tags
     # =========================================================================
 
-    def upsert_metric(
+    def upsert_classification(
         self,
-        metric: dict[str, Any],
-        *,
-        owner_id: str | None = None,
-        domain_fqn: str | None = None,
+        classification: dict[str, Any],
     ) -> dict[str, Any]:
 
-        metric_type = metric.get(
-            "metric_type",
-            "COUNT",
-        ).upper()
-
-        granularity = metric.get(
-            "granularity",
-            "DAY",
-        ).upper()
-
-        unit = metric.get(
-            "unit",
-            "OTHER",
-        ).upper()
-
-        standard_units = {
-            "COUNT",
-            "DOLLARS",
-            "PERCENTAGE",
-            "OTHER",
-        }
-
-        if unit in standard_units:
-            unit_of_measurement = unit
-            custom_unit = None
-        else:
-            unit_of_measurement = "OTHER"
-            custom_unit = unit
-
-        payload: dict[str, Any] = {
-            "name": metric["name"],
-            "displayName": metric.get(
+        payload = {
+            "name": classification["name"],
+            "displayName": classification.get(
                 "display_name",
-                metric["name"],
+                classification["name"],
             ),
-            "description": metric["description"],
-            "metricExpression": {
-                "language": metric.get(
-                    "expression_language",
-                    "SQL",
-                ),
-                "code": metric["expression"],
-            },
-            "metricType": metric_type,
-            "granularity": granularity,
-            "unitOfMeasurement": unit_of_measurement,
+            "description": classification["description"],
+            "mutuallyExclusive": classification.get(
+                "mutually_exclusive",
+                False,
+            ),
         }
-
-        if custom_unit:
-            payload["customUnitOfMeasurement"] = custom_unit
-
-        if owner_id:
-            payload["owners"] = [
-                {
-                    "id": owner_id,
-                    "type": "team",
-                }
-            ]
-
-        if domain_fqn:
-            payload["domains"] = [
-                domain_fqn
-            ]
 
         response = self.put(
-            "/v1/metrics",
+            "/v1/classifications",
             payload,
         )
 
         entity = response.json()
 
         logger.info(
-            "Metric applied: %s",
+            "Classification applied: %s",
             entity.get(
                 "fullyQualifiedName",
-                metric["name"],
+                classification["name"],
+            ),
+        )
+
+        return entity
+
+    def upsert_tag(
+        self,
+        classification_name: str,
+        tag: dict[str, Any],
+    ) -> dict[str, Any]:
+
+        payload = {
+            "name": tag["name"],
+            "displayName": tag.get(
+                "display_name",
+                tag["name"],
+            ),
+            "description": tag["description"],
+            "classification": classification_name,
+        }
+
+        response = self.put(
+            "/v1/tags",
+            payload,
+        )
+
+        entity = response.json()
+
+        logger.info(
+            "Tag applied: %s",
+            entity.get(
+                "fullyQualifiedName",
+                f"{classification_name}.{tag['name']}",
             ),
         )
 
@@ -962,6 +941,11 @@ class OpenMetadataClient:
             "COUNT",
             "DOLLARS",
             "PERCENTAGE",
+            "TIMESTAMP",
+            "SIZE",
+            "REQUESTS",
+            "EVENTS",
+            "TRANSACTIONS",
             "OTHER",
         }
 
@@ -1023,6 +1007,7 @@ class OpenMetadataClient:
         )
 
         return entity
+
     # =========================================================================
     # Teams
     # =========================================================================
