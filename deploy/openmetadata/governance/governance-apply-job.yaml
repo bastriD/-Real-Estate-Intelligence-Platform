@@ -2,7 +2,10 @@ apiVersion: batch/v1
 kind: Job
 
 metadata:
-  name: real-estate-governance-apply
+  # GitLab CI replaces the placeholder with the immutable governance image SHA.
+  # A unique Job name allows every governance revision to execute without
+  # manually deleting the previous Kubernetes Job.
+  name: real-estate-governance-apply-__GOVERNANCE_IMAGE_TAG__
   namespace: openmetadata
 
   labels:
@@ -10,17 +13,14 @@ metadata:
     component: governance
     project: real-estate
 
-  annotations:
-    # Execute this Job during an Argo CD sync.
-    argocd.argoproj.io/hook: Sync
-
-    # Before a new execution, remove the previous Job.
-    # Successful Jobs are removed automatically.
-    # Failed Jobs remain available for troubleshooting until the next sync.
-    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
-
 spec:
+  # Do not retry governance failures automatically.
+  # A failed governance deployment must remain explicit in CI/GitOps.
   backoffLimit: 0
+
+  # Kubernetes automatically removes the completed Job after 5 minutes.
+  # This avoids accumulating historical Job objects in the cluster.
+  ttlSecondsAfterFinished: 300
 
   template:
     metadata:
@@ -38,10 +38,10 @@ spec:
       containers:
         - name: governance-apply
 
-          # Replaced by GitLab CI before publication to lab-gitops.
+          # GitLab CI replaces this placeholder with the immutable image SHA.
           image: gitlab.local:4567/root/chasse_immobiliere/real-estate-governance:__GOVERNANCE_IMAGE_TAG__
 
-          # Immutable Git SHA tags mean we do not need :latest.
+          # Immutable SHA tags never change after publication.
           imagePullPolicy: IfNotPresent
 
           env:
