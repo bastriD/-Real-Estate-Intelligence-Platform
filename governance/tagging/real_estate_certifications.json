@@ -1,0 +1,48 @@
+{
+  "classification": {
+    "name": "Certification",
+    "display_name": "Certification",
+    "description": "Governed maturity and trust level assigned to real-estate data assets.",
+    "mutually_exclusive": true,
+    "tags": [
+      {
+        "name": "Bronze",
+        "display_name": "Bronze",
+        "description": "Raw ingested data. Source-aligned, minimally transformed and not yet fully validated for analytical consumption."
+      },
+      {
+        "name": "Silver",
+        "display_name": "Silver",
+        "description": "Validated and standardized operational data suitable for controlled business use and downstream transformation."
+      },
+      {
+        "name": "Gold",
+        "display_name": "Gold",
+        "description": "Curated, governed and analytics-ready data suitable for trusted reporting, KPIs and business decision-making."
+      }
+    ]
+  },
+
+  "schema_rules": [
+    {
+      "schema": "raw",
+      "certification": "Certification.Bronze"
+    },
+    {
+      "schema": "staging",
+      "certification": "Certification.Silver"
+    },
+    {
+      "schema": "real_estate",
+      "certification": "Certification.Silver"
+    },
+    {
+      "schema": "warehouse",
+      "certification": "Certification.Gold"
+    },
+    {
+      "schema": "analytics",
+      "certification": "Certification.Gold"
+    }
+  ]
+}

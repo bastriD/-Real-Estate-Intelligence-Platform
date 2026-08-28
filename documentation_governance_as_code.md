@@ -1526,3 +1526,781 @@ Kubernetes
 ```
 
 Le résultat fournit à la fois une plateforme techniquement exploitable et une démonstration cohérente des choix d'architecture, de qualité, de sécurité, de gouvernance et d'industrialisation du projet.
+
+
+# OpenMetadata Governance-as-Code --- Metrics & Deployment Validation
+
+**Project:** Projet Fil Rouge --- Service de chasse immobilière\
+**Component:** Data Governance / OpenMetadata\
+**Platform:** GitLab CI → GitOps → Argo CD → Kubernetes → OpenMetadata\
+**OpenMetadata version:** 1.12.11\
+**Validated governance image:** `b0736293`\
+**Validation date:** 28 August 2026
+
+------------------------------------------------------------------------
+
+## 1. Purpose
+
+This document records the implementation and validation of the
+**OpenMetadata Governance-as-Code metrics layer** for the real-estate
+data platform.
+
+The objective was not merely to display KPIs in OpenMetadata, but to
+make their metadata **declarative, version-controlled, reproducible and
+automatically deployed**. Each business metric is now governed with its
+definition, semantic metadata, ownership, analytical domain, unit,
+granularity, SQL expression and business glossary relationships.
+
+The implementation extends the existing governance chain without
+introducing manual OpenMetadata configuration.
+
+------------------------------------------------------------------------
+
+## 2. Context
+
+The project already had a working Governance-as-Code framework
+responsible for:
+
+1.  Domains
+2.  Business glossary
+3.  Classifications and tags
+4.  Data Layer governance
+5.  Ownership
+6.  Data Quality governance
+7.  Glossary assignments
+8.  Privacy assignments
+9.  Data Products
+
+The Metrics definitions existed conceptually, but the deployed
+governance execution stopped at **Step 9/9**. Although an
+`upsert_metric()` function was present in `main.py`, no governance
+method called it from the main execution flow.
+
+Consequently, the Metrics feature was not part of the effective
+automated deployment.
+
+------------------------------------------------------------------------
+
+## 3. Problem Identified
+
+Inspection of `governance/scripts/main.py` identified three principal
+issues.
+
+### 3.1 Metrics were not executed
+
+The governance engine ended with:
+
+``` text
+Step 9/9 - Applying Data Products
+```
+
+There was no `apply_metrics()` method connected to
+`GovernanceEngine.run()`.
+
+Therefore, the existence of `upsert_metric()` alone was insufficient:
+the metrics configuration was never processed during a governance
+deployment.
+
+### 3.2 Metric expression payload did not match the OpenMetadata API model
+
+The former implementation used separate fields equivalent to:
+
+``` text
+metricExpressionLanguage
+metricExpressionCode
+```
+
+For the OpenMetadata version used by the platform, the metric creation
+model expects a structured expression:
+
+``` json
+{
+  "metricExpression": {
+    "language": "SQL",
+    "code": "..."
+  }
+}
+```
+
+The implementation was corrected to use this API representation.
+
+### 3.3 Semantic relationships were incomplete
+
+The initial metric upsert logic did not attach business glossary terms
+directly to Metric entities.
+
+The target governance model required metrics to be semantically
+connected to concepts such as:
+
+-   Bien immobilier
+-   Prix du bien
+-   Prix au mètre carré
+-   Surface
+-   Annonce immobilière
+-   Secteur géographique
+-   DPE
+-   Source de données
+-   Mandat de recherche
+
+------------------------------------------------------------------------
+
+## 4. Target Architecture
+
+The deployment remains fully GitOps-driven.
+
+``` text
+Developer workstation
+        |
+        | git push
+        v
+GitLab repository
+        |
+        | CI validation + image build
+        v
+GitLab Container Registry
+        |
+        | immutable governance image :<commit-SHA>
+        v
+lab-gitops repository
+        |
+        | manifest updated with immutable SHA
+        v
+Argo CD
+        |
+        | reconcile desired state
+        v
+Kubernetes / openmetadata namespace
+        |
+        | Governance Job
+        v
+OpenMetadata REST API
+        |
+        v
+Governed metadata
+```
+
+There is no requirement to run Kubernetes locally on the Windows
+workstation. Deployment continues through GitLab CI and GitOps, with
+Kubernetes used as the execution platform.
+
+------------------------------------------------------------------------
+
+## 5. Immutable Kubernetes Job Lifecycle
+
+The Governance Job uses the Git commit SHA in both its Kubernetes name
+and container image.
+
+Validated deployment:
+
+``` text
+job.batch/real-estate-governance-apply-b0736293
+pod/real-estate-governance-apply-b0736293-72qgj
+```
+
+Result:
+
+``` text
+STATUS: Complete
+COMPLETIONS: 1/1
+DURATION: 17s
+```
+
+Image model:
+
+``` text
+gitlab.local:4567/root/chasse_immobiliere/real-estate-governance:<SHA>
+```
+
+This design gives each governance revision an immutable execution
+identity.
+
+When a new governance commit is published:
+
+``` text
+SHA A -> Job real-estate-governance-apply-SHA-A
+SHA B -> desired Job real-estate-governance-apply-SHA-B
+```
+
+Argo CD creates the new Job and prunes the previous revision according
+to the GitOps desired state.
+
+### Important lifecycle decision
+
+The Job intentionally uses:
+
+-   no Argo CD Sync hook;
+-   no `ttlSecondsAfterFinished`;
+-   no manual deletion requirement.
+
+A TTL on a normal Argo-managed Job would delete the resource after
+completion and cause Argo self-heal to recreate it repeatedly. Keeping
+the completed Job in desired state prevents this loop.
+
+------------------------------------------------------------------------
+
+## 6. Metrics Governance Configuration
+
+Nine business metrics are governed.
+
+  Metric                      Type      Unit         Granularity
+  --------------------------- --------- ------------ -------------
+  Market Listings             COUNT     COUNT        DAY
+  Average Property Price      AVERAGE   EUR          DAY
+  Average Price per m²        AVERAGE   EUR_PER_M2   DAY
+  Average Property Surface    AVERAGE   M2           DAY
+  Active Mandates             COUNT     COUNT        DAY
+  Listings by City            COUNT     COUNT        DAY
+  Listings by DPE             COUNT     COUNT        DAY
+  Listings by Property Type   COUNT     COUNT        DAY
+  Listings by Source          COUNT     COUNT        DAY
+
+The definitions are maintained declaratively in:
+
+``` text
+governance/metrics/real_estate_metrics.json
+```
+
+Each definition can contain:
+
+``` text
+name
+display_name
+description
+metric_type
+unit
+granularity
+expression_language
+expression
+source
+owner
+domain
+dimensions
+glossary_terms
+```
+
+`source` and `dimensions` are governance configuration metadata used by
+the automation; they are not blindly sent as unsupported CreateMetric
+fields.
+
+------------------------------------------------------------------------
+
+## 7. Governance Engine Changes
+
+### 7.1 Correct OpenMetadata expression model
+
+Metric payloads now use:
+
+``` python
+"metricExpression": {
+    "language": metric.get("expression_language", "SQL"),
+    "code": metric["expression"],
+}
+```
+
+This preserves the SQL definition directly in OpenMetadata.
+
+### 7.2 Standard and custom units
+
+The engine distinguishes OpenMetadata standard units from
+project-specific units.
+
+Standard units include:
+
+``` text
+COUNT
+DOLLARS
+PERCENTAGE
+TIMESTAMP
+SIZE
+REQUESTS
+EVENTS
+TRANSACTIONS
+OTHER
+```
+
+Project units such as:
+
+``` text
+EUR
+EUR_PER_M2
+M2
+```
+
+are represented using:
+
+``` text
+unitOfMeasurement = OTHER
+customUnitOfMeasurement = <project unit>
+```
+
+The OpenMetadata UI consequently displays the intended business unit.
+
+### 7.3 Owner assignment
+
+Metric definitions reference the governance team:
+
+``` text
+RealEstateAnalytics
+```
+
+The engine resolves the team in OpenMetadata and sends its entity ID as
+the metric owner.
+
+This avoids hard-coded UUIDs and keeps the configuration portable.
+
+### 7.4 Domain assignment
+
+Metrics are associated with:
+
+``` text
+RealEstateIntelligence.RealEstateAnalytics
+```
+
+The engine validates that the domain exists before applying the metric.
+
+### 7.5 Glossary relationships
+
+Glossary terms are validated before metric creation and attached as
+confirmed manual Glossary relationships.
+
+Conceptually:
+
+``` json
+{
+  "tagFQN": "RealEstateBusinessGlossary.PrixM2",
+  "source": "Glossary",
+  "labelType": "Manual",
+  "state": "Confirmed"
+}
+```
+
+This links technical KPI definitions to governed business vocabulary.
+
+### 7.6 Source validation
+
+When a metric declares an analytical source table, the governance engine
+checks that the table exists in OpenMetadata.
+
+For example:
+
+``` text
+real-estate-postgresql.real_estate.analytics.mart_market_overview
+```
+
+or:
+
+``` text
+real-estate-postgresql.real_estate.analytics.mart_market_by_city
+```
+
+A missing source produces a warning rather than inventing a catalog
+entity.
+
+### 7.7 Dedicated `apply_metrics()` stage
+
+A dedicated governance stage now:
+
+1.  loads the metric configuration;
+2.  checks the source asset;
+3.  resolves the owner;
+4.  resolves the domain;
+5.  validates glossary terms;
+6.  calls the Metric upsert;
+7.  counts processed metrics.
+
+The governance execution now contains **10 stages**.
+
+------------------------------------------------------------------------
+
+## 8. Final Governance Execution
+
+The validated execution order is:
+
+``` text
+Step 1/10  - Applying domains
+Step 2/10  - Applying business glossary
+Step 3/10  - Applying classifications and tags
+Step 4/10  - Applying Data Layer governance
+Step 5/10  - Applying ownership
+Step 6/10  - Applying Data Quality governance
+Step 7/10  - Applying glossary assignments
+Step 8/10  - Applying privacy assignments
+Step 9/10  - Applying Data Products
+Step 10/10 - Applying Metrics
+```
+
+The final Job successfully reached Step 10.
+
+------------------------------------------------------------------------
+
+## 9. Deployment Validation Results
+
+### 9.1 Data Layer governance
+
+The deployment reported:
+
+``` text
+47 processed
+0 changed
+47 already correct
+0 missing
+```
+
+This confirms idempotency: already-correct metadata was detected instead
+of unnecessarily modified.
+
+### 9.2 Ownership
+
+The existing teams were successfully resolved:
+
+``` text
+RealEstateDataTeam
+RealEstateBusiness
+RealEstateAnalytics
+```
+
+Existing ownership assignments remained correct.
+
+### 9.3 Data Quality governance
+
+Required tags remained present and required lineage was successfully
+verified for the tested analytical assets.
+
+### 9.4 Glossary assignments
+
+Result:
+
+``` text
+18 processed
+0 changed
+18 already correct
+0 missing
+```
+
+### 9.5 Privacy assignments
+
+Result:
+
+``` text
+27 processed
+0 changed
+27 already correct
+0 missing
+```
+
+### 9.6 Data Product
+
+The following Data Product was successfully applied:
+
+``` text
+RealEstateMarketIntelligence
+```
+
+Its governed assets were also associated successfully.
+
+### 9.7 Metrics
+
+The new final stage reported:
+
+``` text
+Step 10/10 - Applying Metrics
+
+Metric applied: marketListingsTotal
+Metric applied: averagePropertyPrice
+Metric applied: averagePricePerM2
+Metric applied: averagePropertySurface
+Metric applied: activeMandates
+Metric applied: listingsByCity
+Metric applied: listingsByDpe
+Metric applied: listingsByPropertyType
+Metric applied: listingsBySource
+
+Metric governance completed: 9 metrics processed
+```
+
+The complete governance execution then ended with:
+
+``` text
+Governance-as-Code execution completed successfully
+```
+
+Therefore:
+
+``` text
+Metrics processed: 9
+Metrics successfully applied: 9
+Governance Job result: SUCCESS
+```
+
+------------------------------------------------------------------------
+
+## 10. OpenMetadata UI Validation
+
+The API success was complemented by visual validation in OpenMetadata.
+
+### Average Price per m²
+
+For:
+
+``` text
+averagePricePerM2
+```
+
+OpenMetadata displays:
+
+``` text
+Display Name      Average Price per m²
+Domain            Real Estate Analytics
+Owner             Real Estate Analytics
+Metric Type       AVERAGE
+Measurement Unit  EUR_PER_M2
+Granularity       DAY
+```
+
+The description is also correctly persisted.
+
+### SQL expression
+
+The Expression tab displays:
+
+``` sql
+AVG(prix / NULLIF(surface, 0))
+```
+
+This proves the corrected nested `metricExpression` payload is persisted
+and exposed by OpenMetadata.
+
+------------------------------------------------------------------------
+
+## 11. Business Glossary Validation
+
+The Metrics catalog also shows the expected glossary relationships.
+
+  -----------------------------------------------------------------------
+  Metric                              Governed glossary concepts
+  ----------------------------------- -----------------------------------
+  Active Mandates                     Mandat de recherche
+
+  Average Price per m²                Bien immobilier; Prix au mètre
+                                      carré
+
+  Average Property Price              Bien immobilier; Prix du bien
+
+  Average Property Surface            Bien immobilier; Surface
+
+  Listings by City                    Annonce immobilière; Secteur
+                                      géographique
+
+  Listings by DPE                     Annonce immobilière; Diagnostic de
+                                      performance énergétique
+
+  Listings by Property Type           Annonce immobilière; Bien
+                                      immobilier
+
+  Listings by Source                  Annonce immobilière; Source de
+                                      données
+
+  Market Listings                     Annonce immobilière
+  -----------------------------------------------------------------------
+
+This is important because the Metrics catalog is no longer only a
+technical list of calculations. It is connected to the same controlled
+vocabulary used elsewhere in the data governance model.
+
+------------------------------------------------------------------------
+
+## 12. Example: Average Price per m²
+
+This KPI demonstrates the complete governance chain.
+
+### Business purpose
+
+The metric normalizes property valuation by surface and allows
+comparison between properties and markets independently of property
+size.
+
+### Technical definition
+
+``` sql
+AVG(prix / NULLIF(surface, 0))
+```
+
+### Governance metadata
+
+``` text
+Metric Type:       AVERAGE
+Unit:              EUR_PER_M2
+Granularity:       DAY
+Owner:             RealEstateAnalytics
+Domain:            RealEstateIntelligence.RealEstateAnalytics
+Glossary:          Bien + PrixM2
+```
+
+### Result
+
+The definition is:
+
+-   stored in Git;
+-   validated by CI;
+-   packaged in the governance image;
+-   deployed through GitOps;
+-   executed by Kubernetes;
+-   applied through the OpenMetadata API;
+-   visible and searchable in the OpenMetadata catalog.
+
+------------------------------------------------------------------------
+
+## 13. Why This Design Matters
+
+### Reproducibility
+
+The governance state is derived from version-controlled configuration
+rather than manual UI operations.
+
+### Traceability
+
+A Git commit produces an immutable governance image and an identifiable
+Kubernetes Job.
+
+For the validated revision:
+
+``` text
+SHA: b0736293
+Job: real-estate-governance-apply-b0736293
+```
+
+### Idempotency
+
+Reapplying governance does not duplicate correctly configured metadata.
+Existing correct assignments are detected.
+
+### Separation of responsibilities
+
+The architecture keeps distinct concerns:
+
+``` text
+dbt / SQL marts
+    -> compute analytical datasets
+
+Prometheus / Grafana
+    -> operational and technical observability
+
+OpenMetadata Metrics
+    -> business KPI definition and semantic governance
+```
+
+OpenMetadata is therefore used as the **catalog and governance layer**,
+not as a replacement for the analytical engine or monitoring platform.
+
+### Semantic consistency
+
+Metrics, tables and columns share the same business glossary. This gives
+the project a common language between technical implementation and
+business interpretation.
+
+### Automation
+
+No manual OpenMetadata editing is required to recreate the governed
+Metrics state.
+
+------------------------------------------------------------------------
+
+## 14. Evidence for Project / Jury
+
+This implementation provides concrete evidence for several architecture
+and governance capabilities:
+
+-   Governance-as-Code;
+-   metadata cataloguing;
+-   business glossary;
+-   data ownership;
+-   domain-oriented governance;
+-   semantic KPI definitions;
+-   Data Product governance;
+-   Data Quality metadata;
+-   privacy classification;
+-   lineage verification;
+-   Git-based traceability;
+-   CI/CD;
+-   immutable container deployment;
+-   GitOps;
+-   Kubernetes automation;
+-   reproducible configuration;
+-   separation between operational, analytical and governance concerns.
+
+The implementation is therefore not simply a list of KPIs: it
+demonstrates how business indicators are integrated into an
+industrialized data governance lifecycle.
+
+------------------------------------------------------------------------
+
+## 15. Current Validated State
+
+At the end of this implementation:
+
+``` text
+OpenMetadata connectivity        OK
+Domains                          OK
+Business glossary                OK
+Classifications / tags           OK
+Data Layer governance            OK
+Ownership                        OK
+Data Quality governance          OK
+Glossary assignments             OK
+Privacy assignments              OK
+Data Product                     OK
+Metrics                          9/9 OK
+Metric owner                     Verified
+Metric domain                    Verified
+Metric unit                      Verified
+Metric granularity               Verified
+Metric SQL expression            Verified
+Metric glossary relationships    Verified
+GitLab deployment                OK
+GitOps publication               OK
+Argo CD reconciliation           OK
+Kubernetes Job                   Complete 1/1
+```
+
+------------------------------------------------------------------------
+
+## 16. Remaining Enhancement: Certification
+
+The OpenMetadata Metric UI currently shows no Certification value.
+
+The project already has a Bronze / Silver / Gold certification concept
+available. A possible future governance enhancement is to formalize
+certification rules such as:
+
+``` text
+RAW                  -> Bronze
+STAGING / OLTP       -> Silver
+WAREHOUSE / ANALYTICS -> Gold
+```
+
+Certification was **not part of the Metrics correction described in this
+document** and should be implemented as a separate controlled governance
+change rather than mixed into the now-validated Metrics deployment.
+
+------------------------------------------------------------------------
+
+## 17. Conclusion
+
+The OpenMetadata Metrics implementation is now operational and validated
+end-to-end.
+
+The project moved from a situation where metric-upsert code existed but
+was never executed to a complete automated governance workflow
+containing a dedicated tenth stage.
+
+The final architecture guarantees that business KPI metadata is:
+
+**defined in code → versioned → validated → containerized → published
+through GitOps → reconciled by Argo CD → executed in Kubernetes →
+persisted in OpenMetadata.**
+
+All nine intended real-estate metrics are now governed and visible with
+their semantic and organizational context.
+
+**Status: Metrics Governance-as-Code implementation COMPLETE and
+VALIDATED.**

@@ -4,6 +4,7 @@ import json
 import logging
 import os
 import sys
+import time
 from pathlib import Path
 from typing import Any
 from urllib.parse import quote
@@ -1383,6 +1384,167 @@ class OpenMetadataClient:
   
   
 
+
+    # =========================================================================
+    # Certification
+    # =========================================================================
+
+    def ensure_certification_taxonomy(
+        self,
+        configuration: dict[str, Any],
+    ) -> None:
+
+        classification = configuration["classification"]
+        classification_name = classification["name"]
+
+        existing_classification = self.get_by_name(
+            "/v1/classifications",
+            classification_name,
+        )
+
+        if existing_classification:
+            logger.info(
+                "Certification classification already exists: %s",
+                classification_name,
+            )
+        else:
+            self.upsert_classification(
+                classification
+            )
+
+        for tag in classification.get(
+            "tags",
+            [],
+        ):
+            tag_fqn = (
+                f"{classification_name}.{tag['name']}"
+            )
+
+            existing_tag = self.get_by_name(
+                "/v1/tags",
+                tag_fqn,
+            )
+
+            if existing_tag:
+                logger.info(
+                    "Certification tag already exists: %s",
+                    tag_fqn,
+                )
+                continue
+
+            self.upsert_tag(
+                classification_name,
+                tag,
+            )
+
+    def apply_certification_to_table(
+        self,
+        table_fqn: str,
+        certification_fqn: str,
+    ) -> str:
+
+        certification_tag = self.get_by_name(
+            "/v1/tags",
+            certification_fqn,
+        )
+
+        if not certification_tag:
+            raise RuntimeError(
+                "Certification tag does not exist: "
+                f"{certification_fqn}"
+            )
+
+        entity = self.get_by_name(
+            "/v1/tables",
+            table_fqn,
+            fields="certification",
+        )
+
+        if not entity:
+            logger.warning(
+                "Certification target not found: %s",
+                table_fqn,
+            )
+            return "missing"
+
+        current_certification = entity.get(
+            "certification"
+        )
+
+        current_tag_fqn = None
+
+        if current_certification:
+            current_tag_fqn = (
+                current_certification
+                .get("tagLabel", {})
+                .get("tagFQN")
+            )
+
+        if current_tag_fqn == certification_fqn:
+            logger.info(
+                "Certification already correct: %s -> %s",
+                table_fqn,
+                certification_fqn,
+            )
+            return "already"
+
+        tag_label: dict[str, Any] = {
+            "tagFQN": certification_fqn,
+            "source": "Classification",
+            "labelType": "Manual",
+            "state": "Confirmed",
+        }
+
+        # Preserve catalog-provided display metadata when available.
+        if certification_tag.get("name"):
+            tag_label["name"] = certification_tag["name"]
+
+        if certification_tag.get("description"):
+            tag_label["description"] = certification_tag["description"]
+
+        if certification_tag.get("style"):
+            tag_label["style"] = certification_tag["style"]
+
+        certification_value: dict[str, Any] = {
+            "tagLabel": tag_label,
+            "appliedDate": int(time.time() * 1000),
+        }
+
+        operation = (
+            "replace"
+            if current_certification
+            else "add"
+        )
+
+        patch = [
+            {
+                "op": operation,
+                "path": "/certification",
+                "value": certification_value,
+            }
+        ]
+
+        self.patch(
+            f"/v1/tables/{entity['id']}",
+            patch,
+        )
+
+        if current_tag_fqn:
+            logger.info(
+                "Certification corrected: %s | %s -> %s",
+                table_fqn,
+                current_tag_fqn,
+                certification_fqn,
+            )
+        else:
+            logger.info(
+                "Certification applied: %s -> %s",
+                table_fqn,
+                certification_fqn,
+            )
+
+        return "changed"
+
     # =========================================================================
     # Data Products
     # =========================================================================
@@ -2749,6 +2911,147 @@ class GovernanceEngine:
             processed_count,
         )
 
+
+    # =========================================================================
+    # Certification governance
+    # =========================================================================
+
+    def apply_certifications(
+        self,
+    ) -> None:
+
+        governance_config = self.config["governance"].get(
+            "certification",
+            {},
+        )
+
+        if not governance_config.get(
+            "enabled",
+            False,
+        ):
+            logger.info(
+                "Certification governance disabled"
+            )
+            return
+
+        openmetadata_config = self.config[
+            "openmetadata"
+        ]
+
+        database_service = openmetadata_config[
+            "database_service"
+        ]
+
+        database = openmetadata_config[
+            "database"
+        ]
+
+        processed_count = 0
+        changed_count = 0
+        already_count = 0
+        missing_count = 0
+
+        for relative_path in governance_config.get(
+            "files",
+            [],
+        ):
+            data = load_json(
+                BASE_DIR / relative_path
+            )
+
+            self.client.ensure_certification_taxonomy(
+                data
+            )
+
+            for rule in data.get(
+                "schema_rules",
+                [],
+            ):
+                schema_name = rule[
+                    "schema"
+                ]
+
+                certification_fqn = rule[
+                    "certification"
+                ]
+
+                schema_fqn = (
+                    f"{database_service}."
+                    f"{database}."
+                    f"{schema_name}"
+                )
+
+                schema_entity = self.client.get_by_name(
+                    "/v1/databaseSchemas",
+                    schema_fqn,
+                )
+
+                if not schema_entity:
+                    logger.warning(
+                        "Certification schema not found: %s",
+                        schema_fqn,
+                    )
+                    missing_count += 1
+                    continue
+
+                tables = self.client.list_tables_in_schema(
+                    schema_fqn
+                )
+
+                if not tables:
+                    logger.warning(
+                        "No catalogued tables found for certification "
+                        "schema: %s",
+                        schema_fqn,
+                    )
+                    continue
+
+                logger.info(
+                    "Applying %s to schema %s: %s tables discovered",
+                    certification_fqn,
+                    schema_fqn,
+                    len(tables),
+                )
+
+                for table in tables:
+                    table_fqn = table.get(
+                        "fullyQualifiedName"
+                    )
+
+                    if not table_fqn:
+                        logger.warning(
+                            "OpenMetadata table without fullyQualifiedName "
+                            "in certification schema: %s",
+                            schema_fqn,
+                        )
+                        continue
+
+                    result = (
+                        self.client.apply_certification_to_table(
+                            table_fqn,
+                            certification_fqn,
+                        )
+                    )
+
+                    processed_count += 1
+
+                    if result == "changed":
+                        changed_count += 1
+                    elif result == "already":
+                        already_count += 1
+                    elif result == "missing":
+                        missing_count += 1
+
+        logger.info(
+            "Certification governance completed: "
+            "%s processed, %s changed, "
+            "%s already correct, %s missing",
+            processed_count,
+            changed_count,
+            already_count,
+            missing_count,
+        )
+
     # =========================================================================
     # Main execution
     # =========================================================================
@@ -2790,64 +3093,70 @@ class GovernanceEngine:
         self.validate_connection()
 
         logger.info(
-            "Step 1/10 - Applying domains"
+            "Step 1/11 - Applying domains"
         )
 
         self.apply_domains()
 
         logger.info(
-            "Step 2/10 - Applying business glossary"
+            "Step 2/11 - Applying business glossary"
         )
 
         self.apply_glossary()
 
         logger.info(
-            "Step 3/10 - Applying classifications and tags"
+            "Step 3/11 - Applying classifications and tags"
         )
 
         self.apply_classifications()
 
         logger.info(
-            "Step 4/10 - Applying Data Layer governance"
+            "Step 4/11 - Applying Data Layer governance"
         )
 
         self.apply_data_layers()
 
         logger.info(
-            "Step 5/10 - Applying ownership"
+            "Step 5/11 - Applying ownership"
         )
 
         self.apply_ownership()
 
         logger.info(
-            "Step 6/10 - Applying Data Quality governance"
+            "Step 6/11 - Applying Data Quality governance"
         )
 
         self.apply_quality_governance()
 
         logger.info(
-            "Step 7/10 - Applying glossary assignments"
+            "Step 7/11 - Applying glossary assignments"
         )
 
         self.apply_glossary_assignments()
 
         logger.info(
-            "Step 8/10 - Applying privacy assignments"
+            "Step 8/11 - Applying privacy assignments"
         )
 
         self.apply_privacy_assignments()
 
         logger.info(
-            "Step 9/10 - Applying Data Products"
+            "Step 9/11 - Applying Data Products"
         )
 
         self.apply_data_products()
 
         logger.info(
-            "Step 10/10 - Applying Metrics"
+            "Step 10/11 - Applying Metrics"
         )
 
         self.apply_metrics()
+
+        logger.info(
+            "Step 11/11 - Applying Certifications"
+        )
+
+        self.apply_certifications()
 
         logger.info(
             "============================================================"
