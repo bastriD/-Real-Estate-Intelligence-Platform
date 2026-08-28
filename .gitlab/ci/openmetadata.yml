@@ -9,21 +9,19 @@ openmetadata:publish-gitops:
       artifacts: false
 
     - job: governance:build-image
-      artifacts: false
+      artifacts: true
       optional: true
 
   script:
     # ---------------------------------------------------------
     # 1. Validate required tools
     # ---------------------------------------------------------
-
     - "git --version"
     - "kubectl version --client"
 
     # ---------------------------------------------------------
     # 2. Validate OpenMetadata source manifests
     # ---------------------------------------------------------
-
     - "test -d deploy/openmetadata"
 
     # PostgreSQL metadata ingestion / profiler
@@ -40,24 +38,33 @@ openmetadata:publish-gitops:
     - "test -f deploy/openmetadata/governance/kustomization.yaml"
 
     # ---------------------------------------------------------
-    # 3. Verify GitOps credentials
+    # 3. Resolve governance image tag
     # ---------------------------------------------------------
+    - |
+      if [ -n "${GOVERNANCE_IMAGE_TAG:-}" ]; then
+        echo "Using governance image tag from build artifact: ${GOVERNANCE_IMAGE_TAG}"
+      else
+        GOVERNANCE_IMAGE_TAG="${CI_COMMIT_SHORT_SHA}"
+        export GOVERNANCE_IMAGE_TAG
+        echo "Governance build artifact not present; using commit SHA: ${GOVERNANCE_IMAGE_TAG}"
+      fi
 
+    # ---------------------------------------------------------
+    # 4. Verify GitOps credentials
+    # ---------------------------------------------------------
     - |
       kubectl -n openmetadata get secret \
         lab-gitops-git-credentials
 
     # ---------------------------------------------------------
-    # 4. Prepare temporary workspace
+    # 5. Prepare temporary workspace
     # ---------------------------------------------------------
-
     - "rm -rf /tmp/chasse-lab-gitops"
     - "rm -f /tmp/.netrc"
 
     # ---------------------------------------------------------
-    # 5. Load GitOps credentials from Kubernetes
+    # 6. Load GitOps credentials from Kubernetes
     # ---------------------------------------------------------
-
     - |
       export LAB_GITOPS_GIT_USER="$(
         kubectl -n openmetadata get secret \
@@ -76,18 +83,17 @@ openmetadata:publish-gitops:
       test -n "${LAB_GITOPS_GIT_USER}"
       test -n "${LAB_GITOPS_GIT_TOKEN}"
 
-      cat > /tmp/.netrc <<EOF
+      cat > /tmp/.netrc <<EOF_NETRC
       machine gitlab.local
       login ${LAB_GITOPS_GIT_USER}
       password ${LAB_GITOPS_GIT_TOKEN}
-      EOF
+      EOF_NETRC
 
       chmod 600 /tmp/.netrc
 
     # ---------------------------------------------------------
-    # 6. Clone lab-gitops
+    # 7. Clone lab-gitops
     # ---------------------------------------------------------
-
     - |
       echo "Cloning lab-gitops repository..."
 
@@ -98,9 +104,8 @@ openmetadata:publish-gitops:
         /tmp/chasse-lab-gitops
 
     # ---------------------------------------------------------
-    # 7. Publish PostgreSQL OpenMetadata manifests
+    # 8. Publish PostgreSQL OpenMetadata manifests
     # ---------------------------------------------------------
-
     - |
       echo "Publishing Real Estate PostgreSQL OpenMetadata manifests..."
 
@@ -120,9 +125,8 @@ openmetadata:publish-gitops:
         /tmp/chasse-lab-gitops/workloads/openmetadata/ingestions/real-estate-postgresql/kustomization.yaml
 
     # ---------------------------------------------------------
-    # 8. Publish dbt OpenMetadata manifests
+    # 9. Publish dbt OpenMetadata manifests
     # ---------------------------------------------------------
-
     - |
       echo "Publishing Real Estate dbt OpenMetadata manifests..."
 
@@ -138,9 +142,8 @@ openmetadata:publish-gitops:
         /tmp/chasse-lab-gitops/workloads/openmetadata/ingestions/real-estate-dbt/kustomization.yaml
 
     # ---------------------------------------------------------
-    # 9. Publish Governance manifests
+    # 10. Publish Governance manifests
     # ---------------------------------------------------------
-
     - |
       echo "Publishing Real Estate Governance manifests..."
 
@@ -155,27 +158,31 @@ openmetadata:publish-gitops:
         deploy/openmetadata/governance/kustomization.yaml \
         /tmp/chasse-lab-gitops/workloads/openmetadata-governance/real-estate/kustomization.yaml
 
-      echo "Injecting governance image tag: ${CI_COMMIT_SHORT_SHA}"
+      echo "Injecting governance image tag: ${GOVERNANCE_IMAGE_TAG}"
 
       sed -i \
-        "s/__GOVERNANCE_IMAGE_TAG__/${CI_COMMIT_SHORT_SHA}/g" \
+        "s/__GOVERNANCE_IMAGE_TAG__/${GOVERNANCE_IMAGE_TAG}/g" \
         /tmp/chasse-lab-gitops/workloads/openmetadata-governance/real-estate/governance-apply-job.yaml
 
-      echo "Published governance image reference:"
+      if grep -q '__GOVERNANCE_IMAGE_TAG__' \
+        /tmp/chasse-lab-gitops/workloads/openmetadata-governance/real-estate/governance-apply-job.yaml; then
+        echo "ERROR: governance image placeholder was not replaced."
+        exit 1
+      fi
 
+      echo "Published governance image reference:"
       grep \
         "image:" \
         /tmp/chasse-lab-gitops/workloads/openmetadata-governance/real-estate/governance-apply-job.yaml
-    # ---------------------------------------------------------
-    # 10. Enter GitOps repository
-    # ---------------------------------------------------------
 
+    # ---------------------------------------------------------
+    # 11. Enter GitOps repository
+    # ---------------------------------------------------------
     - "cd /tmp/chasse-lab-gitops"
 
     # ---------------------------------------------------------
-    # 11. Register PostgreSQL bundle
+    # 12. Register PostgreSQL bundle
     # ---------------------------------------------------------
-
     - |
       if ! grep -qE \
         '^[[:space:]]*-[[:space:]]*real-estate-postgresql/?[[:space:]]*$' \
@@ -190,9 +197,8 @@ openmetadata:publish-gitops:
       fi
 
     # ---------------------------------------------------------
-    # 12. Register dbt bundle
+    # 13. Register dbt bundle
     # ---------------------------------------------------------
-
     - |
       if ! grep -qE \
         '^[[:space:]]*-[[:space:]]*real-estate-dbt/?[[:space:]]*$' \
@@ -207,9 +213,8 @@ openmetadata:publish-gitops:
       fi
 
     # ---------------------------------------------------------
-    # 13. Register Governance bundle
+    # 14. Register Governance bundle
     # ---------------------------------------------------------
-
     - |
       test -f workloads/openmetadata-governance/kustomization.yaml
 
@@ -226,9 +231,8 @@ openmetadata:publish-gitops:
       fi
 
     # ---------------------------------------------------------
-    # 14. Show resulting structure
+    # 15. Show resulting structure
     # ---------------------------------------------------------
-
     - |
       echo "OpenMetadata ingestion files:"
 
@@ -254,16 +258,14 @@ openmetadata:publish-gitops:
       cat workloads/openmetadata-governance/kustomization.yaml
 
     # ---------------------------------------------------------
-    # 15. Configure Git
+    # 16. Configure Git
     # ---------------------------------------------------------
-
     - 'git config user.name "chasse-immobiliere-ci"'
     - 'git config user.email "gitlab-ci@lab.local"'
 
     # ---------------------------------------------------------
-    # 16. Stage GitOps changes
+    # 17. Stage GitOps changes
     # ---------------------------------------------------------
-
     - |
       git add \
         workloads/openmetadata/ingestions \
@@ -274,9 +276,8 @@ openmetadata:publish-gitops:
       git status --short
 
     # ---------------------------------------------------------
-    # 17. Skip if nothing changed
+    # 18. Skip if nothing changed
     # ---------------------------------------------------------
-
     - |
       if git diff --cached --quiet; then
         echo "No OpenMetadata GitOps changes to publish."
@@ -284,27 +285,21 @@ openmetadata:publish-gitops:
       fi
 
     # ---------------------------------------------------------
-    # 18. Commit GitOps change
+    # 19. Commit GitOps change
     # ---------------------------------------------------------
-
     - |
       git commit \
         -m "deploy: publish real-estate OpenMetadata configuration and governance"
 
     # ---------------------------------------------------------
-    # 19. Push lab-gitops
+    # 20. Push lab-gitops
     # ---------------------------------------------------------
-
     - |
       HOME=/tmp \
       GIT_SSL_NO_VERIFY=true \
       git push origin main
 
   after_script:
-    # ---------------------------------------------------------
-    # Clean credentials and temporary repository
-    # ---------------------------------------------------------
-
     - "rm -f /tmp/.netrc"
     - "rm -rf /tmp/chasse-lab-gitops"
 
@@ -313,5 +308,6 @@ openmetadata:publish-gitops:
       changes:
         - deploy/openmetadata/**/*
         - governance/**/*
+        - .gitlab/ci/governance.yml
         - .gitlab/ci/openmetadata.yml
         - .gitlab-ci.yml

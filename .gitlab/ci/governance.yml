@@ -13,26 +13,19 @@ governance:validate:
   script:
     - echo "Validating Governance-as-Code files..."
 
-    # ---------------------------------------------------------
     # Python syntax
-    # ---------------------------------------------------------
     - python -m py_compile governance/scripts/main.py
 
-    # ---------------------------------------------------------
-    # Core governance JSON syntax
-    # ---------------------------------------------------------
+    # JSON syntax
     - python -m json.tool governance/docs/governance-config.json > /dev/null
     - python -m json.tool governance/glossary/real_estate_glossary.json > /dev/null
     - python -m json.tool governance/ownership/real_estate_ownership.json > /dev/null
     - python -m json.tool governance/quality/real_estate_quality.json > /dev/null
     - python -m json.tool governance/tagging/real_estate_tags.json > /dev/null
-
-    # ---------------------------------------------------------
-    # Metrics Governance
-    # ---------------------------------------------------------
+    - python -m json.tool governance/tagging/real_estate_data_layers.json > /dev/null
     - python -m json.tool governance/metrics/real_estate_metrics.json > /dev/null
 
-    - echo "Governance validation completed successfully."
+    - echo "Governance-as-Code validation succeeded."
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
@@ -45,37 +38,26 @@ governance:validate:
 
 
 governance:build-image:
-  stage: build
+  stage: deploy
 
   tags:
     - docker
+
+  image: docker:27.5.1
 
   needs:
     - job: governance:validate
       artifacts: false
 
-  image: docker:27.5.1
-
   variables:
     IMAGE_NAME: "$CI_REGISTRY_IMAGE/real-estate-governance"
     IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
-    DOCKER_HOST: "unix:///var/run/docker.sock"
 
   before_script:
-    # ---------------------------------------------------------
-    # Validate Docker runtime
-    # ---------------------------------------------------------
     - docker version
-
-    # ---------------------------------------------------------
-    # Authenticate against GitLab Container Registry
-    # ---------------------------------------------------------
     - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
 
   script:
-    # ---------------------------------------------------------
-    # Build Governance-as-Code image
-    # ---------------------------------------------------------
     - echo "Building Real Estate Governance image..."
     - echo "Governance image tag = $IMAGE_TAG"
     - echo "Governance image = $IMAGE_NAME:$IMAGE_TAG"
@@ -87,39 +69,21 @@ governance:build-image:
         -t "$IMAGE_NAME:latest" \
         governance
 
-    # ---------------------------------------------------------
-    # Push immutable image
-    # ---------------------------------------------------------
     - echo "Pushing immutable governance image..."
-
     - docker push "$IMAGE_NAME:$IMAGE_TAG"
 
-    # ---------------------------------------------------------
-    # Push convenience latest tag
-    # ---------------------------------------------------------
     - echo "Pushing latest governance image..."
-
     - docker push "$IMAGE_NAME:latest"
 
-    # ---------------------------------------------------------
-    # Verify image exists locally after build
-    # ---------------------------------------------------------
     - docker image inspect "$IMAGE_NAME:$IMAGE_TAG" > /dev/null
-
     - echo "Governance image published successfully."
 
-    # ---------------------------------------------------------
-    # Export immutable image tag for downstream jobs
-    # ---------------------------------------------------------
     - echo "GOVERNANCE_IMAGE_TAG=$CI_COMMIT_SHORT_SHA" > governance-image.env
-
     - cat governance-image.env
 
   artifacts:
     reports:
       dotenv: governance-image.env
-
-    expire_in: 1 hour
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
