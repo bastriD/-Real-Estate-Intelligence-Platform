@@ -958,7 +958,13 @@ class OpenMetadataClient:
                 metric["name"],
             ),
             "description": metric["description"],
-            "metricExpression": metric["expression"],
+            "metricExpression": {
+                "language": metric.get(
+                    "expression_language",
+                    "SQL",
+                ),
+                "code": metric["expression"],
+            },
             "metricType": metric_type,
             "granularity": granularity,
             "unitOfMeasurement": unit_of_measurement,
