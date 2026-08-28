@@ -14,13 +14,7 @@ metadata:
     project: real-estate
 
 spec:
-  # Do not retry governance failures automatically.
-  # A failed governance deployment must remain explicit in CI/GitOps.
   backoffLimit: 0
-
-  # Kubernetes automatically removes the completed Job after 5 minutes.
-  # This avoids accumulating historical Job objects in the cluster.
-  ttlSecondsAfterFinished: 300
 
   template:
     metadata:
