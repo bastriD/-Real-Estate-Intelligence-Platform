@@ -922,10 +922,20 @@ class OpenMetadataClient:
         domain_fqn: str | None = None,
     ) -> dict[str, Any]:
 
+        metric_type = metric.get(
+            "metric_type",
+            "COUNT",
+        ).upper()
+
+        granularity = metric.get(
+            "granularity",
+            "DAY",
+        ).upper()
+
         unit = metric.get(
             "unit",
             "OTHER",
-        )
+        ).upper()
 
         standard_units = {
             "COUNT",
@@ -941,14 +951,17 @@ class OpenMetadataClient:
             unit_of_measurement = "OTHER"
             custom_unit = unit
 
-        payload = {
+        payload: dict[str, Any] = {
             "name": metric["name"],
-            "displayName": metric.get("display_name", metric["name"]),
+            "displayName": metric.get(
+                "display_name",
+                metric["name"],
+            ),
             "description": metric["description"],
             "metricExpression": metric["expression"],
             "metricType": metric_type,
             "granularity": granularity,
-            "unitOfMeasurement": unit,
+            "unitOfMeasurement": unit_of_measurement,
         }
 
         if custom_unit:
@@ -983,7 +996,6 @@ class OpenMetadataClient:
         )
 
         return entity
-
     # =========================================================================
     # Teams
     # =========================================================================
