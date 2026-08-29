@@ -7,88 +7,68 @@ observability:validate:
   image: python:3.12-slim
 
   script:
-    - python --version
-
-    # ---------------------------------------------------------
-    # Validate observability source files
-    # ---------------------------------------------------------
+    - echo "Validating observability configuration..."
 
     - test -f deploy/observability/application.yaml
     - test -f deploy/observability/grafana-datasource.yaml.template
-    - test -f observability/grafana/dashboards/real-estate-business-platform.json
 
-    # ---------------------------------------------------------
-    # Validate canonical Grafana dashboard JSON
-    # ---------------------------------------------------------
+    - test -f observability/grafana/dashboards/real-estate-business-platform.json
+    - test -f observability/grafana/dashboards/real-estate-data-quality.json
 
     - |
       python - <<'PY'
       import json
       from pathlib import Path
 
-      path = Path(
-          "observability/grafana/dashboards/"
-          "real-estate-business-platform.json"
-      )
+      dashboards = {
+          "observability/grafana/dashboards/real-estate-business-platform.json": {
+              "uid": "real-estate-platform",
+              "title": "Real Estate — Business KPIs & Platform",
+          },
+          "observability/grafana/dashboards/real-estate-data-quality.json": {
+              "uid": "real-estate-data-quality",
+              "title": "Real Estate — Data Quality",
+          },
+      }
 
-      dashboard = json.loads(
-          path.read_text(encoding="utf-8")
-      )
+      for path_str, expected in dashboards.items():
+          path = Path(path_str)
 
-      required = [
-          "title",
-          "uid",
-          "panels",
-      ]
+          with path.open("r", encoding="utf-8") as f:
+              dashboard = json.load(f)
 
-      for key in required:
-          if key not in dashboard:
+          if dashboard.get("uid") != expected["uid"]:
               raise SystemExit(
-                  f"Missing Grafana dashboard field: {key}"
+                  f"{path}: unexpected uid "
+                  f"{dashboard.get('uid')!r}, expected {expected['uid']!r}"
               )
 
-      if dashboard["uid"] != "real-estate-platform":
-          raise SystemExit(
-              "Unexpected Grafana dashboard UID: "
-              f"{dashboard['uid']}"
+          if dashboard.get("title") != expected["title"]:
+              raise SystemExit(
+                  f"{path}: unexpected title "
+                  f"{dashboard.get('title')!r}, expected {expected['title']!r}"
+              )
+
+          panels = dashboard.get("panels")
+
+          if not isinstance(panels, list) or not panels:
+              raise SystemExit(f"{path}: dashboard has no panels")
+
+          print(
+              f"Validated {path}: "
+              f"title={dashboard['title']!r}, "
+              f"uid={dashboard['uid']!r}, "
+              f"panels={len(panels)}"
           )
 
-      if not isinstance(
-          dashboard["panels"],
-          list,
-      ):
-          raise SystemExit(
-              "Grafana dashboard panels must be a list"
-          )
-
-      print(
-          "Grafana dashboard JSON validation passed"
-      )
-
-      print(
-          f"Title: {dashboard['title']}"
-      )
-
-      print(
-          f"UID: {dashboard['uid']}"
-      )
-
-      print(
-          f"Panels: {len(dashboard['panels'])}"
-      )
+      print("All Grafana dashboards are valid.")
       PY
 
-    # ---------------------------------------------------------
-    # Validate Python observability scripts
-    # ---------------------------------------------------------
+    - python -m py_compile observability/metrics/collect_metrics.py
+    - python -m py_compile observability/metrics/dq_runner.py
+    - python -m py_compile observability/metrics/metrics_exporter.py
 
-    - |
-      python -m py_compile \
-        observability/metrics/collect_metrics.py \
-        observability/metrics/dq_runner.py \
-        observability/metrics/metrics_exporter.py
-
-    - echo "Observability validation succeeded."
+    - echo "Observability validation completed successfully."
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
@@ -96,7 +76,6 @@ observability:validate:
         - observability/**/*
         - deploy/observability/**/*
         - .gitlab/ci/observability.yml
-        - .gitlab-ci.yml
 
 
 observability:provision-grafana-datasource:
@@ -106,100 +85,81 @@ observability:provision-grafana-datasource:
     - shell
 
   needs:
-    - job: observability:validate
+    - observability:validate
 
   script:
-    - "kubectl version --client"
-    - "test -f deploy/observability/grafana-datasource.yaml.template"
+    - set -euo pipefail
 
-    # ---------------------------------------------------------
-    # Read PostgreSQL Secret and render Grafana datasource
-    # ---------------------------------------------------------
+    - echo "Provisioning Real Estate PostgreSQL Grafana datasource..."
+
+    - command -v kubectl >/dev/null
+    - command -v envsubst >/dev/null
+
+    - test -f deploy/observability/grafana-datasource.yaml.template
 
     - |
       export POSTGRES_DB="$(
-        kubectl -n real-estate get secret \
-          real-estate-postgresql-secret \
-          -o jsonpath='{.data.POSTGRES_DB}' \
-        | base64 -d
+        kubectl -n real-estate get secret real-estate-postgresql-secret \
+          -o jsonpath='{.data.POSTGRES_DB}' | base64 -d
       )"
 
       export POSTGRES_HOST="$(
-        kubectl -n real-estate get secret \
-          real-estate-postgresql-secret \
-          -o jsonpath='{.data.POSTGRES_HOST}' \
-        | base64 -d
+        kubectl -n real-estate get secret real-estate-postgresql-secret \
+          -o jsonpath='{.data.POSTGRES_HOST}' | base64 -d
       )"
 
       export POSTGRES_PORT="$(
-        kubectl -n real-estate get secret \
-          real-estate-postgresql-secret \
-          -o jsonpath='{.data.POSTGRES_PORT}' \
-        | base64 -d
+        kubectl -n real-estate get secret real-estate-postgresql-secret \
+          -o jsonpath='{.data.POSTGRES_PORT}' | base64 -d
       )"
 
       export POSTGRES_USER="$(
-        kubectl -n real-estate get secret \
-          real-estate-postgresql-secret \
-          -o jsonpath='{.data.POSTGRES_USER}' \
-        | base64 -d
+        kubectl -n real-estate get secret real-estate-postgresql-secret \
+          -o jsonpath='{.data.POSTGRES_USER}' | base64 -d
       )"
 
       export POSTGRES_PASSWORD="$(
-        kubectl -n real-estate get secret \
-          real-estate-postgresql-secret \
-          -o jsonpath='{.data.POSTGRES_PASSWORD}' \
-        | base64 -d
+        kubectl -n real-estate get secret real-estate-postgresql-secret \
+          -o jsonpath='{.data.POSTGRES_PASSWORD}' | base64 -d
       )"
 
-      test -n "${POSTGRES_DB}"
-      test -n "${POSTGRES_HOST}"
-      test -n "${POSTGRES_PORT}"
-      test -n "${POSTGRES_USER}"
-      test -n "${POSTGRES_PASSWORD}"
+    - test -n "${POSTGRES_DB}"
+    - test -n "${POSTGRES_HOST}"
+    - test -n "${POSTGRES_PORT}"
+    - test -n "${POSTGRES_USER}"
+    - test -n "${POSTGRES_PASSWORD}"
 
+    - |
       envsubst \
         < deploy/observability/grafana-datasource.yaml.template \
         > /tmp/real-estate-grafana-datasource.yaml
 
-      echo "Grafana datasource template rendered successfully."
-
-    # ---------------------------------------------------------
-    # Create/update Kubernetes Secret consumed by Grafana sidecar
-    # ---------------------------------------------------------
-
     - |
-      kubectl -n monitoring create secret generic \
-        real-estate-grafana-datasource \
-        --from-file=datasource.yaml=/tmp/real-estate-grafana-datasource.yaml \
+      kubectl -n monitoring create secret generic real-estate-grafana-datasource \
+        --from-file=real-estate-postgresql.yaml=/tmp/real-estate-grafana-datasource.yaml \
         --dry-run=client \
         -o yaml \
-      | kubectl apply -f -
+        | kubectl apply -f -
 
     - |
-      kubectl -n monitoring label secret \
-        real-estate-grafana-datasource \
+      kubectl -n monitoring label secret real-estate-grafana-datasource \
         grafana_datasource=1 \
         --overwrite
 
-    # ---------------------------------------------------------
-    # Verify without exposing password
-    # ---------------------------------------------------------
-
     - |
-      kubectl -n monitoring get secret \
-        real-estate-grafana-datasource \
-        -o custom-columns='NAME:.metadata.name,LABEL:.metadata.labels.grafana_datasource,TYPE:.type'
+      kubectl -n monitoring get secret real-estate-grafana-datasource \
+        -o custom-columns='NAME:.metadata.name,NAMESPACE:.metadata.namespace,GRAFANA_DATASOURCE:.metadata.labels.grafana_datasource'
+
+    - echo "Grafana PostgreSQL datasource provisioning completed."
 
   after_script:
-    - "rm -f /tmp/real-estate-grafana-datasource.yaml"
+    - rm -f /tmp/real-estate-grafana-datasource.yaml
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
         - deploy/observability/**/*
         - .gitlab/ci/observability.yml
-        - .gitlab-ci.yml
 
 
 observability:publish-gitops:
@@ -209,120 +169,87 @@ observability:publish-gitops:
     - shell
 
   needs:
-    - job: observability:validate
+    - observability:validate
 
   script:
-    # ---------------------------------------------------------
-    # 1. Validate required tools
-    # ---------------------------------------------------------
+    - set -euo pipefail
 
-    - "git --version"
-    - "kubectl version --client"
+    - echo "Publishing Real Estate observability configuration to GitOps..."
 
-    # ---------------------------------------------------------
-    # 2. Validate source files
-    # ---------------------------------------------------------
+    - command -v git >/dev/null
+    - command -v kubectl >/dev/null
 
-    - "test -f deploy/observability/application.yaml"
-    - "test -f observability/grafana/dashboards/real-estate-business-platform.json"
+    - test -f deploy/observability/application.yaml
 
-    # ---------------------------------------------------------
-    # 3. Verify GitOps credentials
-    # ---------------------------------------------------------
+    - test -f observability/grafana/dashboards/real-estate-business-platform.json
+    - test -f observability/grafana/dashboards/real-estate-data-quality.json
 
-    - |
-      kubectl -n openmetadata get secret \
-        lab-gitops-git-credentials
+    - export GITOPS_DIR="/tmp/chasse-observability-gitops"
+    - export NETRC_FILE="/tmp/chasse-observability-netrc"
+    - export DASHBOARD_CONFIGMAP="/tmp/real-estate-grafana-dashboard.yaml"
+    - export DASHBOARD_CONFIGMAP_LABELED="/tmp/real-estate-grafana-dashboard-labeled.yaml"
+    - export KUSTOMIZATION_FILE="/tmp/real-estate-kustomization.yaml"
+    - export RENDERED_FILE="/tmp/real-estate-observability-rendered.yaml"
 
-    # ---------------------------------------------------------
-    # 4. Prepare workspace
-    # ---------------------------------------------------------
-
-    - "rm -rf /tmp/chasse-observability-gitops"
-    - "rm -f /tmp/.netrc"
-    - "rm -f /tmp/real-estate-grafana-dashboard.yaml"
-    - "rm -f /tmp/real-estate-grafana-dashboard-labeled.yaml"
-    - "rm -f /tmp/real-estate-kustomization.yaml"
-
-    # ---------------------------------------------------------
-    # 5. Load GitLab PAT from Kubernetes Secret
-    # ---------------------------------------------------------
+    - rm -rf "${GITOPS_DIR}"
+    - rm -f "${NETRC_FILE}"
+    - rm -f "${DASHBOARD_CONFIGMAP}"
+    - rm -f "${DASHBOARD_CONFIGMAP_LABELED}"
+    - rm -f "${KUSTOMIZATION_FILE}"
+    - rm -f "${RENDERED_FILE}"
 
     - |
-      export LAB_GITOPS_GIT_USER="$(
-        kubectl -n openmetadata get secret \
-          lab-gitops-git-credentials \
-          -o jsonpath='{.data.GIT_USERNAME}' \
-        | base64 -d
+      export GITOPS_USERNAME="$(
+        kubectl -n openmetadata get secret lab-gitops-git-credentials \
+          -o jsonpath='{.data.username}' | base64 -d
       )"
 
-      export LAB_GITOPS_GIT_TOKEN="$(
-        kubectl -n openmetadata get secret \
-          lab-gitops-git-credentials \
-          -o jsonpath='{.data.GIT_TOKEN}' \
-        | base64 -d
+      export GITOPS_PASSWORD="$(
+        kubectl -n openmetadata get secret lab-gitops-git-credentials \
+          -o jsonpath='{.data.password}' | base64 -d
       )"
 
-      test -n "${LAB_GITOPS_GIT_USER}"
-      test -n "${LAB_GITOPS_GIT_TOKEN}"
+    - test -n "${GITOPS_USERNAME}"
+    - test -n "${GITOPS_PASSWORD}"
 
-      cat > /tmp/.netrc <<EOF
+    - |
+      cat > "${NETRC_FILE}" <<EOF
       machine gitlab.local
-      login ${LAB_GITOPS_GIT_USER}
-      password ${LAB_GITOPS_GIT_TOKEN}
+      login ${GITOPS_USERNAME}
+      password ${GITOPS_PASSWORD}
       EOF
 
-      chmod 600 /tmp/.netrc
-
-    # ---------------------------------------------------------
-    # 6. Clone lab-gitops repository
-    # ---------------------------------------------------------
+    - chmod 600 "${NETRC_FILE}"
 
     - |
-      echo "Cloning lab-gitops repository..."
-
       HOME=/tmp \
+      NETRC="${NETRC_FILE}" \
       GIT_SSL_NO_VERIFY=true \
       git clone \
-        "https://gitlab.local/root/lab-gitops.git" \
-        /tmp/chasse-observability-gitops
-
-    # ---------------------------------------------------------
-    # 7. Generate Grafana dashboard ConfigMap
-    # ---------------------------------------------------------
+        https://gitlab.local/root/lab-gitops.git \
+        "${GITOPS_DIR}"
 
     - |
-      echo "Generating Grafana dashboard ConfigMap from canonical JSON..."
-
       kubectl create configmap \
         real-estate-grafana-dashboard \
         --namespace monitoring \
         --from-file=real-estate-platform.json=observability/grafana/dashboards/real-estate-business-platform.json \
+        --from-file=real-estate-data-quality.json=observability/grafana/dashboards/real-estate-data-quality.json \
         --dry-run=client \
         -o yaml \
-        > /tmp/real-estate-grafana-dashboard.yaml
+        > "${DASHBOARD_CONFIGMAP}"
 
     - |
       kubectl label \
         --local \
-        -f /tmp/real-estate-grafana-dashboard.yaml \
+        -f "${DASHBOARD_CONFIGMAP}" \
         grafana_dashboard=1 \
         --overwrite \
         -o yaml \
-        > /tmp/real-estate-grafana-dashboard-labeled.yaml
+        > "${DASHBOARD_CONFIGMAP_LABELED}"
 
     - |
-      test -s \
-        /tmp/real-estate-grafana-dashboard-labeled.yaml
-
-      echo "Grafana dashboard ConfigMap generated successfully."
-
-    # ---------------------------------------------------------
-    # 8. Generate Kustomization
-    # ---------------------------------------------------------
-
-    - |
-      cat > /tmp/real-estate-kustomization.yaml <<'EOF'
+      cat > "${KUSTOMIZATION_FILE}" <<'EOF'
       apiVersion: kustomize.config.k8s.io/v1beta1
       kind: Kustomization
 
@@ -330,128 +257,56 @@ observability:publish-gitops:
         - grafana-dashboard-configmap.yaml
       EOF
 
-    - |
-      test -s \
-        /tmp/real-estate-kustomization.yaml
-
-      echo "Kustomization generated successfully."
-
-    # ---------------------------------------------------------
-    # 9. Publish Real Estate observability workload
-    # ---------------------------------------------------------
+    - mkdir -p "${GITOPS_DIR}/workloads/monitoring/real-estate"
+    - mkdir -p "${GITOPS_DIR}/apps/real-estate-observability"
 
     - |
-      echo "Publishing Real Estate observability workload..."
-
-      mkdir -p \
-        /tmp/chasse-observability-gitops/workloads/monitoring/real-estate
-
       cp \
-        /tmp/real-estate-grafana-dashboard-labeled.yaml \
-        /tmp/chasse-observability-gitops/workloads/monitoring/real-estate/grafana-dashboard-configmap.yaml
-
-      cp \
-        /tmp/real-estate-kustomization.yaml \
-        /tmp/chasse-observability-gitops/workloads/monitoring/real-estate/kustomization.yaml
-
-    # ---------------------------------------------------------
-    # 10. Publish Argo CD Application
-    # ---------------------------------------------------------
+        "${DASHBOARD_CONFIGMAP_LABELED}" \
+        "${GITOPS_DIR}/workloads/monitoring/real-estate/grafana-dashboard-configmap.yaml"
 
     - |
-      echo "Publishing Real Estate observability Argo CD Application..."
+      cp \
+        "${KUSTOMIZATION_FILE}" \
+        "${GITOPS_DIR}/workloads/monitoring/real-estate/kustomization.yaml"
 
-      mkdir -p \
-        /tmp/chasse-observability-gitops/apps/real-estate-observability
-
+    - |
       cp \
         deploy/observability/application.yaml \
-        /tmp/chasse-observability-gitops/apps/real-estate-observability/application.yaml
+        "${GITOPS_DIR}/apps/real-estate-observability/application.yaml"
 
-    # ---------------------------------------------------------
-    # 11. Enter GitOps repository
-    # ---------------------------------------------------------
+    - cd "${GITOPS_DIR}"
 
-    - "cd /tmp/chasse-observability-gitops"
+    - echo "Generated observability workload:"
+    - find workloads/monitoring/real-estate -maxdepth 2 -type f -print
+    - find apps/real-estate-observability -maxdepth 2 -type f -print
 
-    # ---------------------------------------------------------
-    # 12. Show resulting GitOps structure
-    # ---------------------------------------------------------
+    - echo "Generated Grafana dashboard ConfigMap:"
+    - cat workloads/monitoring/real-estate/grafana-dashboard-configmap.yaml
 
-    - |
-      echo "Real Estate observability workload:"
-
-      find workloads/monitoring/real-estate \
-        -maxdepth 2 \
-        -type f \
-        | sort
+    - echo "Generated Kustomization:"
+    - cat workloads/monitoring/real-estate/kustomization.yaml
 
     - |
-      echo "Real Estate observability Argo Application:"
-
-      find apps/real-estate-observability \
-        -maxdepth 2 \
-        -type f \
-        | sort
-
-    - |
-      echo "Real Estate observability kustomization:"
-
-      cat \
-        workloads/monitoring/real-estate/kustomization.yaml
-
-    - |
-      echo "Real Estate observability Application:"
-
-      cat \
-        apps/real-estate-observability/application.yaml
-
-    # ---------------------------------------------------------
-    # 13. Verify generated manifests
-    # ---------------------------------------------------------
-
-    - |
-      echo "Generated Grafana dashboard ConfigMap:"
-
       kubectl apply \
         --dry-run=client \
-        -f workloads/monitoring/real-estate/grafana-dashboard-configmap.yaml
+        -f workloads/monitoring/real-estate/grafana-dashboard-configmap.yaml \
+        >/dev/null
 
     - |
-      echo "Validating Kustomize workload:"
-
       kubectl kustomize \
         workloads/monitoring/real-estate \
-        > /tmp/real-estate-observability-rendered.yaml
+        > "${RENDERED_FILE}"
 
-      test -s \
-        /tmp/real-estate-observability-rendered.yaml
+    - test -s "${RENDERED_FILE}"
 
-      echo "Kustomize workload validation passed."
+    - echo "Kustomize rendering completed successfully."
 
-    # ---------------------------------------------------------
-    # 14. Configure Git
-    # ---------------------------------------------------------
+    - git config user.name "GitLab CI"
+    - git config user.email "gitlab-ci@lab.local"
 
-    - 'git config user.name "chasse-immobiliere-ci"'
-    - 'git config user.email "gitlab-ci@lab.local"'
-
-    # ---------------------------------------------------------
-    # 15. Stage GitOps changes
-    # ---------------------------------------------------------
-
-    - |
-      git add \
-        workloads/monitoring/real-estate \
-        apps/real-estate-observability
-
-    - |
-      echo "Git status:"
-      git status --short
-
-    # ---------------------------------------------------------
-    # 16. Skip when nothing changed
-    # ---------------------------------------------------------
+    - git add workloads/monitoring/real-estate
+    - git add apps/real-estate-observability
 
     - |
       if git diff --cached --quiet; then
@@ -459,34 +314,27 @@ observability:publish-gitops:
         exit 0
       fi
 
-    # ---------------------------------------------------------
-    # 17. Commit
-    # ---------------------------------------------------------
+    - git status --short
 
     - |
       git commit \
         -m "deploy: publish real-estate observability configuration"
 
-    # ---------------------------------------------------------
-    # 18. Push GitOps repository
-    # ---------------------------------------------------------
-
     - |
       HOME=/tmp \
+      NETRC="${NETRC_FILE}" \
       GIT_SSL_NO_VERIFY=true \
       git push origin main
 
-  after_script:
-    # ---------------------------------------------------------
-    # Cleanup credentials and temporary files
-    # ---------------------------------------------------------
+    - echo "Real Estate observability GitOps publication completed."
 
-    - "rm -f /tmp/.netrc"
-    - "rm -f /tmp/real-estate-grafana-dashboard.yaml"
-    - "rm -f /tmp/real-estate-grafana-dashboard-labeled.yaml"
-    - "rm -f /tmp/real-estate-kustomization.yaml"
-    - "rm -f /tmp/real-estate-observability-rendered.yaml"
-    - "rm -rf /tmp/chasse-observability-gitops"
+  after_script:
+    - rm -f /tmp/chasse-observability-netrc
+    - rm -f /tmp/real-estate-grafana-dashboard.yaml
+    - rm -f /tmp/real-estate-grafana-dashboard-labeled.yaml
+    - rm -f /tmp/real-estate-kustomization.yaml
+    - rm -f /tmp/real-estate-observability-rendered.yaml
+    - rm -rf /tmp/chasse-observability-gitops
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
@@ -494,4 +342,3 @@ observability:publish-gitops:
         - observability/**/*
         - deploy/observability/**/*
         - .gitlab/ci/observability.yml
-        - .gitlab-ci.yml
