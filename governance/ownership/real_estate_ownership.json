@@ -3,19 +3,19 @@
     {
       "name": "RealEstateDataTeam",
       "display_name": "Real Estate Data Team",
-      "description": "Equipe responsable de la plateforme de données, des pipelines, de la qualité, du warehouse, de dbt et de la gouvernance technique.",
+      "description": "Équipe responsable de la plateforme de données, des pipelines, de la qualité, du warehouse, de dbt et de la gouvernance technique.",
       "team_type": "Group"
     },
     {
       "name": "RealEstateBusiness",
       "display_name": "Real Estate Business",
-      "description": "Equipe représentant la responsabilité métier sur les données de chasse immobilière.",
+      "description": "Équipe représentant la responsabilité métier sur les données de chasse immobilière.",
       "team_type": "Group"
     },
     {
       "name": "RealEstateAnalytics",
       "display_name": "Real Estate Analytics",
-      "description": "Equipe responsable des modèles analytiques, indicateurs et usages décisionnels.",
+      "description": "Équipe responsable des modèles analytiques, indicateurs et usages décisionnels.",
       "team_type": "Group"
     }
   ],
@@ -72,11 +72,33 @@
       "targets": [
         "real-estate-postgresql.real_estate.analytics"
       ]
+    },
+    {
+      "id": "OWN-005",
+      "description": "Les tables de la couche RAW sont sous responsabilité de l'équipe Data.",
+      "entity_type": "schema",
+      "owner_type": "team",
+      "owner": "RealEstateDataTeam",
+      "targets": [
+        "real-estate-postgresql.real_estate.raw"
+      ]
+    },
+    {
+      "id": "OWN-006",
+      "description": "Les tables et vues de la couche STAGING sont sous responsabilité de l'équipe Data.",
+      "entity_type": "schema",
+      "owner_type": "team",
+      "owner": "RealEstateDataTeam",
+      "targets": [
+        "real-estate-postgresql.real_estate.staging"
+      ]
     }
   ],
   "policies": {
     "technical_database_accounts_are_not_owners": true,
     "business_entities_require_business_ownership": true,
+    "raw_requires_data_ownership": true,
+    "staging_requires_data_ownership": true,
     "warehouse_requires_data_ownership": true,
     "analytics_requires_analytics_ownership": true
   }
