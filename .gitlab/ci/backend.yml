@@ -1,3 +1,41 @@
+# =============================================================================
+# Real Estate Backend / API
+#
+# CI/CD flow:
+#
+#   backend:validate
+#       |
+#       v
+#   backend:build-image
+#       |
+#       v
+#   GitLab Container Registry
+#       |
+#       v
+#   backend:publish-gitops
+#       |
+#       v
+#   lab-gitops
+#       |
+#       +--> workloads/real-estate/backend
+#       |
+#       +--> apps/real-estate-backend
+#       |
+#       v
+#   Argo CD
+#       |
+#       v
+#   Kubernetes namespace: real-estate
+#
+# Permanent deployment is GitOps-driven.
+# No direct kubectl apply is used for runtime deployment.
+# =============================================================================
+
+
+# =============================================================================
+# 1. BACKEND VALIDATION
+# =============================================================================
+
 backend:validate:
   stage: validate
 
@@ -6,20 +44,88 @@ backend:validate:
 
   image: python:3.12-slim
 
+  variables:
+    # Required only to allow Settings/Application import during CI.
+    # This is NOT a real runtime credential.
+    POSTGRES_PASSWORD: "ci-validation-only"
+
   before_script:
     - python --version
-    - pip install --no-cache-dir -r requirements-backend.txt
+    - pip --version
+
+    - |
+      pip install \
+        --no-cache-dir \
+        -r requirements-backend.txt
 
   script:
-    - python -m py_compile src/api/main.py
-    - python -m py_compile src/api/api/v1/router.py
-    - python -m py_compile src/api/api/v1/endpoints/health.py
-    - python -c "from src.api.main import app; print(app.title); print(app.version)"
+    # -------------------------------------------------------------------------
+    # Validate expected backend source files
+    # -------------------------------------------------------------------------
+
+    - test -f requirements-backend.txt
+    - test -f src/api/main.py
+    - test -f src/api/core/config.py
+    - test -f src/api/db/session.py
+    - test -f src/api/api/v1/router.py
+    - test -f src/api/api/v1/endpoints/health.py
+    - test -f deploy/docker/Dockerfile.backend
+
+    # -------------------------------------------------------------------------
+    # Python syntax validation
+    # -------------------------------------------------------------------------
+
+    - |
+      python -m py_compile \
+        src/api/main.py \
+        src/api/core/config.py \
+        src/api/db/session.py \
+        src/api/api/v1/router.py \
+        src/api/api/v1/endpoints/health.py
+
+    # -------------------------------------------------------------------------
+    # FastAPI application import validation
+    # -------------------------------------------------------------------------
+
+    - |
+      python - <<'PY'
+      from src.api.main import app
+
+      print("Application:", app.title)
+      print("Version:", app.version)
+
+      paths = sorted(route.path for route in app.routes)
+
+      print("Registered routes:")
+
+      for path in paths:
+          print(f" - {path}")
+
+      required_routes = {
+          "/health",
+          "/ready",
+          "/api/v1/health",
+          "/api/v1/ready",
+      }
+
+      missing_routes = required_routes.difference(paths)
+
+      if missing_routes:
+          raise RuntimeError(
+              f"Missing required routes: {sorted(missing_routes)}"
+          )
+
+      print("Backend application validation successful.")
+      PY
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
     - if: '$CI_MERGE_REQUEST_ID'
 
+
+# =============================================================================
+# 2. BUILD AND PUBLISH BACKEND CONTAINER IMAGE
+# =============================================================================
 
 backend:build-image:
   stage: build
@@ -39,20 +145,500 @@ backend:build-image:
     DOCKER_HOST: "unix:///var/run/docker.sock"
 
   before_script:
+    # -------------------------------------------------------------------------
+    # Validate Docker runner
+    # -------------------------------------------------------------------------
+
     - docker version
-    - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
+
+    # -------------------------------------------------------------------------
+    # Authenticate to GitLab Container Registry
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "$CI_REGISTRY_PASSWORD" |
+        docker login \
+          "$CI_REGISTRY" \
+          -u "$CI_REGISTRY_USER" \
+          --password-stdin
 
   script:
+    # -------------------------------------------------------------------------
+    # Build backend image
+    # -------------------------------------------------------------------------
+
     - |
+      echo "Building Real Estate Backend image..."
+
       docker build \
         -f deploy/docker/Dockerfile.backend \
         -t "$IMAGE_NAME:$IMAGE_TAG" \
         -t "$IMAGE_NAME:latest" \
         .
 
-    - docker run --rm "$IMAGE_NAME:$IMAGE_TAG" python --version
-    - docker push "$IMAGE_NAME:$IMAGE_TAG"
-    - docker push "$IMAGE_NAME:latest"
+    # -------------------------------------------------------------------------
+    # Validate Python runtime inside final image
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Container Python runtime:"
+
+      docker run \
+        --rm \
+        "$IMAGE_NAME:$IMAGE_TAG" \
+        python --version
+
+    # -------------------------------------------------------------------------
+    # Validate FastAPI application inside final container image
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Validating application import inside container..."
+
+      docker run \
+        --rm \
+        -e POSTGRES_PASSWORD=ci-image-validation-only \
+        "$IMAGE_NAME:$IMAGE_TAG" \
+        python -c \
+        "from src.api.main import app; print('Application:', app.title); print('Version:', app.version)"
+
+    # -------------------------------------------------------------------------
+    # Push immutable image
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Publishing immutable backend image:"
+
+      echo "$IMAGE_NAME:$IMAGE_TAG"
+
+      docker push \
+        "$IMAGE_NAME:$IMAGE_TAG"
+
+    # -------------------------------------------------------------------------
+    # Push latest convenience tag
+    # -------------------------------------------------------------------------
+
+    - |
+      docker push \
+        "$IMAGE_NAME:latest"
+
+    - |
+      echo "Backend image successfully published:"
+      echo "$IMAGE_NAME:$IMAGE_TAG"
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
+
+
+# =============================================================================
+# 3. PUBLISH BACKEND WORKLOAD TO LAB-GITOPS
+# =============================================================================
+
+backend:publish-gitops:
+  stage: deploy
+
+  tags:
+    - docker
+
+  needs:
+    - job: backend:build-image
+      artifacts: false
+
+  image:
+    name: alpine/git:2.47.2
+    entrypoint: [""]
+
+  variables:
+    GITOPS_REPOSITORY: "https://gitlab.local/root/lab-gitops.git"
+
+    GITOPS_WORKDIR: "/tmp/chasse-backend-gitops"
+
+    GITOPS_BACKEND_PATH: "workloads/real-estate/backend"
+
+    GITOPS_APP_PATH: "apps/real-estate-backend"
+
+  before_script:
+    # -------------------------------------------------------------------------
+    # Install required tools
+    # -------------------------------------------------------------------------
+
+    - |
+      apk add \
+        --no-cache \
+        bash \
+        ca-certificates \
+        kubectl
+
+    - git --version
+    - kubectl version --client
+
+    # -------------------------------------------------------------------------
+    # Validate source Kubernetes manifests
+    # -------------------------------------------------------------------------
+
+    - test -f deploy/kubernetes/backend/deployment.yaml
+    - test -f deploy/kubernetes/backend/service.yaml
+    - test -f deploy/kubernetes/backend/kustomization.yaml
+    - test -f deploy/kubernetes/backend/application.yaml
+
+    # -------------------------------------------------------------------------
+    # Validate Kubernetes connectivity
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl get namespace real-estate
+
+    # -------------------------------------------------------------------------
+    # Validate PostgreSQL runtime Secret exists
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl \
+        -n real-estate \
+        get secret \
+        real-estate-postgresql-secret
+
+    # -------------------------------------------------------------------------
+    # Validate registry pull Secret exists
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl \
+        -n real-estate \
+        get secret \
+        gitlab-registry
+
+    # -------------------------------------------------------------------------
+    # Validate GitOps credential Secret
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl \
+        -n openmetadata \
+        get secret \
+        lab-gitops-git-credentials
+
+    # -------------------------------------------------------------------------
+    # Prepare temporary workspace
+    # -------------------------------------------------------------------------
+
+    - rm -rf "$GITOPS_WORKDIR"
+    - rm -f /tmp/.netrc
+    - rm -f /tmp/real-estate-backend-rendered.yaml
+
+    # -------------------------------------------------------------------------
+    # Load GitOps credentials
+    # -------------------------------------------------------------------------
+
+    - |
+      export LAB_GITOPS_GIT_USER="$(
+        kubectl \
+          -n openmetadata \
+          get secret \
+          lab-gitops-git-credentials \
+          -o jsonpath='{.data.GIT_USERNAME}' |
+        base64 -d
+      )"
+
+      export LAB_GITOPS_GIT_TOKEN="$(
+        kubectl \
+          -n openmetadata \
+          get secret \
+          lab-gitops-git-credentials \
+          -o jsonpath='{.data.GIT_TOKEN}' |
+        base64 -d
+      )"
+
+      test -n "$LAB_GITOPS_GIT_USER"
+      test -n "$LAB_GITOPS_GIT_TOKEN"
+
+      cat > /tmp/.netrc <<EOF_NETRC
+      machine gitlab.local
+      login ${LAB_GITOPS_GIT_USER}
+      password ${LAB_GITOPS_GIT_TOKEN}
+      EOF_NETRC
+
+      chmod 600 /tmp/.netrc
+
+  script:
+    # -------------------------------------------------------------------------
+    # Clone lab-gitops repository
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Cloning lab-gitops repository..."
+
+      HOME=/tmp \
+      GIT_SSL_NO_VERIFY=true \
+      git clone \
+        "$GITOPS_REPOSITORY" \
+        "$GITOPS_WORKDIR"
+
+    # -------------------------------------------------------------------------
+    # Create destination directories
+    # -------------------------------------------------------------------------
+
+    - |
+      mkdir -p \
+        "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH"
+
+      mkdir -p \
+        "$GITOPS_WORKDIR/$GITOPS_APP_PATH"
+
+    # -------------------------------------------------------------------------
+    # Publish Kubernetes workload manifests
+    # -------------------------------------------------------------------------
+
+    - |
+      cp \
+        deploy/kubernetes/backend/deployment.yaml \
+        "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
+
+      cp \
+        deploy/kubernetes/backend/service.yaml \
+        "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/service.yaml"
+
+      cp \
+        deploy/kubernetes/backend/kustomization.yaml \
+        "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/kustomization.yaml"
+
+    # -------------------------------------------------------------------------
+    # Publish Argo CD Application
+    # -------------------------------------------------------------------------
+
+    - |
+      cp \
+        deploy/kubernetes/backend/application.yaml \
+        "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
+
+    # -------------------------------------------------------------------------
+    # Inject immutable backend image tag
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Injecting backend image tag:"
+      echo "${CI_COMMIT_SHORT_SHA}"
+
+      sed -i \
+        "s/__BACKEND_IMAGE_TAG__/${CI_COMMIT_SHORT_SHA}/g" \
+        "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
+
+    # -------------------------------------------------------------------------
+    # Ensure placeholder was replaced
+    # -------------------------------------------------------------------------
+
+    - |
+      if grep -q \
+        '__BACKEND_IMAGE_TAG__' \
+        "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"; then
+
+        echo "ERROR:"
+        echo "Backend image placeholder was not replaced."
+
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # Validate exact image reference
+    # -------------------------------------------------------------------------
+
+    - |
+      EXPECTED_IMAGE="${CI_REGISTRY_IMAGE}/backend:${CI_COMMIT_SHORT_SHA}"
+
+      echo "Expected backend image:"
+      echo "$EXPECTED_IMAGE"
+
+      grep \
+        "image: ${EXPECTED_IMAGE}" \
+        "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
+
+    # -------------------------------------------------------------------------
+    # Client-side Kubernetes manifest validation
+    #
+    # These commands DO NOT deploy resources.
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl apply \
+        --dry-run=client \
+        -f "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml" \
+        > /dev/null
+
+      kubectl apply \
+        --dry-run=client \
+        -f "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/service.yaml" \
+        > /dev/null
+
+      kubectl apply \
+        --dry-run=client \
+        -f "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml" \
+        > /dev/null
+
+      echo "Kubernetes manifest validation successful."
+
+    # -------------------------------------------------------------------------
+    # Validate Kustomize rendering
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl kustomize \
+        "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH" \
+        > /tmp/real-estate-backend-rendered.yaml
+
+      test -s \
+        /tmp/real-estate-backend-rendered.yaml
+
+      echo "Backend Kustomize rendering successful."
+
+    # -------------------------------------------------------------------------
+    # Validate rendered workload contains expected resources
+    # -------------------------------------------------------------------------
+
+    - |
+      grep \
+        "name: real-estate-backend" \
+        /tmp/real-estate-backend-rendered.yaml
+
+      grep \
+        "${CI_REGISTRY_IMAGE}/backend:${CI_COMMIT_SHORT_SHA}" \
+        /tmp/real-estate-backend-rendered.yaml
+
+    # -------------------------------------------------------------------------
+    # Display resulting workload for GitLab evidence
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "BACKEND DEPLOYMENT"
+      echo "============================================================"
+
+      cat \
+        "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
+
+    - |
+      echo
+      echo "============================================================"
+      echo "BACKEND SERVICE"
+      echo "============================================================"
+
+      cat \
+        "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/service.yaml"
+
+    - |
+      echo
+      echo "============================================================"
+      echo "BACKEND KUSTOMIZATION"
+      echo "============================================================"
+
+      cat \
+        "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/kustomization.yaml"
+
+    - |
+      echo
+      echo "============================================================"
+      echo "ARGO CD APPLICATION"
+      echo "============================================================"
+
+      cat \
+        "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
+
+    # -------------------------------------------------------------------------
+    # Configure Git
+    # -------------------------------------------------------------------------
+
+    - |
+      cd "$GITOPS_WORKDIR"
+
+      git config \
+        user.name \
+        "chasse-immobiliere-ci"
+
+      git config \
+        user.email \
+        "gitlab-ci@lab.local"
+
+    # -------------------------------------------------------------------------
+    # Stage workload + Argo CD Application
+    # -------------------------------------------------------------------------
+
+    - |
+      cd "$GITOPS_WORKDIR"
+
+      git add \
+        "$GITOPS_BACKEND_PATH" \
+        "$GITOPS_APP_PATH"
+
+      echo "Git status:"
+
+      git status \
+        --short
+
+    # -------------------------------------------------------------------------
+    # Skip push if nothing changed
+    # -------------------------------------------------------------------------
+
+    - |
+      cd "$GITOPS_WORKDIR"
+
+      if git diff --cached --quiet; then
+
+        echo "No Backend GitOps changes to publish."
+
+        exit 0
+
+      fi
+
+    # -------------------------------------------------------------------------
+    # Commit GitOps change
+    # -------------------------------------------------------------------------
+
+    - |
+      cd "$GITOPS_WORKDIR"
+
+      git commit \
+        -m "deploy: publish real-estate backend ${CI_COMMIT_SHORT_SHA}"
+
+    # -------------------------------------------------------------------------
+    # Push to lab-gitops
+    # -------------------------------------------------------------------------
+
+    - |
+      cd "$GITOPS_WORKDIR"
+
+      HOME=/tmp \
+      GIT_SSL_NO_VERIFY=true \
+      git push \
+        origin \
+        main
+
+      echo
+      echo "Backend GitOps publication successful."
+
+      echo "Workload:"
+      echo "$GITOPS_BACKEND_PATH"
+
+      echo "Argo CD application:"
+      echo "$GITOPS_APP_PATH"
+
+  after_script:
+    # -------------------------------------------------------------------------
+    # Remove temporary credentials and workspace
+    # -------------------------------------------------------------------------
+
+    - rm -f /tmp/.netrc
+    - rm -rf /tmp/chasse-backend-gitops
+    - rm -f /tmp/real-estate-backend-rendered.yaml
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - src/api/**/*
+        - src/domain/**/*
+        - src/services/**/*
+        - tests/**/*
+        - requirements-backend.txt
+        - deploy/docker/Dockerfile.backend
+        - deploy/kubernetes/backend/**/*
+        - .gitlab/ci/backend.yml
+        - .gitlab-ci.yml

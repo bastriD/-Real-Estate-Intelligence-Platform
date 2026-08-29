@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: real-estate-backend
+  namespace: real-estate
+  labels:
+    app: real-estate-backend
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: real-estate-backend
+
+  template:
+    metadata:
+      labels:
+        app: real-estate-backend
+
+    spec:
+      containers:
+        - name: backend
+          image: gitlab.local:4567/root/chasse_immobiliere/backend:__BACKEND_IMAGE_TAG__
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+
+          envFrom:
+            - secretRef:
+                name: real-estate-postgresql-secret
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+
+      imagePullSecrets:
+        - name: gitlab-registry
