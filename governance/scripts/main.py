@@ -1386,6 +1386,67 @@ class OpenMetadataClient:
 
 
     # =========================================================================
+    # Catalog descriptions
+    # =========================================================================
+
+    def apply_description_to_table(
+        self,
+        table_fqn: str,
+        desired_description: str,
+    ) -> str:
+
+        entity = self.get_by_name(
+            "/v1/tables",
+            table_fqn,
+            fields="description",
+        )
+
+        if not entity:
+            logger.warning(
+                "Description target not found: %s",
+                table_fqn,
+            )
+            return "missing"
+
+        current_description = entity.get(
+            "description"
+        )
+
+        if current_description == desired_description:
+            logger.info(
+                "Description already correct: %s",
+                table_fqn,
+            )
+            return "already"
+
+        operation = (
+            "replace"
+            if current_description is not None
+            else "add"
+        )
+
+        patch = [
+            {
+                "op": operation,
+                "path": "/description",
+                "value": desired_description,
+            }
+        ]
+
+        self.patch(
+            f"/v1/tables/{entity['id']}",
+            patch,
+        )
+
+        logger.info(
+            "Description applied: %s",
+            table_fqn,
+        )
+
+        return "changed"
+
+
+    # =========================================================================
     # Certification
     # =========================================================================
 
@@ -2310,6 +2371,88 @@ class GovernanceEngine:
         )
 
     # =========================================================================
+    # Catalog descriptions
+    # =========================================================================
+
+    def apply_descriptions(
+        self,
+    ) -> None:
+
+        governance_config = (
+            self.config["governance"].get(
+                "descriptions",
+                {},
+            )
+        )
+
+        if not governance_config.get(
+            "enabled",
+            False,
+        ):
+            logger.info(
+                "Description governance disabled"
+            )
+            return
+
+        processed_count = 0
+        changed_count = 0
+        already_count = 0
+        missing_count = 0
+
+        for relative_path in governance_config.get(
+            "files",
+            [],
+        ):
+            data = load_json(
+                BASE_DIR / relative_path
+            )
+
+            for item in data.get(
+                "table_descriptions",
+                [],
+            ):
+                entity_fqn = item[
+                    "entity"
+                ]
+
+                description = item.get(
+                    "description"
+                )
+
+                if not description or not description.strip():
+                    raise RuntimeError(
+                        "Empty catalog description for: "
+                        f"{entity_fqn}"
+                    )
+
+                result = (
+                    self.client.apply_description_to_table(
+                        entity_fqn,
+                        description,
+                    )
+                )
+
+                processed_count += 1
+
+                if result == "changed":
+                    changed_count += 1
+                elif result == "already":
+                    already_count += 1
+                elif result == "missing":
+                    missing_count += 1
+
+        logger.info(
+            "Description governance completed: "
+            "%s processed, %s changed, "
+            "%s already correct, %s missing",
+            processed_count,
+            changed_count,
+            already_count,
+            missing_count,
+        )
+
+
+    # =========================================================================
     # Quality metadata
     # =========================================================================
 
@@ -3093,67 +3236,73 @@ class GovernanceEngine:
         self.validate_connection()
 
         logger.info(
-            "Step 1/11 - Applying domains"
+            "Step 1/12 - Applying domains"
         )
 
         self.apply_domains()
 
         logger.info(
-            "Step 2/11 - Applying business glossary"
+            "Step 2/12 - Applying business glossary"
         )
 
         self.apply_glossary()
 
         logger.info(
-            "Step 3/11 - Applying classifications and tags"
+            "Step 3/12 - Applying classifications and tags"
         )
 
         self.apply_classifications()
 
         logger.info(
-            "Step 4/11 - Applying Data Layer governance"
+            "Step 4/12 - Applying Data Layer governance"
         )
 
         self.apply_data_layers()
 
         logger.info(
-            "Step 5/11 - Applying ownership"
+            "Step 5/12 - Applying ownership"
         )
 
         self.apply_ownership()
 
         logger.info(
-            "Step 6/11 - Applying Data Quality governance"
+            "Step 6/12 - Applying Catalog Descriptions"
+        )
+
+        self.apply_descriptions()
+
+        logger.info(
+            "Step 7/12 - Applying Data Quality governance"
         )
 
         self.apply_quality_governance()
 
         logger.info(
-            "Step 7/11 - Applying glossary assignments"
+            "Step 8/12 - Applying glossary assignments"
         )
 
         self.apply_glossary_assignments()
 
         logger.info(
-            "Step 8/11 - Applying privacy assignments"
+            "Step 9/12 - Applying privacy assignments"
         )
 
         self.apply_privacy_assignments()
 
         logger.info(
-            "Step 9/11 - Applying Data Products"
+            "Step 10/12 - Applying Data Products"
         )
 
         self.apply_data_products()
 
         logger.info(
-            "Step 10/11 - Applying Metrics"
+            "Step 11/12 - Applying Metrics"
         )
 
         self.apply_metrics()
 
         logger.info(
-            "Step 11/11 - Applying Certifications"
+            "Step 12/12 - Applying Certifications"
         )
 
         self.apply_certifications()
