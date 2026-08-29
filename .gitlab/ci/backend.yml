@@ -2,11 +2,8 @@
 # REAL ESTATE BACKEND / API
 # =============================================================================
 #
-# Architecture:
+# CI/CD FLOW
 #
-#   chasse_immobiliere repository
-#          |
-#          v
 #   backend:validate
 #          |
 #          v
@@ -18,39 +15,32 @@
 #          v
 #   backend:publish-gitops
 #          |
-#          +--> creates/updates:
-#          |      real-estate/gitlab-registry-auth
+#          +--> real-estate/gitlab-registry-auth
 #          |
-#          +--> publishes:
-#                 workloads/real-estate/backend/
-#                 apps/real-estate-backend/application.yaml
+#          +--> lab-gitops/workloads/real-estate/backend
 #          |
-#          v
-#   lab-gitops/main
+#          +--> lab-gitops/apps/real-estate-backend/application.yaml
 #          |
 #          v
-#   root-app
+#   Argo CD root-app
+#     repo: https://gitlab.local/root/lab-gitops.git
+#     branch: main
 #     path: apps
 #     directory.recurse: true
 #          |
 #          v
-#   Argo CD Application:
-#     real-estate-backend
+#   Argo CD Application real-estate-backend
 #          |
 #          v
-#   workloads/real-estate/backend
-#          |
-#          v
-#   Kubernetes namespace:
-#     real-estate
+#   Kubernetes namespace real-estate
 #
 # IMPORTANT:
 #
-# - apps/ is NOT Kustomize-based.
-# - There is NO apps/kustomization.yaml.
-# - root-app recursively discovers application manifests under apps/.
-# - Backend workload deployment remains GitOps-driven.
-# - kubectl is NOT used to directly deploy the Backend Deployment/Service.
+# - apps/ is NOT managed through a kustomization.yaml.
+# - root-app recursively discovers apps/*/application.yaml.
+# - workload manifests under workloads/real-estate/backend DO use Kustomize.
+# - permanent workload deployment is GitOps-driven.
+# - kubectl is used only for validation and Secret bootstrap here.
 #
 # =============================================================================
 
@@ -68,8 +58,6 @@ backend:validate:
   image: python:3.12-slim
 
   variables:
-    # Required only so Pydantic Settings can initialize during CI validation.
-    # This is NOT a production credential.
     POSTGRES_PASSWORD: "ci-validation-only"
 
   before_script:
@@ -83,7 +71,7 @@ backend:validate:
 
   script:
     # -------------------------------------------------------------------------
-    # Validate expected project files
+    # Validate expected Backend source files
     # -------------------------------------------------------------------------
 
     - test -f requirements-backend.txt
@@ -114,7 +102,7 @@ backend:validate:
         src/api/api/v1/endpoints/health.py
 
     # -------------------------------------------------------------------------
-    # Validate FastAPI application and OpenAPI contract
+    # Validate FastAPI/OpenAPI
     # -------------------------------------------------------------------------
 
     - |
@@ -184,7 +172,7 @@ backend:build-image:
     - docker version
 
     # -------------------------------------------------------------------------
-    # Authenticate to GitLab Container Registry
+    # Authenticate against GitLab Container Registry
     # -------------------------------------------------------------------------
 
     - |
@@ -196,7 +184,7 @@ backend:build-image:
 
   script:
     # -------------------------------------------------------------------------
-    # Build immutable Backend image + latest convenience tag
+    # Build Backend image
     # -------------------------------------------------------------------------
 
     - |
@@ -205,6 +193,10 @@ backend:build-image:
       echo "BUILDING REAL ESTATE BACKEND"
       echo "============================================================"
 
+      echo
+      echo "Image:"
+      echo "$IMAGE_NAME:$IMAGE_TAG"
+
       docker build \
         -f deploy/docker/Dockerfile.backend \
         -t "$IMAGE_NAME:$IMAGE_TAG" \
@@ -212,7 +204,7 @@ backend:build-image:
         .
 
     # -------------------------------------------------------------------------
-    # Validate Python runtime inside final image
+    # Validate Python inside final image
     # -------------------------------------------------------------------------
 
     - |
@@ -222,7 +214,7 @@ backend:build-image:
         python --version
 
     # -------------------------------------------------------------------------
-    # Validate FastAPI application import inside image
+    # Validate FastAPI import inside final image
     # -------------------------------------------------------------------------
 
     - |
@@ -234,7 +226,7 @@ backend:build-image:
         "from src.api.main import app; print('Application:', app.title); print('Version:', app.version)"
 
     # -------------------------------------------------------------------------
-    # Validate expected API routes inside final image
+    # Validate required OpenAPI routes inside image
     # -------------------------------------------------------------------------
 
     - |
@@ -246,7 +238,7 @@ backend:build-image:
         "from src.api.main import app; paths=set(app.openapi().get('paths', {}).keys()); required={'/health','/ready','/api/v1/health','/api/v1/ready'}; missing=required-paths; print('OpenAPI paths:', sorted(paths)); assert not missing, f'Missing routes: {sorted(missing)}'"
 
     # -------------------------------------------------------------------------
-    # Push immutable commit image
+    # Push immutable commit tag
     # -------------------------------------------------------------------------
 
     - |
@@ -266,7 +258,7 @@ backend:build-image:
         "$IMAGE_NAME:latest"
 
     # -------------------------------------------------------------------------
-    # Image publication summary
+    # Build summary
     # -------------------------------------------------------------------------
 
     - |
@@ -274,9 +266,14 @@ backend:build-image:
       echo "============================================================"
       echo "BACKEND IMAGE PUBLISHED"
       echo "============================================================"
+
       echo
-      echo "Image:"
+      echo "Immutable image:"
       echo "$IMAGE_NAME:$IMAGE_TAG"
+
+      echo
+      echo "Latest image:"
+      echo "$IMAGE_NAME:latest"
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
@@ -297,32 +294,75 @@ backend:publish-gitops:
       artifacts: false
 
   variables:
+    # -------------------------------------------------------------------------
+    # GitOps repository used by Argo CD root-app
+    # -------------------------------------------------------------------------
+
     GITOPS_REPOSITORY: "https://gitlab.local/root/lab-gitops.git"
     GITOPS_BRANCH: "main"
 
+    # -------------------------------------------------------------------------
+    # Temporary clone directory
+    # -------------------------------------------------------------------------
+
     GITOPS_WORKDIR: "/tmp/chasse-backend-gitops"
+
+    # -------------------------------------------------------------------------
+    # Absolute source path in chasse_immobiliere repository
+    #
+    # Using CI_PROJECT_DIR prevents failures after Git operations or cwd changes.
+    # -------------------------------------------------------------------------
+
+    BACKEND_SOURCE_PATH: "$CI_PROJECT_DIR/deploy/kubernetes/backend"
+
+    # -------------------------------------------------------------------------
+    # Destination paths inside lab-gitops
+    # -------------------------------------------------------------------------
 
     GITOPS_BACKEND_PATH: "workloads/real-estate/backend"
     GITOPS_APP_PATH: "apps/real-estate-backend"
+
+    # -------------------------------------------------------------------------
+    # Existing runtime Secret name used by the Deployment
+    # -------------------------------------------------------------------------
 
     REGISTRY_PULL_SECRET: "gitlab-registry-auth"
 
   script:
     # -------------------------------------------------------------------------
-    # 1. Validate shell runner tools
+    # 1. Validate shell runner tooling
     # -------------------------------------------------------------------------
 
     - git --version
     - kubectl version --client
 
     # -------------------------------------------------------------------------
-    # 2. Validate source manifests
+    # 2. Validate original Backend source repository
     # -------------------------------------------------------------------------
 
-    - test -f deploy/kubernetes/backend/deployment.yaml
-    - test -f deploy/kubernetes/backend/service.yaml
-    - test -f deploy/kubernetes/backend/kustomization.yaml
-    - test -f deploy/kubernetes/backend/application.yaml
+    - |
+      echo
+      echo "============================================================"
+      echo "BACKEND SOURCE VALIDATION"
+      echo "============================================================"
+
+      echo
+      echo "CI project directory:"
+      echo "$CI_PROJECT_DIR"
+
+      echo
+      echo "Backend source path:"
+      echo "$BACKEND_SOURCE_PATH"
+
+      test -d "$BACKEND_SOURCE_PATH"
+
+      test -f "$BACKEND_SOURCE_PATH/deployment.yaml"
+      test -f "$BACKEND_SOURCE_PATH/service.yaml"
+      test -f "$BACKEND_SOURCE_PATH/kustomization.yaml"
+      test -f "$BACKEND_SOURCE_PATH/application.yaml"
+
+      echo
+      echo "Backend source manifests found."
 
     # -------------------------------------------------------------------------
     # 3. Validate Kubernetes namespace
@@ -333,7 +373,7 @@ backend:publish-gitops:
         real-estate
 
     # -------------------------------------------------------------------------
-    # 4. Validate PostgreSQL runtime Secret
+    # 4. Validate PostgreSQL Secret
     # -------------------------------------------------------------------------
 
     - |
@@ -343,18 +383,7 @@ backend:publish-gitops:
         real-estate-postgresql-secret
 
     # -------------------------------------------------------------------------
-    # 5. Validate existing GitOps credentials Secret
-    #
-    # Existing project Secret:
-    #
-    #   namespace: openmetadata
-    #   name:      lab-gitops-git-credentials
-    #
-    # Keys:
-    #
-    #   GIT_USERNAME
-    #   GIT_TOKEN
-    #
+    # 5. Validate existing GitOps/PAT Secret
     # -------------------------------------------------------------------------
 
     - |
@@ -364,7 +393,7 @@ backend:publish-gitops:
         lab-gitops-git-credentials
 
     # -------------------------------------------------------------------------
-    # 6. Clean temporary workspace
+    # 6. Clean previous temporary files
     # -------------------------------------------------------------------------
 
     - rm -rf "$GITOPS_WORKDIR"
@@ -372,7 +401,10 @@ backend:publish-gitops:
     - rm -f /tmp/real-estate-backend-rendered.yaml
 
     # -------------------------------------------------------------------------
-    # 7. Load GitOps PAT
+    # 7. Load GitOps credentials from existing Kubernetes Secret
+    #
+    # Credentials are kept in environment only for this job.
+    # They are never committed to Git.
     # -------------------------------------------------------------------------
 
     - |
@@ -400,13 +432,10 @@ backend:publish-gitops:
       echo "GitOps/PAT credentials loaded."
 
     # -------------------------------------------------------------------------
-    # 8. Create/update private Registry pull Secret
+    # 8. Create/update GitLab Registry pull Secret
     #
-    # This is operational Secret bootstrap.
-    #
-    # The PAT is NEVER committed to Git.
-    #
-    # PAT requires read_registry permission.
+    # The same existing PAT is reused.
+    # It must have read_registry permission.
     # -------------------------------------------------------------------------
 
     - |
@@ -432,18 +461,16 @@ backend:publish-gitops:
         "$REGISTRY_PULL_SECRET"
 
     # -------------------------------------------------------------------------
-    # 10. Verify Backend Deployment references correct pull Secret
+    # 10. Verify Deployment source references expected Secret
     # -------------------------------------------------------------------------
 
     - |
       grep \
         "name: ${REGISTRY_PULL_SECRET}" \
-        deploy/kubernetes/backend/deployment.yaml
+        "$BACKEND_SOURCE_PATH/deployment.yaml"
 
     # -------------------------------------------------------------------------
-    # 11. Create temporary .netrc
-    #
-    # Same authentication mechanism already used by the project.
+    # 11. Build temporary Git authentication file
     # -------------------------------------------------------------------------
 
     - |
@@ -456,20 +483,22 @@ backend:publish-gitops:
       chmod 600 /tmp/.netrc
 
     # -------------------------------------------------------------------------
-    # 12. Clone EXACT GitOps branch used by Argo CD
+    # 12. Clone exact branch used by Argo CD
     #
-    # Verified runtime configuration:
+    # Verified root-app configuration:
     #
-    #   repoURL:        https://gitlab.local/root/lab-gitops.git
-    #   targetRevision: main
-    #   root path:      apps
-    #   recurse:        true
+    # repoURL: https://gitlab.local/root/lab-gitops.git
+    # targetRevision: main
+    # path: apps
+    # directory.recurse: true
     #
     # -------------------------------------------------------------------------
 
     - |
       echo
-      echo "Cloning lab-gitops repository..."
+      echo "============================================================"
+      echo "CLONING LAB-GITOPS"
+      echo "============================================================"
 
       HOME=/tmp \
       GIT_SSL_NO_VERIFY=true \
@@ -480,34 +509,50 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR"
 
     # -------------------------------------------------------------------------
-    # 13. Verify GitOps checkout
+    # 13. Validate exact GitOps branch and revision
+    #
+    # Uses git -C instead of cd so the job working directory never changes.
     # -------------------------------------------------------------------------
 
     - |
-      cd "$GITOPS_WORKDIR"
-
       echo
       echo "============================================================"
-      echo "GITOPS REPOSITORY"
+      echo "GITOPS REPOSITORY DIAGNOSTICS"
       echo "============================================================"
 
       echo
-      echo "Branch:"
-      git branch --show-current
+      echo "Current branch:"
+      git -C "$GITOPS_WORKDIR" branch --show-current
 
       echo
-      echo "Revision:"
-      git rev-parse --short HEAD
+      echo "Current revision:"
+      git -C "$GITOPS_WORKDIR" rev-parse --short HEAD
 
-      test "$(git branch --show-current)" = "$GITOPS_BRANCH"
+      echo
+      echo "Repository root:"
+      ls -la "$GITOPS_WORKDIR"
+
+      echo
+      echo "Top-level directories:"
+      find "$GITOPS_WORKDIR" \
+        -maxdepth 1 \
+        -mindepth 1 \
+        -type d \
+        -print
+
+      test "$(
+        git -C "$GITOPS_WORKDIR" branch --show-current
+      )" = "$GITOPS_BRANCH"
 
     # -------------------------------------------------------------------------
-    # 14. Validate actual GitOps repository structure
+    # 14. Validate real GitOps architecture
     #
-    # apps/ is recursively scanned by root-app.
+    # root-app recursively scans apps/.
     #
-    # DO NOT require apps/kustomization.yaml.
-    # It intentionally does not exist.
+    # There is intentionally NO:
+    #
+    #   apps/kustomization.yaml
+    #
     # -------------------------------------------------------------------------
 
     - |
@@ -516,11 +561,11 @@ backend:publish-gitops:
 
       echo
       echo "GitOps structure validated:"
-      echo "  apps/"
-      echo "  workloads/"
+      echo "  $GITOPS_WORKDIR/apps"
+      echo "  $GITOPS_WORKDIR/workloads"
 
     # -------------------------------------------------------------------------
-    # 15. Create Backend desired-state directories
+    # 15. Create Backend destination directories
     # -------------------------------------------------------------------------
 
     - |
@@ -531,44 +576,50 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH"
 
     # -------------------------------------------------------------------------
-    # 16. Publish Backend workload manifests
+    # 16. Copy Backend Deployment
     # -------------------------------------------------------------------------
 
     - |
       cp \
-        deploy/kubernetes/backend/deployment.yaml \
+        "$BACKEND_SOURCE_PATH/deployment.yaml" \
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
 
+    # -------------------------------------------------------------------------
+    # 17. Copy Backend Service
+    # -------------------------------------------------------------------------
+
+    - |
       cp \
-        deploy/kubernetes/backend/service.yaml \
+        "$BACKEND_SOURCE_PATH/service.yaml" \
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/service.yaml"
 
+    # -------------------------------------------------------------------------
+    # 18. Copy Backend workload Kustomization
+    # -------------------------------------------------------------------------
+
+    - |
       cp \
-        deploy/kubernetes/backend/kustomization.yaml \
+        "$BACKEND_SOURCE_PATH/kustomization.yaml" \
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/kustomization.yaml"
 
     # -------------------------------------------------------------------------
-    # 17. Publish Backend Argo CD Application
+    # 19. Copy Argo CD Application
     #
-    # root-app recursively discovers this file automatically:
-    #
-    #   apps/real-estate-backend/application.yaml
-    #
-    # No parent Kustomization registration is required.
+    # root-app recursively discovers this file automatically.
     # -------------------------------------------------------------------------
 
     - |
       cp \
-        deploy/kubernetes/backend/application.yaml \
+        "$BACKEND_SOURCE_PATH/application.yaml" \
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
 
     # -------------------------------------------------------------------------
-    # 18. Inject immutable Backend image tag
+    # 20. Inject immutable image tag into GitOps Deployment
     # -------------------------------------------------------------------------
 
     - |
       echo
-      echo "Injecting immutable Backend image tag:"
+      echo "Injecting Backend image tag:"
       echo "$CI_COMMIT_SHORT_SHA"
 
       sed -i \
@@ -576,7 +627,7 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
 
     # -------------------------------------------------------------------------
-    # 19. Ensure image placeholder no longer exists
+    # 21. Ensure placeholder has disappeared
     # -------------------------------------------------------------------------
 
     - |
@@ -584,14 +635,18 @@ backend:publish-gitops:
         "__BACKEND_IMAGE_TAG__" \
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"; then
 
-        echo "ERROR: Backend image placeholder remains."
+        echo
+        echo "ERROR:"
+        echo "Backend image placeholder remains in deployment.yaml."
 
         exit 1
 
       fi
 
+      echo "Image placeholder replaced successfully."
+
     # -------------------------------------------------------------------------
-    # 20. Validate immutable image reference
+    # 22. Validate immutable image reference
     # -------------------------------------------------------------------------
 
     - |
@@ -606,7 +661,7 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
 
     # -------------------------------------------------------------------------
-    # 21. Validate Registry Secret reference
+    # 23. Validate Registry Secret reference after copy
     # -------------------------------------------------------------------------
 
     - |
@@ -615,11 +670,9 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
 
     # -------------------------------------------------------------------------
-    # 22. Validate Backend workload using Kustomize
+    # 24. Validate Backend workload Kustomization
     #
-    # ONLY workload path uses Kustomize.
-    #
-    # apps/ does NOT.
+    # workloads/real-estate/backend DOES use Kustomize.
     # -------------------------------------------------------------------------
 
     - |
@@ -630,10 +683,11 @@ backend:publish-gitops:
       test -s \
         /tmp/real-estate-backend-rendered.yaml
 
+      echo
       echo "Backend Kustomize rendering successful."
 
     # -------------------------------------------------------------------------
-    # 23. Validate rendered Backend resources
+    # 25. Validate rendered workload contains Deployment
     # -------------------------------------------------------------------------
 
     - |
@@ -641,24 +695,44 @@ backend:publish-gitops:
         "kind: Deployment" \
         /tmp/real-estate-backend-rendered.yaml
 
+    # -------------------------------------------------------------------------
+    # 26. Validate rendered workload contains Service
+    # -------------------------------------------------------------------------
+
+    - |
       grep \
         "kind: Service" \
         /tmp/real-estate-backend-rendered.yaml
 
+    # -------------------------------------------------------------------------
+    # 27. Validate rendered resource name
+    # -------------------------------------------------------------------------
+
+    - |
       grep \
         "name: real-estate-backend" \
         /tmp/real-estate-backend-rendered.yaml
 
+    # -------------------------------------------------------------------------
+    # 28. Validate rendered immutable image
+    # -------------------------------------------------------------------------
+
+    - |
       grep \
         "${CI_REGISTRY_IMAGE}/backend:${CI_COMMIT_SHORT_SHA}" \
         /tmp/real-estate-backend-rendered.yaml
 
+    # -------------------------------------------------------------------------
+    # 29. Validate rendered Registry pull Secret
+    # -------------------------------------------------------------------------
+
+    - |
       grep \
         "$REGISTRY_PULL_SECRET" \
         /tmp/real-estate-backend-rendered.yaml
 
     # -------------------------------------------------------------------------
-    # 24. Validate Argo CD Application definition
+    # 30. Validate Argo CD Application name
     # -------------------------------------------------------------------------
 
     - |
@@ -666,26 +740,42 @@ backend:publish-gitops:
         "name: real-estate-backend" \
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
 
+    # -------------------------------------------------------------------------
+    # 31. Validate Argo CD Application workload path
+    # -------------------------------------------------------------------------
+
+    - |
       grep \
         "path: workloads/real-estate/backend" \
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
 
+    # -------------------------------------------------------------------------
+    # 32. Validate Argo CD Application repository
+    # -------------------------------------------------------------------------
+
+    - |
       grep \
         "repoURL: https://gitlab.local/root/lab-gitops.git" \
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
 
+    # -------------------------------------------------------------------------
+    # 33. Validate Argo CD Application branch
+    # -------------------------------------------------------------------------
+
+    - |
       grep \
         "targetRevision: main" \
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
 
+      echo
       echo "Backend Argo CD Application validation successful."
 
     # -------------------------------------------------------------------------
-    # 25. Kubernetes client-side manifest validation
+    # 34. Client-side Kubernetes validation
     #
     # DRY RUN ONLY.
     #
-    # Backend deployment remains managed by Argo CD.
+    # We DO NOT directly deploy workload resources here.
     # -------------------------------------------------------------------------
 
     - |
@@ -704,10 +794,11 @@ backend:publish-gitops:
         -f "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml" \
         > /dev/null
 
-      echo "Backend Kubernetes manifests validated."
+      echo
+      echo "Kubernetes client-side manifest validation successful."
 
     # -------------------------------------------------------------------------
-    # 26. Display desired-state summary before commit
+    # 35. Display final desired-state locations
     # -------------------------------------------------------------------------
 
     - |
@@ -717,75 +808,89 @@ backend:publish-gitops:
       echo "============================================================"
 
       echo
-      echo "Deployment:"
-      grep \
-        -E "name: real-estate-backend|image:" \
-        "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
+      echo "Workload directory:"
+      echo "$GITOPS_BACKEND_PATH"
 
       echo
-      echo "Service:"
-      grep \
-        -E "name: real-estate-backend|port: 8000" \
-        "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/service.yaml"
+      echo "Application directory:"
+      echo "$GITOPS_APP_PATH"
 
       echo
-      echo "Application:"
-      grep \
-        -E "name: real-estate-backend|path: workloads/real-estate/backend" \
-        "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
+      echo "Files:"
+      find "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH" \
+        -maxdepth 1 \
+        -type f \
+        -print
+
+      find "$GITOPS_WORKDIR/$GITOPS_APP_PATH" \
+        -maxdepth 1 \
+        -type f \
+        -print
 
     # -------------------------------------------------------------------------
-    # 27. Configure Git identity
+    # 36. Display deployed image desired state
     # -------------------------------------------------------------------------
 
     - |
-      cd "$GITOPS_WORKDIR"
+      echo
+      echo "Backend Deployment image:"
 
-      git config \
+      grep \
+        "image:" \
+        "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
+
+    # -------------------------------------------------------------------------
+    # 37. Configure Git identity
+    # -------------------------------------------------------------------------
+
+    - |
+      git -C "$GITOPS_WORKDIR" config \
         user.name \
         "chasse-immobiliere-ci"
 
-      git config \
+      git -C "$GITOPS_WORKDIR" config \
         user.email \
         "gitlab-ci@lab.local"
 
     # -------------------------------------------------------------------------
-    # 28. Stage only Backend desired-state resources
+    # 38. Stage Backend GitOps resources
     # -------------------------------------------------------------------------
 
     - |
-      cd "$GITOPS_WORKDIR"
-
-      git add \
+      git -C "$GITOPS_WORKDIR" add \
         "$GITOPS_BACKEND_PATH" \
         "$GITOPS_APP_PATH"
 
       echo
-      echo "GitOps status:"
+      echo "GitOps staged changes:"
 
-      git status \
+      git -C "$GITOPS_WORKDIR" status \
         --short
 
     # -------------------------------------------------------------------------
-    # 29. Commit and push only if desired state changed
+    # 39. Commit and push only when desired state changed
     # -------------------------------------------------------------------------
 
     - |
-      cd "$GITOPS_WORKDIR"
-
-      if git diff --cached --quiet; then
+      if git -C "$GITOPS_WORKDIR" diff --cached --quiet; then
 
         echo
         echo "No Backend GitOps changes detected."
 
       else
 
-        git commit \
+        echo
+        echo "Creating Backend GitOps commit..."
+
+        git -C "$GITOPS_WORKDIR" commit \
           -m "deploy: publish real-estate backend ${CI_COMMIT_SHORT_SHA}"
+
+        echo
+        echo "Pushing Backend GitOps commit to main..."
 
         HOME=/tmp \
         GIT_SSL_NO_VERIFY=true \
-        git push \
+        git -C "$GITOPS_WORKDIR" push \
           origin \
           "$GITOPS_BRANCH"
 
@@ -795,7 +900,7 @@ backend:publish-gitops:
       fi
 
     # -------------------------------------------------------------------------
-    # 30. Final publication summary
+    # 40. Final summary
     # -------------------------------------------------------------------------
 
     - |
@@ -805,7 +910,15 @@ backend:publish-gitops:
       echo "============================================================"
 
       echo
-      echo "Image:"
+      echo "Application source repository:"
+      echo "$CI_PROJECT_DIR"
+
+      echo
+      echo "Backend source manifests:"
+      echo "$BACKEND_SOURCE_PATH"
+
+      echo
+      echo "Container image:"
       echo "${CI_REGISTRY_IMAGE}/backend:${CI_COMMIT_SHORT_SHA}"
 
       echo
@@ -814,23 +927,27 @@ backend:publish-gitops:
 
       echo
       echo "GitOps repository:"
-      echo "${GITOPS_REPOSITORY}"
+      echo "$GITOPS_REPOSITORY"
 
       echo
       echo "GitOps branch:"
-      echo "${GITOPS_BRANCH}"
+      echo "$GITOPS_BRANCH"
 
       echo
       echo "GitOps workload:"
-      echo "${GITOPS_BACKEND_PATH}"
+      echo "$GITOPS_BACKEND_PATH"
 
       echo
       echo "Argo CD Application:"
-      echo "${GITOPS_APP_PATH}"
+      echo "$GITOPS_APP_PATH"
 
       echo
-      echo "Discovery model:"
-      echo "root-app -> apps/ -> recursive directory discovery"
+      echo "Argo root discovery:"
+      echo "apps/ -> recursive directory discovery"
+
+      echo
+      echo "Permanent deployment:"
+      echo "GitOps / Argo CD"
 
   after_script:
     # -------------------------------------------------------------------------
