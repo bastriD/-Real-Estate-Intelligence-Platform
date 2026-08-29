@@ -61,4 +61,4 @@ spec:
               memory: 512Mi
 
       imagePullSecrets:
-        - name: gitlab-registry
+        - name: gitlab-registry-auth
