@@ -1,0 +1,58 @@
+backend:validate:
+  stage: validate
+
+  tags:
+    - docker
+
+  image: python:3.12-slim
+
+  before_script:
+    - python --version
+    - pip install --no-cache-dir -r requirements-backend.txt
+
+  script:
+    - python -m py_compile src/api/main.py
+    - python -m py_compile src/api/api/v1/router.py
+    - python -m py_compile src/api/api/v1/endpoints/health.py
+    - python -c "from src.api.main import app; print(app.title); print(app.version)"
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_MERGE_REQUEST_ID'
+
+
+backend:build-image:
+  stage: build
+
+  tags:
+    - docker
+
+  needs:
+    - job: backend:validate
+      artifacts: false
+
+  image: docker:27.5.1
+
+  variables:
+    IMAGE_NAME: "$CI_REGISTRY_IMAGE/backend"
+    IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+    DOCKER_HOST: "unix:///var/run/docker.sock"
+
+  before_script:
+    - docker version
+    - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
+
+  script:
+    - |
+      docker build \
+        -f deploy/docker/Dockerfile.backend \
+        -t "$IMAGE_NAME:$IMAGE_TAG" \
+        -t "$IMAGE_NAME:latest" \
+        .
+
+    - docker run --rm "$IMAGE_NAME:$IMAGE_TAG" python --version
+    - docker push "$IMAGE_NAME:$IMAGE_TAG"
+    - docker push "$IMAGE_NAME:latest"
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
