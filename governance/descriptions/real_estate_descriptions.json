@@ -1,0 +1,92 @@
+{
+  "table_descriptions": [
+    {
+      "entity": "real-estate-postgresql.real_estate.raw.recherches",
+      "description": "RAW ingestion table storing property search criteria exactly as received from source files. Source values are preserved as text to tolerate heterogeneous formats and avoid premature coercion. Each record retains ingestion metadata through source_file, ingestion_batch and ingested_at."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.raw.annonces",
+      "description": "RAW ingestion table storing property listings exactly as received from source files. Business attributes, contact information, property characteristics and source values are preserved without premature normalization, together with source_file, ingestion_batch and ingested_at metadata for traceability."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.staging.recherches",
+      "description": "Normalized STAGING table for property search criteria. RAW source values are converted to typed PostgreSQL fields, while validation results are preserved through quality_valid and quality_errors. Source lineage remains traceable through raw_id, ingestion_batch and source_file."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.staging.annonces",
+      "description": "Normalized STAGING table for property listings. RAW values are parsed into typed PostgreSQL fields including prices, surfaces, dates, booleans, geographic coordinates and structured JSON data. Parsing and validation issues are retained through quality_valid and quality_errors, with full traceability to the RAW record and ingestion batch."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.staging.v_annonces_invalides",
+      "description": "Quality-control view exposing property listings rejected or flagged during STAGING validation. It contains invalid records together with their quality_errors and ingestion metadata so that parsing and data-quality failures remain observable instead of being silently discarded."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.staging.v_recherches_invalides",
+      "description": "Quality-control view exposing property search criteria rejected or flagged during STAGING validation. It preserves validation errors and ingestion metadata so that malformed or non-compliant source records can be audited and corrected."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.client",
+      "description": "Operational master table for clients using the real-estate hunting service. It stores contact information, account status, creation date and contact-consent status, and is referenced by mandates and business interactions."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.chasseur",
+      "description": "Operational master table for property hunters. It stores hunter identity, contact details, entry date and activity status and acts as the operational owner of mandates, search activity and commission scales."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.secteur",
+      "description": "Reference table defining geographic sectors targeted by mandates. A sector is identified by country, city, optional district and postal code and can be activated or deactivated."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.source",
+      "description": "Reference table describing property-data sources used by the platform. It records source type, base URL, activity status and confidence level so that collected properties retain explicit provenance."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.mandat",
+      "description": "Transactional table representing a client mandate assigned to a property hunter. It records mandate reference, type, signature information, validity period, lifecycle status and the associated client and hunter."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.mandat_secteur",
+      "description": "Association table linking mandates to one or more geographic sectors. It supports mandates covering several target areas while preserving referential integrity between mandates and sectors."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.demande",
+      "description": "Operational table representing a property-search request attached to a mandate. It stores the request reference, creation date and lifecycle status, while detailed search criteria are versioned separately in demande_version."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.demande_version",
+      "description": "Versioned snapshot of property-search criteria for a demand. It preserves successive versions of location, budget, surface, room, bedroom, DPE and desired criteria, records who authored each version, and guarantees at most one active version per demand."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.bien",
+      "description": "Canonical operational table for properties collected by the platform. It stores source provenance, external reference, location, price, surface, property characteristics, publication and collection dates, and operational availability status."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.presentation",
+      "description": "Transactional association between a demand version and a candidate property. It records selection and presentation dates, matching score and lifecycle status from identification through qualification, presentation, visit, rejection or retention."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.commentaire",
+      "description": "Operational feedback table for comments made by either a client or a property hunter about a property in the context of a demand version. It records content, priority and business decision while enforcing a single author."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.document",
+      "description": "Metadata table for documents associated with properties. It records file name, document and MIME types, storage path, checksum, confidentiality classification and whether the document is eligible for future AI indexing."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.bareme_commission",
+      "description": "Versioned commission-scale table for property hunters. It defines purchase-amount ranges, commission rate, fixed amount, validity dates and active status for calculating or tracing hunter remuneration."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.paiement",
+      "description": "Transactional payment-follow-up table for completed or expected mandate remuneration. It tracks purchase amount, fees, hunter amount, honoraria receipt, hunter payment dates, payment status and the commission scale applied."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.visite",
+      "description": "Operational visit-history table linked to a property presentation. It records planned or completed visit date, lifecycle status, visit report, rating and photos, allowing one presentation to produce zero, one or several visits."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.audit_log",
+      "description": "Technical audit-trail table for INSERT, UPDATE and DELETE events affecting operational data. It records event time, schema, table, record identifier, user, previous and new values, and contextual metadata for governance, security and operational auditing."
+    }
+  ]
+}

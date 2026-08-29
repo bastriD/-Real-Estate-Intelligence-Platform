@@ -24,7 +24,7 @@ governance:validate:
     - python -m json.tool governance/tagging/real_estate_tags.json > /dev/null
     - python -m json.tool governance/tagging/real_estate_data_layers.json > /dev/null
     - python -m json.tool governance/metrics/real_estate_metrics.json > /dev/null
-
+    - python -m json.tool governance/descriptions/real_estate_descriptions.json > /dev/null
     - echo "Governance-as-Code validation succeeded."
 
   rules:

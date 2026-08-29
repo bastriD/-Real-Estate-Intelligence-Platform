@@ -78,7 +78,12 @@
         "ownership/real_estate_ownership.json"
       ]
     },
-
+    "descriptions": {
+      "enabled": true,
+      "files": [
+        "descriptions/real_estate_descriptions.json"
+      ]
+    },
     "data_quality": {
       "enabled": true,
       "files": [

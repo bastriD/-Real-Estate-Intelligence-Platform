@@ -19,7 +19,7 @@ COPY domains /app/domains
 COPY data-products /app/data-products
 COPY lineage /app/lineage
 COPY metrics /app/metrics
-
+COPY descriptions /app/descriptions
 COPY apply-governance.sh /app/apply-governance.sh
 
 RUN chmod +x /app/apply-governance.sh
