@@ -15,8 +15,11 @@ observability:validate:
 
     - test -f deploy/observability/application.yaml
     - test -f deploy/observability/grafana-datasource.yaml.template
+
     - test -f observability/grafana/dashboards/real-estate-business-platform.json
     - test -f observability/grafana/dashboards/real-estate-data-quality.json
+
+    - test -f observability/alerts/real-estate-prometheus-rules.yaml
 
     # ---------------------------------------------------------
     # Validate canonical Grafana dashboard JSON files
@@ -99,6 +102,61 @@ observability:validate:
           )
 
       print("All Grafana dashboards validated successfully.")
+      PY
+
+    # ---------------------------------------------------------
+    # Validate PrometheusRule YAML structure
+    # ---------------------------------------------------------
+
+    - |
+      python - <<'PY'
+      from pathlib import Path
+      import sys
+
+      path = Path(
+          "observability/alerts/"
+          "real-estate-prometheus-rules.yaml"
+      )
+
+      content = path.read_text(
+          encoding="utf-8"
+      )
+
+      required_strings = [
+          "apiVersion: monitoring.coreos.com/v1",
+          "kind: PrometheusRule",
+          "name: real-estate-data-platform",
+          "namespace: monitoring",
+          "release: monitoring",
+          "RealEstateDataQualityLayerFailed",
+          "RealEstateDataQualityStale",
+          "RealEstateMetricsCollectionFailed",
+          "RealEstateMetricsCollectionStale",
+      ]
+
+      missing = [
+          item
+          for item in required_strings
+          if item not in content
+      ]
+
+      if missing:
+          print(
+              "PrometheusRule validation failed.",
+              file=sys.stderr,
+          )
+
+          for item in missing:
+              print(
+                  f"Missing expected content: {item}",
+                  file=sys.stderr,
+              )
+
+          raise SystemExit(1)
+
+      print(
+          "PrometheusRule source validation passed."
+      )
       PY
 
     # ---------------------------------------------------------
@@ -235,6 +293,7 @@ observability:publish-gitops:
     - job: observability:validate
 
   script:
+
     # ---------------------------------------------------------
     # 1. Validate required tools
     # ---------------------------------------------------------
@@ -247,11 +306,14 @@ observability:publish-gitops:
     # ---------------------------------------------------------
 
     - "test -f deploy/observability/application.yaml"
+
     - "test -f observability/grafana/dashboards/real-estate-business-platform.json"
     - "test -f observability/grafana/dashboards/real-estate-data-quality.json"
 
+    - "test -f observability/alerts/real-estate-prometheus-rules.yaml"
+
     # ---------------------------------------------------------
-    # 3. Verify GitOps credentials
+    # 3. Verify GitOps credentials Secret
     # ---------------------------------------------------------
 
     - |
@@ -264,9 +326,12 @@ observability:publish-gitops:
 
     - "rm -rf /tmp/chasse-observability-gitops"
     - "rm -f /tmp/.netrc"
+
     - "rm -f /tmp/real-estate-grafana-dashboard.yaml"
     - "rm -f /tmp/real-estate-grafana-dashboard-labeled.yaml"
+
     - "rm -f /tmp/real-estate-kustomization.yaml"
+    - "rm -f /tmp/real-estate-observability-rendered.yaml"
 
     # ---------------------------------------------------------
     # 5. Load GitLab PAT from Kubernetes Secret
@@ -353,6 +418,7 @@ observability:publish-gitops:
 
       resources:
         - grafana-dashboard-configmap.yaml
+        - prometheus-rules.yaml
       EOF
 
     - |
@@ -374,6 +440,10 @@ observability:publish-gitops:
       cp \
         /tmp/real-estate-grafana-dashboard-labeled.yaml \
         /tmp/chasse-observability-gitops/workloads/monitoring/real-estate/grafana-dashboard-configmap.yaml
+
+      cp \
+        observability/alerts/real-estate-prometheus-rules.yaml \
+        /tmp/chasse-observability-gitops/workloads/monitoring/real-estate/prometheus-rules.yaml
 
       cp \
         /tmp/real-estate-kustomization.yaml \
@@ -425,25 +495,34 @@ observability:publish-gitops:
       cat \
         workloads/monitoring/real-estate/kustomization.yaml
 
-    - |
-      echo "Real Estate observability Application:"
-
-      cat \
-        apps/real-estate-observability/application.yaml
-
     # ---------------------------------------------------------
-    # 13. Verify generated manifests
+    # 13. Validate PrometheusRule manifest
     # ---------------------------------------------------------
 
     - |
-      echo "Generated Grafana dashboard ConfigMap:"
+      echo "Validating PrometheusRule manifest..."
+
+      kubectl apply \
+        --dry-run=client \
+        -f workloads/monitoring/real-estate/prometheus-rules.yaml
+
+    # ---------------------------------------------------------
+    # 14. Validate Grafana dashboard ConfigMap
+    # ---------------------------------------------------------
+
+    - |
+      echo "Validating Grafana dashboard ConfigMap..."
 
       kubectl apply \
         --dry-run=client \
         -f workloads/monitoring/real-estate/grafana-dashboard-configmap.yaml
 
+    # ---------------------------------------------------------
+    # 15. Validate complete Kustomize workload
+    # ---------------------------------------------------------
+
     - |
-      echo "Validating Kustomize workload:"
+      echo "Validating Kustomize workload..."
 
       kubectl kustomize \
         workloads/monitoring/real-estate \
@@ -455,14 +534,14 @@ observability:publish-gitops:
       echo "Kustomize workload validation passed."
 
     # ---------------------------------------------------------
-    # 14. Configure Git
+    # 16. Configure Git
     # ---------------------------------------------------------
 
     - 'git config user.name "chasse-immobiliere-ci"'
     - 'git config user.email "gitlab-ci@lab.local"'
 
     # ---------------------------------------------------------
-    # 15. Stage GitOps changes
+    # 17. Stage GitOps changes
     # ---------------------------------------------------------
 
     - |
@@ -475,7 +554,7 @@ observability:publish-gitops:
       git status --short
 
     # ---------------------------------------------------------
-    # 16. Skip when nothing changed
+    # 18. Skip when nothing changed
     # ---------------------------------------------------------
 
     - |
@@ -485,7 +564,7 @@ observability:publish-gitops:
       fi
 
     # ---------------------------------------------------------
-    # 17. Commit
+    # 19. Commit
     # ---------------------------------------------------------
 
     - |
@@ -493,7 +572,7 @@ observability:publish-gitops:
         -m "deploy: publish real-estate observability configuration"
 
     # ---------------------------------------------------------
-    # 18. Push GitOps repository
+    # 20. Push GitOps repository
     # ---------------------------------------------------------
 
     - |
@@ -502,15 +581,19 @@ observability:publish-gitops:
       git push origin main
 
   after_script:
+
     # ---------------------------------------------------------
     # Cleanup credentials and temporary files
     # ---------------------------------------------------------
 
     - "rm -f /tmp/.netrc"
+
     - "rm -f /tmp/real-estate-grafana-dashboard.yaml"
     - "rm -f /tmp/real-estate-grafana-dashboard-labeled.yaml"
+
     - "rm -f /tmp/real-estate-kustomization.yaml"
     - "rm -f /tmp/real-estate-observability-rendered.yaml"
+
     - "rm -rf /tmp/chasse-observability-gitops"
 
   rules:

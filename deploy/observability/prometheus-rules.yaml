@@ -1,0 +1,132 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml
+
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+
+metadata:
+  name: real-estate-data-platform
+  namespace: monitoring
+  labels:
+    release: monitoring
+    project: real-estate
+
+spec:
+  groups:
+
+    # =========================================================
+    # DATA QUALITY
+    # =========================================================
+
+    - name: real-estate-data-quality
+      rules:
+
+        # -----------------------------------------------------
+        # A DQ layer has failed
+        # -----------------------------------------------------
+
+        - alert: RealEstateDataQualityLayerFailed
+          expr: |
+            real_estate_dq_layer_status{
+              exported_job="real_estate_data_quality"
+            } == 0
+
+          for: 2m
+
+          labels:
+            severity: critical
+            project: real-estate
+            component: data-quality
+
+          annotations:
+            summary: "Real Estate data quality failure"
+            description: >-
+              Data Quality validation failed for layer
+              {{ $labels.layer }}
+              ({{ $labels.medallion }}).
+
+        # -----------------------------------------------------
+        # DQ execution has become stale
+        # -----------------------------------------------------
+
+        - alert: RealEstateDataQualityStale
+          expr: |
+            (
+              time()
+              -
+              real_estate_dq_layer_last_run_timestamp{
+                exported_job="real_estate_data_quality"
+              }
+            ) > 172800
+
+          for: 10m
+
+          labels:
+            severity: warning
+            project: real-estate
+            component: data-quality
+
+          annotations:
+            summary: "Real Estate data quality checks are stale"
+            description: >-
+              No recent Data Quality execution has been observed for
+              layer {{ $labels.layer }}
+              ({{ $labels.medallion }})
+              for more than 48 hours.
+
+
+    # =========================================================
+    # OBSERVABILITY / METRICS COLLECTION
+    # =========================================================
+
+    - name: real-estate-observability
+      rules:
+
+        # -----------------------------------------------------
+        # Metrics collector explicitly reported failure
+        # -----------------------------------------------------
+
+        - alert: RealEstateMetricsCollectionFailed
+          expr: |
+            real_estate_pipeline_run_status{
+              exported_job="real_estate_data_platform"
+            } == 0
+
+          for: 5m
+
+          labels:
+            severity: warning
+            project: real-estate
+            component: observability
+
+          annotations:
+            summary: "Real Estate metrics collection failed"
+            description: >-
+              The Real Estate observability metrics collector
+              is reporting a failed execution.
+
+        # -----------------------------------------------------
+        # No successful metrics collection for > 48 hours
+        # -----------------------------------------------------
+
+        - alert: RealEstateMetricsCollectionStale
+          expr: |
+            (
+              time()
+              -
+              real_estate_pipeline_last_success_timestamp{
+                exported_job="real_estate_data_platform"
+              }
+            ) > 172800
+
+          for: 10m
+
+          labels:
+            severity: warning
+            project: real-estate
+            component: observability
+
+          annotations:
+            summary: "Real Estate metrics collection is stale"
+            description: >-
+              No successful Real Estate platform metrics collection
+              has been observed for more than 48 hours.
