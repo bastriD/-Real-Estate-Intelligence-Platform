@@ -275,9 +275,7 @@ def main() -> None:
 
         push_metrics()
 
-        print(
-            "Real Estate observability metrics pushed successfully."
-        )
+        print("Real Estate observability metrics pushed successfully.")
 
     except Exception as exc:
         print(
