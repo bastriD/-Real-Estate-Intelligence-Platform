@@ -271,19 +271,6 @@ backend:publish-gitops:
   before_script:
     - git --version
     - kubectl version --client
-    # -------------------------------------------------------------------------
-    # Install required tools
-    # -------------------------------------------------------------------------
-
-    - |
-      apk add \
-        --no-cache \
-        bash \
-        ca-certificates \
-        kubectl
-
-    - git --version
-    - kubectl version --client
 
     # -------------------------------------------------------------------------
     # Validate backend deployment source files
@@ -339,7 +326,7 @@ backend:publish-gitops:
     - rm -f /tmp/real-estate-backend-rendered.yaml
 
     # -------------------------------------------------------------------------
-    # Load existing lab-gitops credentials
+    # Load GitOps credentials
     # -------------------------------------------------------------------------
 
     - |
