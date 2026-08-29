@@ -441,7 +441,6 @@ class OpenMetadataClient:
                 "Domain assignment target not found: %s",
                 fqn,
             )
-
             return
 
         domain = self.get_by_name(
@@ -458,30 +457,26 @@ class OpenMetadataClient:
             "domains"
         ) or []
 
-        domain_already_present = any(
-            current_domain.get("id") == domain["id"]
+        current_domain_ids = {
+            current_domain.get("id")
             for current_domain in current_domains
-        )
+            if current_domain.get("id")
+        }
 
-        if domain_already_present:
+        if current_domain_ids == {domain["id"]}:
             logger.info(
-                "Domain already assigned: %s -> %s",
+                "Domain already correct: %s -> %s",
                 fqn,
                 domain_name,
             )
-
             return
 
-        desired_domains = list(
-            current_domains
-        )
-
-        desired_domains.append(
+        desired_domains = [
             {
                 "id": domain["id"],
                 "type": "domain",
             }
-        )
+        ]
 
         operation = (
             "replace"
@@ -502,11 +497,30 @@ class OpenMetadataClient:
             patch,
         )
 
-        logger.info(
-            "Domain assigned: %s -> %s",
-            fqn,
-            domain_name,
-        )
+        previous_domains = [
+            current_domain.get(
+                "fullyQualifiedName",
+                current_domain.get(
+                    "name",
+                    "unknown",
+                ),
+            )
+            for current_domain in current_domains
+        ]
+
+        if previous_domains:
+            logger.info(
+                "Domain corrected: %s | %s -> %s",
+                fqn,
+                ", ".join(previous_domains),
+                domain_name,
+            )
+        else:
+            logger.info(
+                "Domain assigned: %s -> %s",
+                fqn,
+                domain_name,
+            )
 
     # =========================================================================
     # Glossary definitions
