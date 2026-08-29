@@ -16,14 +16,14 @@
     {
       "name": "RealEstateDataPlatform",
       "display_name": "Real Estate Data Platform",
-      "description": "Domaine technique couvrant l'ingestion, la transformation, les couches RAW/STAGING, le warehouse, les métadonnées et les mécanismes de gouvernance.",
+      "description": "Domaine technique couvrant l'ingestion, la transformation, les couches RAW/STAGING, les métadonnées, les mécanismes de gouvernance et les composants techniques de la plateforme de données.",
       "domain_type": "Aggregate",
       "parent": "RealEstateIntelligence"
     },
     {
       "name": "RealEstateAnalytics",
       "display_name": "Real Estate Analytics",
-      "description": "Domaine analytique couvrant les modèles warehouse, les vues dbt, les marts et les indicateurs utilisés pour l'analyse du marché immobilier et des performances métier.",
+      "description": "Domaine analytique couvrant le warehouse, les modèles dbt, les marts et les indicateurs utilisés pour l'analyse du marché immobilier et des performances métier.",
       "domain_type": "Aggregate",
       "parent": "RealEstateIntelligence"
     }
@@ -44,14 +44,14 @@
         "real-estate-postgresql.real_estate.raw",
         "real-estate-postgresql.real_estate.staging",
         "real-estate-postgresql.real_estate.migration_control",
-        "real-estate-postgresql.real_estate.Fil_Rouge_Depart",
-        "real-estate-postgresql.real_estate.warehouse"
+        "real-estate-postgresql.real_estate.Fil_Rouge_Depart"
       ]
     },
     {
       "domain": "RealEstateAnalytics",
       "entity_type": "databaseSchema",
       "targets": [
+        "real-estate-postgresql.real_estate.warehouse",
         "real-estate-postgresql.real_estate.analytics"
       ]
     }
