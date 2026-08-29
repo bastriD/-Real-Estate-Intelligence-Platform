@@ -8,6 +8,7 @@ import psycopg
 from metrics_exporter import (
     mark_pipeline_failure,
     mark_pipeline_success,
+    observe_pipeline_duration,
     push_metrics,
     set_analytics_count,
     set_business_metrics,
@@ -16,6 +17,7 @@ from metrics_exporter import (
     set_raw_count,
     set_staging_count,
     set_warehouse_count,
+    start_timer,
 )
 
 
@@ -252,6 +254,8 @@ def collect_market_metrics(cur) -> None:
 def main() -> None:
     print("Collecting Real Estate observability metrics...")
 
+    start_time = start_timer()
+
     try:
         with get_connection() as conn:
             with conn.cursor() as cur:
@@ -263,11 +267,17 @@ def main() -> None:
                 collect_business_metrics(cur)
                 collect_market_metrics(cur)
 
+        observe_pipeline_duration(
+            start_time
+        )
+
         mark_pipeline_success()
 
         push_metrics()
 
-        print("Real Estate observability metrics pushed successfully.")
+        print(
+            "Real Estate observability metrics pushed successfully."
+        )
 
     except Exception as exc:
         print(
@@ -276,8 +286,14 @@ def main() -> None:
         )
 
         try:
+            observe_pipeline_duration(
+                start_time
+            )
+
             mark_pipeline_failure()
+
             push_metrics()
+
         except Exception as push_exc:
             print(
                 f"ERROR: Unable to push failure metrics: {push_exc}",
