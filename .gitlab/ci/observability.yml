@@ -14,7 +14,6 @@ observability:validate:
     # ---------------------------------------------------------
 
     - test -f deploy/observability/application.yaml
-    - test -f deploy/observability/kustomization.yaml
     - test -f deploy/observability/grafana-datasource.yaml.template
     - test -f observability/grafana/dashboards/real-estate-business-platform.json
 
@@ -225,7 +224,6 @@ observability:publish-gitops:
     # ---------------------------------------------------------
 
     - "test -f deploy/observability/application.yaml"
-    - "test -f deploy/observability/kustomization.yaml"
     - "test -f observability/grafana/dashboards/real-estate-business-platform.json"
 
     # ---------------------------------------------------------
@@ -244,6 +242,7 @@ observability:publish-gitops:
     - "rm -f /tmp/.netrc"
     - "rm -f /tmp/real-estate-grafana-dashboard.yaml"
     - "rm -f /tmp/real-estate-grafana-dashboard-labeled.yaml"
+    - "rm -f /tmp/real-estate-kustomization.yaml"
 
     # ---------------------------------------------------------
     # 5. Load GitLab PAT from Kubernetes Secret
@@ -319,7 +318,26 @@ observability:publish-gitops:
       echo "Grafana dashboard ConfigMap generated successfully."
 
     # ---------------------------------------------------------
-    # 8. Publish Real Estate observability workload
+    # 8. Generate Kustomization
+    # ---------------------------------------------------------
+
+    - |
+      cat > /tmp/real-estate-kustomization.yaml <<'EOF'
+      apiVersion: kustomize.config.k8s.io/v1beta1
+      kind: Kustomization
+
+      resources:
+        - grafana-dashboard-configmap.yaml
+      EOF
+
+    - |
+      test -s \
+        /tmp/real-estate-kustomization.yaml
+
+      echo "Kustomization generated successfully."
+
+    # ---------------------------------------------------------
+    # 9. Publish Real Estate observability workload
     # ---------------------------------------------------------
 
     - |
@@ -333,11 +351,11 @@ observability:publish-gitops:
         /tmp/chasse-observability-gitops/workloads/monitoring/real-estate/grafana-dashboard-configmap.yaml
 
       cp \
-        deploy/observability/kustomization.yaml \
+        /tmp/real-estate-kustomization.yaml \
         /tmp/chasse-observability-gitops/workloads/monitoring/real-estate/kustomization.yaml
 
     # ---------------------------------------------------------
-    # 9. Publish Argo CD Application
+    # 10. Publish Argo CD Application
     # ---------------------------------------------------------
 
     - |
@@ -351,13 +369,13 @@ observability:publish-gitops:
         /tmp/chasse-observability-gitops/apps/real-estate-observability/application.yaml
 
     # ---------------------------------------------------------
-    # 10. Enter GitOps repository
+    # 11. Enter GitOps repository
     # ---------------------------------------------------------
 
     - "cd /tmp/chasse-observability-gitops"
 
     # ---------------------------------------------------------
-    # 11. Show resulting GitOps structure
+    # 12. Show resulting GitOps structure
     # ---------------------------------------------------------
 
     - |
@@ -389,7 +407,7 @@ observability:publish-gitops:
         apps/real-estate-observability/application.yaml
 
     # ---------------------------------------------------------
-    # 12. Verify generated dashboard manifest
+    # 13. Verify generated manifests
     # ---------------------------------------------------------
 
     - |
@@ -399,15 +417,27 @@ observability:publish-gitops:
         --dry-run=client \
         -f workloads/monitoring/real-estate/grafana-dashboard-configmap.yaml
 
+    - |
+      echo "Validating Kustomize workload:"
+
+      kubectl kustomize \
+        workloads/monitoring/real-estate \
+        > /tmp/real-estate-observability-rendered.yaml
+
+      test -s \
+        /tmp/real-estate-observability-rendered.yaml
+
+      echo "Kustomize workload validation passed."
+
     # ---------------------------------------------------------
-    # 13. Configure Git
+    # 14. Configure Git
     # ---------------------------------------------------------
 
     - 'git config user.name "chasse-immobiliere-ci"'
     - 'git config user.email "gitlab-ci@lab.local"'
 
     # ---------------------------------------------------------
-    # 14. Stage GitOps changes
+    # 15. Stage GitOps changes
     # ---------------------------------------------------------
 
     - |
@@ -420,7 +450,7 @@ observability:publish-gitops:
       git status --short
 
     # ---------------------------------------------------------
-    # 15. Skip when nothing changed
+    # 16. Skip when nothing changed
     # ---------------------------------------------------------
 
     - |
@@ -430,7 +460,7 @@ observability:publish-gitops:
       fi
 
     # ---------------------------------------------------------
-    # 16. Commit
+    # 17. Commit
     # ---------------------------------------------------------
 
     - |
@@ -438,7 +468,7 @@ observability:publish-gitops:
         -m "deploy: publish real-estate observability configuration"
 
     # ---------------------------------------------------------
-    # 17. Push GitOps repository
+    # 18. Push GitOps repository
     # ---------------------------------------------------------
 
     - |
@@ -454,6 +484,8 @@ observability:publish-gitops:
     - "rm -f /tmp/.netrc"
     - "rm -f /tmp/real-estate-grafana-dashboard.yaml"
     - "rm -f /tmp/real-estate-grafana-dashboard-labeled.yaml"
+    - "rm -f /tmp/real-estate-kustomization.yaml"
+    - "rm -f /tmp/real-estate-observability-rendered.yaml"
     - "rm -rf /tmp/chasse-observability-gitops"
 
   rules:
