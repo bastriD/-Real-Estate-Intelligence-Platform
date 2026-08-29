@@ -256,26 +256,21 @@ backend:publish-gitops:
   stage: deploy
 
   tags:
-    - docker
+    - shell
 
   needs:
     - job: backend:build-image
       artifacts: false
 
-  image:
-    name: alpine/git:2.47.2
-    entrypoint: [""]
-
   variables:
     GITOPS_REPOSITORY: "https://gitlab.local/root/lab-gitops.git"
-
     GITOPS_WORKDIR: "/tmp/chasse-backend-gitops"
-
     GITOPS_BACKEND_PATH: "workloads/real-estate/backend"
-
     GITOPS_APP_PATH: "apps/real-estate-backend"
 
   before_script:
+    - git --version
+    - kubectl version --client
     # -------------------------------------------------------------------------
     # Install required tools
     # -------------------------------------------------------------------------
