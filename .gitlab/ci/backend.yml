@@ -88,35 +88,39 @@ backend:validate:
     # -------------------------------------------------------------------------
 
     - |
-      python - <<'PY'
-      from src.api.main import app
+        python - <<'PY'
+        from src.api.main import app
 
-      print("Application:", app.title)
-      print("Version:", app.version)
+        print("Application:", app.title)
+        print("Version:", app.version)
 
-      paths = sorted(route.path for route in app.routes)
+        paths = sorted(
+            route.path
+            for route in app.routes
+            if hasattr(route, "path")
+        )
 
-      print("Registered routes:")
+        print("Registered routes:")
 
-      for path in paths:
-          print(f" - {path}")
+        for path in paths:
+            print(f" - {path}")
 
-      required_routes = {
-          "/health",
-          "/ready",
-          "/api/v1/health",
-          "/api/v1/ready",
-      }
+        required_routes = {
+            "/health",
+            "/ready",
+            "/api/v1/health",
+            "/api/v1/ready",
+        }
 
-      missing_routes = required_routes.difference(paths)
+        missing_routes = required_routes.difference(paths)
 
-      if missing_routes:
-          raise RuntimeError(
-              f"Missing required routes: {sorted(missing_routes)}"
-          )
+        if missing_routes:
+            raise RuntimeError(
+                f"Missing required routes: {sorted(missing_routes)}"
+            )
 
-      print("Backend application validation successful.")
-      PY
+        print("Backend application validation successful.")
+        PY
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
