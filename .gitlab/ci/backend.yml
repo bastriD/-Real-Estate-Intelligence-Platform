@@ -45,8 +45,8 @@ backend:validate:
   image: python:3.12-slim
 
   variables:
-    # Required only to allow Settings/Application import during CI.
-    # This is NOT a real runtime credential.
+    # Required only so application settings can be imported during CI.
+    # This is NOT a real runtime database credential.
     POSTGRES_PASSWORD: "ci-validation-only"
 
   before_script:
@@ -60,7 +60,7 @@ backend:validate:
 
   script:
     # -------------------------------------------------------------------------
-    # Validate expected backend source files
+    # Validate expected source files
     # -------------------------------------------------------------------------
 
     - test -f requirements-backend.txt
@@ -84,43 +84,46 @@ backend:validate:
         src/api/api/v1/endpoints/health.py
 
     # -------------------------------------------------------------------------
-    # FastAPI application import validation
+    # FastAPI application + OpenAPI validation
+    #
+    # We validate the generated OpenAPI contract instead of relying on
+    # FastAPI's internal route object structure.
     # -------------------------------------------------------------------------
 
     - |
-        python - <<'PY'
-        from src.api.main import app
+      python - <<'PY'
+      from src.api.main import app
 
-        print("Application:", app.title)
-        print("Version:", app.version)
+      print("Application:", app.title)
+      print("Version:", app.version)
 
-        paths = sorted(
-            route.path
-            for route in app.routes
-            if hasattr(route, "path")
-        )
+      openapi = app.openapi()
 
-        print("Registered routes:")
+      paths = sorted(
+          openapi.get("paths", {}).keys()
+      )
 
-        for path in paths:
-            print(f" - {path}")
+      print("OpenAPI routes:")
 
-        required_routes = {
-            "/health",
-            "/ready",
-            "/api/v1/health",
-            "/api/v1/ready",
-        }
+      for path in paths:
+          print(f" - {path}")
 
-        missing_routes = required_routes.difference(paths)
+      required_routes = {
+          "/health",
+          "/ready",
+          "/api/v1/health",
+          "/api/v1/ready",
+      }
 
-        if missing_routes:
-            raise RuntimeError(
-                f"Missing required routes: {sorted(missing_routes)}"
-            )
+      missing_routes = required_routes.difference(paths)
 
-        print("Backend application validation successful.")
-        PY
+      if missing_routes:
+          raise RuntimeError(
+              f"Missing required API routes: {sorted(missing_routes)}"
+          )
+
+      print("Backend OpenAPI validation successful.")
+      PY
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
@@ -128,7 +131,7 @@ backend:validate:
 
 
 # =============================================================================
-# 2. BUILD AND PUBLISH BACKEND CONTAINER IMAGE
+# 2. BUILD AND PUBLISH BACKEND IMAGE
 # =============================================================================
 
 backend:build-image:
@@ -193,7 +196,7 @@ backend:build-image:
         python --version
 
     # -------------------------------------------------------------------------
-    # Validate FastAPI application inside final container image
+    # Validate FastAPI application inside image
     # -------------------------------------------------------------------------
 
     - |
@@ -207,12 +210,23 @@ backend:build-image:
         "from src.api.main import app; print('Application:', app.title); print('Version:', app.version)"
 
     # -------------------------------------------------------------------------
-    # Push immutable image
+    # Validate OpenAPI inside final image
+    # -------------------------------------------------------------------------
+
+    - |
+      docker run \
+        --rm \
+        -e POSTGRES_PASSWORD=ci-image-validation-only \
+        "$IMAGE_NAME:$IMAGE_TAG" \
+        python -c \
+        "from src.api.main import app; print(sorted(app.openapi().get('paths', {}).keys()))"
+
+    # -------------------------------------------------------------------------
+    # Push immutable commit image
     # -------------------------------------------------------------------------
 
     - |
       echo "Publishing immutable backend image:"
-
       echo "$IMAGE_NAME:$IMAGE_TAG"
 
       docker push \
@@ -235,7 +249,7 @@ backend:build-image:
 
 
 # =============================================================================
-# 3. PUBLISH BACKEND WORKLOAD TO LAB-GITOPS
+# 3. PUBLISH BACKEND TO LAB-GITOPS
 # =============================================================================
 
 backend:publish-gitops:
@@ -277,7 +291,7 @@ backend:publish-gitops:
     - kubectl version --client
 
     # -------------------------------------------------------------------------
-    # Validate source Kubernetes manifests
+    # Validate backend deployment source files
     # -------------------------------------------------------------------------
 
     - test -f deploy/kubernetes/backend/deployment.yaml
@@ -289,11 +303,10 @@ backend:publish-gitops:
     # Validate Kubernetes connectivity
     # -------------------------------------------------------------------------
 
-    - |
-      kubectl get namespace real-estate
+    - kubectl get namespace real-estate
 
     # -------------------------------------------------------------------------
-    # Validate PostgreSQL runtime Secret exists
+    # Validate PostgreSQL runtime secret
     # -------------------------------------------------------------------------
 
     - |
@@ -303,7 +316,7 @@ backend:publish-gitops:
         real-estate-postgresql-secret
 
     # -------------------------------------------------------------------------
-    # Validate registry pull Secret exists
+    # Validate container registry pull secret
     # -------------------------------------------------------------------------
 
     - |
@@ -313,7 +326,7 @@ backend:publish-gitops:
         gitlab-registry
 
     # -------------------------------------------------------------------------
-    # Validate GitOps credential Secret
+    # Validate GitOps credentials
     # -------------------------------------------------------------------------
 
     - |
@@ -331,7 +344,7 @@ backend:publish-gitops:
     - rm -f /tmp/real-estate-backend-rendered.yaml
 
     # -------------------------------------------------------------------------
-    # Load GitOps credentials
+    # Load existing lab-gitops credentials
     # -------------------------------------------------------------------------
 
     - |
@@ -379,7 +392,7 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR"
 
     # -------------------------------------------------------------------------
-    # Create destination directories
+    # Create GitOps destination directories
     # -------------------------------------------------------------------------
 
     - |
@@ -390,7 +403,7 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH"
 
     # -------------------------------------------------------------------------
-    # Publish Kubernetes workload manifests
+    # Publish workload manifests
     # -------------------------------------------------------------------------
 
     - |
@@ -428,7 +441,7 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
 
     # -------------------------------------------------------------------------
-    # Ensure placeholder was replaced
+    # Fail if placeholder remains
     # -------------------------------------------------------------------------
 
     - |
@@ -436,8 +449,7 @@ backend:publish-gitops:
         '__BACKEND_IMAGE_TAG__' \
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"; then
 
-        echo "ERROR:"
-        echo "Backend image placeholder was not replaced."
+        echo "ERROR: backend image placeholder was not replaced."
 
         exit 1
       fi
@@ -457,9 +469,10 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
 
     # -------------------------------------------------------------------------
-    # Client-side Kubernetes manifest validation
+    # Kubernetes syntax validation
     #
-    # These commands DO NOT deploy resources.
+    # These are dry-run checks only.
+    # They DO NOT deploy the workload.
     # -------------------------------------------------------------------------
 
     - |
@@ -495,7 +508,7 @@ backend:publish-gitops:
       echo "Backend Kustomize rendering successful."
 
     # -------------------------------------------------------------------------
-    # Validate rendered workload contains expected resources
+    # Validate rendered resources
     # -------------------------------------------------------------------------
 
     - |
@@ -508,7 +521,7 @@ backend:publish-gitops:
         /tmp/real-estate-backend-rendered.yaml
 
     # -------------------------------------------------------------------------
-    # Display resulting workload for GitLab evidence
+    # Display resulting resources for CI evidence
     # -------------------------------------------------------------------------
 
     - |
@@ -548,7 +561,7 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
 
     # -------------------------------------------------------------------------
-    # Configure Git
+    # Configure Git identity
     # -------------------------------------------------------------------------
 
     - |
@@ -563,7 +576,7 @@ backend:publish-gitops:
         "gitlab-ci@lab.local"
 
     # -------------------------------------------------------------------------
-    # Stage workload + Argo CD Application
+    # Stage backend workload + Argo CD Application
     # -------------------------------------------------------------------------
 
     - |
@@ -579,7 +592,7 @@ backend:publish-gitops:
         --short
 
     # -------------------------------------------------------------------------
-    # Skip push if nothing changed
+    # Commit and push only when changes exist
     # -------------------------------------------------------------------------
 
     - |
@@ -589,41 +602,38 @@ backend:publish-gitops:
 
         echo "No Backend GitOps changes to publish."
 
-        exit 0
+      else
+
+        git commit \
+          -m "deploy: publish real-estate backend ${CI_COMMIT_SHORT_SHA}"
+
+        HOME=/tmp \
+        GIT_SSL_NO_VERIFY=true \
+        git push \
+          origin \
+          main
+
+        echo
+        echo "Backend GitOps publication successful."
 
       fi
 
     # -------------------------------------------------------------------------
-    # Commit GitOps change
+    # Final publication summary
     # -------------------------------------------------------------------------
 
     - |
-      cd "$GITOPS_WORKDIR"
-
-      git commit \
-        -m "deploy: publish real-estate backend ${CI_COMMIT_SHORT_SHA}"
-
-    # -------------------------------------------------------------------------
-    # Push to lab-gitops
-    # -------------------------------------------------------------------------
-
-    - |
-      cd "$GITOPS_WORKDIR"
-
-      HOME=/tmp \
-      GIT_SSL_NO_VERIFY=true \
-      git push \
-        origin \
-        main
-
       echo
-      echo "Backend GitOps publication successful."
-
-      echo "Workload:"
+      echo "Published workload:"
       echo "$GITOPS_BACKEND_PATH"
 
-      echo "Argo CD application:"
+      echo
+      echo "Published Argo CD application:"
       echo "$GITOPS_APP_PATH"
+
+      echo
+      echo "Backend image:"
+      echo "${CI_REGISTRY_IMAGE}/backend:${CI_COMMIT_SHORT_SHA}"
 
   after_script:
     # -------------------------------------------------------------------------
