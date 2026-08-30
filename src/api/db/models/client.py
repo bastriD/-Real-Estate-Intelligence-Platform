@@ -1,6 +1,13 @@
 from datetime import datetime
 
-from sqlalchemy import BigInteger, Boolean, CheckConstraint, DateTime, String
+from sqlalchemy import (
+    BigInteger,
+    Boolean,
+    CheckConstraint,
+    DateTime,
+    String,
+    text,
+)
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.api.db.base import Base
@@ -51,16 +58,17 @@ class Client(Base):
     date_creation: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         nullable=False,
+        server_default=text("CURRENT_TIMESTAMP"),
     )
 
     statut: Mapped[str] = mapped_column(
         String(20),
         nullable=False,
-        default="ACTIF",
+        server_default=text("'ACTIF'"),
     )
 
     consentement_contact: Mapped[bool] = mapped_column(
         Boolean,
         nullable=False,
-        default=False,
+        server_default=text("false"),
     )
