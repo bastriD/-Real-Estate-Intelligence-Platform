@@ -6,6 +6,7 @@ from src.api.api.v1.endpoints.demandes import router as demandes_router
 from src.api.api.v1.endpoints.health import router as health_router
 from src.api.api.v1.endpoints.mandats import router as mandats_router
 from src.api.api.v1.endpoints.presentations import router as presentations_router
+from src.api.api.v1.endpoints.visites import router as visites_router
 
 api_router = APIRouter()
 
@@ -15,3 +16,4 @@ api_router.include_router(mandats_router)
 api_router.include_router(demandes_router)
 api_router.include_router(biens_router)
 api_router.include_router(presentations_router)
+api_router.include_router(visites_router)
