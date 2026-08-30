@@ -1,0 +1,21 @@
+backend:tests:
+  stage: validate
+
+  tags:
+    - docker
+
+  image: python:3.12-slim
+
+  before_script:
+    - python --version
+    - pip install --no-cache-dir -r requirements-backend.txt
+
+  script:
+    - python -m pytest tests/backend -v
+
+  rules:
+    - changes:
+        - src/api/**/*
+        - tests/backend/**/*
+        - requirements-backend.txt
+        - .gitlab/ci/backend-tests.yml
