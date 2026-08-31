@@ -2411,7 +2411,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "100 * sum(rate(real_estate_api_requests_total{job=\"real-estate-backend\",status_code=~\"5..\",path!~\"/(health|ready|metrics)\"}[5m])) / clamp_min(sum(rate(real_estate_api_requests_total{job=\"real-estate-backend\",path!~\"/(health|ready|metrics)\"}[5m])), 0.001)",
+          "expr": "100 * (sum(rate(real_estate_api_requests_total{job=\"real-estate-backend\",status_code=~\"5..\",path!~\"/(health|ready|metrics)\"}[5m])) or vector(0)) / clamp_min((sum(rate(real_estate_api_requests_total{job=\"real-estate-backend\",path!~\"/(health|ready|metrics)\"}[5m])) or vector(0)), 0.001)",
           "instant": false,
           "legendFormat": "5xx rate",
           "range": true,
