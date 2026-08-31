@@ -1,5 +1,5 @@
 # =============================================================================
-# REAL ESTATE BACKEND / API
+# REAL ESTATE BACKEND / API + AI MATCHING
 # =============================================================================
 #
 # CI/CD FLOW
@@ -41,12 +41,14 @@
 # - workload manifests under workloads/real-estate/backend DO use Kustomize.
 # - permanent workload deployment is GitOps-driven.
 # - kubectl is used only for validation and Secret bootstrap here.
+# - requirements-ai.txt extends requirements-backend.txt.
+# - src/ai is packaged inside the Backend image.
 #
 # =============================================================================
 
 
 # =============================================================================
-# 1. VALIDATE BACKEND
+# 1. VALIDATE BACKEND + AI
 # =============================================================================
 
 backend:validate:
@@ -64,17 +66,28 @@ backend:validate:
     - python --version
     - pip --version
 
+    # requirements-ai.txt already includes:
+    #
+    #   -r requirements-backend.txt
+    #
+    # Therefore installing requirements-ai.txt installs both Backend
+    # and AI dependencies.
     - |
       pip install \
         --no-cache-dir \
-        -r requirements-backend.txt
+        -r requirements-ai.txt
 
   script:
     # -------------------------------------------------------------------------
-    # Validate expected Backend source files
+    # Validate dependency files
     # -------------------------------------------------------------------------
 
     - test -f requirements-backend.txt
+    - test -f requirements-ai.txt
+
+    # -------------------------------------------------------------------------
+    # Validate expected Backend source files
+    # -------------------------------------------------------------------------
 
     - test -f src/api/main.py
     - test -f src/api/core/config.py
@@ -82,10 +95,29 @@ backend:validate:
     - test -f src/api/api/v1/router.py
     - test -f src/api/api/v1/endpoints/health.py
 
+    # -------------------------------------------------------------------------
+    # Validate expected AI matching source files
+    # -------------------------------------------------------------------------
+
+    - test -f src/ai/matching/features.py
+    - test -f src/ai/matching/repository.py
+
+    # -------------------------------------------------------------------------
+    # Validate Backend / AI tests
+    # -------------------------------------------------------------------------
+
+    - test -f tests/ai/test_matching_features.py
+    - test -f tests/ai/test_matching_repository.py
+
+    # -------------------------------------------------------------------------
+    # Validate deployment files
+    # -------------------------------------------------------------------------
+
     - test -f deploy/docker/Dockerfile.backend
 
     - test -f deploy/kubernetes/backend/deployment.yaml
     - test -f deploy/kubernetes/backend/service.yaml
+    - test -f deploy/kubernetes/backend/servicemonitor.yaml
     - test -f deploy/kubernetes/backend/kustomization.yaml
     - test -f deploy/kubernetes/backend/application.yaml
 
@@ -99,7 +131,68 @@ backend:validate:
         src/api/core/config.py \
         src/api/db/session.py \
         src/api/api/v1/router.py \
-        src/api/api/v1/endpoints/health.py
+        src/api/api/v1/endpoints/health.py \
+        src/ai/matching/features.py \
+        src/ai/matching/repository.py
+
+    # -------------------------------------------------------------------------
+    # Validate AI dependency imports
+    # -------------------------------------------------------------------------
+
+    - |
+      python - <<'PY'
+      import numpy
+      import pandas
+      import sklearn
+      import mlflow
+      import torch
+      import psycopg
+
+      print("AI dependency validation:")
+      print(" - NumPy:", numpy.__version__)
+      print(" - Pandas:", pandas.__version__)
+      print(" - scikit-learn:", sklearn.__version__)
+      print(" - MLflow:", mlflow.__version__)
+      print(" - PyTorch:", torch.__version__)
+      print(" - psycopg:", psycopg.__version__)
+
+      print("AI dependencies imported successfully.")
+      PY
+
+    # -------------------------------------------------------------------------
+    # Validate AI matching modules
+    # -------------------------------------------------------------------------
+
+    - |
+      python - <<'PY'
+      from src.ai.matching.features import (
+          MatchingWeights,
+          build_matching_features,
+          compute_matching_score,
+          filter_candidates,
+      )
+
+      from src.ai.matching.repository import (
+          load_candidate_biens,
+          load_demande_version,
+          load_matching_input,
+      )
+
+      weights = MatchingWeights()
+
+      print("AI matching modules imported successfully.")
+      print("Matching weights:", weights)
+      PY
+
+    # -------------------------------------------------------------------------
+    # Run focused AI matching tests
+    # -------------------------------------------------------------------------
+
+    - |
+      python -m pytest \
+        tests/ai/test_matching_features.py \
+        tests/ai/test_matching_repository.py \
+        -v
 
     # -------------------------------------------------------------------------
     # Validate FastAPI/OpenAPI
@@ -143,7 +236,7 @@ backend:validate:
 
 
 # =============================================================================
-# 2. BUILD AND PUBLISH BACKEND IMAGE
+# 2. BUILD AND PUBLISH BACKEND + AI IMAGE
 # =============================================================================
 
 backend:build-image:
@@ -190,7 +283,7 @@ backend:build-image:
     - |
       echo
       echo "============================================================"
-      echo "BUILDING REAL ESTATE BACKEND"
+      echo "BUILDING REAL ESTATE BACKEND + AI"
       echo "============================================================"
 
       echo
@@ -212,6 +305,28 @@ backend:build-image:
         --rm \
         "$IMAGE_NAME:$IMAGE_TAG" \
         python --version
+
+    # -------------------------------------------------------------------------
+    # Validate AI runtime dependencies inside final image
+    # -------------------------------------------------------------------------
+
+    - |
+      docker run \
+        --rm \
+        "$IMAGE_NAME:$IMAGE_TAG" \
+        python -c \
+        "import pandas, numpy, sklearn, mlflow, torch, psycopg; print('AI runtime dependencies OK'); print('Pandas:', pandas.__version__); print('PyTorch:', torch.__version__); print('MLflow:', mlflow.__version__)"
+
+    # -------------------------------------------------------------------------
+    # Validate AI matching modules inside final image
+    # -------------------------------------------------------------------------
+
+    - |
+      docker run \
+        --rm \
+        "$IMAGE_NAME:$IMAGE_TAG" \
+        python -c \
+        "from src.ai.matching.features import MatchingWeights, build_matching_features, compute_matching_score, filter_candidates; from src.ai.matching.repository import load_demande_version, load_candidate_biens, load_matching_input; print('AI matching modules OK'); print(MatchingWeights())"
 
     # -------------------------------------------------------------------------
     # Validate FastAPI import inside final image
@@ -264,7 +379,7 @@ backend:build-image:
     - |
       echo
       echo "============================================================"
-      echo "BACKEND IMAGE PUBLISHED"
+      echo "BACKEND + AI IMAGE PUBLISHED"
       echo "============================================================"
 
       echo
@@ -309,8 +424,6 @@ backend:publish-gitops:
 
     # -------------------------------------------------------------------------
     # Absolute source path in chasse_immobiliere repository
-    #
-    # Using CI_PROJECT_DIR prevents failures after Git operations or cwd changes.
     # -------------------------------------------------------------------------
 
     BACKEND_SOURCE_PATH: "$CI_PROJECT_DIR/deploy/kubernetes/backend"
@@ -358,6 +471,7 @@ backend:publish-gitops:
 
       test -f "$BACKEND_SOURCE_PATH/deployment.yaml"
       test -f "$BACKEND_SOURCE_PATH/service.yaml"
+      test -f "$BACKEND_SOURCE_PATH/servicemonitor.yaml"
       test -f "$BACKEND_SOURCE_PATH/kustomization.yaml"
       test -f "$BACKEND_SOURCE_PATH/application.yaml"
 
@@ -402,9 +516,6 @@ backend:publish-gitops:
 
     # -------------------------------------------------------------------------
     # 7. Load GitOps credentials from existing Kubernetes Secret
-    #
-    # Credentials are kept in environment only for this job.
-    # They are never committed to Git.
     # -------------------------------------------------------------------------
 
     - |
@@ -433,9 +544,6 @@ backend:publish-gitops:
 
     # -------------------------------------------------------------------------
     # 8. Create/update GitLab Registry pull Secret
-    #
-    # The same existing PAT is reused.
-    # It must have read_registry permission.
     # -------------------------------------------------------------------------
 
     - |
@@ -484,14 +592,6 @@ backend:publish-gitops:
 
     # -------------------------------------------------------------------------
     # 12. Clone exact branch used by Argo CD
-    #
-    # Verified root-app configuration:
-    #
-    # repoURL: https://gitlab.local/root/lab-gitops.git
-    # targetRevision: main
-    # path: apps
-    # directory.recurse: true
-    #
     # -------------------------------------------------------------------------
 
     - |
@@ -510,8 +610,6 @@ backend:publish-gitops:
 
     # -------------------------------------------------------------------------
     # 13. Validate exact GitOps branch and revision
-    #
-    # Uses git -C instead of cd so the job working directory never changes.
     # -------------------------------------------------------------------------
 
     - |
@@ -546,13 +644,6 @@ backend:publish-gitops:
 
     # -------------------------------------------------------------------------
     # 14. Validate real GitOps architecture
-    #
-    # root-app recursively scans apps/.
-    #
-    # There is intentionally NO:
-    #
-    #   apps/kustomization.yaml
-    #
     # -------------------------------------------------------------------------
 
     - |
@@ -593,11 +684,15 @@ backend:publish-gitops:
         "$BACKEND_SOURCE_PATH/service.yaml" \
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/service.yaml"
 
-     #17.1 Copy Backend ServiceMonitor
+    # -------------------------------------------------------------------------
+    # 17.1 Copy Backend ServiceMonitor
+    # -------------------------------------------------------------------------
+
     - |
       cp \
         "$BACKEND_SOURCE_PATH/servicemonitor.yaml" \
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/servicemonitor.yaml"
+
     # -------------------------------------------------------------------------
     # 18. Copy Backend workload Kustomization
     # -------------------------------------------------------------------------
@@ -606,12 +701,9 @@ backend:publish-gitops:
       cp \
         "$BACKEND_SOURCE_PATH/kustomization.yaml" \
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/kustomization.yaml"
-   
-    
+
     # -------------------------------------------------------------------------
     # 19. Copy Argo CD Application
-    #
-    # root-app recursively discovers this file automatically.
     # -------------------------------------------------------------------------
 
     - |
@@ -677,8 +769,6 @@ backend:publish-gitops:
 
     # -------------------------------------------------------------------------
     # 24. Validate Backend workload Kustomization
-    #
-    # workloads/real-estate/backend DOES use Kustomize.
     # -------------------------------------------------------------------------
 
     - |
@@ -708,6 +798,15 @@ backend:publish-gitops:
     - |
       grep \
         "kind: Service" \
+        /tmp/real-estate-backend-rendered.yaml
+
+    # -------------------------------------------------------------------------
+    # 26.1 Validate rendered workload contains ServiceMonitor
+    # -------------------------------------------------------------------------
+
+    - |
+      grep \
+        "kind: ServiceMonitor" \
         /tmp/real-estate-backend-rendered.yaml
 
     # -------------------------------------------------------------------------
@@ -793,6 +892,11 @@ backend:publish-gitops:
       kubectl apply \
         --dry-run=client \
         -f "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/service.yaml" \
+        > /dev/null
+
+      kubectl apply \
+        --dry-run=client \
+        -f "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/servicemonitor.yaml" \
         > /dev/null
 
       kubectl apply \
@@ -912,7 +1016,7 @@ backend:publish-gitops:
     - |
       echo
       echo "============================================================"
-      echo "BACKEND PUBLICATION SUMMARY"
+      echo "BACKEND + AI PUBLICATION SUMMARY"
       echo "============================================================"
 
       echo
@@ -926,6 +1030,10 @@ backend:publish-gitops:
       echo
       echo "Container image:"
       echo "${CI_REGISTRY_IMAGE}/backend:${CI_COMMIT_SHORT_SHA}"
+
+      echo
+      echo "AI runtime:"
+      echo "src/ai packaged in Backend image"
 
       echo
       echo "Registry pull Secret:"
@@ -967,11 +1075,21 @@ backend:publish-gitops:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
+        # Backend application
         - src/api/**/*
         - src/domain/**/*
         - src/services/**/*
+
+        # AI / matching
+        - src/ai/**/*
+        - tests/ai/**/*
+        - requirements-ai.txt
+
+        # Tests / dependencies
         - tests/**/*
         - requirements-backend.txt
+
+        # Container / Kubernetes / CI
         - deploy/docker/Dockerfile.backend
         - deploy/kubernetes/backend/**/*
         - .gitlab/ci/backend.yml
