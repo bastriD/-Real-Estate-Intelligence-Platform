@@ -593,6 +593,11 @@ backend:publish-gitops:
         "$BACKEND_SOURCE_PATH/service.yaml" \
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/service.yaml"
 
+     #17.1 Copy Backend ServiceMonitor
+    - |
+      cp \
+        "$BACKEND_SOURCE_PATH/servicemonitor.yaml" \
+        "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/servicemonitor.yaml"
     # -------------------------------------------------------------------------
     # 18. Copy Backend workload Kustomization
     # -------------------------------------------------------------------------
@@ -601,7 +606,8 @@ backend:publish-gitops:
       cp \
         "$BACKEND_SOURCE_PATH/kustomization.yaml" \
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/kustomization.yaml"
-
+   
+    
     # -------------------------------------------------------------------------
     # 19. Copy Argo CD Application
     #
