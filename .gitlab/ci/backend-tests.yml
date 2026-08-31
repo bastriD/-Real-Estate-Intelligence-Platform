@@ -8,14 +8,25 @@ backend:tests:
 
   before_script:
     - python --version
-    - pip install --no-cache-dir -r requirements-backend.txt
+    - pip install --no-cache-dir -r requirements-backend-test.txt
 
   script:
-    - python -m pytest tests/backend -v
+    - python -m pytest tests/backend -v --cov=src/api --cov-report=term-missing --cov-report=xml --cov-fail-under=80
+
+  artifacts:
+    when: always
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
+    paths:
+      - coverage.xml
+    expire_in: 30 days
 
   rules:
     - changes:
         - src/api/**/*
         - tests/backend/**/*
         - requirements-backend.txt
+        - requirements-backend-test.txt
         - .gitlab/ci/backend-tests.yml
