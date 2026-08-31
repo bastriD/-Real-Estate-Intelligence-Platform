@@ -1,4 +1,4 @@
-{
+﻿{
   "annotations": {
     "list": [
       {
@@ -2364,6 +2364,7 @@
         }
       ],
       "title": "Backend API Request Rate",
+      "timeFrom": "15m",
       "type": "timeseries"
     },
     {
@@ -2418,6 +2419,7 @@
         }
       ],
       "title": "Backend API 5xx Error Rate",
+      "timeFrom": "15m",
       "type": "timeseries"
     },
     {
@@ -2472,6 +2474,7 @@
         }
       ],
       "title": "Backend API p95 Latency",
+      "timeFrom": "15m",
       "type": "timeseries"
     }
   ],
