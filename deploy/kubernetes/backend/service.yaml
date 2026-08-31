@@ -5,6 +5,9 @@ metadata:
   name: real-estate-backend
   namespace: real-estate
 
+  labels:
+    app: real-estate-backend
+
 spec:
   type: ClusterIP
 

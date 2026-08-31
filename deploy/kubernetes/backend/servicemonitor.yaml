@@ -1,0 +1,25 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+
+metadata:
+  name: real-estate-backend
+  namespace: monitoring
+
+  labels:
+    release: monitoring
+    project: real-estate
+    component: backend-api
+
+spec:
+  namespaceSelector:
+    matchNames:
+      - real-estate
+
+  selector:
+    matchLabels:
+      app: real-estate-backend
+
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
