@@ -128,3 +128,106 @@ spec:
             description: >-
               No successful Real Estate platform metrics collection
               has been observed for more than 48 hours.
+
+    - name: real-estate-backend-api
+      rules:
+
+        # -----------------------------------------------------
+        # Backend API unavailable
+        # -----------------------------------------------------
+
+        - alert: RealEstateBackendDown
+
+          expr: |
+            up{
+              job="real-estate-backend"
+            } == 0
+
+          for: 2m
+
+          labels:
+            severity: critical
+            project: real-estate
+            component: backend-api
+
+          annotations:
+            summary: "Real Estate Backend API is unavailable"
+
+            description: >-
+              Prometheus has been unable to scrape the Real Estate
+              Backend API for more than 2 minutes.
+
+        # -----------------------------------------------------
+        # Backend API elevated error rate
+        # -----------------------------------------------------
+
+        - alert: RealEstateBackendHighErrorRate
+
+          expr: |
+            (
+              sum(
+                rate(
+                  real_estate_api_requests_total{
+                    job="real-estate-backend",
+                    status_code=~"5.."
+                  }[5m]
+                )
+              )
+              /
+              clamp_min(
+                sum(
+                  rate(
+                    real_estate_api_requests_total{
+                      job="real-estate-backend"
+                    }[5m]
+                  )
+                ),
+                0.001
+              )
+            ) > 0.05
+
+          for: 5m
+
+          labels:
+            severity: warning
+            project: real-estate
+            component: backend-api
+
+          annotations:
+            summary: "Real Estate Backend API error rate is high"
+
+            description: >-
+              More than 5 percent of Backend API requests have returned
+              HTTP 5xx responses during the last 5 minutes.
+
+        # -----------------------------------------------------
+        # Backend API high latency
+        # -----------------------------------------------------
+
+        - alert: RealEstateBackendHighLatency
+
+          expr: |
+            histogram_quantile(
+              0.95,
+              sum by (le) (
+                rate(
+                  real_estate_api_request_duration_seconds_bucket{
+                    job="real-estate-backend"
+                  }[5m]
+                )
+              )
+            ) > 1
+
+          for: 5m
+
+          labels:
+            severity: warning
+            project: real-estate
+            component: backend-api
+
+          annotations:
+            summary: "Real Estate Backend API latency is high"
+
+            description: >-
+              The Backend API 95th percentile request latency
+              has exceeded 1 second for more than 5 minutes.
