@@ -34,6 +34,24 @@
 #          v
 #   Kubernetes namespace real-estate
 #
+# DEPENDENCY ARCHITECTURE
+#
+#   requirements-backend.txt
+#       Backend / API runtime
+#
+#   requirements-ai.txt
+#       -r requirements-backend.txt
+#       + NumPy
+#       + Pandas
+#       Deterministic matching / AI runtime
+#
+#   requirements-ai-training.txt
+#       -r requirements-ai.txt
+#       + scikit-learn
+#       + MLflow
+#       + PyTorch
+#       Dedicated ML training environment only
+#
 # IMPORTANT:
 #
 # - apps/ is NOT managed through a kustomization.yaml.
@@ -42,13 +60,14 @@
 # - permanent workload deployment is GitOps-driven.
 # - kubectl is used only for validation and Secret bootstrap here.
 # - requirements-ai.txt extends requirements-backend.txt.
+# - requirements-ai-training.txt is NOT installed in Backend CI.
 # - src/ai is packaged inside the Backend image.
 #
 # =============================================================================
 
 
 # =============================================================================
-# 1. VALIDATE BACKEND + AI
+# 1. VALIDATE BACKEND + AI MATCHING RUNTIME
 # =============================================================================
 
 backend:validate:
@@ -66,12 +85,23 @@ backend:validate:
     - python --version
     - pip --version
 
-    # requirements-ai.txt already includes:
+    # -------------------------------------------------------------------------
+    # Install Backend + lightweight AI matching runtime dependencies.
+    #
+    # requirements-ai.txt contains:
     #
     #   -r requirements-backend.txt
     #
-    # Therefore installing requirements-ai.txt installs both Backend
-    # and AI dependencies.
+    # Therefore this installs:
+    #
+    #   Backend dependencies
+    #   + NumPy
+    #   + Pandas
+    #
+    # Training-only dependencies such as scikit-learn, MLflow and PyTorch
+    # are intentionally NOT installed here.
+    # -------------------------------------------------------------------------
+
     - |
       pip install \
         --no-cache-dir \
@@ -84,6 +114,8 @@ backend:validate:
 
     - test -f requirements-backend.txt
     - test -f requirements-ai.txt
+    - test -f requirements-backend-test.txt
+    - test -f requirements-ai-training.txt
 
     # -------------------------------------------------------------------------
     # Validate expected Backend source files
@@ -136,27 +168,30 @@ backend:validate:
         src/ai/matching/repository.py
 
     # -------------------------------------------------------------------------
-    # Validate AI dependency imports
+    # Validate lightweight AI runtime dependency imports
+    #
+    # IMPORTANT:
+    #
+    # scikit-learn
+    # MLflow
+    # PyTorch
+    #
+    # belong to requirements-ai-training.txt and are intentionally NOT
+    # imported or installed by this Backend job.
     # -------------------------------------------------------------------------
 
     - |
       python - <<'PY'
       import numpy
       import pandas
-      import sklearn
-      import mlflow
-      import torch
       import psycopg
 
-      print("AI dependency validation:")
+      print("AI runtime dependency validation:")
       print(" - NumPy:", numpy.__version__)
       print(" - Pandas:", pandas.__version__)
-      print(" - scikit-learn:", sklearn.__version__)
-      print(" - MLflow:", mlflow.__version__)
-      print(" - PyTorch:", torch.__version__)
       print(" - psycopg:", psycopg.__version__)
 
-      print("AI dependencies imported successfully.")
+      print("AI runtime dependencies imported successfully.")
       PY
 
     # -------------------------------------------------------------------------
@@ -236,7 +271,7 @@ backend:validate:
 
 
 # =============================================================================
-# 2. BUILD AND PUBLISH BACKEND + AI IMAGE
+# 2. BUILD AND PUBLISH BACKEND + AI MATCHING IMAGE
 # =============================================================================
 
 backend:build-image:
@@ -278,12 +313,17 @@ backend:build-image:
   script:
     # -------------------------------------------------------------------------
     # Build Backend image
+    #
+    # Dockerfile.backend installs requirements-ai.txt, which includes the
+    # Backend requirements plus NumPy/Pandas.
+    #
+    # Training dependencies are deliberately excluded.
     # -------------------------------------------------------------------------
 
     - |
       echo
       echo "============================================================"
-      echo "BUILDING REAL ESTATE BACKEND + AI"
+      echo "BUILDING REAL ESTATE BACKEND + AI MATCHING"
       echo "============================================================"
 
       echo
@@ -307,7 +347,7 @@ backend:build-image:
         python --version
 
     # -------------------------------------------------------------------------
-    # Validate AI runtime dependencies inside final image
+    # Validate lightweight AI runtime dependencies inside final image
     # -------------------------------------------------------------------------
 
     - |
@@ -315,7 +355,7 @@ backend:build-image:
         --rm \
         "$IMAGE_NAME:$IMAGE_TAG" \
         python -c \
-        "import pandas, numpy, sklearn, mlflow, torch, psycopg; print('AI runtime dependencies OK'); print('Pandas:', pandas.__version__); print('PyTorch:', torch.__version__); print('MLflow:', mlflow.__version__)"
+        "import numpy; import pandas; import psycopg; print('AI runtime dependencies OK')"
 
     # -------------------------------------------------------------------------
     # Validate AI matching modules inside final image
@@ -379,7 +419,7 @@ backend:build-image:
     - |
       echo
       echo "============================================================"
-      echo "BACKEND + AI IMAGE PUBLISHED"
+      echo "BACKEND + AI MATCHING IMAGE PUBLISHED"
       echo "============================================================"
 
       echo
@@ -1016,7 +1056,7 @@ backend:publish-gitops:
     - |
       echo
       echo "============================================================"
-      echo "BACKEND + AI PUBLICATION SUMMARY"
+      echo "BACKEND + AI MATCHING PUBLICATION SUMMARY"
       echo "============================================================"
 
       echo
@@ -1033,7 +1073,11 @@ backend:publish-gitops:
 
       echo
       echo "AI runtime:"
-      echo "src/ai packaged in Backend image"
+      echo "src/ai deterministic matching packaged in Backend image"
+
+      echo
+      echo "Training runtime:"
+      echo "requirements-ai-training.txt intentionally excluded from Backend image"
 
       echo
       echo "Registry pull Secret:"
@@ -1080,12 +1124,12 @@ backend:publish-gitops:
         - src/domain/**/*
         - src/services/**/*
 
-        # AI / matching
+        # AI / deterministic matching runtime
         - src/ai/**/*
         - tests/ai/**/*
         - requirements-ai.txt
 
-        # Tests / dependencies
+        # Tests / Backend dependencies
         - tests/**/*
         - requirements-backend.txt
 
