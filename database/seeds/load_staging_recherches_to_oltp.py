@@ -27,6 +27,7 @@ Principles:
     - Generator reference is preserved for lineage.
     - Loading is idempotent.
     - Existing generated searches are updated, not duplicated.
+    - JSONB values are explicitly adapted through psycopg Jsonb.
 """
 
 from __future__ import annotations
@@ -38,6 +39,7 @@ from typing import Any
 
 import psycopg
 from dotenv import load_dotenv
+from psycopg.types.json import Jsonb
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -110,6 +112,29 @@ def fetch_staging_recherches(
             dict(zip(columns, row))
             for row in cursor.fetchall()
         ]
+
+
+def normalize_jsonb(value: Any) -> Jsonb:
+    """
+    Explicitly adapt Python values to PostgreSQL JSONB.
+
+    psycopg returns a PostgreSQL JSONB array as a Python list.
+    Passing that list directly as a SQL parameter makes psycopg
+    adapt it as a PostgreSQL ARRAY, for example:
+
+        {lumineux,parking}
+
+    That representation is not valid JSON.
+
+    Jsonb forces the value to be serialized correctly as JSON:
+
+        ["lumineux", "parking"]
+    """
+
+    if value is None:
+        value = []
+
+    return Jsonb(value)
 
 
 def ensure_demande(
@@ -192,6 +217,10 @@ def upsert_demande_version(
 
     source_ref = row["reference"]
 
+    criteres_souhaites = normalize_jsonb(
+        row["criteres_souhaites"]
+    )
+
     select_query = """
         SELECT
             id_demande_version
@@ -244,7 +273,7 @@ def upsert_demande_version(
                     row["nb_pieces_min"],
                     row["nb_chambres_min"],
                     row["dpe_max"],
-                    row["criteres_souhaites"],
+                    criteres_souhaites,
                     batch,
                     id_demande_version,
                 ),
@@ -332,7 +361,7 @@ def upsert_demande_version(
                 row["nb_pieces_min"],
                 row["nb_chambres_min"],
                 row["dpe_max"],
-                row["criteres_souhaites"],
+                criteres_souhaites,
                 id_demande,
                 source_ref,
                 batch,
