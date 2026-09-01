@@ -1,14 +1,51 @@
 # ============================================================
-# AI / MATCHING VALIDATION
+# AI / MATCHING STATIC + UNIT VALIDATION
 # ============================================================
 #
-# Scope:
-#   - deterministic real-estate matching baseline
-#   - feature engineering
-#   - PostgreSQL extraction layer
-#   - matching evaluation orchestration
+# PURPOSE
 #
-# Training dependencies are intentionally excluded here.
+# This CI job validates only what can be validated correctly
+# without external infrastructure:
+#
+#   - Python syntax
+#   - runtime dependencies
+#   - module imports
+#   - deterministic feature-engineering logic
+#   - deterministic scoring logic
+#
+# PostgreSQL repository behavior is intentionally NOT mocked.
+#
+# Real repository / matching integration is validated by:
+#
+#   ai-mlops:evaluate
+#
+# which executes an immutable project image inside Kubernetes
+# against the real project PostgreSQL database and MLflow.
+#
+# VALIDATION SEPARATION
+#
+#   ai:validate
+#        |
+#        +--> static validation
+#        +--> pure unit tests
+#
+#   ai-mlops:build-image
+#        |
+#        v
+#   ai-mlops:evaluate
+#        |
+#        +--> Kubernetes
+#        +--> real PostgreSQL
+#        +--> real DemandeVersion
+#        +--> real candidate biens
+#        +--> real synthetic lineage
+#        +--> MLflow
+#
+# This prevents mocked infrastructure tests from being presented
+# as evidence that the real data-access layer works.
+#
+# Training dependencies remain excluded from this lightweight
+# validation stage.
 #
 # Dependency hierarchy:
 #
@@ -18,9 +55,8 @@
 #            ↓
 #   requirements-ai-training.txt
 #
-# PyTorch / MLflow / scikit-learn belong to the future
-# training pipeline, not to this lightweight validation job.
 # ============================================================
+
 
 ai:validate:
   stage: validate
@@ -31,57 +67,138 @@ ai:validate:
   image: python:3.12-slim
 
   before_script:
+    # --------------------------------------------------------
+    # Python runtime
+    # --------------------------------------------------------
+
     - python --version
+
+    # --------------------------------------------------------
+    # Install lightweight AI runtime dependencies
+    # --------------------------------------------------------
+
     - python -m pip install --upgrade pip
     - python -m pip install -r requirements-ai.txt
 
   script:
     # --------------------------------------------------------
-    # Dependency architecture
+    # 1. Dependency architecture
     # --------------------------------------------------------
+
     - test -f requirements-backend.txt
     - test -f requirements-ai.txt
     - test -f requirements-ai-training.txt
 
     # --------------------------------------------------------
-    # AI source structure
+    # 2. AI source structure
     # --------------------------------------------------------
+
     - test -f src/ai/matching/features.py
     - test -f src/ai/matching/repository.py
     - test -f src/ai/matching/evaluate.py
+    - test -f src/ai/matching/mlflow_tracking.py
+    - test -f src/ai/matching/run_evaluation.py
 
     # --------------------------------------------------------
-    # AI tests
+    # 3. Pure unit-test structure
+    #
+    # Repository/database integration is deliberately excluded.
+    # It is validated in Kubernetes by ai-mlops:evaluate.
     # --------------------------------------------------------
+
     - test -f tests/ai/test_matching_features.py
-    - test -f tests/ai/test_matching_repository.py
-    - test -f tests/ai/test_matching_evaluate.py
 
     # --------------------------------------------------------
-    # Syntax validation
+    # 4. Syntax validation
     # --------------------------------------------------------
+
     - python -m py_compile src/ai/matching/features.py
     - python -m py_compile src/ai/matching/repository.py
     - python -m py_compile src/ai/matching/evaluate.py
+    - python -m py_compile src/ai/matching/mlflow_tracking.py
+    - python -m py_compile src/ai/matching/run_evaluation.py
 
     # --------------------------------------------------------
-    # Runtime dependency validation
+    # 5. Runtime dependency validation
     # --------------------------------------------------------
+
     - python -c "import numpy; print('NumPy', numpy.__version__)"
     - python -c "import pandas; print('Pandas', pandas.__version__)"
     - python -c "import psycopg; print('Psycopg', psycopg.__version__)"
 
     # --------------------------------------------------------
-    # Import validation
+    # 6. Import validation
     # --------------------------------------------------------
-    - python -c "from src.ai.matching.features import build_matching_features, compute_matching_score; print('Matching features import OK')"
-    - python -c "from src.ai.matching.repository import load_matching_input; print('Matching repository import OK')"
-    - python -c "from src.ai.matching.evaluate import evaluate_demande_version; print('Matching evaluation import OK')"
+
+    - |
+      python -c "
+      from src.ai.matching.features import (
+          MatchingWeights,
+          build_matching_features,
+          compute_matching_score,
+      )
+      print('Matching feature modules import OK')
+      print(MatchingWeights())
+      "
+
+    - |
+      python -c "
+      from src.ai.matching.repository import (
+          load_candidate_biens,
+          load_demande_version,
+          load_ground_truth_references,
+          load_matching_input,
+      )
+      print('Matching repository imports OK')
+      "
+
+    - |
+      python -c "
+      from src.ai.matching.evaluate import evaluate_demande_version
+      print('Matching evaluation import OK')
+      "
 
     # --------------------------------------------------------
-    # Unit tests
+    # 7. Pure deterministic unit tests
     # --------------------------------------------------------
-    - python -m pytest tests/ai -v
+
+    - |
+      echo
+      echo "============================================================"
+      echo "RUNNING PURE MATCHING UNIT TESTS"
+      echo "============================================================"
+      echo
+      echo "Database access is NOT mocked in this stage."
+      echo "Real repository integration is validated in Kubernetes."
+      echo
+
+      python -m pytest \
+        tests/ai/test_matching_features.py \
+        -v
+
+    # --------------------------------------------------------
+    # 8. Validation summary
+    # --------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "AI VALIDATION COMPLETED"
+      echo "============================================================"
+      echo
+      echo "Validated here:"
+      echo "- dependencies"
+      echo "- syntax"
+      echo "- imports"
+      echo "- deterministic matching functions"
+      echo
+      echo "Validated later by ai-mlops:evaluate:"
+      echo "- PostgreSQL connectivity"
+      echo "- real DemandeVersion extraction"
+      echo "- real candidate extraction"
+      echo "- matching orchestration"
+      echo "- MLflow integration"
+      echo "- Kubernetes execution"
 
   rules:
     - changes:
@@ -91,4 +208,6 @@ ai:validate:
         - requirements-ai-training.txt
         - requirements-backend.txt
         - .gitlab/ci/ai.yml
+        - .gitlab/ci/ai-mlops.yml
+        - deploy/mlops/**/*
         - .gitlab-ci.yml
