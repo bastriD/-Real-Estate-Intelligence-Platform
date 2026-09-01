@@ -1,5 +1,5 @@
 # =============================================================================
-# REAL ESTATE AI / MLOPS BASELINE EVALUATION
+# REAL ESTATE AI / MLOPS
 # =============================================================================
 #
 # PURPOSE
@@ -8,9 +8,12 @@
 #   - Publish the image to GitLab Container Registry.
 #   - Trigger an ephemeral Kubernetes Job from GitLab CI.
 #   - Evaluate demande_versions against generated project data.
-#   - Log metrics, parameters, tags and artifacts to MLflow.
-#   - Validate that supervised matching dataset components are packaged
-#     correctly inside the same reusable AI / MLOps image.
+#   - Log deterministic evaluation metrics, parameters, tags and artifacts
+#     to MLflow.
+#   - Package supervised matching dataset reconstruction and validation code
+#     inside the same reusable AI / MLOps image.
+#   - Trigger a separate ephemeral Kubernetes Job that reconstructs and
+#     validates the supervised matching dataset against runtime PostgreSQL.
 #
 # EXECUTION FLOW
 #
@@ -22,35 +25,39 @@
 #        v
 #   GitLab Container Registry
 #        |
-#        v
-#   ai-mlops:evaluate
-#        |
-#        v
-#   shell runner + kubectl
-#        |
-#        v
-#   Kubernetes Job
-#   real-estate-matching-evaluation
-#        |
-#        +--> PostgreSQL real_estate
-#        |
-#        +--> MLflow Tracking
-#        |
-#        v
-#   Job Complete
-#
+#        +---------------------------------------------------+
+#        |                                                   |
+#        v                                                   v
+#   ai-mlops:evaluate                         ai-mlops:validate-training-dataset
+#        |                                                   |
+#        v                                                   v
+#   shell runner + kubectl                    shell runner + kubectl
+#        |                                                   |
+#        v                                                   v
+#   Kubernetes Job                            Kubernetes Job
+#   real-estate-matching-evaluation           real-estate-matching-training-
+#        |                                    dataset-validation
+#        |                                                   |
+#        +--> PostgreSQL real_estate                       |
+#        |                                                   +--> PostgreSQL
+#        +--> MLflow Tracking                               |    real_estate
+#        |                                                   |
+#        v                                                   +--> Runtime
+#   Job Complete                                                  validation
+#                                                                evidence
 #
 # IMPORTANT
 #
-# - This is NOT a permanent application workload.
+# - These are NOT permanent application workloads.
 # - No Deployment is required.
 # - No Service is required.
 # - No Argo CD Application is required.
 # - No GitOps publication is required for execution.
-# - GitLab CI explicitly triggers the ephemeral Kubernetes Job.
-# - The Job uses the immutable commit image tag.
-# - The same immutable image also contains the supervised dataset
-#   reconstruction and validation code.
+# - GitLab CI explicitly triggers the ephemeral Kubernetes Jobs.
+# - Both Jobs use the immutable commit image tag.
+# - The same immutable AI / MLOps image is reused by both workloads.
+# - Deterministic evaluation and supervised dataset validation remain
+#   separate workloads.
 # - Model training is NOT performed by this pipeline yet.
 #
 # =============================================================================
@@ -80,13 +87,13 @@ ai-mlops:build-image:
 
   before_script:
     # -------------------------------------------------------------------------
-    # Validate Docker runner
+    # 1.1 Validate Docker runner
     # -------------------------------------------------------------------------
 
     - docker version
 
     # -------------------------------------------------------------------------
-    # Authenticate against GitLab Container Registry
+    # 1.2 Authenticate against GitLab Container Registry
     # -------------------------------------------------------------------------
 
     - |
@@ -98,7 +105,7 @@ ai-mlops:build-image:
 
   script:
     # -------------------------------------------------------------------------
-    # Validate required dependency and Docker files
+    # 1.3 Validate required dependency and Docker files
     # -------------------------------------------------------------------------
 
     - test -f requirements-backend.txt
@@ -108,7 +115,7 @@ ai-mlops:build-image:
     - test -f deploy/docker/Dockerfile.ai-mlops
 
     # -------------------------------------------------------------------------
-    # Validate canonical AI matching implementation
+    # 1.4 Validate canonical AI matching implementation
     # -------------------------------------------------------------------------
 
     - test -f src/ai/matching/features.py
@@ -118,20 +125,21 @@ ai-mlops:build-image:
     - test -f src/ai/matching/run_evaluation.py
 
     # -------------------------------------------------------------------------
-    # Validate supervised matching dataset implementation
+    # 1.5 Validate supervised matching dataset implementation
     # -------------------------------------------------------------------------
 
     - test -f src/ai/matching/training_dataset.py
     - test -f src/ai/matching/run_training_dataset_validation.py
 
     # -------------------------------------------------------------------------
-    # Validate Kubernetes Job manifests
+    # 1.6 Validate Kubernetes Job manifests
     # -------------------------------------------------------------------------
 
     - test -f deploy/mlops/matching-evaluation-job.yaml
+    - test -f deploy/mlops/matching-training-dataset-validation-job.yaml
 
     # -------------------------------------------------------------------------
-    # Build dedicated AI / MLOps image
+    # 1.7 Build dedicated AI / MLOps image
     # -------------------------------------------------------------------------
 
     - |
@@ -151,7 +159,7 @@ ai-mlops:build-image:
         .
 
     # -------------------------------------------------------------------------
-    # Validate Python runtime inside image
+    # 1.8 Validate Python runtime inside image
     # -------------------------------------------------------------------------
 
     - |
@@ -161,7 +169,7 @@ ai-mlops:build-image:
         python --version
 
     # -------------------------------------------------------------------------
-    # Validate MLOps dependencies inside image
+    # 1.9 Validate MLOps dependencies inside image
     # -------------------------------------------------------------------------
 
     - |
@@ -172,7 +180,7 @@ ai-mlops:build-image:
         "import numpy; import pandas; import psycopg; import mlflow; print('NumPy:', numpy.__version__); print('Pandas:', pandas.__version__); print('psycopg:', psycopg.__version__); print('MLflow:', mlflow.__version__)"
 
     # -------------------------------------------------------------------------
-    # Validate canonical matching modules inside image
+    # 1.10 Validate canonical matching modules inside image
     # -------------------------------------------------------------------------
 
     - |
@@ -183,7 +191,7 @@ ai-mlops:build-image:
         "from src.ai.matching.features import MatchingWeights; from src.ai.matching.repository import load_matching_input; from src.ai.matching.evaluate import evaluate_demande_version; print('Matching modules imported successfully'); print(MatchingWeights())"
 
     # -------------------------------------------------------------------------
-    # Validate supervised training dataset module inside image
+    # 1.11 Validate supervised training dataset module inside image
     # -------------------------------------------------------------------------
 
     - |
@@ -194,7 +202,7 @@ ai-mlops:build-image:
         "from src.ai.matching.training_dataset import build_training_dataset, build_training_group, dataset_summary; print('Training dataset module imported successfully')"
 
     # -------------------------------------------------------------------------
-    # Validate MLflow tracking module inside image
+    # 1.12 Validate MLflow tracking module inside image
     # -------------------------------------------------------------------------
 
     - |
@@ -205,7 +213,7 @@ ai-mlops:build-image:
         "from src.ai.matching.mlflow_tracking import configure_mlflow, log_deterministic_evaluation; print('MLflow tracking module imported successfully')"
 
     # -------------------------------------------------------------------------
-    # Validate deterministic evaluation entrypoint inside image
+    # 1.13 Validate deterministic evaluation entrypoint inside image
     # -------------------------------------------------------------------------
 
     - |
@@ -216,7 +224,7 @@ ai-mlops:build-image:
         "import src.ai.matching.run_evaluation; print('run_evaluation module imported successfully')"
 
     # -------------------------------------------------------------------------
-    # Validate training dataset validation entrypoint inside image
+    # 1.14 Validate training dataset validation entrypoint inside image
     # -------------------------------------------------------------------------
 
     - |
@@ -227,7 +235,7 @@ ai-mlops:build-image:
         "import src.ai.matching.run_training_dataset_validation; print('run_training_dataset_validation module imported successfully')"
 
     # -------------------------------------------------------------------------
-    # Push immutable image
+    # 1.15 Push immutable image
     # -------------------------------------------------------------------------
 
     - |
@@ -239,7 +247,7 @@ ai-mlops:build-image:
         "$IMAGE_NAME:$IMAGE_TAG"
 
     # -------------------------------------------------------------------------
-    # Push latest convenience tag
+    # 1.16 Push latest convenience tag
     # -------------------------------------------------------------------------
 
     - |
@@ -247,7 +255,7 @@ ai-mlops:build-image:
         "$IMAGE_NAME:latest"
 
     # -------------------------------------------------------------------------
-    # Build summary
+    # 1.17 Build summary
     # -------------------------------------------------------------------------
 
     - |
@@ -324,13 +332,13 @@ ai-mlops:evaluate:
 
   script:
     # -------------------------------------------------------------------------
-    # 1. Validate shell runner tooling
+    # 2.1 Validate shell runner tooling
     # -------------------------------------------------------------------------
 
     - kubectl version --client
 
     # -------------------------------------------------------------------------
-    # 2. Validate required source manifest
+    # 2.2 Validate required source manifest
     # -------------------------------------------------------------------------
 
     - |
@@ -346,7 +354,7 @@ ai-mlops:evaluate:
       test -f "$MATCHING_EVALUATION_SOURCE_PATH"
 
     # -------------------------------------------------------------------------
-    # 3. Validate Kubernetes namespace
+    # 2.3 Validate Kubernetes namespace
     # -------------------------------------------------------------------------
 
     - |
@@ -354,7 +362,7 @@ ai-mlops:evaluate:
         "$K8S_NAMESPACE"
 
     # -------------------------------------------------------------------------
-    # 4. Validate PostgreSQL Secret
+    # 2.4 Validate PostgreSQL Secret
     # -------------------------------------------------------------------------
 
     - |
@@ -364,7 +372,7 @@ ai-mlops:evaluate:
         "$POSTGRES_SECRET"
 
     # -------------------------------------------------------------------------
-    # 5. Validate Registry pull Secret
+    # 2.5 Validate Registry pull Secret
     # -------------------------------------------------------------------------
 
     - |
@@ -374,7 +382,7 @@ ai-mlops:evaluate:
         "$REGISTRY_PULL_SECRET"
 
     # -------------------------------------------------------------------------
-    # 6. Validate MLflow namespace and service
+    # 2.6 Validate MLflow namespace and service
     # -------------------------------------------------------------------------
 
     - |
@@ -388,13 +396,13 @@ ai-mlops:evaluate:
         "$MLFLOW_SERVICE"
 
     # -------------------------------------------------------------------------
-    # 7. Clean previous temporary rendered manifest
+    # 2.7 Clean previous temporary rendered manifest
     # -------------------------------------------------------------------------
 
     - rm -f "$MATCHING_EVALUATION_RENDERED_PATH"
 
     # -------------------------------------------------------------------------
-    # 8. Render immutable image and CI traceability into Kubernetes Job
+    # 2.8 Render immutable image and CI traceability into Kubernetes Job
     # -------------------------------------------------------------------------
 
     - |
@@ -437,7 +445,7 @@ ai-mlops:evaluate:
         "$MATCHING_EVALUATION_RENDERED_PATH"
 
     # -------------------------------------------------------------------------
-    # 9. Verify all rendering placeholders disappeared
+    # 2.9 Verify all rendering placeholders disappeared
     # -------------------------------------------------------------------------
 
     - |
@@ -461,7 +469,7 @@ ai-mlops:evaluate:
       echo "All Kubernetes Job placeholders replaced successfully."
 
     # -------------------------------------------------------------------------
-    # 10. Validate immutable image reference
+    # 2.10 Validate immutable image reference
     # -------------------------------------------------------------------------
 
     - |
@@ -477,7 +485,7 @@ ai-mlops:evaluate:
       echo "Immutable image validated successfully."
 
     # -------------------------------------------------------------------------
-    # 11. Validate expected Kubernetes Job name
+    # 2.11 Validate expected Kubernetes Job name
     # -------------------------------------------------------------------------
 
     - |
@@ -487,6 +495,7 @@ ai-mlops:evaluate:
 
       echo
       echo "Rendered Kubernetes names:"
+
       grep \
         "name:" \
         "$MATCHING_EVALUATION_RENDERED_PATH" || true
@@ -498,7 +507,7 @@ ai-mlops:evaluate:
       echo "Kubernetes Job name validated successfully."
 
     # -------------------------------------------------------------------------
-    # 12. Validate expected Registry pull Secret
+    # 2.12 Validate expected Registry pull Secret
     # -------------------------------------------------------------------------
 
     - |
@@ -512,7 +521,7 @@ ai-mlops:evaluate:
       echo "Registry pull Secret reference validated successfully."
 
     # -------------------------------------------------------------------------
-    # 13. Client-side Kubernetes validation
+    # 2.13 Client-side Kubernetes validation
     # -------------------------------------------------------------------------
 
     - |
@@ -525,11 +534,7 @@ ai-mlops:evaluate:
       echo "Kubernetes Job manifest validation successful."
 
     # -------------------------------------------------------------------------
-    # 14. Remove previous evaluation Job
-    #
-    # Kubernetes Jobs contain immutable pod-template fields.
-    # The previous execution is removed before the new immutable image
-    # execution is created.
+    # 2.14 Remove previous evaluation Job
     # -------------------------------------------------------------------------
 
     - |
@@ -546,7 +551,7 @@ ai-mlops:evaluate:
         --wait=true
 
     # -------------------------------------------------------------------------
-    # 15. Create new evaluation Job
+    # 2.15 Create new evaluation Job
     # -------------------------------------------------------------------------
 
     - |
@@ -561,7 +566,7 @@ ai-mlops:evaluate:
         -f "$MATCHING_EVALUATION_RENDERED_PATH"
 
     # -------------------------------------------------------------------------
-    # 16. Display created Job
+    # 2.16 Display created Job
     # -------------------------------------------------------------------------
 
     - |
@@ -572,7 +577,7 @@ ai-mlops:evaluate:
         -o wide
 
     # -------------------------------------------------------------------------
-    # 17. Wait for Pod creation
+    # 2.17 Wait for Pod creation
     # -------------------------------------------------------------------------
 
     - |
@@ -617,9 +622,7 @@ ai-mlops:evaluate:
       fi
 
     # -------------------------------------------------------------------------
-    # 18. Wait for Job completion
-    #
-    # The loop explicitly detects both success and failure.
+    # 2.18 Wait for Job completion
     # -------------------------------------------------------------------------
 
     - |
@@ -674,6 +677,7 @@ ai-mlops:evaluate:
 
         echo
         echo "Job status:"
+
         kubectl \
           -n "$K8S_NAMESPACE" \
           get job \
@@ -682,6 +686,7 @@ ai-mlops:evaluate:
 
         echo
         echo "Pod status:"
+
         kubectl \
           -n "$K8S_NAMESPACE" \
           get pods \
@@ -690,6 +695,7 @@ ai-mlops:evaluate:
 
         echo
         echo "Evaluation logs:"
+
         kubectl \
           -n "$K8S_NAMESPACE" \
           logs \
@@ -701,7 +707,7 @@ ai-mlops:evaluate:
       fi
 
     # -------------------------------------------------------------------------
-    # 19. Print successful evaluation logs
+    # 2.19 Print successful evaluation logs
     # -------------------------------------------------------------------------
 
     - |
@@ -717,7 +723,7 @@ ai-mlops:evaluate:
         --all-containers=true
 
     # -------------------------------------------------------------------------
-    # 20. Display final Job status
+    # 2.20 Display final Job status
     # -------------------------------------------------------------------------
 
     - |
@@ -739,7 +745,7 @@ ai-mlops:evaluate:
         -o wide
 
     # -------------------------------------------------------------------------
-    # 21. Final execution summary
+    # 2.21 Final execution summary
     # -------------------------------------------------------------------------
 
     - |
@@ -781,13 +787,6 @@ ai-mlops:evaluate:
       echo "Not used for this execution workload"
 
   after_script:
-    # -------------------------------------------------------------------------
-    # Preserve useful diagnostics in GitLab logs.
-    #
-    # Completed Kubernetes Job is intentionally retained temporarily
-    # as runtime/certification evidence.
-    # -------------------------------------------------------------------------
-
     - |
       echo
       echo "============================================================"
@@ -807,6 +806,543 @@ ai-mlops:evaluate:
         -o wide || true
 
     - rm -f /tmp/real-estate-matching-evaluation.yaml
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - src/ai/**/*
+        - tests/ai/**/*
+        - requirements-ai.txt
+        - requirements-ai-mlops.txt
+        - deploy/docker/Dockerfile.ai-mlops
+        - deploy/mlops/**/*
+        - .gitlab/ci/ai.yml
+        - .gitlab/ci/ai-mlops.yml
+        - .gitlab-ci.yml
+
+
+# =============================================================================
+# 3. EXECUTE SUPERVISED TRAINING DATASET VALIDATION IN KUBERNETES
+# =============================================================================
+
+ai-mlops:validate-training-dataset:
+  stage: deploy
+
+  tags:
+    - shell
+
+  needs:
+    - job: ai-mlops:build-image
+      artifacts: false
+
+  variables:
+    K8S_NAMESPACE: "real-estate"
+
+    DATASET_VALIDATION_JOB_NAME: "real-estate-matching-training-dataset-validation"
+
+    DATASET_VALIDATION_SOURCE_PATH: "$CI_PROJECT_DIR/deploy/mlops/matching-training-dataset-validation-job.yaml"
+
+    DATASET_VALIDATION_RENDERED_PATH: "/tmp/real-estate-matching-training-dataset-validation.yaml"
+
+    IMAGE_NAME: "$CI_REGISTRY_IMAGE/ai-mlops"
+    IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+
+    REGISTRY_PULL_SECRET: "gitlab-registry-auth"
+
+    POSTGRES_SECRET: "real-estate-postgresql-secret"
+
+  script:
+    # -------------------------------------------------------------------------
+    # 3.1 Validate shell runner tooling
+    # -------------------------------------------------------------------------
+
+    - kubectl version --client
+
+    # -------------------------------------------------------------------------
+    # 3.2 Validate required source manifest
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "TRAINING DATASET VALIDATION SOURCE CHECK"
+      echo "============================================================"
+
+      echo
+      echo "Job source:"
+      echo "$DATASET_VALIDATION_SOURCE_PATH"
+
+      test -f "$DATASET_VALIDATION_SOURCE_PATH"
+
+    # -------------------------------------------------------------------------
+    # 3.3 Validate Kubernetes namespace
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl get namespace \
+        "$K8S_NAMESPACE"
+
+    # -------------------------------------------------------------------------
+    # 3.4 Validate PostgreSQL Secret
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get secret \
+        "$POSTGRES_SECRET"
+
+    # -------------------------------------------------------------------------
+    # 3.5 Validate Registry pull Secret
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get secret \
+        "$REGISTRY_PULL_SECRET"
+
+    # -------------------------------------------------------------------------
+    # 3.6 Clean previous temporary rendered manifest
+    # -------------------------------------------------------------------------
+
+    - rm -f "$DATASET_VALIDATION_RENDERED_PATH"
+
+    # -------------------------------------------------------------------------
+    # 3.7 Render immutable image and CI traceability into Kubernetes Job
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "RENDERING TRAINING DATASET VALIDATION JOB"
+      echo "============================================================"
+
+      EXPECTED_IMAGE="${IMAGE_NAME}:${IMAGE_TAG}"
+
+      echo
+      echo "Expected image:"
+      echo "$EXPECTED_IMAGE"
+
+      echo
+      echo "Expected Kubernetes Job:"
+      echo "$DATASET_VALIDATION_JOB_NAME"
+
+      grep \
+        "__AI_MLOPS_IMAGE__" \
+        "$DATASET_VALIDATION_SOURCE_PATH"
+
+      sed \
+        -e "s|__AI_MLOPS_IMAGE__|${EXPECTED_IMAGE}|g" \
+        -e "s|__CI_COMMIT_SHA__|${CI_COMMIT_SHA}|g" \
+        -e "s|__CI_COMMIT_SHORT_SHA__|${CI_COMMIT_SHORT_SHA}|g" \
+        -e "s|__CI_COMMIT_BRANCH__|${CI_COMMIT_BRANCH}|g" \
+        -e "s|__CI_COMMIT_REF_NAME__|${CI_COMMIT_REF_NAME}|g" \
+        -e "s|__CI_PROJECT_URL__|${CI_PROJECT_URL}|g" \
+        -e "s|__CI_PROJECT_PATH__|${CI_PROJECT_PATH}|g" \
+        -e "s|__CI_PIPELINE_ID__|${CI_PIPELINE_ID}|g" \
+        -e "s|__CI_PIPELINE_URL__|${CI_PIPELINE_URL}|g" \
+        -e "s|__CI_JOB_ID__|${CI_JOB_ID}|g" \
+        -e "s|__CI_JOB_NAME__|${CI_JOB_NAME}|g" \
+        -e "s|__CI_JOB_URL__|${CI_JOB_URL}|g" \
+        "$DATASET_VALIDATION_SOURCE_PATH" \
+        > "$DATASET_VALIDATION_RENDERED_PATH"
+
+      test -s "$DATASET_VALIDATION_RENDERED_PATH"
+
+    # -------------------------------------------------------------------------
+    # 3.8 Verify all rendering placeholders disappeared
+    # -------------------------------------------------------------------------
+
+    - |
+      if grep -E -q \
+        "__AI_MLOPS_IMAGE__|__CI_[A-Z0-9_]+__" \
+        "$DATASET_VALIDATION_RENDERED_PATH"; then
+
+        echo
+        echo "ERROR:"
+        echo "Unresolved placeholder remains in rendered dataset validation Job:"
+        echo
+
+        grep -E \
+          "__AI_MLOPS_IMAGE__|__CI_[A-Z0-9_]+__" \
+          "$DATASET_VALIDATION_RENDERED_PATH" || true
+
+        exit 1
+
+      fi
+
+      echo "All dataset validation placeholders replaced successfully."
+
+    # -------------------------------------------------------------------------
+    # 3.9 Validate immutable image reference
+    # -------------------------------------------------------------------------
+
+    - |
+      EXPECTED_IMAGE="${IMAGE_NAME}:${IMAGE_TAG}"
+
+      echo
+      echo "Validating rendered immutable image..."
+
+      grep \
+        "image: ${EXPECTED_IMAGE}" \
+        "$DATASET_VALIDATION_RENDERED_PATH"
+
+      echo "Immutable image validated successfully."
+
+    # -------------------------------------------------------------------------
+    # 3.10 Validate expected Kubernetes Job name
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "Expected Kubernetes Job:"
+      echo "$DATASET_VALIDATION_JOB_NAME"
+
+      echo
+      echo "Rendered Kubernetes names:"
+
+      grep \
+        "name:" \
+        "$DATASET_VALIDATION_RENDERED_PATH" || true
+
+      grep \
+        "name: ${DATASET_VALIDATION_JOB_NAME}" \
+        "$DATASET_VALIDATION_RENDERED_PATH"
+
+      echo "Dataset validation Kubernetes Job name validated successfully."
+
+    # -------------------------------------------------------------------------
+    # 3.11 Validate dataset validation Python entrypoint
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "Validating dataset validation entrypoint..."
+
+      grep \
+        "src.ai.matching.run_training_dataset_validation" \
+        "$DATASET_VALIDATION_RENDERED_PATH"
+
+      echo "Dataset validation entrypoint validated successfully."
+
+    # -------------------------------------------------------------------------
+    # 3.12 Validate expected Registry pull Secret
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "Validating Registry pull Secret reference..."
+
+      grep \
+        "name: ${REGISTRY_PULL_SECRET}" \
+        "$DATASET_VALIDATION_RENDERED_PATH"
+
+      echo "Registry pull Secret reference validated successfully."
+
+    # -------------------------------------------------------------------------
+    # 3.13 Client-side Kubernetes validation
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl apply \
+        --dry-run=client \
+        -f "$DATASET_VALIDATION_RENDERED_PATH" \
+        > /dev/null
+
+      echo
+      echo "Dataset validation Kubernetes Job manifest is valid."
+
+    # -------------------------------------------------------------------------
+    # 3.14 Remove previous dataset-validation Job
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "CLEANING PREVIOUS TRAINING DATASET VALIDATION"
+      echo "============================================================"
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        delete job \
+        "$DATASET_VALIDATION_JOB_NAME" \
+        --ignore-not-found=true \
+        --wait=true
+
+    # -------------------------------------------------------------------------
+    # 3.15 Create new dataset-validation Job
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "CREATING TRAINING DATASET VALIDATION JOB"
+      echo "============================================================"
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        apply \
+        -f "$DATASET_VALIDATION_RENDERED_PATH"
+
+    # -------------------------------------------------------------------------
+    # 3.16 Display created Job
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get job \
+        "$DATASET_VALIDATION_JOB_NAME" \
+        -o wide
+
+    # -------------------------------------------------------------------------
+    # 3.17 Wait for Pod creation
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "Waiting for dataset validation Pod..."
+
+      POD_NAME=""
+
+      for i in $(seq 1 60); do
+
+        POD_NAME="$(
+          kubectl \
+            -n "$K8S_NAMESPACE" \
+            get pods \
+            -l app.kubernetes.io/name="$DATASET_VALIDATION_JOB_NAME" \
+            -o jsonpath='{.items[0].metadata.name}' \
+            2>/dev/null || true
+        )"
+
+        if [ -n "$POD_NAME" ]; then
+          echo
+          echo "Dataset validation Pod:"
+          echo "$POD_NAME"
+          break
+        fi
+
+        sleep 2
+
+      done
+
+      if [ -z "${POD_NAME:-}" ]; then
+        echo
+        echo "ERROR:"
+        echo "Dataset validation Pod was not created."
+
+        kubectl \
+          -n "$K8S_NAMESPACE" \
+          get job \
+          "$DATASET_VALIDATION_JOB_NAME" \
+          -o wide || true
+
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # 3.18 Wait for Job completion
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "WAITING FOR TRAINING DATASET VALIDATION"
+      echo "============================================================"
+
+      SUCCESS="false"
+
+      for i in $(seq 1 300); do
+
+        COMPLETE="$(
+          kubectl \
+            -n "$K8S_NAMESPACE" \
+            get job \
+            "$DATASET_VALIDATION_JOB_NAME" \
+            -o jsonpath='{.status.succeeded}' \
+            2>/dev/null || true
+        )"
+
+        FAILED="$(
+          kubectl \
+            -n "$K8S_NAMESPACE" \
+            get job \
+            "$DATASET_VALIDATION_JOB_NAME" \
+            -o jsonpath='{.status.failed}' \
+            2>/dev/null || true
+        )"
+
+        if [ "${COMPLETE:-0}" -ge 1 ] 2>/dev/null; then
+          SUCCESS="true"
+          echo "Training dataset validation completed successfully."
+          break
+        fi
+
+        if [ "${FAILED:-0}" -ge 1 ] 2>/dev/null; then
+          echo "Training dataset validation reported a failed Pod."
+          break
+        fi
+
+        echo "Dataset validation still running..."
+        sleep 2
+
+      done
+
+      if [ "$SUCCESS" != "true" ]; then
+
+        echo
+        echo "ERROR:"
+        echo "Training dataset validation did not complete successfully."
+
+        echo
+        echo "Job status:"
+
+        kubectl \
+          -n "$K8S_NAMESPACE" \
+          get job \
+          "$DATASET_VALIDATION_JOB_NAME" \
+          -o wide || true
+
+        echo
+        echo "Pod status:"
+
+        kubectl \
+          -n "$K8S_NAMESPACE" \
+          get pods \
+          -l app.kubernetes.io/name="$DATASET_VALIDATION_JOB_NAME" \
+          -o wide || true
+
+        echo
+        echo "Dataset validation logs:"
+
+        kubectl \
+          -n "$K8S_NAMESPACE" \
+          logs \
+          job/"$DATASET_VALIDATION_JOB_NAME" \
+          --all-containers=true || true
+
+        exit 1
+
+      fi
+
+    # -------------------------------------------------------------------------
+    # 3.19 Print successful validation logs
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "TRAINING DATASET VALIDATION LOGS"
+      echo "============================================================"
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        logs \
+        job/"$DATASET_VALIDATION_JOB_NAME" \
+        --all-containers=true
+
+    # -------------------------------------------------------------------------
+    # 3.20 Display final Job status
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "TRAINING DATASET VALIDATION FINAL KUBERNETES STATUS"
+      echo "============================================================"
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get job \
+        "$DATASET_VALIDATION_JOB_NAME" \
+        -o wide
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get pods \
+        -l app.kubernetes.io/name="$DATASET_VALIDATION_JOB_NAME" \
+        -o wide
+
+    # -------------------------------------------------------------------------
+    # 3.21 Final execution summary
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "TRAINING DATASET VALIDATION COMPLETED"
+      echo "============================================================"
+
+      echo
+      echo "Image:"
+      echo "${IMAGE_NAME}:${IMAGE_TAG}"
+
+      echo
+      echo "Namespace:"
+      echo "$K8S_NAMESPACE"
+
+      echo
+      echo "Kubernetes Job:"
+      echo "$DATASET_VALIDATION_JOB_NAME"
+
+      echo
+      echo "Dataset source:"
+      echo "PostgreSQL runtime data"
+
+      echo
+      echo "Ground truth:"
+      echo "Explicit recherche_ref lineage"
+
+      echo
+      echo "Candidate engine:"
+      echo "Canonical matching repository"
+
+      echo
+      echo "Model training:"
+      echo "NOT performed"
+
+      echo
+      echo "MLflow:"
+      echo "Not used by this validation workload"
+
+      echo
+      echo "Execution type:"
+      echo "GitLab-triggered ephemeral Kubernetes Job"
+
+      echo
+      echo "Deployment:"
+      echo "None"
+
+      echo
+      echo "Service:"
+      echo "None"
+
+      echo
+      echo "Argo CD:"
+      echo "Not used for this execution workload"
+
+  after_script:
+    - |
+      echo
+      echo "============================================================"
+      echo "TRAINING DATASET VALIDATION AFTER-SCRIPT DIAGNOSTICS"
+      echo "============================================================"
+
+      kubectl \
+        -n real-estate \
+        get job \
+        real-estate-matching-training-dataset-validation \
+        -o wide || true
+
+      kubectl \
+        -n real-estate \
+        get pods \
+        -l app.kubernetes.io/name=real-estate-matching-training-dataset-validation \
+        -o wide || true
+
+    - rm -f /tmp/real-estate-matching-training-dataset-validation.yaml
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
