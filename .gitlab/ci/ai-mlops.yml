@@ -306,11 +306,11 @@ ai-mlops:evaluate:
   variables:
     K8S_NAMESPACE: "real-estate"
 
-    JOB_NAME: "real-estate-matching-evaluation"
+    MATCHING_EVALUATION_JOB_NAME: "real-estate-matching-evaluation"
 
-    JOB_SOURCE_PATH: "$CI_PROJECT_DIR/deploy/mlops/matching-evaluation-job.yaml"
+    MATCHING_EVALUATION_SOURCE_PATH: "$CI_PROJECT_DIR/deploy/mlops/matching-evaluation-job.yaml"
 
-    RENDERED_JOB_PATH: "/tmp/real-estate-matching-evaluation.yaml"
+    MATCHING_EVALUATION_RENDERED_PATH: "/tmp/real-estate-matching-evaluation.yaml"
 
     IMAGE_NAME: "$CI_REGISTRY_IMAGE/ai-mlops"
     IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
@@ -341,9 +341,9 @@ ai-mlops:evaluate:
 
       echo
       echo "Job source:"
-      echo "$JOB_SOURCE_PATH"
+      echo "$MATCHING_EVALUATION_SOURCE_PATH"
 
-      test -f "$JOB_SOURCE_PATH"
+      test -f "$MATCHING_EVALUATION_SOURCE_PATH"
 
     # -------------------------------------------------------------------------
     # 3. Validate Kubernetes namespace
@@ -391,7 +391,7 @@ ai-mlops:evaluate:
     # 7. Clean previous temporary rendered manifest
     # -------------------------------------------------------------------------
 
-    - rm -f "$RENDERED_JOB_PATH"
+    - rm -f "$MATCHING_EVALUATION_RENDERED_PATH"
 
     # -------------------------------------------------------------------------
     # 8. Render immutable image and CI traceability into Kubernetes Job
@@ -400,7 +400,7 @@ ai-mlops:evaluate:
     - |
       echo
       echo "============================================================"
-      echo "RENDERING AI / MLOPS JOB"
+      echo "RENDERING AI / MLOPS EVALUATION JOB"
       echo "============================================================"
 
       EXPECTED_IMAGE="${IMAGE_NAME}:${IMAGE_TAG}"
@@ -409,9 +409,13 @@ ai-mlops:evaluate:
       echo "Expected image:"
       echo "$EXPECTED_IMAGE"
 
+      echo
+      echo "Expected Kubernetes Job:"
+      echo "$MATCHING_EVALUATION_JOB_NAME"
+
       grep \
         "__AI_MLOPS_IMAGE__" \
-        "$JOB_SOURCE_PATH"
+        "$MATCHING_EVALUATION_SOURCE_PATH"
 
       sed \
         -e "s|__AI_MLOPS_IMAGE__|${EXPECTED_IMAGE}|g" \
@@ -426,11 +430,11 @@ ai-mlops:evaluate:
         -e "s|__CI_JOB_ID__|${CI_JOB_ID}|g" \
         -e "s|__CI_JOB_NAME__|${CI_JOB_NAME}|g" \
         -e "s|__CI_JOB_URL__|${CI_JOB_URL}|g" \
-        "$JOB_SOURCE_PATH" \
-        > "$RENDERED_JOB_PATH"
+        "$MATCHING_EVALUATION_SOURCE_PATH" \
+        > "$MATCHING_EVALUATION_RENDERED_PATH"
 
       test -s \
-        "$RENDERED_JOB_PATH"
+        "$MATCHING_EVALUATION_RENDERED_PATH"
 
     # -------------------------------------------------------------------------
     # 9. Verify all rendering placeholders disappeared
@@ -439,7 +443,7 @@ ai-mlops:evaluate:
     - |
       if grep -E -q \
         "__AI_MLOPS_IMAGE__|__CI_[A-Z0-9_]+__" \
-        "$RENDERED_JOB_PATH"; then
+        "$MATCHING_EVALUATION_RENDERED_PATH"; then
 
         echo
         echo "ERROR:"
@@ -448,7 +452,7 @@ ai-mlops:evaluate:
 
         grep -E \
           "__AI_MLOPS_IMAGE__|__CI_[A-Z0-9_]+__" \
-          "$RENDERED_JOB_PATH" || true
+          "$MATCHING_EVALUATION_RENDERED_PATH" || true
 
         exit 1
 
@@ -463,27 +467,49 @@ ai-mlops:evaluate:
     - |
       EXPECTED_IMAGE="${IMAGE_NAME}:${IMAGE_TAG}"
 
+      echo
+      echo "Validating rendered immutable image..."
+
       grep \
         "image: ${EXPECTED_IMAGE}" \
-        "$RENDERED_JOB_PATH"
+        "$MATCHING_EVALUATION_RENDERED_PATH"
+
+      echo "Immutable image validated successfully."
 
     # -------------------------------------------------------------------------
     # 11. Validate expected Kubernetes Job name
     # -------------------------------------------------------------------------
 
     - |
+      echo
+      echo "Expected Kubernetes Job:"
+      echo "$MATCHING_EVALUATION_JOB_NAME"
+
+      echo
+      echo "Rendered Kubernetes names:"
       grep \
-        "name: ${JOB_NAME}" \
-        "$RENDERED_JOB_PATH"
+        "name:" \
+        "$MATCHING_EVALUATION_RENDERED_PATH" || true
+
+      grep \
+        "name: ${MATCHING_EVALUATION_JOB_NAME}" \
+        "$MATCHING_EVALUATION_RENDERED_PATH"
+
+      echo "Kubernetes Job name validated successfully."
 
     # -------------------------------------------------------------------------
     # 12. Validate expected Registry pull Secret
     # -------------------------------------------------------------------------
 
     - |
+      echo
+      echo "Validating Registry pull Secret reference..."
+
       grep \
         "name: ${REGISTRY_PULL_SECRET}" \
-        "$RENDERED_JOB_PATH"
+        "$MATCHING_EVALUATION_RENDERED_PATH"
+
+      echo "Registry pull Secret reference validated successfully."
 
     # -------------------------------------------------------------------------
     # 13. Client-side Kubernetes validation
@@ -492,7 +518,7 @@ ai-mlops:evaluate:
     - |
       kubectl apply \
         --dry-run=client \
-        -f "$RENDERED_JOB_PATH" \
+        -f "$MATCHING_EVALUATION_RENDERED_PATH" \
         > /dev/null
 
       echo
@@ -500,18 +526,22 @@ ai-mlops:evaluate:
 
     # -------------------------------------------------------------------------
     # 14. Remove previous evaluation Job
+    #
+    # Kubernetes Jobs contain immutable pod-template fields.
+    # The previous execution is removed before the new immutable image
+    # execution is created.
     # -------------------------------------------------------------------------
 
     - |
       echo
       echo "============================================================"
-      echo "CLEANING PREVIOUS AI / MLOPS EXECUTION"
+      echo "CLEANING PREVIOUS AI / MLOPS EVALUATION"
       echo "============================================================"
 
       kubectl \
         -n "$K8S_NAMESPACE" \
         delete job \
-        "$JOB_NAME" \
+        "$MATCHING_EVALUATION_JOB_NAME" \
         --ignore-not-found=true \
         --wait=true
 
@@ -528,7 +558,7 @@ ai-mlops:evaluate:
       kubectl \
         -n "$K8S_NAMESPACE" \
         apply \
-        -f "$RENDERED_JOB_PATH"
+        -f "$MATCHING_EVALUATION_RENDERED_PATH"
 
     # -------------------------------------------------------------------------
     # 16. Display created Job
@@ -538,7 +568,7 @@ ai-mlops:evaluate:
       kubectl \
         -n "$K8S_NAMESPACE" \
         get job \
-        "$JOB_NAME" \
+        "$MATCHING_EVALUATION_JOB_NAME" \
         -o wide
 
     # -------------------------------------------------------------------------
@@ -557,7 +587,7 @@ ai-mlops:evaluate:
           kubectl \
             -n "$K8S_NAMESPACE" \
             get pods \
-            -l app.kubernetes.io/name="$JOB_NAME" \
+            -l app.kubernetes.io/name="$MATCHING_EVALUATION_JOB_NAME" \
             -o jsonpath='{.items[0].metadata.name}' \
             2>/dev/null || true
         )"
@@ -573,12 +603,23 @@ ai-mlops:evaluate:
       done
 
       if [ -z "${POD_NAME:-}" ]; then
-        echo "ERROR: evaluation Pod was not created."
+        echo
+        echo "ERROR:"
+        echo "Evaluation Pod was not created."
+
+        kubectl \
+          -n "$K8S_NAMESPACE" \
+          get job \
+          "$MATCHING_EVALUATION_JOB_NAME" \
+          -o wide || true
+
         exit 1
       fi
 
     # -------------------------------------------------------------------------
     # 18. Wait for Job completion
+    #
+    # The loop explicitly detects both success and failure.
     # -------------------------------------------------------------------------
 
     - |
@@ -595,7 +636,7 @@ ai-mlops:evaluate:
           kubectl \
             -n "$K8S_NAMESPACE" \
             get job \
-            "$JOB_NAME" \
+            "$MATCHING_EVALUATION_JOB_NAME" \
             -o jsonpath='{.status.succeeded}' \
             2>/dev/null || true
         )"
@@ -604,7 +645,7 @@ ai-mlops:evaluate:
           kubectl \
             -n "$K8S_NAMESPACE" \
             get job \
-            "$JOB_NAME" \
+            "$MATCHING_EVALUATION_JOB_NAME" \
             -o jsonpath='{.status.failed}' \
             2>/dev/null || true
         )"
@@ -636,7 +677,7 @@ ai-mlops:evaluate:
         kubectl \
           -n "$K8S_NAMESPACE" \
           get job \
-          "$JOB_NAME" \
+          "$MATCHING_EVALUATION_JOB_NAME" \
           -o wide || true
 
         echo
@@ -644,7 +685,7 @@ ai-mlops:evaluate:
         kubectl \
           -n "$K8S_NAMESPACE" \
           get pods \
-          -l app.kubernetes.io/name="$JOB_NAME" \
+          -l app.kubernetes.io/name="$MATCHING_EVALUATION_JOB_NAME" \
           -o wide || true
 
         echo
@@ -652,7 +693,7 @@ ai-mlops:evaluate:
         kubectl \
           -n "$K8S_NAMESPACE" \
           logs \
-          job/"$JOB_NAME" \
+          job/"$MATCHING_EVALUATION_JOB_NAME" \
           --all-containers=true || true
 
         exit 1
@@ -672,7 +713,7 @@ ai-mlops:evaluate:
       kubectl \
         -n "$K8S_NAMESPACE" \
         logs \
-        job/"$JOB_NAME" \
+        job/"$MATCHING_EVALUATION_JOB_NAME" \
         --all-containers=true
 
     # -------------------------------------------------------------------------
@@ -688,13 +729,13 @@ ai-mlops:evaluate:
       kubectl \
         -n "$K8S_NAMESPACE" \
         get job \
-        "$JOB_NAME" \
+        "$MATCHING_EVALUATION_JOB_NAME" \
         -o wide
 
       kubectl \
         -n "$K8S_NAMESPACE" \
         get pods \
-        -l app.kubernetes.io/name="$JOB_NAME" \
+        -l app.kubernetes.io/name="$MATCHING_EVALUATION_JOB_NAME" \
         -o wide
 
     # -------------------------------------------------------------------------
@@ -717,7 +758,7 @@ ai-mlops:evaluate:
 
       echo
       echo "Kubernetes Job:"
-      echo "$JOB_NAME"
+      echo "$MATCHING_EVALUATION_JOB_NAME"
 
       echo
       echo "MLflow:"
