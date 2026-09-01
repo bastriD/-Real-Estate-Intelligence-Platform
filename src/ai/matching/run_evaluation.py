@@ -24,20 +24,29 @@ EXPERIMENT_NAME = os.getenv(
 )
 
 DEMANDE_VERSION_ID = int(
-    os.getenv("MATCHING_DEMANDE_VERSION_ID", "54")
+    os.getenv("MATCHING_DEMANDE_VERSION_ID", "55")
 )
 
 DATABASE_HOST = os.getenv(
     "POSTGRES_HOST",
     "real-estate-postgresql.real-estate.svc.cluster.local",
 )
-DATABASE_PORT = int(os.getenv("POSTGRES_PORT", "5432"))
-DATABASE_NAME = os.getenv("POSTGRES_DB", "real_estate")
+DATABASE_PORT = int(
+    os.getenv("POSTGRES_PORT", "5432")
+)
+DATABASE_NAME = os.getenv(
+    "POSTGRES_DB",
+    "real_estate",
+)
 DATABASE_USER = os.getenv("POSTGRES_USER")
-DATABASE_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+DATABASE_PASSWORD = os.getenv(
+    "POSTGRES_PASSWORD"
+)
 
 
-def optional_env(name: str) -> str | None:
+def optional_env(
+    name: str,
+) -> str | None:
     value = os.getenv(name)
 
     if value is None:
@@ -78,24 +87,44 @@ def build_gitlab_traceability() -> dict[str, str]:
 
 
 def main() -> None:
-    print("===== Real Estate Matching Evaluation Started =====")
-    print(f"MLflow Tracking URI: {TRACKING_URI}")
-    print(f"MLflow Experiment: {EXPERIMENT_NAME}")
-    print(f"DemandeVersion: {DEMANDE_VERSION_ID}")
+    print(
+        "===== Real Estate Matching Evaluation Started ====="
+    )
+    print(
+        f"MLflow Tracking URI: {TRACKING_URI}"
+    )
+    print(
+        f"MLflow Experiment: {EXPERIMENT_NAME}"
+    )
+    print(
+        f"DemandeVersion: {DEMANDE_VERSION_ID}"
+    )
 
     if not DATABASE_USER:
-        raise RuntimeError("POSTGRES_USER is required")
+        raise RuntimeError(
+            "POSTGRES_USER is required"
+        )
 
     if not DATABASE_PASSWORD:
-        raise RuntimeError("POSTGRES_PASSWORD is required")
+        raise RuntimeError(
+            "POSTGRES_PASSWORD is required"
+        )
 
-    mlflow.set_tracking_uri(TRACKING_URI)
-    mlflow.set_experiment(EXPERIMENT_NAME)
+    mlflow.set_tracking_uri(
+        TRACKING_URI
+    )
+    mlflow.set_experiment(
+        EXPERIMENT_NAME
+    )
 
     output_dir = Path("outputs")
-    output_dir.mkdir(exist_ok=True)
+    output_dir.mkdir(
+        exist_ok=True
+    )
 
-    gitlab_traceability = build_gitlab_traceability()
+    gitlab_traceability = (
+        build_gitlab_traceability()
+    )
 
     connection = psycopg.connect(
         host=DATABASE_HOST,
@@ -113,13 +142,18 @@ def main() -> None:
     finally:
         connection.close()
 
-    run_name = f"matching-baseline-dv-{DEMANDE_VERSION_ID}"
+    run_name = (
+        f"matching-baseline-dv-"
+        f"{DEMANDE_VERSION_ID}"
+    )
 
     mlflow_tags = {
         "project": "chasse_immobiliere",
         "platform": "enterprise-homelab",
         "execution_mode": "kubernetes-job",
-        "evaluation_type": "deterministic-baseline",
+        "evaluation_type": (
+            "deterministic-baseline"
+        ),
         "model_registry_enabled": "false",
         **gitlab_traceability,
     }
@@ -130,32 +164,112 @@ def main() -> None:
         extra_tags=mlflow_tags,
     )
 
-    ranked_path = output_dir / "ranked_candidates.csv"
-    metadata_path = output_dir / "evaluation_metadata.json"
+    ranked_path = (
+        output_dir
+        / "ranked_candidates.csv"
+    )
+
+    metadata_path = (
+        output_dir
+        / "evaluation_metadata.json"
+    )
 
     result.ranked.to_csv(
         ranked_path,
         index=False,
     )
 
+    top_matching_score = None
+    mean_matching_score = None
+    median_matching_score = None
+
+    if not result.ranked.empty:
+        top_matching_score = float(
+            result.ranked.iloc[0][
+                "matching_score"
+            ]
+        )
+
+        mean_matching_score = float(
+            result.ranked[
+                "matching_score"
+            ].mean()
+        )
+
+        median_matching_score = float(
+            result.ranked[
+                "matching_score"
+            ].median()
+        )
+
     metadata = {
         "run_id": run_id,
-        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
-        "experiment_name": EXPERIMENT_NAME,
-        "tracking_uri": TRACKING_URI,
-        "id_demande_version": DEMANDE_VERSION_ID,
-        "properties_loaded": result.properties_loaded,
-        "candidates_after_filtering": result.candidates_after_filtering,
-        "top_matching_score": (
-            float(result.ranked.iloc[0]["matching_score"])
-            if not result.ranked.empty
-            else None
+        "timestamp_utc": (
+            datetime.now(
+                timezone.utc
+            ).isoformat()
         ),
-        "baseline_type": "deterministic-weighted-rules",
-        "data_type": "generated-synthetic-project-data",
+        "experiment_name": (
+            EXPERIMENT_NAME
+        ),
+        "tracking_uri": TRACKING_URI,
+        "id_demande_version": (
+            DEMANDE_VERSION_ID
+        ),
+        "source_recherche_ref": (
+            result.demande.get(
+                "source_recherche_ref"
+            )
+        ),
+        "ingestion_batch": (
+            result.demande.get(
+                "ingestion_batch"
+            )
+        ),
+        "properties_loaded": (
+            result.properties_loaded
+        ),
+        "candidates_after_filtering": (
+            result.candidates_after_filtering
+        ),
+        "ground_truth_total": (
+            result.ground_truth_total
+        ),
+        "ground_truth_in_candidates": (
+            result.ground_truth_in_candidates
+        ),
+        "candidate_recall": (
+            result.candidate_recall
+        ),
+        "ranking_metrics": (
+            result.ranking_metrics
+        ),
+        "top_matching_score": (
+            top_matching_score
+        ),
+        "mean_matching_score": (
+            mean_matching_score
+        ),
+        "median_matching_score": (
+            median_matching_score
+        ),
+        "baseline_type": (
+            "deterministic-weighted-rules"
+        ),
+        "ground_truth_type": (
+            "explicit-generated-search-lineage"
+        ),
+        "ground_truth_used_for_scoring": (
+            False
+        ),
+        "data_type": (
+            "generated-synthetic-project-data"
+        ),
         "model_training": False,
         "model_registry": False,
-        "gitlab_traceability": gitlab_traceability,
+        "gitlab_traceability": (
+            gitlab_traceability
+        ),
     }
 
     with open(
@@ -170,7 +284,9 @@ def main() -> None:
             ensure_ascii=False,
         )
 
-    with mlflow.start_run(run_id=run_id):
+    with mlflow.start_run(
+        run_id=run_id
+    ):
         mlflow.log_artifact(
             str(ranked_path),
             artifact_path="evaluation",
@@ -181,31 +297,88 @@ def main() -> None:
             artifact_path="evaluation",
         )
 
-    print("===== Matching evaluation completed successfully =====")
-    print(f"MLflow Run ID: {run_id}")
-    print(f"Properties loaded: {result.properties_loaded}")
+    print(
+        "===== Matching evaluation "
+        "completed successfully ====="
+    )
+
+    print(
+        f"MLflow Run ID: {run_id}"
+    )
+
+    print(
+        "Properties loaded: "
+        f"{result.properties_loaded}"
+    )
+
     print(
         "Candidates after filtering: "
         f"{result.candidates_after_filtering}"
     )
 
-    if not result.ranked.empty:
+    print(
+        "Ground truth total: "
+        f"{result.ground_truth_total}"
+    )
+
+    print(
+        "Ground truth in candidates: "
+        f"{result.ground_truth_in_candidates}"
+    )
+
+    print(
+        "Candidate recall: "
+        f"{result.candidate_recall:.4f}"
+    )
+
+    print(
+        "Ranking metrics:"
+    )
+
+    for metric_name, metric_value in sorted(
+        result.ranking_metrics.items()
+    ):
+        print(
+            f"  {metric_name}: "
+            f"{metric_value:.6f}"
+        )
+
+    if top_matching_score is not None:
         print(
             "Top matching score: "
-            f"{result.ranked.iloc[0]['matching_score']}"
+            f"{top_matching_score}"
+        )
+
+        print(
+            "Mean matching score: "
+            f"{mean_matching_score}"
+        )
+
+        print(
+            "Median matching score: "
+            f"{median_matching_score}"
         )
 
     if gitlab_traceability:
-        print("GitLab traceability metadata:")
-        for key, value in gitlab_traceability.items():
-            print(f"  {key}: {value}")
+        print(
+            "GitLab traceability metadata:"
+        )
+
+        for key, value in (
+            gitlab_traceability.items()
+        ):
+            print(
+                f"  {key}: {value}"
+            )
     else:
         print(
             "GitLab traceability metadata: "
             "not provided by execution environment"
         )
 
-    print(f"Artifacts logged under run: {run_id}")
+    print(
+        f"Artifacts logged under run: {run_id}"
+    )
 
 
 if __name__ == "__main__":
