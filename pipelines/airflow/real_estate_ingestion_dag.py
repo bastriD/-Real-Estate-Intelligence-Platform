@@ -90,6 +90,7 @@ with DAG(
     start_date=datetime(2026, 8, 1),
     schedule=None,
     catchup=False,
+    max_active_runs=1,
     tags=[
         "real-estate",
         "data-engineering",
@@ -149,6 +150,21 @@ with DAG(
                 echo "BRONZE - GENERATE SOURCE DATA"
                 echo "============================================================"
                 echo "Ingestion batch: ${INGESTION_BATCH}"
+
+                # -------------------------------------------------------------
+                # IMPORTANT:
+                # The official generator is intentionally cumulative.
+                #
+                # An Airflow ingestion batch must however represent one isolated
+                # dataset. KubernetesPodOperator pods are normally ephemeral,
+                # but explicitly clearing the generated directory guarantees
+                # deterministic behaviour even if the image or runtime changes.
+                # -------------------------------------------------------------
+
+                echo "Resetting generated working dataset..."
+
+                rm -rf /app/database/fixtures/annonces
+                mkdir -p /app/database/fixtures/annonces
 
                 echo "Generating source dataset..."
 
@@ -252,7 +268,8 @@ with DAG(
     # Responsibilities:
     #   - Parse and normalize heterogeneous RAW values
     #   - Validate typed and normalized records
-    #   - Load the normalized transactional model
+    #   - Load generated searches into DEMANDE / DEMANDE_VERSION
+    #   - Load generated listings into BIEN
     #   - Validate OLTP integrity and reconciliation
     # =========================================================================
 
@@ -341,8 +358,23 @@ with DAG(
                 echo "============================================================"
                 echo "Ingestion batch: ${INGESTION_BATCH}"
 
+                echo ""
+                echo "------------------------------------------------------------"
+                echo "1/2 - Loading generated searches"
+                echo "STAGING recherches -> DEMANDE / DEMANDE_VERSION"
+                echo "------------------------------------------------------------"
+
+                python /app/database/seeds/load_staging_recherches_to_oltp.py
+
+                echo ""
+                echo "------------------------------------------------------------"
+                echo "2/2 - Loading generated listings"
+                echo "STAGING annonces -> BIEN"
+                echo "------------------------------------------------------------"
+
                 python /app/database/seeds/load_staging_to_oltp.py
 
+                echo ""
                 echo "OLTP load completed."
                 """
             ],
@@ -611,7 +643,9 @@ with DAG(
     #   Source -> MinIO -> RAW
     #
     # SILVER
-    #   RAW -> STAGING -> OLTP
+    #   RAW -> STAGING
+    #       -> DEMANDE / DEMANDE_VERSION
+    #       -> BIEN
     #
     # GOLD
     #   OLTP -> WAREHOUSE -> DBT -> ANALYTICS

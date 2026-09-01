@@ -1,5 +1,6 @@
 data-pipeline:build-image:
   stage: deploy
+
   tags:
     - docker
 
@@ -22,15 +23,147 @@ data-pipeline:build-image:
     - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
 
   script:
+    # =========================================================================
+    # BUILD IMAGE
+    # =========================================================================
+
     - |
+      echo "============================================================"
+      echo "BUILDING REAL ESTATE DATA-PIPELINE IMAGE"
+      echo "============================================================"
+
+      echo "Image:"
+      echo "  $IMAGE_NAME:$IMAGE_TAG"
+      echo "  $IMAGE_NAME:latest"
+
       docker build \
         -f deploy/docker/Dockerfile.data-pipeline \
         -t "$IMAGE_NAME:$IMAGE_TAG" \
         -t "$IMAGE_NAME:latest" \
         .
 
-    - docker push "$IMAGE_NAME:$IMAGE_TAG"
-    - docker push "$IMAGE_NAME:latest"
+    # =========================================================================
+    # VALIDATE IMAGE CONTENT
+    #
+    # This prevents Airflow from starting a KubernetesPodOperator with an image
+    # that does not contain one of the scripts/files referenced by the DAG.
+    # =========================================================================
+
+    - |
+      echo "============================================================"
+      echo "VALIDATING DATA-PIPELINE IMAGE CONTENT"
+      echo "============================================================"
+
+      docker run --rm \
+        --entrypoint /bin/sh \
+        "$IMAGE_NAME:$IMAGE_TAG" \
+        -c '
+          set -e
+
+          echo "Checking BRONZE ingestion components..."
+
+          test -f /app/database/seeds/generer_annonces.py
+          test -f /app/database/seeds/upload_generated_to_s3.py
+          test -f /app/database/seeds/download_generated_from_s3.py
+          test -f /app/database/seeds/load_raw_generated_data.py
+
+          echo "PASS: BRONZE ingestion components present."
+
+          echo
+          echo "Checking SILVER transformation components..."
+
+          test -f /app/database/seeds/transform_raw_to_staging.py
+          test -f /app/database/seeds/load_staging_recherches_to_oltp.py
+          test -f /app/database/seeds/load_staging_to_oltp.py
+
+          echo "PASS: SILVER transformation components present."
+
+          echo
+          echo "Checking data-quality SQL files..."
+
+          test -f /app/database/tests/004_raw_data_quality.sql
+          test -f /app/database/tests/005_staging_data_quality.sql
+          test -f /app/database/tests/006_oltp_data_quality.sql
+          test -f /app/database/tests/007_warehouse_data_quality.sql
+
+          echo "PASS: data-quality SQL files present."
+
+          echo
+          echo "Checking GOLD warehouse components..."
+
+          test -f /app/database/olap/load_warehouse.py
+
+          echo "PASS: warehouse loader present."
+
+          echo
+          echo "Checking dbt project..."
+
+          test -d /app/pipelines/dbt
+          test -f /app/pipelines/dbt/dbt_project.yml
+          test -f /app/pipelines/dbt/profiles.yml.example
+
+          echo "PASS: dbt project present."
+
+          echo
+          echo "Checking observability components..."
+
+          test -d /app/observability/metrics
+          test -f /app/observability/metrics/dq_runner.py
+          test -f /app/observability/metrics/collect_metrics.py
+
+          echo "PASS: observability components present."
+
+          echo
+          echo "Checking generated fixture directory..."
+
+          test -d /app/database/fixtures/annonces
+          test -d /app/database/fixtures/annonces/json
+
+          echo "PASS: generated fixture directories present."
+
+          echo
+          echo "============================================================"
+          echo "PASS: DATA-PIPELINE IMAGE VALIDATION SUCCESSFUL"
+          echo "============================================================"
+        '
+
+    # =========================================================================
+    # PUSH IMMUTABLE COMMIT IMAGE
+    # =========================================================================
+
+    - |
+      echo "============================================================"
+      echo "PUSHING COMMIT-TAGGED IMAGE"
+      echo "============================================================"
+
+      docker push "$IMAGE_NAME:$IMAGE_TAG"
+
+    # =========================================================================
+    # PUSH LATEST IMAGE
+    # =========================================================================
+
+    - |
+      echo "============================================================"
+      echo "PUSHING LATEST IMAGE"
+      echo "============================================================"
+
+      docker push "$IMAGE_NAME:latest"
+
+    # =========================================================================
+    # FINAL REPORT
+    # =========================================================================
+
+    - |
+      echo "============================================================"
+      echo "DATA-PIPELINE IMAGE PUBLISHED"
+      echo "============================================================"
+
+      echo "Commit image:"
+      echo "$IMAGE_NAME:$IMAGE_TAG"
+
+      echo
+      echo "Latest image:"
+      echo "$IMAGE_NAME:latest"
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'

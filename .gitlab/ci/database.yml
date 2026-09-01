@@ -14,6 +14,7 @@ database:validate:
     - test -f database/migrations/001_initial_schema.sql
     - test -f database/migrations/002_migrate_legacy_data.sql
     - test -f database/migrations/004_add_visite_audit.sql
+    - test -f database/migrations/005_demande_pre_mandat.sql
 
     # -------------------------------------------------------------------------
     # Database tests
@@ -36,6 +37,8 @@ database:validate:
     - test -f database/oltp/004_staging_schema.sql
 
     - test -f database/seeds/load_raw_generated_data.py
+    - test -f database/seeds/load_staging_recherches_to_oltp.py
+    - test -f database/seeds/load_staging_to_oltp.py
 
     - test -f requirements.txt
 
@@ -67,6 +70,24 @@ database:validate:
     - grep -q "'004'" database/migrations/004_add_visite_audit.sql
     - grep -q "migration_control.schema_version" database/migrations/004_add_visite_audit.sql
     - grep -q "^COMMIT;" database/migrations/004_add_visite_audit.sql
+
+    # -------------------------------------------------------------------------
+    # Migration 005 validation
+    #
+    # Business correction:
+    #   DEMANDE exists before MANDAT.
+    #
+    # Generated searches therefore need to be represented as legitimate
+    # pre-mandate demandes instead of synthetic/fake mandates.
+    # -------------------------------------------------------------------------
+
+    - grep -q "ALTER COLUMN id_mandat DROP NOT NULL" database/migrations/005_demande_pre_mandat.sql
+    - grep -q "origine" database/migrations/005_demande_pre_mandat.sql
+    - grep -q "source_recherche_ref" database/migrations/005_demande_pre_mandat.sql
+    - grep -q "ingestion_batch" database/migrations/005_demande_pre_mandat.sql
+    - grep -q "'005'" database/migrations/005_demande_pre_mandat.sql
+    - grep -q "migration_control.schema_version" database/migrations/005_demande_pre_mandat.sql
+    - grep -q "^COMMIT;" database/migrations/005_demande_pre_mandat.sql
 
     # -------------------------------------------------------------------------
     # Legacy fixture validation
@@ -276,10 +297,6 @@ database:migrate-004:
   script:
     - kubectl -n real-estate get deploy real-estate-postgresql
 
-    # -------------------------------------------------------------------------
-    # Check migration registry
-    # -------------------------------------------------------------------------
-
     - |
       MIGRATION_004_APPLIED="$(
         kubectl -n real-estate exec deploy/real-estate-postgresql -- \
@@ -303,17 +320,6 @@ database:migrate-004:
         exit 0
       fi
 
-    # -------------------------------------------------------------------------
-    # Apply migration
-    #
-    # The migration is idempotent:
-    #   CREATE TABLE IF NOT EXISTS
-    #   CREATE INDEX IF NOT EXISTS
-    #
-    # This also repairs an installation where visite/audit_log exist
-    # physically but migration version 004 is not yet registered.
-    # -------------------------------------------------------------------------
-
     - |
       kubectl -n real-estate exec deploy/real-estate-postgresql \
         -i -- \
@@ -322,10 +328,6 @@ database:migrate-004:
           -d real_estate \
           -v ON_ERROR_STOP=1 \
           < database/migrations/004_add_visite_audit.sql
-
-    # -------------------------------------------------------------------------
-    # Verify physical objects
-    # -------------------------------------------------------------------------
 
     - |
       kubectl -n real-estate exec deploy/real-estate-postgresql -- \
@@ -338,10 +340,6 @@ database:migrate-004:
               to_regclass('real_estate.visite') AS visite,
               to_regclass('real_estate.audit_log') AS audit_log;
           "
-
-    # -------------------------------------------------------------------------
-    # Verify migration registry
-    # -------------------------------------------------------------------------
 
     - |
       kubectl -n real-estate exec deploy/real-estate-postgresql -- \
@@ -356,6 +354,242 @@ database:migrate-004:
               applied_at
             FROM migration_control.schema_version
             WHERE version = '004';
+          "
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
+
+
+# =============================================================================
+# MIGRATION 005 - PRE-MANDATE DEMANDES
+#
+# Official business chronology:
+#
+#   DEMANDE
+#      -> hunter assignment / acceptance
+#      -> initial matching
+#      -> meeting / criteria refinement
+#      -> MANDAT
+#
+# Therefore a DEMANDE must be allowed to exist without an attached mandate.
+# This migration also introduces lineage between generated searches and
+# DEMANDE_VERSION.
+# =============================================================================
+
+database:migrate-005:
+  stage: database
+
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl version --client
+    - kubectl -n real-estate get deploy real-estate-postgresql
+
+    # -------------------------------------------------------------------------
+    # Migration prerequisites
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Checking migration 005 prerequisites..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              to_regclass('real_estate.demande') AS demande,
+              to_regclass('real_estate.demande_version') AS demande_version,
+              to_regclass('migration_control.schema_version') AS schema_version;
+          "
+
+    # -------------------------------------------------------------------------
+    # Check migration registry
+    # -------------------------------------------------------------------------
+
+    - |
+      MIGRATION_005_APPLIED="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT CASE
+               WHEN EXISTS (
+                 SELECT 1
+                 FROM migration_control.schema_version
+                 WHERE version = '005'
+               )
+               THEN 'yes'
+               ELSE 'no'
+             END;" 2>/dev/null || true
+      )"
+
+      if [ "$MIGRATION_005_APPLIED" = "yes" ]; then
+        echo "Migration 005 already applied - skipping safely."
+        exit 0
+      fi
+
+    # -------------------------------------------------------------------------
+    # Apply migration
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Applying migration 005..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/migrations/005_demande_pre_mandat.sql
+
+    # -------------------------------------------------------------------------
+    # Verify demande.id_mandat is nullable
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Verifying pre-mandate DEMANDE support..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              table_schema,
+              table_name,
+              column_name,
+              is_nullable
+            FROM information_schema.columns
+            WHERE table_schema = 'real_estate'
+              AND table_name = 'demande'
+              AND column_name = 'id_mandat';
+          "
+
+    # -------------------------------------------------------------------------
+    # Verify new columns
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Verifying migration 005 columns..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              table_name,
+              column_name,
+              data_type,
+              is_nullable
+            FROM information_schema.columns
+            WHERE table_schema = 'real_estate'
+              AND (
+                (
+                  table_name = 'demande'
+                  AND column_name = 'origine'
+                )
+                OR
+                (
+                  table_name = 'demande_version'
+                  AND column_name IN (
+                    'source_recherche_ref',
+                    'ingestion_batch'
+                  )
+                )
+              )
+            ORDER BY table_name, column_name;
+          "
+
+    # -------------------------------------------------------------------------
+    # Verify legacy integrity
+    #
+    # Existing migrated business demandes must remain associated with their
+    # original mandates.
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Checking legacy demande integrity..."
+
+      LEGACY_WITHOUT_MANDATE="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT COUNT(*)
+             FROM real_estate.demande
+             WHERE origine = 'LEGACY'
+               AND id_mandat IS NULL;"
+      )"
+
+      echo "Legacy demandes without mandate: ${LEGACY_WITHOUT_MANDATE}"
+
+      if [ "${LEGACY_WITHOUT_MANDATE}" != "0" ]; then
+        echo "ERROR: legacy demandes lost their mandate relationship."
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # Verify migration registry
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Verifying migration registry..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              version,
+              description,
+              applied_at
+            FROM migration_control.schema_version
+            WHERE version = '005';
+          "
+
+    # -------------------------------------------------------------------------
+    # Final schema state
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "============================================================"
+      echo "MIGRATION 005 SUCCESSFULLY APPLIED"
+      echo "============================================================"
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              COUNT(*) AS demandes_total,
+              COUNT(*) FILTER (
+                WHERE origine = 'LEGACY'
+              ) AS legacy_demandes,
+              COUNT(*) FILTER (
+                WHERE origine = 'GENERATED'
+              ) AS generated_demandes,
+              COUNT(*) FILTER (
+                WHERE id_mandat IS NULL
+              ) AS pre_mandate_demandes
+            FROM real_estate.demande;
           "
 
   rules:
@@ -583,86 +817,96 @@ database:create-raw-schema:
 
 # =============================================================================
 # LOAD GENERATED RAW DATA
+#
+# Historical/manual loader kept disabled because generated ingestion is now
+# orchestrated through Airflow:
+#
+#   generator
+#     -> MinIO
+#     -> RAW
+#     -> STAGING
+#     -> OLTP
+#
 # =============================================================================
 
-#database:load-raw-generated:
-#  stage: database
+# database:load-raw-generated:
+#   stage: database
+#
+#   tags:
+#     - shell
+#
+#   needs:
+#     - database:validate
+#
+#   before_script:
+#     - python3 --version
+#     - python3 -m pip install --user -r requirements-ingestion.txt
+#
+#   script:
+#     - kubectl -n real-estate get deploy real-estate-postgresql
+#     - kubectl -n real-estate get secret real-estate-postgresql-secret
+#
+#     - |
+#       export POSTGRES_DB="$(
+#         kubectl -n real-estate get secret real-estate-postgresql-secret \
+#           -o jsonpath='{.data.POSTGRES_DB}' | base64 -d
+#       )"
+#
+#       export POSTGRES_USER="$(
+#         kubectl -n real-estate get secret real-estate-postgresql-secret \
+#           -o jsonpath='{.data.POSTGRES_USER}' | base64 -d
+#       )"
+#
+#       export POSTGRES_PASSWORD="$(
+#         kubectl -n real-estate get secret real-estate-postgresql-secret \
+#           -o jsonpath='{.data.POSTGRES_PASSWORD}' | base64 -d
+#       )"
+#
+#       export POSTGRES_HOST="127.0.0.1"
+#       export POSTGRES_PORT="15432"
+#       export INGESTION_BATCH="generated-1000-v1"
+#
+#       kubectl -n real-estate port-forward \
+#         service/real-estate-postgresql \
+#         15432:5432 \
+#         > /tmp/real-estate-postgresql-port-forward.log 2>&1 &
+#
+#       PORT_FORWARD_PID=$!
+#
+#       cleanup() {
+#         kill "$PORT_FORWARD_PID" 2>/dev/null || true
+#       }
+#
+#       trap cleanup EXIT
+#
+#       for i in $(seq 1 20); do
+#         if python3 -c "
+#       import socket
+#       s = socket.socket()
+#       s.settimeout(1)
+#       s.connect(('127.0.0.1', 15432))
+#       s.close()
+#       " 2>/dev/null; then
+#           echo "PostgreSQL tunnel ready."
+#           break
+#         fi
+#
+#         if [ "$i" -eq 20 ]; then
+#           echo "ERROR: PostgreSQL port-forward did not become ready."
+#           cat /tmp/real-estate-postgresql-port-forward.log
+#           exit 1
+#         fi
+#
+#         sleep 1
+#       done
+#
+#       python3 database/seeds/load_raw_generated_data.py
+#
+#   rules:
+#     - if: '$CI_COMMIT_BRANCH == "main"'
+#       when: manual
+#       allow_failure: false
 
-#  tags:
-#    - shell
-#
-#  needs:
-#    - database:validate
-
-#  before_script:
-#    - python3 --version
-#    - python3 -m pip install --user -r requirements-ingestion.txt
-
-#  script:
-#    - kubectl -n real-estate get deploy real-estate-postgresql
- #   - kubectl -n real-estate get secret real-estate-postgresql-secret
-#
-#    - |
-#      export POSTGRES_DB="$(
-#        kubectl -n real-estate get secret real-estate-postgresql-secret \
-#          -o jsonpath='{.data.POSTGRES_DB}' | base64 -d
-#      )"
-#
-#      export POSTGRES_USER="$(
-#        kubectl -n real-estate get secret real-estate-postgresql-secret \
-#          -o jsonpath='{.data.POSTGRES_USER}' | base64 -d
-#      )"
-#
-#      export POSTGRES_PASSWORD="$(
-#        kubectl -n real-estate get secret real-estate-postgresql-secret \
-#          -o jsonpath='{.data.POSTGRES_PASSWORD}' | base64 -d
-#      )"
-
- #     export POSTGRES_HOST="127.0.0.1"
-#      export POSTGRES_PORT="15432"
-#      export INGESTION_BATCH="generated-1000-v1"
-#
-#      kubectl -n real-estate port-forward \
- #       service/real-estate-postgresql \
- #       15432:5432 \
- #       > /tmp/real-estate-postgresql-port-forward.log 2>&1 &
-#
- #     PORT_FORWARD_PID=$!
-#
- #     cleanup() {
-#        kill "$PORT_FORWARD_PID" 2>/dev/null || true
- #     }
-#
-#      trap cleanup EXIT
-#
-#      for i in $(seq 1 20); do
-#        if python3 -c "
-#      import socket
-#      s = socket.socket()
-#      s.settimeout(1)
-#      s.connect(('127.0.0.1', 15432))
-#      s.close()
-#      " 2>/dev/null; then
-#          echo "PostgreSQL tunnel ready."
-##          break
-#        fi
-#
- #       if [ "$i" -eq 20 ]; then
-#          echo "ERROR: PostgreSQL port-forward did not become ready."
-#          cat /tmp/real-estate-postgresql-port-forward.log
- #         exit 1
-#        fi
-#
- #       sleep 1
-#      done
-#
-#      python3 database/seeds/load_raw_generated_data.py
-#
-#  rules:
-#    - if: '$CI_COMMIT_BRANCH == "main"'
-#      when: manual
-#      allow_failure: false
-#
 
 # =============================================================================
 # CREATE STAGING SCHEMA
