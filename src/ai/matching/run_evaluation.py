@@ -37,6 +37,46 @@ DATABASE_USER = os.getenv("POSTGRES_USER")
 DATABASE_PASSWORD = os.getenv("POSTGRES_PASSWORD")
 
 
+def optional_env(name: str) -> str | None:
+    value = os.getenv(name)
+
+    if value is None:
+        return None
+
+    value = value.strip()
+
+    if not value:
+        return None
+
+    return value
+
+
+def build_gitlab_traceability() -> dict[str, str]:
+    mapping = {
+        "git_commit_sha": "CI_COMMIT_SHA",
+        "git_commit_short_sha": "CI_COMMIT_SHORT_SHA",
+        "git_branch": "CI_COMMIT_BRANCH",
+        "git_ref_name": "CI_COMMIT_REF_NAME",
+        "git_repository": "CI_PROJECT_URL",
+        "git_project_path": "CI_PROJECT_PATH",
+        "git_pipeline_id": "CI_PIPELINE_ID",
+        "git_pipeline_url": "CI_PIPELINE_URL",
+        "git_job_id": "CI_JOB_ID",
+        "git_job_name": "CI_JOB_NAME",
+        "git_job_url": "CI_JOB_URL",
+    }
+
+    traceability: dict[str, str] = {}
+
+    for tag_name, env_name in mapping.items():
+        value = optional_env(env_name)
+
+        if value is not None:
+            traceability[tag_name] = value
+
+    return traceability
+
+
 def main() -> None:
     print("===== Real Estate Matching Evaluation Started =====")
     print(f"MLflow Tracking URI: {TRACKING_URI}")
@@ -54,6 +94,8 @@ def main() -> None:
 
     output_dir = Path("outputs")
     output_dir.mkdir(exist_ok=True)
+
+    gitlab_traceability = build_gitlab_traceability()
 
     connection = psycopg.connect(
         host=DATABASE_HOST,
@@ -73,16 +115,19 @@ def main() -> None:
 
     run_name = f"matching-baseline-dv-{DEMANDE_VERSION_ID}"
 
+    mlflow_tags = {
+        "project": "chasse_immobiliere",
+        "platform": "enterprise-homelab",
+        "execution_mode": "kubernetes-job",
+        "evaluation_type": "deterministic-baseline",
+        "model_registry_enabled": "false",
+        **gitlab_traceability,
+    }
+
     run_id = log_deterministic_evaluation(
         result,
         run_name=run_name,
-        extra_tags={
-            "project": "chasse_immobiliere",
-            "platform": "enterprise-homelab",
-            "execution_mode": "kubernetes-job",
-            "evaluation_type": "deterministic-baseline",
-            "model_registry_enabled": "false",
-        },
+        extra_tags=mlflow_tags,
     )
 
     ranked_path = output_dir / "ranked_candidates.csv"
@@ -110,6 +155,7 @@ def main() -> None:
         "data_type": "generated-synthetic-project-data",
         "model_training": False,
         "model_registry": False,
+        "gitlab_traceability": gitlab_traceability,
     }
 
     with open(
@@ -147,6 +193,16 @@ def main() -> None:
         print(
             "Top matching score: "
             f"{result.ranked.iloc[0]['matching_score']}"
+        )
+
+    if gitlab_traceability:
+        print("GitLab traceability metadata:")
+        for key, value in gitlab_traceability.items():
+            print(f"  {key}: {value}")
+    else:
+        print(
+            "GitLab traceability metadata: "
+            "not provided by execution environment"
         )
 
     print(f"Artifacts logged under run: {run_id}")

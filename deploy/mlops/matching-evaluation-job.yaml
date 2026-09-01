@@ -47,7 +47,46 @@ spec:
 
             - name: MATCHING_DEMANDE_VERSION_ID
               value: "54"
+            # -----------------------------------------------------------------
+            # GitLab CI traceability
+            #
+            # Values are injected by ai-mlops:evaluate before the Job is
+            # submitted to Kubernetes.
+            # -----------------------------------------------------------------
 
+            - name: CI_COMMIT_SHA
+              value: "__CI_COMMIT_SHA__"
+
+            - name: CI_COMMIT_SHORT_SHA
+              value: "__CI_COMMIT_SHORT_SHA__"
+
+            - name: CI_COMMIT_BRANCH
+              value: "__CI_COMMIT_BRANCH__"
+
+            - name: CI_COMMIT_REF_NAME
+              value: "__CI_COMMIT_REF_NAME__"
+
+            - name: CI_PROJECT_URL
+              value: "__CI_PROJECT_URL__"
+
+            - name: CI_PROJECT_PATH
+              value: "__CI_PROJECT_PATH__"
+
+            - name: CI_PIPELINE_ID
+              value: "__CI_PIPELINE_ID__"
+
+            - name: CI_PIPELINE_URL
+              value: "__CI_PIPELINE_URL__"
+
+            - name: CI_JOB_ID
+              value: "__CI_JOB_ID__"
+
+            - name: CI_JOB_NAME
+              value: "__CI_JOB_NAME__"
+
+            - name: CI_JOB_URL
+              value: "__CI_JOB_URL__"
+            
             # -----------------------------------------------------------------
             # PostgreSQL
             #
