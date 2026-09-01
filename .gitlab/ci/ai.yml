@@ -1,0 +1,94 @@
+# ============================================================
+# AI / MATCHING VALIDATION
+# ============================================================
+#
+# Scope:
+#   - deterministic real-estate matching baseline
+#   - feature engineering
+#   - PostgreSQL extraction layer
+#   - matching evaluation orchestration
+#
+# Training dependencies are intentionally excluded here.
+#
+# Dependency hierarchy:
+#
+#   requirements-backend.txt
+#            ↓
+#   requirements-ai.txt
+#            ↓
+#   requirements-ai-training.txt
+#
+# PyTorch / MLflow / scikit-learn belong to the future
+# training pipeline, not to this lightweight validation job.
+# ============================================================
+
+ai:validate:
+  stage: validate
+
+  tags:
+    - docker
+
+  image: python:3.12-slim
+
+  before_script:
+    - python --version
+    - python -m pip install --upgrade pip
+    - python -m pip install -r requirements-ai.txt
+
+  script:
+    # --------------------------------------------------------
+    # Dependency architecture
+    # --------------------------------------------------------
+    - test -f requirements-backend.txt
+    - test -f requirements-ai.txt
+    - test -f requirements-ai-training.txt
+
+    # --------------------------------------------------------
+    # AI source structure
+    # --------------------------------------------------------
+    - test -f src/ai/matching/features.py
+    - test -f src/ai/matching/repository.py
+    - test -f src/ai/matching/evaluate.py
+
+    # --------------------------------------------------------
+    # AI tests
+    # --------------------------------------------------------
+    - test -f tests/ai/test_matching_features.py
+    - test -f tests/ai/test_matching_repository.py
+    - test -f tests/ai/test_matching_evaluate.py
+
+    # --------------------------------------------------------
+    # Syntax validation
+    # --------------------------------------------------------
+    - python -m py_compile src/ai/matching/features.py
+    - python -m py_compile src/ai/matching/repository.py
+    - python -m py_compile src/ai/matching/evaluate.py
+
+    # --------------------------------------------------------
+    # Runtime dependency validation
+    # --------------------------------------------------------
+    - python -c "import numpy; print('NumPy', numpy.__version__)"
+    - python -c "import pandas; print('Pandas', pandas.__version__)"
+    - python -c "import psycopg; print('Psycopg', psycopg.__version__)"
+
+    # --------------------------------------------------------
+    # Import validation
+    # --------------------------------------------------------
+    - python -c "from src.ai.matching.features import build_matching_features, compute_matching_score; print('Matching features import OK')"
+    - python -c "from src.ai.matching.repository import load_matching_input; print('Matching repository import OK')"
+    - python -c "from src.ai.matching.evaluate import evaluate_demande_version; print('Matching evaluation import OK')"
+
+    # --------------------------------------------------------
+    # Unit tests
+    # --------------------------------------------------------
+    - python -m pytest tests/ai -v
+
+  rules:
+    - changes:
+        - src/ai/**/*
+        - tests/ai/**/*
+        - requirements-ai.txt
+        - requirements-ai-training.txt
+        - requirements-backend.txt
+        - .gitlab/ci/ai.yml
+        - .gitlab-ci.yml

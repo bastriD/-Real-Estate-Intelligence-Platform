@@ -14,3 +14,4 @@ include:
   - local: .gitlab/ci/observability.yml
   - local: .gitlab/ci/backend-tests.yml
   - local: .gitlab/ci/backend.yml
+  - local: .gitlab/ci/ai.yml
