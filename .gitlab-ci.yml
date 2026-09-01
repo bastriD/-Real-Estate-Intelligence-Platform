@@ -15,3 +15,4 @@ include:
   - local: .gitlab/ci/backend-tests.yml
   - local: .gitlab/ci/backend.yml
   - local: .gitlab/ci/ai.yml
+  - local: .gitlab/ci/ai-mlops.yml

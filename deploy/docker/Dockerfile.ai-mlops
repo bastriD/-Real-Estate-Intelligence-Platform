@@ -1,0 +1,28 @@
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+WORKDIR /app
+
+COPY requirements-backend.txt .
+COPY requirements-ai.txt .
+COPY requirements-ai-mlops.txt .
+
+RUN pip install --upgrade pip \
+    && pip install -r requirements-ai-mlops.txt
+
+COPY src ./src
+
+RUN useradd \
+        --create-home \
+        --uid 10001 \
+        --shell /usr/sbin/nologin \
+        appuser \
+    && mkdir -p /app/outputs \
+    && chown -R appuser:appuser /app
+
+USER appuser
+
+CMD ["python", "-m", "src.ai.matching.run_evaluation"]

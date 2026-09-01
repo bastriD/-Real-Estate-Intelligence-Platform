@@ -1,0 +1,728 @@
+# =============================================================================
+# REAL ESTATE AI / MLOPS BASELINE EVALUATION
+# =============================================================================
+#
+# PURPOSE
+#
+#   - Build a dedicated deterministic matching + MLflow runtime image.
+#   - Publish the image to GitLab Container Registry.
+#   - Trigger an ephemeral Kubernetes Job from GitLab CI.
+#   - Evaluate a demande_version against generated project data.
+#   - Log metrics, parameters, tags and artifacts to MLflow.
+#
+# EXECUTION FLOW
+#
+#   ai:validate
+#        |
+#        v
+#   ai-mlops:build-image
+#        |
+#        v
+#   GitLab Container Registry
+#        |
+#        v
+#   ai-mlops:evaluate
+#        |
+#        v
+#   shell runner + kubectl
+#        |
+#        v
+#   Kubernetes Job
+#   real-estate-matching-evaluation
+#        |
+#        +--> PostgreSQL real_estate
+#        |
+#        +--> MLflow Tracking
+#        |
+#        v
+#   Job Complete
+#
+#
+# IMPORTANT
+#
+# - This is NOT a permanent application workload.
+# - No Deployment is required.
+# - No Service is required.
+# - No Argo CD Application is required.
+# - No GitOps publication is required for execution.
+# - GitLab CI explicitly triggers the ephemeral Kubernetes Job.
+# - The Job uses the immutable commit image tag.
+# - ML training dependencies are NOT installed here.
+# - requirements-ai-training.txt remains reserved for future training.
+#
+# =============================================================================
+
+
+# =============================================================================
+# 1. BUILD AND PUBLISH AI / MLOPS IMAGE
+# =============================================================================
+
+ai-mlops:build-image:
+  stage: build
+
+  tags:
+    - docker
+
+  needs:
+    - job: ai:validate
+      artifacts: false
+
+  image: docker:27.5.1
+
+  variables:
+    DOCKER_HOST: "unix:///var/run/docker.sock"
+
+    IMAGE_NAME: "$CI_REGISTRY_IMAGE/ai-mlops"
+    IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+
+  before_script:
+    # -------------------------------------------------------------------------
+    # Validate Docker runner
+    # -------------------------------------------------------------------------
+
+    - docker version
+
+    # -------------------------------------------------------------------------
+    # Authenticate against GitLab Container Registry
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "$CI_REGISTRY_PASSWORD" |
+        docker login \
+          "$CI_REGISTRY" \
+          -u "$CI_REGISTRY_USER" \
+          --password-stdin
+
+  script:
+    # -------------------------------------------------------------------------
+    # Validate required files
+    # -------------------------------------------------------------------------
+
+    - test -f requirements-backend.txt
+    - test -f requirements-ai.txt
+    - test -f requirements-ai-mlops.txt
+
+    - test -f deploy/docker/Dockerfile.ai-mlops
+
+    - test -f src/ai/matching/features.py
+    - test -f src/ai/matching/repository.py
+    - test -f src/ai/matching/evaluate.py
+    - test -f src/ai/matching/mlflow_tracking.py
+    - test -f src/ai/matching/run_evaluation.py
+
+    # -------------------------------------------------------------------------
+    # Build dedicated AI / MLOps image
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "BUILDING REAL ESTATE AI / MLOPS IMAGE"
+      echo "============================================================"
+
+      echo
+      echo "Immutable image:"
+      echo "$IMAGE_NAME:$IMAGE_TAG"
+
+      docker build \
+        -f deploy/docker/Dockerfile.ai-mlops \
+        -t "$IMAGE_NAME:$IMAGE_TAG" \
+        -t "$IMAGE_NAME:latest" \
+        .
+
+    # -------------------------------------------------------------------------
+    # Validate Python runtime inside image
+    # -------------------------------------------------------------------------
+
+    - |
+      docker run \
+        --rm \
+        "$IMAGE_NAME:$IMAGE_TAG" \
+        python --version
+
+    # -------------------------------------------------------------------------
+    # Validate MLOps dependencies inside image
+    # -------------------------------------------------------------------------
+
+    - |
+      docker run \
+        --rm \
+        "$IMAGE_NAME:$IMAGE_TAG" \
+        python -c \
+        "import numpy; import pandas; import psycopg; import mlflow; print('NumPy:', numpy.__version__); print('Pandas:', pandas.__version__); print('psycopg:', psycopg.__version__); print('MLflow:', mlflow.__version__)"
+
+    # -------------------------------------------------------------------------
+    # Validate matching modules inside image
+    # -------------------------------------------------------------------------
+
+    - |
+      docker run \
+        --rm \
+        "$IMAGE_NAME:$IMAGE_TAG" \
+        python -c \
+        "from src.ai.matching.features import MatchingWeights; from src.ai.matching.repository import load_matching_input; from src.ai.matching.evaluate import evaluate_demande_version; print('Matching modules imported successfully'); print(MatchingWeights())"
+
+    # -------------------------------------------------------------------------
+    # Validate MLflow tracking module inside image
+    # -------------------------------------------------------------------------
+
+    - |
+      docker run \
+        --rm \
+        "$IMAGE_NAME:$IMAGE_TAG" \
+        python -c \
+        "from src.ai.matching.mlflow_tracking import configure_mlflow, log_deterministic_evaluation; print('MLflow tracking module imported successfully')"
+
+    # -------------------------------------------------------------------------
+    # Validate Kubernetes evaluation entrypoint inside image
+    # -------------------------------------------------------------------------
+
+    - |
+      docker run \
+        --rm \
+        "$IMAGE_NAME:$IMAGE_TAG" \
+        python -c \
+        "import src.ai.matching.run_evaluation; print('run_evaluation module imported successfully')"
+
+    # -------------------------------------------------------------------------
+    # Push immutable image
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "Publishing immutable AI / MLOps image:"
+      echo "$IMAGE_NAME:$IMAGE_TAG"
+
+      docker push \
+        "$IMAGE_NAME:$IMAGE_TAG"
+
+    # -------------------------------------------------------------------------
+    # Push latest convenience tag
+    # -------------------------------------------------------------------------
+
+    - |
+      docker push \
+        "$IMAGE_NAME:latest"
+
+    # -------------------------------------------------------------------------
+    # Build summary
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "AI / MLOPS IMAGE PUBLISHED"
+      echo "============================================================"
+
+      echo
+      echo "Immutable image:"
+      echo "$IMAGE_NAME:$IMAGE_TAG"
+
+      echo
+      echo "Latest image:"
+      echo "$IMAGE_NAME:latest"
+
+      echo
+      echo "Runtime:"
+      echo "deterministic matching + MLflow tracking"
+
+      echo
+      echo "Training dependencies:"
+      echo "NOT installed"
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - src/ai/**/*
+        - tests/ai/**/*
+        - requirements-ai.txt
+        - requirements-ai-mlops.txt
+        - deploy/docker/Dockerfile.ai-mlops
+        - deploy/mlops/**/*
+        - .gitlab/ci/ai.yml
+        - .gitlab/ci/ai-mlops.yml
+        - .gitlab-ci.yml
+
+
+# =============================================================================
+# 2. EXECUTE DETERMINISTIC MATCHING EVALUATION IN KUBERNETES
+# =============================================================================
+
+ai-mlops:evaluate:
+  stage: deploy
+
+  tags:
+    - shell
+
+  needs:
+    - job: ai-mlops:build-image
+      artifacts: false
+
+  variables:
+    K8S_NAMESPACE: "real-estate"
+
+    JOB_NAME: "real-estate-matching-evaluation"
+
+    JOB_SOURCE_PATH: "$CI_PROJECT_DIR/deploy/mlops/matching-evaluation-job.yaml"
+
+    RENDERED_JOB_PATH: "/tmp/real-estate-matching-evaluation.yaml"
+
+    IMAGE_NAME: "$CI_REGISTRY_IMAGE/ai-mlops"
+    IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+
+    REGISTRY_PULL_SECRET: "gitlab-registry-auth"
+
+    POSTGRES_SECRET: "real-estate-postgresql-secret"
+
+    MLFLOW_NAMESPACE: "mlflow"
+    MLFLOW_SERVICE: "mlflow-tracking"
+
+  script:
+    # -------------------------------------------------------------------------
+    # 1. Validate shell runner tooling
+    # -------------------------------------------------------------------------
+
+    - kubectl version --client
+
+    # -------------------------------------------------------------------------
+    # 2. Validate required source manifest
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "AI / MLOPS KUBERNETES SOURCE VALIDATION"
+      echo "============================================================"
+
+      echo
+      echo "Job source:"
+      echo "$JOB_SOURCE_PATH"
+
+      test -f "$JOB_SOURCE_PATH"
+
+    # -------------------------------------------------------------------------
+    # 3. Validate Kubernetes namespace
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl get namespace \
+        "$K8S_NAMESPACE"
+
+    # -------------------------------------------------------------------------
+    # 4. Validate PostgreSQL Secret
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get secret \
+        "$POSTGRES_SECRET"
+
+    # -------------------------------------------------------------------------
+    # 5. Validate Registry pull Secret
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get secret \
+        "$REGISTRY_PULL_SECRET"
+
+    # -------------------------------------------------------------------------
+    # 6. Validate MLflow namespace and service
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl get namespace \
+        "$MLFLOW_NAMESPACE"
+
+    - |
+      kubectl \
+        -n "$MLFLOW_NAMESPACE" \
+        get service \
+        "$MLFLOW_SERVICE"
+
+    # -------------------------------------------------------------------------
+    # 7. Clean previous temporary rendered manifest
+    # -------------------------------------------------------------------------
+
+    - rm -f "$RENDERED_JOB_PATH"
+
+    # -------------------------------------------------------------------------
+    # 8. Render immutable image into Kubernetes Job manifest
+    #
+    # Source manifest must contain:
+    #
+    #   image: __AI_MLOPS_IMAGE__
+    #
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "RENDERING AI / MLOPS JOB"
+      echo "============================================================"
+
+      EXPECTED_IMAGE="${IMAGE_NAME}:${IMAGE_TAG}"
+
+      echo
+      echo "Expected image:"
+      echo "$EXPECTED_IMAGE"
+
+      grep \
+        "__AI_MLOPS_IMAGE__" \
+        "$JOB_SOURCE_PATH"
+
+      sed \
+        "s|__AI_MLOPS_IMAGE__|${EXPECTED_IMAGE}|g" \
+        "$JOB_SOURCE_PATH" \
+        > "$RENDERED_JOB_PATH"
+
+      test -s \
+        "$RENDERED_JOB_PATH"
+
+    # -------------------------------------------------------------------------
+    # 9. Verify placeholder disappeared
+    # -------------------------------------------------------------------------
+
+    - |
+      if grep -q \
+        "__AI_MLOPS_IMAGE__" \
+        "$RENDERED_JOB_PATH"; then
+
+        echo
+        echo "ERROR:"
+        echo "AI / MLOps image placeholder remains in rendered Job."
+
+        exit 1
+
+      fi
+
+      echo "Image placeholder replaced successfully."
+
+    # -------------------------------------------------------------------------
+    # 10. Validate immutable image reference
+    # -------------------------------------------------------------------------
+
+    - |
+      EXPECTED_IMAGE="${IMAGE_NAME}:${IMAGE_TAG}"
+
+      grep \
+        "image: ${EXPECTED_IMAGE}" \
+        "$RENDERED_JOB_PATH"
+
+    # -------------------------------------------------------------------------
+    # 11. Validate expected Kubernetes Job name
+    # -------------------------------------------------------------------------
+
+    - |
+      grep \
+        "name: ${JOB_NAME}" \
+        "$RENDERED_JOB_PATH"
+
+    # -------------------------------------------------------------------------
+    # 12. Validate expected Registry pull Secret
+    # -------------------------------------------------------------------------
+
+    - |
+      grep \
+        "name: ${REGISTRY_PULL_SECRET}" \
+        "$RENDERED_JOB_PATH"
+
+    # -------------------------------------------------------------------------
+    # 13. Client-side Kubernetes validation
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl apply \
+        --dry-run=client \
+        -f "$RENDERED_JOB_PATH" \
+        > /dev/null
+
+      echo
+      echo "Kubernetes Job manifest validation successful."
+
+    # -------------------------------------------------------------------------
+    # 14. Remove previous evaluation Job
+    #
+    # Jobs are immutable for several pod-template fields.
+    # We therefore remove the previous execution before creating the next one.
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "CLEANING PREVIOUS AI / MLOPS EXECUTION"
+      echo "============================================================"
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        delete job \
+        "$JOB_NAME" \
+        --ignore-not-found=true \
+        --wait=true
+
+    # -------------------------------------------------------------------------
+    # 15. Create new evaluation Job
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "CREATING AI / MLOPS EVALUATION JOB"
+      echo "============================================================"
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        apply \
+        -f "$RENDERED_JOB_PATH"
+
+    # -------------------------------------------------------------------------
+    # 16. Display created Job
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get job \
+        "$JOB_NAME" \
+        -o wide
+
+    # -------------------------------------------------------------------------
+    # 17. Wait for Pod creation
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "Waiting for evaluation Pod..."
+
+      for i in $(seq 1 60); do
+
+        POD_NAME="$(
+          kubectl \
+            -n "$K8S_NAMESPACE" \
+            get pods \
+            -l app.kubernetes.io/name="$JOB_NAME" \
+            -o jsonpath='{.items[0].metadata.name}' \
+            2>/dev/null || true
+        )"
+
+        if [ -n "$POD_NAME" ]; then
+          echo "Evaluation Pod:"
+          echo "$POD_NAME"
+          break
+        fi
+
+        sleep 2
+
+      done
+
+      if [ -z "${POD_NAME:-}" ]; then
+        echo "ERROR: evaluation Pod was not created."
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # 18. Wait for Job completion
+    #
+    # The loop explicitly detects both success and failure.
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "WAITING FOR AI / MLOPS EVALUATION"
+      echo "============================================================"
+
+      SUCCESS="false"
+
+      for i in $(seq 1 150); do
+
+        COMPLETE="$(
+          kubectl \
+            -n "$K8S_NAMESPACE" \
+            get job \
+            "$JOB_NAME" \
+            -o jsonpath='{.status.succeeded}' \
+            2>/dev/null || true
+        )"
+
+        FAILED="$(
+          kubectl \
+            -n "$K8S_NAMESPACE" \
+            get job \
+            "$JOB_NAME" \
+            -o jsonpath='{.status.failed}' \
+            2>/dev/null || true
+        )"
+
+        if [ "${COMPLETE:-0}" -ge 1 ] 2>/dev/null; then
+          SUCCESS="true"
+          echo "Evaluation Job completed successfully."
+          break
+        fi
+
+        if [ "${FAILED:-0}" -ge 1 ] 2>/dev/null; then
+          echo "Evaluation Job reported a failed Pod."
+          break
+        fi
+
+        echo "Evaluation still running..."
+        sleep 2
+
+      done
+
+      if [ "$SUCCESS" != "true" ]; then
+
+        echo
+        echo "ERROR:"
+        echo "AI / MLOps evaluation did not complete successfully."
+
+        echo
+        echo "Job status:"
+        kubectl \
+          -n "$K8S_NAMESPACE" \
+          get job \
+          "$JOB_NAME" \
+          -o wide || true
+
+        echo
+        echo "Pod status:"
+        kubectl \
+          -n "$K8S_NAMESPACE" \
+          get pods \
+          -l app.kubernetes.io/name="$JOB_NAME" \
+          -o wide || true
+
+        echo
+        echo "Evaluation logs:"
+        kubectl \
+          -n "$K8S_NAMESPACE" \
+          logs \
+          job/"$JOB_NAME" \
+          --all-containers=true || true
+
+        exit 1
+
+      fi
+
+    # -------------------------------------------------------------------------
+    # 19. Print successful evaluation logs
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "AI / MLOPS EVALUATION LOGS"
+      echo "============================================================"
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        logs \
+        job/"$JOB_NAME" \
+        --all-containers=true
+
+    # -------------------------------------------------------------------------
+    # 20. Display final Job status
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "AI / MLOPS FINAL KUBERNETES STATUS"
+      echo "============================================================"
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get job \
+        "$JOB_NAME" \
+        -o wide
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get pods \
+        -l app.kubernetes.io/name="$JOB_NAME" \
+        -o wide
+
+    # -------------------------------------------------------------------------
+    # 21. Final execution summary
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "AI / MLOPS EVALUATION COMPLETED"
+      echo "============================================================"
+
+      echo
+      echo "Image:"
+      echo "${IMAGE_NAME}:${IMAGE_TAG}"
+
+      echo
+      echo "Namespace:"
+      echo "$K8S_NAMESPACE"
+
+      echo
+      echo "Kubernetes Job:"
+      echo "$JOB_NAME"
+
+      echo
+      echo "MLflow:"
+      echo "http://mlflow-tracking.mlflow.svc.cluster.local:5000"
+
+      echo
+      echo "Execution type:"
+      echo "GitLab-triggered ephemeral Kubernetes Job"
+
+      echo
+      echo "Deployment:"
+      echo "None"
+
+      echo
+      echo "Service:"
+      echo "None"
+
+      echo
+      echo "Argo CD:"
+      echo "Not used for this execution workload"
+
+  after_script:
+    # -------------------------------------------------------------------------
+    # Preserve useful diagnostics in GitLab logs.
+    # Do not delete the completed Kubernetes Job automatically yet.
+    #
+    # Keeping it temporarily gives us runtime evidence during this first phase.
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "AI / MLOPS AFTER-SCRIPT DIAGNOSTICS"
+      echo "============================================================"
+
+      kubectl \
+        -n real-estate \
+        get job \
+        real-estate-matching-evaluation \
+        -o wide || true
+
+      kubectl \
+        -n real-estate \
+        get pods \
+        -l app.kubernetes.io/name=real-estate-matching-evaluation \
+        -o wide || true
+
+    - rm -f /tmp/real-estate-matching-evaluation.yaml
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - src/ai/**/*
+        - tests/ai/**/*
+        - requirements-ai.txt
+        - requirements-ai-mlops.txt
+        - deploy/docker/Dockerfile.ai-mlops
+        - deploy/mlops/**/*
+        - .gitlab/ci/ai.yml
+        - .gitlab/ci/ai-mlops.yml
+        - .gitlab-ci.yml
