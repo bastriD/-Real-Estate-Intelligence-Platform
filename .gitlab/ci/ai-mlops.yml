@@ -6,14 +6,16 @@
 #
 #   - Build a dedicated deterministic matching + MLflow runtime image.
 #   - Publish the image to GitLab Container Registry.
-#   - Trigger an ephemeral Kubernetes Job from GitLab CI.
+#   - Trigger ephemeral Kubernetes Jobs from GitLab CI.
 #   - Evaluate demande_versions against generated project data.
 #   - Log deterministic evaluation metrics, parameters, tags and artifacts
 #     to MLflow.
 #   - Package supervised matching dataset reconstruction and validation code
 #     inside the same reusable AI / MLOps image.
-#   - Trigger a separate ephemeral Kubernetes Job that reconstructs and
-#     validates the supervised matching dataset against runtime PostgreSQL.
+#   - Reconstruct and validate the supervised matching dataset against
+#     runtime PostgreSQL.
+#   - Build a deterministic group-aware train / validation / test split
+#     without id_demande_version leakage.
 #
 # EXECUTION FLOW
 #
@@ -25,26 +27,19 @@
 #        v
 #   GitLab Container Registry
 #        |
-#        +---------------------------------------------------+
-#        |                                                   |
-#        v                                                   v
-#   ai-mlops:evaluate                         ai-mlops:validate-training-dataset
-#        |                                                   |
-#        v                                                   v
-#   shell runner + kubectl                    shell runner + kubectl
-#        |                                                   |
-#        v                                                   v
-#   Kubernetes Job                            Kubernetes Job
-#   real-estate-matching-evaluation           real-estate-matching-training-
-#        |                                    dataset-validation
-#        |                                                   |
-#        +--> PostgreSQL real_estate                       |
-#        |                                                   +--> PostgreSQL
-#        +--> MLflow Tracking                               |    real_estate
-#        |                                                   |
-#        v                                                   +--> Runtime
-#   Job Complete                                                  validation
-#                                                                evidence
+#        +----------------------------+-----------------------------+
+#        |                            |                             |
+#        v                            v                             v
+#   ai-mlops:evaluate      ai-mlops:validate-training-   ai-mlops:split-training-
+#                          dataset                       dataset
+#        |                            |                             |
+#        v                            v                             v
+#   Kubernetes Job              Kubernetes Job                Kubernetes Job
+#   matching-evaluation         dataset-validation             dataset-split
+#        |                            |                             |
+#        +--> PostgreSQL              +--> PostgreSQL               +--> PostgreSQL
+#        |
+#        +--> MLflow
 #
 # IMPORTANT
 #
@@ -54,10 +49,12 @@
 # - No Argo CD Application is required.
 # - No GitOps publication is required for execution.
 # - GitLab CI explicitly triggers the ephemeral Kubernetes Jobs.
-# - Both Jobs use the immutable commit image tag.
-# - The same immutable AI / MLOps image is reused by both workloads.
-# - Deterministic evaluation and supervised dataset validation remain
+# - All Jobs use the immutable commit image tag.
+# - The same immutable AI / MLOps image is reused by all workloads.
+# - Deterministic evaluation, dataset validation and dataset splitting remain
 #   separate workloads.
+# - The dataset split is group-aware on id_demande_version.
+# - Ground-truth lineage is not used as a scoring feature.
 # - Model training is NOT performed by this pipeline yet.
 #
 # =============================================================================
@@ -130,6 +127,8 @@ ai-mlops:build-image:
 
     - test -f src/ai/matching/training_dataset.py
     - test -f src/ai/matching/run_training_dataset_validation.py
+    - test -f src/ai/matching/dataset_split.py
+    - test -f src/ai/matching/run_training_dataset_split.py
 
     # -------------------------------------------------------------------------
     # 1.6 Validate Kubernetes Job manifests
@@ -137,6 +136,7 @@ ai-mlops:build-image:
 
     - test -f deploy/mlops/matching-evaluation-job.yaml
     - test -f deploy/mlops/matching-training-dataset-validation-job.yaml
+    - test -f deploy/mlops/matching-training-dataset-split-job.yaml
 
     # -------------------------------------------------------------------------
     # 1.7 Build dedicated AI / MLOps image
@@ -235,7 +235,18 @@ ai-mlops:build-image:
         "import src.ai.matching.run_training_dataset_validation; print('run_training_dataset_validation module imported successfully')"
 
     # -------------------------------------------------------------------------
-    # 1.15 Push immutable image
+    # 1.15 Validate group-aware dataset split modules inside image
+    # -------------------------------------------------------------------------
+
+    - |
+      docker run \
+        --rm \
+        "$IMAGE_NAME:$IMAGE_TAG" \
+        python -c \
+        "from src.ai.matching.dataset_split import create_group_aware_split, split_summary; import src.ai.matching.run_training_dataset_split; print('Group-aware dataset split modules imported successfully')"
+
+    # -------------------------------------------------------------------------
+    # 1.16 Push immutable image
     # -------------------------------------------------------------------------
 
     - |
@@ -247,7 +258,7 @@ ai-mlops:build-image:
         "$IMAGE_NAME:$IMAGE_TAG"
 
     # -------------------------------------------------------------------------
-    # 1.16 Push latest convenience tag
+    # 1.17 Push latest convenience tag
     # -------------------------------------------------------------------------
 
     - |
@@ -255,7 +266,7 @@ ai-mlops:build-image:
         "$IMAGE_NAME:latest"
 
     # -------------------------------------------------------------------------
-    # 1.17 Build summary
+    # 1.18 Build summary
     # -------------------------------------------------------------------------
 
     - |
@@ -278,6 +289,7 @@ ai-mlops:build-image:
       echo "- MLflow tracking"
       echo "- supervised dataset reconstruction"
       echo "- supervised dataset validation"
+      echo "- group-aware train / validation / test split"
 
       echo
       echo "Model training:"
@@ -463,7 +475,6 @@ ai-mlops:evaluate:
           "$MATCHING_EVALUATION_RENDERED_PATH" || true
 
         exit 1
-
       fi
 
       echo "All Kubernetes Job placeholders replaced successfully."
@@ -604,7 +615,6 @@ ai-mlops:evaluate:
         fi
 
         sleep 2
-
       done
 
       if [ -z "${POD_NAME:-}" ]; then
@@ -666,7 +676,6 @@ ai-mlops:evaluate:
 
         echo "Evaluation still running..."
         sleep 2
-
       done
 
       if [ "$SUCCESS" != "true" ]; then
@@ -703,7 +712,6 @@ ai-mlops:evaluate:
           --all-containers=true || true
 
         exit 1
-
       fi
 
     # -------------------------------------------------------------------------
@@ -969,7 +977,6 @@ ai-mlops:validate-training-dataset:
           "$DATASET_VALIDATION_RENDERED_PATH" || true
 
         exit 1
-
       fi
 
       echo "All dataset validation placeholders replaced successfully."
@@ -1125,7 +1132,6 @@ ai-mlops:validate-training-dataset:
         fi
 
         sleep 2
-
       done
 
       if [ -z "${POD_NAME:-}" ]; then
@@ -1187,7 +1193,6 @@ ai-mlops:validate-training-dataset:
 
         echo "Dataset validation still running..."
         sleep 2
-
       done
 
       if [ "$SUCCESS" != "true" ]; then
@@ -1224,7 +1229,6 @@ ai-mlops:validate-training-dataset:
           --all-containers=true || true
 
         exit 1
-
       fi
 
     # -------------------------------------------------------------------------
@@ -1342,7 +1346,560 @@ ai-mlops:validate-training-dataset:
         -l app.kubernetes.io/name=real-estate-matching-training-dataset-validation \
         -o wide || true
 
+      kubectl \
+        -n real-estate \
+        logs \
+        job/real-estate-matching-training-dataset-validation \
+        --all-containers=true || true
+
     - rm -f /tmp/real-estate-matching-training-dataset-validation.yaml
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - src/ai/**/*
+        - tests/ai/**/*
+        - requirements-ai.txt
+        - requirements-ai-mlops.txt
+        - deploy/docker/Dockerfile.ai-mlops
+        - deploy/mlops/**/*
+        - .gitlab/ci/ai.yml
+        - .gitlab/ci/ai-mlops.yml
+        - .gitlab-ci.yml
+
+
+# =============================================================================
+# 4. EXECUTE GROUP-AWARE SUPERVISED DATASET SPLIT IN KUBERNETES
+# =============================================================================
+
+ai-mlops:split-training-dataset:
+  stage: deploy
+
+  tags:
+    - shell
+
+  needs:
+    - job: ai-mlops:build-image
+      artifacts: false
+
+  variables:
+    K8S_NAMESPACE: "real-estate"
+
+    DATASET_SPLIT_JOB_NAME: "real-estate-matching-training-dataset-split"
+
+    DATASET_SPLIT_SOURCE_PATH: "$CI_PROJECT_DIR/deploy/mlops/matching-training-dataset-split-job.yaml"
+
+    DATASET_SPLIT_RENDERED_PATH: "/tmp/real-estate-matching-training-dataset-split.yaml"
+
+    IMAGE_NAME: "$CI_REGISTRY_IMAGE/ai-mlops"
+    IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+
+    REGISTRY_PULL_SECRET: "gitlab-registry-auth"
+
+    POSTGRES_SECRET: "real-estate-postgresql-secret"
+
+  script:
+    # -------------------------------------------------------------------------
+    # 4.1 Validate shell runner tooling
+    # -------------------------------------------------------------------------
+
+    - kubectl version --client
+
+    # -------------------------------------------------------------------------
+    # 4.2 Validate required source manifest
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "TRAINING DATASET SPLIT SOURCE CHECK"
+      echo "============================================================"
+
+      echo
+      echo "Job source:"
+      echo "$DATASET_SPLIT_SOURCE_PATH"
+
+      test -f "$DATASET_SPLIT_SOURCE_PATH"
+
+    # -------------------------------------------------------------------------
+    # 4.3 Validate Kubernetes namespace
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl get namespace \
+        "$K8S_NAMESPACE"
+
+    # -------------------------------------------------------------------------
+    # 4.4 Validate PostgreSQL Secret
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get secret \
+        "$POSTGRES_SECRET"
+
+    # -------------------------------------------------------------------------
+    # 4.5 Validate Registry pull Secret
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get secret \
+        "$REGISTRY_PULL_SECRET"
+
+    # -------------------------------------------------------------------------
+    # 4.6 Clean previous temporary rendered manifest
+    # -------------------------------------------------------------------------
+
+    - rm -f "$DATASET_SPLIT_RENDERED_PATH"
+
+    # -------------------------------------------------------------------------
+    # 4.7 Render immutable image and CI traceability into Kubernetes Job
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "RENDERING TRAINING DATASET SPLIT JOB"
+      echo "============================================================"
+
+      EXPECTED_IMAGE="${IMAGE_NAME}:${IMAGE_TAG}"
+
+      echo
+      echo "Expected image:"
+      echo "$EXPECTED_IMAGE"
+
+      echo
+      echo "Expected Kubernetes Job:"
+      echo "$DATASET_SPLIT_JOB_NAME"
+
+      grep \
+        "__AI_MLOPS_IMAGE__" \
+        "$DATASET_SPLIT_SOURCE_PATH"
+
+      sed \
+        -e "s|__AI_MLOPS_IMAGE__|${EXPECTED_IMAGE}|g" \
+        -e "s|__CI_COMMIT_SHA__|${CI_COMMIT_SHA}|g" \
+        -e "s|__CI_COMMIT_SHORT_SHA__|${CI_COMMIT_SHORT_SHA}|g" \
+        -e "s|__CI_COMMIT_BRANCH__|${CI_COMMIT_BRANCH}|g" \
+        -e "s|__CI_COMMIT_REF_NAME__|${CI_COMMIT_REF_NAME}|g" \
+        -e "s|__CI_PROJECT_URL__|${CI_PROJECT_URL}|g" \
+        -e "s|__CI_PROJECT_PATH__|${CI_PROJECT_PATH}|g" \
+        -e "s|__CI_PIPELINE_ID__|${CI_PIPELINE_ID}|g" \
+        -e "s|__CI_PIPELINE_URL__|${CI_PIPELINE_URL}|g" \
+        -e "s|__CI_JOB_ID__|${CI_JOB_ID}|g" \
+        -e "s|__CI_JOB_NAME__|${CI_JOB_NAME}|g" \
+        -e "s|__CI_JOB_URL__|${CI_JOB_URL}|g" \
+        "$DATASET_SPLIT_SOURCE_PATH" \
+        > "$DATASET_SPLIT_RENDERED_PATH"
+
+      test -s "$DATASET_SPLIT_RENDERED_PATH"
+
+    # -------------------------------------------------------------------------
+    # 4.8 Verify all rendering placeholders disappeared
+    # -------------------------------------------------------------------------
+
+    - |
+      if grep -E -q \
+        "__AI_MLOPS_IMAGE__|__CI_[A-Z0-9_]+__" \
+        "$DATASET_SPLIT_RENDERED_PATH"; then
+
+        echo
+        echo "ERROR:"
+        echo "Unresolved placeholder remains in rendered dataset split Job:"
+        echo
+
+        grep -E \
+          "__AI_MLOPS_IMAGE__|__CI_[A-Z0-9_]+__" \
+          "$DATASET_SPLIT_RENDERED_PATH" || true
+
+        exit 1
+      fi
+
+      echo "All dataset split placeholders replaced successfully."
+
+    # -------------------------------------------------------------------------
+    # 4.9 Validate immutable image reference
+    # -------------------------------------------------------------------------
+
+    - |
+      EXPECTED_IMAGE="${IMAGE_NAME}:${IMAGE_TAG}"
+
+      echo
+      echo "Validating rendered immutable image..."
+
+      grep \
+        "image: ${EXPECTED_IMAGE}" \
+        "$DATASET_SPLIT_RENDERED_PATH"
+
+      echo "Immutable image validated successfully."
+
+    # -------------------------------------------------------------------------
+    # 4.10 Validate expected Kubernetes Job name
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "Expected Kubernetes Job:"
+      echo "$DATASET_SPLIT_JOB_NAME"
+
+      echo
+      echo "Rendered Kubernetes names:"
+
+      grep \
+        "name:" \
+        "$DATASET_SPLIT_RENDERED_PATH" || true
+
+      grep \
+        "name: ${DATASET_SPLIT_JOB_NAME}" \
+        "$DATASET_SPLIT_RENDERED_PATH"
+
+      echo "Dataset split Kubernetes Job name validated successfully."
+
+    # -------------------------------------------------------------------------
+    # 4.11 Validate dataset split Python entrypoint
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "Validating dataset split entrypoint..."
+
+      grep \
+        "src.ai.matching.run_training_dataset_split" \
+        "$DATASET_SPLIT_RENDERED_PATH"
+
+      echo "Dataset split entrypoint validated successfully."
+
+    # -------------------------------------------------------------------------
+    # 4.12 Validate expected Registry pull Secret
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "Validating Registry pull Secret reference..."
+
+      grep \
+        "name: ${REGISTRY_PULL_SECRET}" \
+        "$DATASET_SPLIT_RENDERED_PATH"
+
+      echo "Registry pull Secret reference validated successfully."
+
+    # -------------------------------------------------------------------------
+    # 4.13 Client-side Kubernetes validation
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl apply \
+        --dry-run=client \
+        -f "$DATASET_SPLIT_RENDERED_PATH" \
+        > /dev/null
+
+      echo
+      echo "Dataset split Kubernetes Job manifest is valid."
+
+    # -------------------------------------------------------------------------
+    # 4.14 Remove previous dataset-split Job
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "CLEANING PREVIOUS TRAINING DATASET SPLIT"
+      echo "============================================================"
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        delete job \
+        "$DATASET_SPLIT_JOB_NAME" \
+        --ignore-not-found=true \
+        --wait=true
+
+    # -------------------------------------------------------------------------
+    # 4.15 Create new dataset-split Job
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "CREATING TRAINING DATASET SPLIT JOB"
+      echo "============================================================"
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        apply \
+        -f "$DATASET_SPLIT_RENDERED_PATH"
+
+    # -------------------------------------------------------------------------
+    # 4.16 Display created Job
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get job \
+        "$DATASET_SPLIT_JOB_NAME" \
+        -o wide
+
+    # -------------------------------------------------------------------------
+    # 4.17 Wait for Pod creation
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "Waiting for dataset split Pod..."
+
+      POD_NAME=""
+
+      for i in $(seq 1 60); do
+
+        POD_NAME="$(
+          kubectl \
+            -n "$K8S_NAMESPACE" \
+            get pods \
+            -l app.kubernetes.io/name="$DATASET_SPLIT_JOB_NAME" \
+            -o jsonpath='{.items[0].metadata.name}' \
+            2>/dev/null || true
+        )"
+
+        if [ -n "$POD_NAME" ]; then
+          echo
+          echo "Dataset split Pod:"
+          echo "$POD_NAME"
+          break
+        fi
+
+        sleep 2
+      done
+
+      if [ -z "${POD_NAME:-}" ]; then
+        echo
+        echo "ERROR:"
+        echo "Dataset split Pod was not created."
+
+        kubectl \
+          -n "$K8S_NAMESPACE" \
+          get job \
+          "$DATASET_SPLIT_JOB_NAME" \
+          -o wide || true
+
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # 4.18 Wait for Job completion
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "WAITING FOR TRAINING DATASET SPLIT"
+      echo "============================================================"
+
+      SUCCESS="false"
+
+      for i in $(seq 1 300); do
+
+        COMPLETE="$(
+          kubectl \
+            -n "$K8S_NAMESPACE" \
+            get job \
+            "$DATASET_SPLIT_JOB_NAME" \
+            -o jsonpath='{.status.succeeded}' \
+            2>/dev/null || true
+        )"
+
+        FAILED="$(
+          kubectl \
+            -n "$K8S_NAMESPACE" \
+            get job \
+            "$DATASET_SPLIT_JOB_NAME" \
+            -o jsonpath='{.status.failed}' \
+            2>/dev/null || true
+        )"
+
+        if [ "${COMPLETE:-0}" -ge 1 ] 2>/dev/null; then
+          SUCCESS="true"
+          echo "Training dataset split completed successfully."
+          break
+        fi
+
+        if [ "${FAILED:-0}" -ge 1 ] 2>/dev/null; then
+          echo "Training dataset split reported a failed Pod."
+          break
+        fi
+
+        echo "Dataset split still running..."
+        sleep 2
+      done
+
+      if [ "$SUCCESS" != "true" ]; then
+
+        echo
+        echo "ERROR:"
+        echo "Training dataset split did not complete successfully."
+
+        echo
+        echo "Job status:"
+
+        kubectl \
+          -n "$K8S_NAMESPACE" \
+          get job \
+          "$DATASET_SPLIT_JOB_NAME" \
+          -o wide || true
+
+        echo
+        echo "Pod status:"
+
+        kubectl \
+          -n "$K8S_NAMESPACE" \
+          get pods \
+          -l app.kubernetes.io/name="$DATASET_SPLIT_JOB_NAME" \
+          -o wide || true
+
+        echo
+        echo "Dataset split logs:"
+
+        kubectl \
+          -n "$K8S_NAMESPACE" \
+          logs \
+          job/"$DATASET_SPLIT_JOB_NAME" \
+          --all-containers=true || true
+
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # 4.19 Print successful dataset split logs
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "TRAINING DATASET SPLIT LOGS"
+      echo "============================================================"
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        logs \
+        job/"$DATASET_SPLIT_JOB_NAME" \
+        --all-containers=true
+
+    # -------------------------------------------------------------------------
+    # 4.20 Display final Job status
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "TRAINING DATASET SPLIT FINAL KUBERNETES STATUS"
+      echo "============================================================"
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get job \
+        "$DATASET_SPLIT_JOB_NAME" \
+        -o wide
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get pods \
+        -l app.kubernetes.io/name="$DATASET_SPLIT_JOB_NAME" \
+        -o wide
+
+    # -------------------------------------------------------------------------
+    # 4.21 Final execution summary
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "TRAINING DATASET SPLIT COMPLETED"
+      echo "============================================================"
+
+      echo
+      echo "Image:"
+      echo "${IMAGE_NAME}:${IMAGE_TAG}"
+
+      echo
+      echo "Namespace:"
+      echo "$K8S_NAMESPACE"
+
+      echo
+      echo "Kubernetes Job:"
+      echo "$DATASET_SPLIT_JOB_NAME"
+
+      echo
+      echo "Dataset source:"
+      echo "PostgreSQL runtime reconstruction"
+
+      echo
+      echo "Training dataset:"
+      echo "Informative groups containing both relevance classes"
+
+      echo
+      echo "Split strategy:"
+      echo "Group-aware by id_demande_version"
+
+      echo
+      echo "Expected logical partition:"
+      echo "7 train / 2 validation / 2 test groups for the current 11-group dataset"
+
+      echo
+      echo "Leakage policy:"
+      echo "No id_demande_version may occur in more than one partition"
+
+      echo
+      echo "Model training:"
+      echo "NOT performed"
+
+      echo
+      echo "MLflow:"
+      echo "Not used by this split workload"
+
+      echo
+      echo "Execution type:"
+      echo "GitLab-triggered ephemeral Kubernetes Job"
+
+      echo
+      echo "Deployment:"
+      echo "None"
+
+      echo
+      echo "Service:"
+      echo "None"
+
+      echo
+      echo "Argo CD:"
+      echo "Not used for this execution workload"
+
+  after_script:
+    - |
+      echo
+      echo "============================================================"
+      echo "TRAINING DATASET SPLIT AFTER-SCRIPT DIAGNOSTICS"
+      echo "============================================================"
+
+      kubectl \
+        -n real-estate \
+        get job \
+        real-estate-matching-training-dataset-split \
+        -o wide || true
+
+      kubectl \
+        -n real-estate \
+        get pods \
+        -l app.kubernetes.io/name=real-estate-matching-training-dataset-split \
+        -o wide || true
+
+      kubectl \
+        -n real-estate \
+        logs \
+        job/real-estate-matching-training-dataset-split \
+        --all-containers=true || true
+
+    - rm -f /tmp/real-estate-matching-training-dataset-split.yaml
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
