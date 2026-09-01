@@ -2,11 +2,11 @@ apiVersion: batch/v1
 kind: Job
 
 metadata:
-  name: real-estate-matching-training-dataset-validation
+  name: real-estate-matching-evaluation
   namespace: real-estate
 
   labels:
-    app.kubernetes.io/name: real-estate-matching-training-dataset-validation
+    app.kubernetes.io/name: real-estate-matching-evaluation
     app.kubernetes.io/part-of: chasse-immobiliere
 
 spec:
@@ -15,7 +15,7 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: real-estate-matching-training-dataset-validation
+        app.kubernetes.io/name: real-estate-matching-evaluation
         app.kubernetes.io/part-of: chasse-immobiliere
 
     spec:
@@ -25,32 +25,38 @@ spec:
         - name: gitlab-registry-auth
 
       containers:
-        - name: dataset-validator
+        - name: evaluator
 
           image: __AI_MLOPS_IMAGE__
           imagePullPolicy: IfNotPresent
 
-          # -----------------------------------------------------------------
-          # Dataset validation entrypoint
-          #
-          # The AI/MLOps image has run_evaluation as its default CMD.
-          # This Job deliberately overrides it because dataset validation
-          # is a separate workload from deterministic ranking evaluation.
-          #
-          # No model is trained by this Job.
-          # -----------------------------------------------------------------
-
-          command:
-            - python
-            - -m
-            - src.ai.matching.run_training_dataset_validation
-
           env:
+            # -----------------------------------------------------------------
+            # MLflow
+            # -----------------------------------------------------------------
+
+            - name: MLFLOW_TRACKING_URI
+              value: "http://mlflow-tracking.mlflow.svc.cluster.local:5000"
+
+            - name: MLFLOW_EXPERIMENT_NAME
+              value: "real-estate-deterministic-matching"
+
+            # -----------------------------------------------------------------
+            # Matching evaluation suite
+            #
+            # One Kubernetes Job evaluates all generated demande versions.
+            # Each demande version still produces its own independent
+            # MLflow run for granular traceability and comparison.
+            # -----------------------------------------------------------------
+
+            - name: MATCHING_DEMANDE_VERSION_IDS
+              value: "55,56,57,58,59"
+
             # -----------------------------------------------------------------
             # GitLab CI traceability
             #
-            # Values are injected by the dedicated GitLab CI job before
-            # this Kubernetes Job is submitted.
+            # Values are injected by ai-mlops:evaluate before the Job is
+            # submitted to Kubernetes.
             # -----------------------------------------------------------------
 
             - name: CI_COMMIT_SHA
@@ -89,11 +95,8 @@ spec:
             # -----------------------------------------------------------------
             # PostgreSQL
             #
-            # Dataset reconstruction reads the canonical runtime data from
-            # PostgreSQL.
-            #
-            # Credentials and connection information are loaded from the
-            # existing Kubernetes Secret. Nothing sensitive is stored here.
+            # Values are loaded from the existing Kubernetes Secret.
+            # No database credentials are hardcoded in this manifest.
             # -----------------------------------------------------------------
 
             - name: POSTGRES_HOST
