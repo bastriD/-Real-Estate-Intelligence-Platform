@@ -588,7 +588,9 @@ A learned model should only replace or complement the deterministic baseline whe
 
 # 17. Dependency Architecture
 
-The project separates backend, AI runtime and training dependencies.
+The project separates application runtime, deterministic AI/MLOps runtime and future training dependencies.
+
+The current dependency chain is:
 
 ```text
 requirements-backend.txt
@@ -597,97 +599,204 @@ requirements-backend.txt
 requirements-ai.txt
         │
         ▼
+requirements-ai-mlops.txt
+        │
+        ▼
 requirements-ai-training.txt
 ```
 
-## Backend dependencies
+## 17.1 Backend dependencies
 
-Contain the application/runtime stack such as:
+`requirements-backend.txt` contains the application runtime stack, including:
 
 - FastAPI;
+- Uvicorn;
+- Pydantic;
 - SQLAlchemy;
 - Psycopg;
-- Pydantic;
 - Prometheus client;
-- testing/runtime dependencies.
+- backend testing/runtime dependencies.
 
-## AI runtime dependencies
+These dependencies are sufficient for the application/API layer.
 
-`requirements-ai.txt` extends the backend dependencies with lightweight matching requirements such as:
+## 17.2 Deterministic AI dependencies
+
+`requirements-ai.txt` extends the backend runtime with the libraries required by the deterministic matching implementation:
 
 - Pandas;
 - NumPy.
 
-## AI training dependencies
+The deterministic matching implementation therefore remains lightweight and does not require a Machine Learning framework.
 
-`requirements-ai-training.txt` is reserved for training-related tooling such as:
+## 17.3 MLOps dependencies
+
+`requirements-ai-mlops.txt` extends the deterministic AI runtime with:
+
+- MLflow.
+
+This dependency layer supports:
+
+- experiment tracking;
+- parameters;
+- metrics;
+- tags;
+- evaluation artifacts;
+- execution traceability.
+
+MLflow is deliberately separated from the normal backend image.
+
+## 17.4 Training dependencies
+
+`requirements-ai-training.txt` extends the MLOps environment with training-oriented dependencies such as:
 
 - scikit-learn;
-- MLflow;
 - PyTorch.
 
-Training dependencies are intentionally excluded from the backend container.
+These dependencies remain reserved for future model-training workloads.
 
-This avoids packaging large ML/GPU dependencies into an API image that does not require them.
+They are not required by the current deterministic matcher.
+
+This separation avoids packaging large ML and GPU-oriented dependencies into workloads that do not need them.
+
+The resulting architecture is:
+
+```text
+Backend runtime
+      │
+      ▼
+Deterministic AI runtime
+      │
+      ▼
+MLOps evaluation runtime
+      │
+      ▼
+Future ML training runtime
+```
+
+This dependency layering also provides clearer container responsibility and reduces unnecessary runtime complexity.
 
 ---
 
-# 18. CI Separation
+# 18. CI and Runtime Separation
 
-AI validation has a dedicated GitLab CI definition:
+AI and MLOps responsibilities are separated across dedicated GitLab CI definitions.
+
+The principal CI responsibilities are:
 
 ```text
 .gitlab/ci/ai.yml
-```
+        │
+        ▼
+Deterministic AI validation
 
-Its current responsibility includes:
+.gitlab/ci/ai-mlops.yml
+        │
+        ├── build dedicated AI/MLOps image
+        │
+        └── trigger ephemeral evaluation Job
 
-- dependency validation;
-- AI source validation;
-- Python syntax validation;
-- runtime dependency imports;
-- AI module imports;
-- AI unit tests.
-
-Backend image publication remains separate.
-
-This establishes a clearer responsibility boundary:
-
-```text
-ai.yml
-    ↓
-AI matching validation
-
-backend-tests.yml
-    ↓
+.gitlab/ci/backend-tests.yml
+        │
+        ▼
 Backend/API validation
 
-backend.yml
-    ↓
-Backend image
-    ↓
-GitOps publication
-    ↓
-Argo CD
-    ↓
-Kubernetes
+.gitlab/ci/backend.yml
+        │
+        ▼
+Backend image + permanent GitOps publication
 ```
 
-A dedicated training pipeline can be introduced later without coupling GPU/model-training dependencies to the backend CI path.
+## 18.1 Deterministic AI validation
+
+`ai.yml` validates:
+
+- AI dependencies;
+- Python syntax;
+- matching modules;
+- repository extraction;
+- evaluation orchestration;
+- AI unit tests.
+
+The validated deterministic matching test suite contains:
+
+```text
+11 / 11 passing tests
+```
+
+## 18.2 AI/MLOps image build
+
+`ai-mlops.yml` builds a dedicated image from:
+
+```text
+deploy/docker/Dockerfile.ai-mlops
+```
+
+The image contains:
+
+```text
+deterministic matching
++
+PostgreSQL client library
++
+Pandas / NumPy
++
+MLflow client
+```
+
+Training dependencies are deliberately excluded.
+
+The validated immutable image used for the final traceability execution was:
+
+```text
+gitlab.local:4567/root/chasse_immobiliere/ai-mlops:1e347521
+```
+
+## 18.3 Ephemeral evaluation execution
+
+The deterministic evaluation is not a permanent application workload.
+
+It therefore does not require:
+
+```text
+Deployment
+Service
+Ingress
+Argo CD Application
+```
+
+Instead, GitLab CI triggers an ephemeral Kubernetes Job:
+
+```text
+GitLab CI
+    │
+    ▼
+Shell Runner
+    │
+    ▼
+kubectl
+    │
+    ▼
+Kubernetes Job
+real-estate-matching-evaluation
+```
+
+This distinction is intentional.
+
+Permanent application resources continue to use the project's GitOps/Argo CD deployment model.
+
+Ephemeral evaluation workloads are explicitly triggered by GitLab CI.
 
 ---
 
-# 19. Container and GitOps Deployment
+# 19. Backend and MLOps Deployment Responsibilities
 
-The deterministic AI matching implementation is packaged inside the backend runtime image.
+The deterministic matching source code is reusable by both the application runtime and the dedicated evaluation runtime.
 
-Validated immutable image for this milestone:
+Two different execution paths therefore exist.
 
-```text
-gitlab.local:4567/root/chasse_immobiliere/backend:0899e76b
-```
+## 19.1 Permanent backend path
 
-The deployment path remained:
+The permanent application deployment remains:
 
 ```text
 Windows development repository
@@ -703,9 +812,11 @@ lab-gitops
 Argo CD
         ↓
 Kubernetes
+        ↓
+real-estate-backend
 ```
 
-Argo CD validation:
+The backend deployment has previously been verified:
 
 ```text
 Application: real-estate-backend
@@ -713,43 +824,400 @@ Sync:        Synced
 Health:      Healthy
 ```
 
-The Kubernetes deployment was verified using image:
+The deterministic matching modules were also verified inside the deployed backend runtime.
+
+## 19.2 Ephemeral MLOps evaluation path
+
+The MLOps evaluation follows a different execution path:
 
 ```text
-backend:0899e76b
+Git commit
+    ↓
+GitLab Pipeline
+    ↓
+ai-mlops:build-image
+    ↓
+GitLab Container Registry
+    ↓
+immutable ai-mlops image
+    ↓
+ai-mlops:evaluate
+    ↓
+GitLab shell runner
+    ↓
+Kubernetes Job
+    ↓
+PostgreSQL + MLflow
+    ↓
+Job Complete
 ```
 
-The running container was also verified to contain:
+The evaluation Job is intentionally ephemeral.
+
+No permanent service is exposed for it.
+
+This preserves a clean separation between:
 
 ```text
-/app/src/ai/matching/evaluate.py
-/app/src/ai/matching/features.py
-/app/src/ai/matching/repository.py
+application serving
+```
+
+and:
+
+```text
+batch evaluation / MLOps execution
 ```
 
 ---
 
-# 20. Runtime Evaluation Verification
+# 20. Kubernetes MLOps Runtime Verification
 
-The reusable `evaluate_demande_version()` function was executed directly inside the deployed Kubernetes backend against PostgreSQL.
+The dedicated evaluation workload is defined by:
+
+```text
+deploy/mlops/matching-evaluation-job.yaml
+```
+
+The Job runs in:
+
+```text
+namespace: real-estate
+```
+
+with the name:
+
+```text
+real-estate-matching-evaluation
+```
+
+The validated execution used:
+
+```text
+Image:
+gitlab.local:4567/root/chasse_immobiliere/ai-mlops:1e347521
+```
+
+Final Kubernetes state:
+
+```text
+Job:
+real-estate-matching-evaluation
+
+Status:
+Complete
+
+Completions:
+1/1
+
+Pod:
+Completed
+
+Node:
+k8s-wk-03
+```
+
+The execution completed successfully in approximately seven seconds.
+
+The Job consumed:
+
+```text
+PostgreSQL
+real-estate-postgresql.real-estate.svc.cluster.local
+
+MLflow
+mlflow-tracking.mlflow.svc.cluster.local:5000
+```
+
+PostgreSQL credentials were supplied through the existing Kubernetes Secret:
+
+```text
+real-estate-postgresql-secret
+```
+
+The GitLab Registry pull secret used was:
+
+```text
+gitlab-registry-auth
+```
+
+No database credentials are hardcoded in the Job manifest.
+
+---
+
+# 21. MLflow Experiment Tracking
+
+The deterministic baseline is now tracked in MLflow.
+
+Experiment:
+
+```text
+real-estate-deterministic-matching
+```
+
+Experiment ID:
+
+```text
+3
+```
+
+Final validated run:
+
+```text
+Run name:
+matching-baseline-dv-54
+
+Run ID:
+594285bb07c54a348ee73d80d440d57b
+
+Status:
+Finished
+```
+
+The tracked run corresponds to:
+
+```text
+DemandeVersion 54
+```
+
+and was executed against the project's generated/synthetic property dataset.
+
+This does not represent a trained model.
+
+The run is explicitly tagged as:
+
+```text
+model_family = deterministic
+model_type = weighted-rule-baseline
+business_use_case = property-matching
+data_type = generated-synthetic-project-data
+training_required = false
+evaluation_type = deterministic-baseline
+model_registry_enabled = false
+```
+
+This distinction prevents the deterministic algorithm from being incorrectly presented as a trained Machine Learning model.
+
+---
+
+# 22. MLflow Parameters and Metrics
+
+The search criteria used during evaluation are persisted as MLflow parameters.
 
 For DemandeVersion 54:
 
 ```text
-DemandeVersion:              54
-Properties loaded:           800
-Candidates after filtering:  721
-Top score:                   90.0
-Top property:                AN-90NQYQAU
+ville             = Nantes
+code_postal       = 44000
+type_bien         = APPARTEMENT
+budget_min        = 300000
+budget_max        = 410000
+surface_min       = 70
+nb_pieces_min     = 3
+nb_chambres_min   = 2
+dpe_max           = D
 ```
 
-This confirms that the reusable evaluation layer behaves consistently with the previously validated lower-level feature and repository components.
+The evaluation produced the following tracked metrics:
+
+| Metric | Value |
+|---|---:|
+| `properties_loaded` | 800 |
+| `candidates_after_filtering` | 721 |
+| `top_matching_score` | 90.00 |
+| `mean_matching_score` | 72.42 |
+| `median_matching_score` | 70.97 |
+
+These metrics demonstrate that MLflow tracks the actual deterministic evaluation output rather than merely recording execution status.
+
+The top score remains consistent with the previously validated explainability case:
+
+```text
+90.00
+```
+
+The missing 10 points correspond to the property-type mismatch between the requested:
+
+```text
+APPARTEMENT
+```
+
+and the highest-ranked:
+
+```text
+Maison
+```
+
+while property type carries 10% of the deterministic score.
 
 ---
 
-# 21. Current Maturity
+# 23. MLflow Evaluation Artifacts
 
-The deterministic matching baseline has reached the following maturity:
+The evaluation runtime generates and stores two artifacts:
+
+```text
+evaluation/
+├── ranked_candidates.csv
+└── evaluation_metadata.json
+```
+
+## 23.1 Ranked candidates
+
+`ranked_candidates.csv` contains the evaluated property candidates and their matching results.
+
+The first ranked candidate in the validated execution was:
+
+```text
+reference_externe: AN-90NQYQAU
+ville:             Nantes
+code_postal:       44000
+type_bien:         Maison
+prix:              303316
+surface:           275
+nb_pieces:         5
+nb_chambres:       2
+matching_score:    90.00
+```
+
+The artifact provides a reproducible record of the ranking produced during a specific evaluation run.
+
+## 23.2 Evaluation metadata
+
+`evaluation_metadata.json` records execution context including:
+
+```text
+run_id
+timestamp_utc
+experiment_name
+tracking_uri
+id_demande_version
+properties_loaded
+candidates_after_filtering
+top_matching_score
+baseline_type
+data_type
+model_training
+model_registry
+GitLab traceability
+```
+
+For the validated execution, the metadata explicitly identifies:
+
+```text
+baseline_type:
+deterministic-weighted-rules
+
+data_type:
+generated-synthetic-project-data
+
+model_training:
+false
+
+model_registry:
+false
+```
+
+The artifact is therefore self-describing and preserves the methodological status of the evaluation.
+
+---
+
+# 24. GitLab-to-MLflow Traceability
+
+The evaluation pipeline now provides explicit source-code and CI traceability.
+
+GitLab predefined CI metadata is injected into the Kubernetes Job and then persisted as MLflow tags.
+
+The implemented lineage is:
+
+```text
+GitLab predefined variables
+        ↓
+ai-mlops:evaluate
+        ↓
+rendered Kubernetes Job
+        ↓
+Pod environment
+        ↓
+run_evaluation.py
+        ↓
+MLflow tags
+        ↓
+evaluation_metadata.json
+```
+
+The final validated run recorded:
+
+```text
+git_commit_sha:
+1e3475211bd86bf248e9f0d7b60bac89e6864cc6
+
+git_commit_short_sha:
+1e347521
+
+git_branch:
+main
+
+git_ref_name:
+main
+
+git_repository:
+https://gitlab.local/root/chasse_immobiliere
+
+git_project_path:
+root/chasse_immobiliere
+
+git_pipeline_id:
+1248
+
+git_job_id:
+12368
+
+git_job_name:
+ai-mlops:evaluate
+```
+
+Pipeline and Job URLs are also persisted.
+
+This establishes a direct traceability chain:
+
+```text
+Git commit 1e347521
+        ↓
+GitLab Pipeline 1248
+        ↓
+Immutable image ai-mlops:1e347521
+        ↓
+GitLab Job 12368
+        ↓
+Kubernetes evaluation Job
+        ↓
+DemandeVersion 54
+        ↓
+Deterministic matching evaluation
+        ↓
+MLflow Run 594285bb07c54a348ee73d80d440d57b
+        ├── parameters
+        ├── metrics
+        ├── traceability tags
+        ├── evaluation_metadata.json
+        └── ranked_candidates.csv
+```
+
+This provides reproducibility and auditability across source code, CI/CD, container runtime, data evaluation and MLOps tracking.
+
+MLflow also attempts automatic Git discovery inside the evaluation container.
+
+Because the lightweight runtime image does not include the Git executable, MLflow emits a Git-discovery warning.
+
+This warning does not affect evaluation or tracking.
+
+The project deliberately uses explicit GitLab CI metadata instead of adding Git solely for automatic discovery.
+
+---
+
+# 25. Current Maturity
+
+The deterministic matching and MLOps baseline has reached the following maturity:
 
 | State | Status |
 |---|---|
@@ -757,131 +1225,260 @@ The deterministic matching baseline has reached the following maturity:
 | Implemented | YES |
 | Unit Tested | YES |
 | CI Verified | YES |
-| Container Packaged | YES |
-| GitOps Published | YES |
-| Argo CD Synced | YES |
-| Kubernetes Runtime Verified | YES |
+| Backend Container Packaged | YES |
+| Backend GitOps Published | YES |
+| Backend Argo CD Synced | YES |
+| Backend Kubernetes Runtime Verified | YES |
+| Dedicated AI/MLOps Image Built | YES |
+| Immutable AI/MLOps Image Published | YES |
+| Kubernetes Evaluation Job Verified | YES |
 | Generated/Synthetic Dataset Verified | YES |
+| MLflow Experiment Tracked | YES |
+| MLflow Parameters Verified | YES |
+| MLflow Metrics Verified | YES |
+| MLflow Artifacts Verified | YES |
+| Git Commit Traceability Verified | YES |
+| GitLab Pipeline Traceability Verified | YES |
+| GitLab Job Traceability Verified | YES |
 | Production Data Verified | NO |
-| MLflow Experiment Tracked | NOT YET |
-| Supervised ML Trained | NOT YET |
-| GPU Training Verified | NOT YET |
-| ML Model Production Serving | NOT YET |
+| Supervised ML Trained | NO |
+| GPU Training Verified | NO |
+| ML Model Registered | NO |
+| ML Model Production Serving | NO |
 
 The distinction between these states is intentional.
 
-Architectural capability must not be confused with implemented application capability.
+The project now has an operational deterministic AI/MLOps baseline, but it does not falsely claim that a statistically validated learned model exists.
 
 ---
 
-# 22. Current Limitations
+# 26. Current Limitations
 
-The current V1 baseline has several known limitations.
+The current baseline retains several known limitations.
 
-## Synthetic source data
+## 26.1 Synthetic source data
 
 Properties are generated for project validation rather than collected from a live real-estate source.
 
-## Sparse search criteria
+The evaluation therefore proves software behavior against the deployed project dataset, not real-world market performance.
+
+## 26.2 Sparse search criteria
 
 Many existing demand versions do not contain the complete target feature set.
 
-## Geographic coverage
+The current scoring implementation therefore handles missing optional criteria without automatically penalizing candidates.
+
+## 26.3 Geographic coverage
 
 The generated property dataset does not cover every city represented by active search requests.
 
 A zero-candidate result can therefore represent a source-data coverage limitation rather than a matching algorithm failure.
 
-## Limited business feedback
+## 26.4 Limited business feedback
 
-There is insufficient presentation/visit/customer feedback for credible supervised learning.
+The platform currently contains insufficient presentation, visit and customer feedback for credible supervised-learning evaluation.
 
-## Hand-defined weights
+## 26.5 Hand-defined weights
 
-Current weights are business-oriented deterministic parameters.
+The deterministic weights represent explicit business-oriented rules.
 
 They have not been learned from historical outcomes.
 
-## No MLflow experiment yet
+## 26.6 No trained model
 
-The deterministic baseline has not yet been registered as an MLflow experiment/run.
+No supervised model is currently presented as production-ready.
+
+This is deliberate.
+
+Introducing a learned model before sufficient labels exist would produce technically executable training but scientifically weak business evidence.
+
+## 26.7 MLflow Git auto-discovery warning
+
+The dedicated AI/MLOps image does not contain the Git executable.
+
+MLflow therefore cannot perform automatic repository discovery from inside the container.
+
+This does not affect traceability because Git commit, repository, pipeline and job information are explicitly supplied by GitLab CI and persisted in MLflow.
 
 ---
 
-# 23. Next Evolution
+# 27. Next Evolution
+
+The deterministic matching + MLOps baseline is now complete.
 
 The next AI milestones are:
 
 ```text
-1. Preserve deterministic evaluation evidence
-2. Track deterministic baseline with MLflow
-3. Define labelled-data strategy
-4. Build training dataset when sufficient labels exist
-5. Establish first statistical/ML baseline
-6. Evaluate learned model against deterministic baseline
-7. Introduce PyTorch/GPU training where justified
-8. Version and govern models with MLflow
-9. Expose selected inference through FastAPI
-10. Add inference observability
-11. Deploy through GitOps
-12. Introduce RAG separately after matching is stable
+1. Preserve deterministic baseline evidence
+
+2. Define the labelled-data strategy
+
+3. Define business outcomes and target labels
+
+4. Establish rules for presentation / visit / feedback collection
+
+5. Build a training dataset when sufficient observations exist
+
+6. Establish a first statistical / ML baseline
+
+7. Compare learned performance against the deterministic baseline
+
+8. Introduce PyTorch / GPU training where technically and scientifically justified
+
+9. Track training experiments with MLflow
+
+10. Introduce Model Registry only for actual trained model versions
+
+11. Define model promotion criteria
+
+12. Expose selected inference through FastAPI
+
+13. Add inference observability
+
+14. Deploy permanent serving components through GitOps / Argo CD
+
+15. Introduce RAG separately after matching is stable
 ```
 
-Machine Learning is therefore an evolution of the current baseline, not a replacement introduced without measurable evidence.
+The immediate next methodological task is therefore not GPU training.
+
+It is:
+
+```text
+define how future business interactions become trustworthy labelled data
+```
+
+The deterministic baseline remains the reference against which future learned approaches can be evaluated.
 
 ---
 
-# 24. Evidence Summary
+# 28. Evidence Summary
 
-Evidence available for this implementation includes:
+Evidence available for the deterministic matching and MLOps baseline now includes:
 
-- source code for feature engineering;
-- source code for PostgreSQL matching extraction;
+- feature-engineering source code;
+- PostgreSQL matching extraction;
 - reusable evaluation orchestration;
 - 11 passing AI unit tests;
-- GitLab AI validation pipeline;
-- successful backend image publication;
-- immutable container image;
-- successful GitOps publication;
-- Argo CD `Synced / Healthy`;
-- Kubernetes runtime image verification;
-- runtime module verification;
+- GitLab deterministic AI validation;
+- dedicated MLOps dependency layer;
+- dedicated AI/MLOps Docker image;
+- immutable AI/MLOps image publication;
+- GitLab-triggered Kubernetes evaluation Job;
+- successful Kubernetes Job completion;
+- PostgreSQL runtime integration;
+- MLflow runtime integration;
+- MLflow experiment creation;
+- MLflow run completion;
+- MLflow parameter tracking;
+- MLflow metric tracking;
+- ranked-candidate artifact;
+- evaluation metadata artifact;
+- Git commit traceability;
+- Git branch/ref traceability;
+- GitLab repository traceability;
+- GitLab pipeline traceability;
+- GitLab job traceability;
+- immutable image-to-commit correspondence;
 - DV54 exact-postcode execution;
 - DV54 feature-level explainability;
 - DV12 postcode-fallback execution;
-- generated/synthetic data limitation explicitly documented.
+- explicit generated/synthetic-data classification;
+- explicit distinction between deterministic matching and trained Machine Learning.
 
-Screenshots and terminal captures may be stored separately under the project evidence documentation.
+Key final runtime evidence:
+
+```text
+Git commit:
+1e3475211bd86bf248e9f0d7b60bac89e6864cc6
+
+Immutable image:
+ai-mlops:1e347521
+
+GitLab pipeline:
+1248
+
+GitLab job:
+12368
+
+Kubernetes Job:
+real-estate-matching-evaluation
+
+Kubernetes status:
+Complete 1/1
+
+MLflow experiment:
+real-estate-deterministic-matching
+
+MLflow run:
+594285bb07c54a348ee73d80d440d57b
+
+DemandeVersion:
+54
+
+Properties loaded:
+800
+
+Candidates:
+721
+
+Top score:
+90.00
+
+Mean score:
+72.42
+
+Median score:
+70.97
+```
+
+Screenshots and terminal captures can be stored separately in the project evidence documentation for jury presentation.
 
 ---
 
-# 25. Conclusion
+# 29. Conclusion
 
-The Real Estate Intelligence Platform now contains an implemented deterministic property matching baseline.
+The Real Estate Intelligence Platform now contains an operational and evidenced deterministic property-matching baseline with an associated MLOps evaluation path.
 
-The baseline is:
+The matching capability is:
 
 - explainable;
 - reproducible;
 - unit tested;
 - CI validated;
 - containerized;
-- GitOps deployed;
-- runtime verified;
-- validated against the project's generated dataset.
+- Kubernetes runtime verified;
+- evaluated against generated project data;
+- tracked through MLflow;
+- associated with evaluation metrics;
+- associated with reproducible artifacts;
+- traceable to an immutable Git commit;
+- traceable to its GitLab pipeline and job.
 
-It establishes the technical and methodological foundation required for the next MLOps and Machine Learning phases.
-
-Most importantly, the implementation maintains a clear distinction between:
+The implementation deliberately separates:
 
 ```text
-working deterministic intelligence
+permanent application serving
 ```
 
-and:
+from:
+
+```text
+ephemeral AI/MLOps evaluation
+```
+
+and separates:
+
+```text
+deterministic business intelligence
+```
+
+from:
 
 ```text
 statistically validated learned intelligence
 ```
 
-This distinction allows future ML models to be evaluated objectively rather than being introduced solely for technological demonstration.
+The project therefore has a defensible baseline for future Machine Learning work without overstating the maturity or statistical validity of the current dataset.
+
+The next AI phase should focus on transforming future business feedback into a governed and trustworthy labelled dataset before introducing supervised model training.
