@@ -52,6 +52,29 @@
 #       + PyTorch
 #       Dedicated ML training environment only
 #
+# VALIDATION RESPONSIBILITY
+#
+#   backend:validate
+#       Backend syntax
+#       Backend runtime compatibility
+#       Matching runtime import compatibility
+#       FastAPI/OpenAPI contract
+#
+#   backend:tests
+#       Backend/API automated tests
+#       Coverage validation
+#
+#   ai:validate
+#       Pure deterministic matching unit tests
+#
+#   ai-mlops:evaluate
+#       Real Kubernetes integration
+#       Real PostgreSQL repository
+#       Real DemandeVersion
+#       Real candidates
+#       Real ground-truth lineage
+#       MLflow tracking
+#
 # IMPORTANT:
 #
 # - apps/ is NOT managed through a kustomization.yaml.
@@ -62,6 +85,7 @@
 # - requirements-ai.txt extends requirements-backend.txt.
 # - requirements-ai-training.txt is NOT installed in Backend CI.
 # - src/ai is packaged inside the Backend image.
+# - PostgreSQL repository behavior is NOT mocked in backend:validate.
 #
 # =============================================================================
 
@@ -109,7 +133,7 @@ backend:validate:
 
   script:
     # -------------------------------------------------------------------------
-    # Validate dependency files
+    # 1. Validate dependency files
     # -------------------------------------------------------------------------
 
     - test -f requirements-backend.txt
@@ -118,7 +142,7 @@ backend:validate:
     - test -f requirements-ai-training.txt
 
     # -------------------------------------------------------------------------
-    # Validate expected Backend source files
+    # 2. Validate expected Backend source files
     # -------------------------------------------------------------------------
 
     - test -f src/api/main.py
@@ -128,21 +152,27 @@ backend:validate:
     - test -f src/api/api/v1/endpoints/health.py
 
     # -------------------------------------------------------------------------
-    # Validate expected AI matching source files
+    # 3. Validate matching runtime source files required by Backend
+    #
+    # These files are packaged with the Backend image.
+    #
+    # Their database behavior is NOT mocked here.
+    #
+    # Pure deterministic AI tests:
+    #
+    #   ai:validate
+    #
+    # Real PostgreSQL / matching integration:
+    #
+    #   ai-mlops:evaluate
     # -------------------------------------------------------------------------
 
     - test -f src/ai/matching/features.py
     - test -f src/ai/matching/repository.py
+    - test -f src/ai/matching/evaluate.py
 
     # -------------------------------------------------------------------------
-    # Validate Backend / AI tests
-    # -------------------------------------------------------------------------
-
-    - test -f tests/ai/test_matching_features.py
-    - test -f tests/ai/test_matching_repository.py
-
-    # -------------------------------------------------------------------------
-    # Validate deployment files
+    # 4. Validate deployment files
     # -------------------------------------------------------------------------
 
     - test -f deploy/docker/Dockerfile.backend
@@ -154,7 +184,7 @@ backend:validate:
     - test -f deploy/kubernetes/backend/application.yaml
 
     # -------------------------------------------------------------------------
-    # Python syntax validation
+    # 5. Python syntax validation
     # -------------------------------------------------------------------------
 
     - |
@@ -165,10 +195,11 @@ backend:validate:
         src/api/api/v1/router.py \
         src/api/api/v1/endpoints/health.py \
         src/ai/matching/features.py \
-        src/ai/matching/repository.py
+        src/ai/matching/repository.py \
+        src/ai/matching/evaluate.py
 
     # -------------------------------------------------------------------------
-    # Validate lightweight AI runtime dependency imports
+    # 6. Validate lightweight runtime dependency imports
     #
     # IMPORTANT:
     #
@@ -186,16 +217,19 @@ backend:validate:
       import pandas
       import psycopg
 
-      print("AI runtime dependency validation:")
+      print("Runtime dependency validation:")
       print(" - NumPy:", numpy.__version__)
       print(" - Pandas:", pandas.__version__)
       print(" - psycopg:", psycopg.__version__)
 
-      print("AI runtime dependencies imported successfully.")
+      print("Backend + matching runtime dependencies imported successfully.")
       PY
 
     # -------------------------------------------------------------------------
-    # Validate AI matching modules
+    # 7. Validate AI matching module compatibility
+    #
+    # No database connection is performed.
+    # No PostgreSQL behavior is mocked.
     # -------------------------------------------------------------------------
 
     - |
@@ -210,27 +244,22 @@ backend:validate:
       from src.ai.matching.repository import (
           load_candidate_biens,
           load_demande_version,
+          load_ground_truth_references,
           load_matching_input,
+      )
+
+      from src.ai.matching.evaluate import (
+          evaluate_demande_version,
       )
 
       weights = MatchingWeights()
 
-      print("AI matching modules imported successfully.")
+      print("Backend-compatible matching modules imported successfully.")
       print("Matching weights:", weights)
       PY
 
     # -------------------------------------------------------------------------
-    # Run focused AI matching tests
-    # -------------------------------------------------------------------------
-
-    - |
-      python -m pytest \
-        tests/ai/test_matching_features.py \
-        tests/ai/test_matching_repository.py \
-        -v
-
-    # -------------------------------------------------------------------------
-    # Validate FastAPI/OpenAPI
+    # 8. Validate FastAPI/OpenAPI
     # -------------------------------------------------------------------------
 
     - |
@@ -264,6 +293,37 @@ backend:validate:
 
       print("Backend OpenAPI validation successful.")
       PY
+
+    # -------------------------------------------------------------------------
+    # 9. Validation responsibility summary
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "BACKEND VALIDATION COMPLETED"
+      echo "============================================================"
+
+      echo
+      echo "Validated here:"
+      echo "- Backend dependency compatibility"
+      echo "- Backend Python syntax"
+      echo "- AI matching runtime import compatibility"
+      echo "- Backend deployment structure"
+      echo "- FastAPI/OpenAPI contract"
+
+      echo
+      echo "Not validated here:"
+      echo "- deterministic AI scoring unit tests"
+      echo "- PostgreSQL repository behavior"
+      echo "- real candidate eligibility"
+      echo "- ground-truth lineage"
+      echo "- MLflow integration"
+
+      echo
+      echo "Those responsibilities belong to:"
+      echo "- ai:validate"
+      echo "- ai-mlops:evaluate"
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
@@ -312,7 +372,7 @@ backend:build-image:
 
   script:
     # -------------------------------------------------------------------------
-    # Build Backend image
+    # 1. Build Backend image
     #
     # Dockerfile.backend installs requirements-ai.txt, which includes the
     # Backend requirements plus NumPy/Pandas.
@@ -337,7 +397,7 @@ backend:build-image:
         .
 
     # -------------------------------------------------------------------------
-    # Validate Python inside final image
+    # 2. Validate Python inside final image
     # -------------------------------------------------------------------------
 
     - |
@@ -347,7 +407,7 @@ backend:build-image:
         python --version
 
     # -------------------------------------------------------------------------
-    # Validate lightweight AI runtime dependencies inside final image
+    # 3. Validate lightweight AI runtime dependencies inside final image
     # -------------------------------------------------------------------------
 
     - |
@@ -358,7 +418,7 @@ backend:build-image:
         "import numpy; import pandas; import psycopg; print('AI runtime dependencies OK')"
 
     # -------------------------------------------------------------------------
-    # Validate AI matching modules inside final image
+    # 4. Validate AI matching modules inside final image
     # -------------------------------------------------------------------------
 
     - |
@@ -369,7 +429,7 @@ backend:build-image:
         "from src.ai.matching.features import MatchingWeights, build_matching_features, compute_matching_score, filter_candidates; from src.ai.matching.repository import load_demande_version, load_candidate_biens, load_matching_input; print('AI matching modules OK'); print(MatchingWeights())"
 
     # -------------------------------------------------------------------------
-    # Validate FastAPI import inside final image
+    # 5. Validate FastAPI import inside final image
     # -------------------------------------------------------------------------
 
     - |
@@ -381,7 +441,7 @@ backend:build-image:
         "from src.api.main import app; print('Application:', app.title); print('Version:', app.version)"
 
     # -------------------------------------------------------------------------
-    # Validate required OpenAPI routes inside image
+    # 6. Validate required OpenAPI routes inside image
     # -------------------------------------------------------------------------
 
     - |
@@ -393,7 +453,7 @@ backend:build-image:
         "from src.api.main import app; paths=set(app.openapi().get('paths', {}).keys()); required={'/health','/ready','/api/v1/health','/api/v1/ready'}; missing=required-paths; print('OpenAPI paths:', sorted(paths)); assert not missing, f'Missing routes: {sorted(missing)}'"
 
     # -------------------------------------------------------------------------
-    # Push immutable commit tag
+    # 7. Push immutable commit tag
     # -------------------------------------------------------------------------
 
     - |
@@ -405,7 +465,7 @@ backend:build-image:
         "$IMAGE_NAME:$IMAGE_TAG"
 
     # -------------------------------------------------------------------------
-    # Push latest convenience tag
+    # 8. Push latest convenience tag
     # -------------------------------------------------------------------------
 
     - |
@@ -413,7 +473,7 @@ backend:build-image:
         "$IMAGE_NAME:latest"
 
     # -------------------------------------------------------------------------
-    # Build summary
+    # 9. Build summary
     # -------------------------------------------------------------------------
 
     - |
@@ -725,7 +785,7 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/service.yaml"
 
     # -------------------------------------------------------------------------
-    # 17.1 Copy Backend ServiceMonitor
+    # 18. Copy Backend ServiceMonitor
     # -------------------------------------------------------------------------
 
     - |
@@ -734,7 +794,7 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/servicemonitor.yaml"
 
     # -------------------------------------------------------------------------
-    # 18. Copy Backend workload Kustomization
+    # 19. Copy Backend workload Kustomization
     # -------------------------------------------------------------------------
 
     - |
@@ -743,7 +803,7 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/kustomization.yaml"
 
     # -------------------------------------------------------------------------
-    # 19. Copy Argo CD Application
+    # 20. Copy Argo CD Application
     # -------------------------------------------------------------------------
 
     - |
@@ -752,7 +812,7 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
 
     # -------------------------------------------------------------------------
-    # 20. Inject immutable image tag into GitOps Deployment
+    # 21. Inject immutable image tag into GitOps Deployment
     # -------------------------------------------------------------------------
 
     - |
@@ -765,7 +825,7 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
 
     # -------------------------------------------------------------------------
-    # 21. Ensure placeholder has disappeared
+    # 22. Ensure placeholder has disappeared
     # -------------------------------------------------------------------------
 
     - |
@@ -784,7 +844,7 @@ backend:publish-gitops:
       echo "Image placeholder replaced successfully."
 
     # -------------------------------------------------------------------------
-    # 22. Validate immutable image reference
+    # 23. Validate immutable image reference
     # -------------------------------------------------------------------------
 
     - |
@@ -799,7 +859,7 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
 
     # -------------------------------------------------------------------------
-    # 23. Validate Registry Secret reference after copy
+    # 24. Validate Registry Secret reference after copy
     # -------------------------------------------------------------------------
 
     - |
@@ -808,7 +868,7 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
 
     # -------------------------------------------------------------------------
-    # 24. Validate Backend workload Kustomization
+    # 25. Validate Backend workload Kustomization
     # -------------------------------------------------------------------------
 
     - |
@@ -823,7 +883,7 @@ backend:publish-gitops:
       echo "Backend Kustomize rendering successful."
 
     # -------------------------------------------------------------------------
-    # 25. Validate rendered workload contains Deployment
+    # 26. Validate rendered workload contains Deployment
     # -------------------------------------------------------------------------
 
     - |
@@ -832,7 +892,7 @@ backend:publish-gitops:
         /tmp/real-estate-backend-rendered.yaml
 
     # -------------------------------------------------------------------------
-    # 26. Validate rendered workload contains Service
+    # 27. Validate rendered workload contains Service
     # -------------------------------------------------------------------------
 
     - |
@@ -841,7 +901,7 @@ backend:publish-gitops:
         /tmp/real-estate-backend-rendered.yaml
 
     # -------------------------------------------------------------------------
-    # 26.1 Validate rendered workload contains ServiceMonitor
+    # 28. Validate rendered workload contains ServiceMonitor
     # -------------------------------------------------------------------------
 
     - |
@@ -850,7 +910,7 @@ backend:publish-gitops:
         /tmp/real-estate-backend-rendered.yaml
 
     # -------------------------------------------------------------------------
-    # 27. Validate rendered resource name
+    # 29. Validate rendered resource name
     # -------------------------------------------------------------------------
 
     - |
@@ -859,7 +919,7 @@ backend:publish-gitops:
         /tmp/real-estate-backend-rendered.yaml
 
     # -------------------------------------------------------------------------
-    # 28. Validate rendered immutable image
+    # 30. Validate rendered immutable image
     # -------------------------------------------------------------------------
 
     - |
@@ -868,7 +928,7 @@ backend:publish-gitops:
         /tmp/real-estate-backend-rendered.yaml
 
     # -------------------------------------------------------------------------
-    # 29. Validate rendered Registry pull Secret
+    # 31. Validate rendered Registry pull Secret
     # -------------------------------------------------------------------------
 
     - |
@@ -877,7 +937,7 @@ backend:publish-gitops:
         /tmp/real-estate-backend-rendered.yaml
 
     # -------------------------------------------------------------------------
-    # 30. Validate Argo CD Application name
+    # 32. Validate Argo CD Application name
     # -------------------------------------------------------------------------
 
     - |
@@ -886,7 +946,7 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
 
     # -------------------------------------------------------------------------
-    # 31. Validate Argo CD Application workload path
+    # 33. Validate Argo CD Application workload path
     # -------------------------------------------------------------------------
 
     - |
@@ -895,7 +955,7 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
 
     # -------------------------------------------------------------------------
-    # 32. Validate Argo CD Application repository
+    # 34. Validate Argo CD Application repository
     # -------------------------------------------------------------------------
 
     - |
@@ -904,7 +964,7 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
 
     # -------------------------------------------------------------------------
-    # 33. Validate Argo CD Application branch
+    # 35. Validate Argo CD Application branch
     # -------------------------------------------------------------------------
 
     - |
@@ -916,7 +976,7 @@ backend:publish-gitops:
       echo "Backend Argo CD Application validation successful."
 
     # -------------------------------------------------------------------------
-    # 34. Client-side Kubernetes validation
+    # 36. Client-side Kubernetes validation
     #
     # DRY RUN ONLY.
     #
@@ -948,7 +1008,7 @@ backend:publish-gitops:
       echo "Kubernetes client-side manifest validation successful."
 
     # -------------------------------------------------------------------------
-    # 35. Display final desired-state locations
+    # 37. Display final desired-state locations
     # -------------------------------------------------------------------------
 
     - |
@@ -978,7 +1038,7 @@ backend:publish-gitops:
         -print
 
     # -------------------------------------------------------------------------
-    # 36. Display deployed image desired state
+    # 38. Display deployed image desired state
     # -------------------------------------------------------------------------
 
     - |
@@ -990,7 +1050,7 @@ backend:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
 
     # -------------------------------------------------------------------------
-    # 37. Configure Git identity
+    # 39. Configure Git identity
     # -------------------------------------------------------------------------
 
     - |
@@ -1003,7 +1063,7 @@ backend:publish-gitops:
         "gitlab-ci@lab.local"
 
     # -------------------------------------------------------------------------
-    # 38. Stage Backend GitOps resources
+    # 40. Stage Backend GitOps resources
     # -------------------------------------------------------------------------
 
     - |
@@ -1018,7 +1078,7 @@ backend:publish-gitops:
         --short
 
     # -------------------------------------------------------------------------
-    # 39. Commit and push only when desired state changed
+    # 41. Commit and push only when desired state changed
     # -------------------------------------------------------------------------
 
     - |
@@ -1050,7 +1110,7 @@ backend:publish-gitops:
       fi
 
     # -------------------------------------------------------------------------
-    # 40. Final summary
+    # 42. Final summary
     # -------------------------------------------------------------------------
 
     - |
