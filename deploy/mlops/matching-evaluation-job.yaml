@@ -42,11 +42,16 @@ spec:
               value: "real-estate-deterministic-matching"
 
             # -----------------------------------------------------------------
-            # Matching evaluation
+            # Matching evaluation suite
+            #
+            # One Kubernetes Job evaluates all generated demande versions.
+            # Each demande version still produces its own independent
+            # MLflow run for granular traceability and comparison.
             # -----------------------------------------------------------------
 
-            - name: MATCHING_DEMANDE_VERSION_ID
-              value: "55"
+            - name: MATCHING_DEMANDE_VERSION_IDS
+              value: "55,56,57,58,59"
+
             # -----------------------------------------------------------------
             # GitLab CI traceability
             #
@@ -86,7 +91,7 @@ spec:
 
             - name: CI_JOB_URL
               value: "__CI_JOB_URL__"
-            
+
             # -----------------------------------------------------------------
             # PostgreSQL
             #
