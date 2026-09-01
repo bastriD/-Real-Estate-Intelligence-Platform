@@ -33,6 +33,7 @@ def test_load_demande_version_returns_dictionary():
             "budget_max": 410000,
             "active": True,
             "id_demande": 4,
+            "source_recherche_ref": "REC-TEST",
         }
     )
 
@@ -42,7 +43,7 @@ def test_load_demande_version_returns_dictionary():
     assert result["ville"] == "Nantes"
     assert result["code_postal"] == "44000"
     assert result["active"] is True
-
+    assert result["source_recherche_ref"] == "REC-TEST"
 
 def test_load_demande_version_raises_when_missing():
     connection = _mock_connection(fetchone=None)
@@ -77,7 +78,10 @@ def test_load_candidate_biens_returns_dataframe():
     )
 
     demande = {
-        "ville": "Nantes",
+    "ville": "Nantes",
+    "type_bien": "APPARTEMENT",
+    "budget_max": 410000,
+    "surface_min": 60,
     }
 
     result = load_candidate_biens(connection, demande)

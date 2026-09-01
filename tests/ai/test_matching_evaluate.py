@@ -13,6 +13,7 @@ def test_evaluate_demande_version_returns_ranked_result():
         "ville": "Nantes",
         "code_postal": "44000",
         "budget_max": 410000,
+        "source_recherche_ref": "REC-TEST",
     }
 
     biens = pd.DataFrame(
@@ -52,6 +53,10 @@ def test_evaluate_demande_version_returns_ranked_result():
         patch(
             "src.ai.matching.evaluate.compute_matching_score",
             return_value=ranked,
+        ),
+        patch(
+            "src.ai.matching.evaluate.load_ground_truth_references",
+            return_value={"AN-001"},
         ),
     ):
         result = evaluate_demande_version(

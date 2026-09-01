@@ -7,8 +7,10 @@
 #   - Build a dedicated deterministic matching + MLflow runtime image.
 #   - Publish the image to GitLab Container Registry.
 #   - Trigger an ephemeral Kubernetes Job from GitLab CI.
-#   - Evaluate a demande_version against generated project data.
+#   - Evaluate demande_versions against generated project data.
 #   - Log metrics, parameters, tags and artifacts to MLflow.
+#   - Validate that supervised matching dataset components are packaged
+#     correctly inside the same reusable AI / MLOps image.
 #
 # EXECUTION FLOW
 #
@@ -47,8 +49,9 @@
 # - No GitOps publication is required for execution.
 # - GitLab CI explicitly triggers the ephemeral Kubernetes Job.
 # - The Job uses the immutable commit image tag.
-# - ML training dependencies are NOT installed here.
-# - requirements-ai-training.txt remains reserved for future training.
+# - The same immutable image also contains the supervised dataset
+#   reconstruction and validation code.
+# - Model training is NOT performed by this pipeline yet.
 #
 # =============================================================================
 
@@ -95,7 +98,7 @@ ai-mlops:build-image:
 
   script:
     # -------------------------------------------------------------------------
-    # Validate required files
+    # Validate required dependency and Docker files
     # -------------------------------------------------------------------------
 
     - test -f requirements-backend.txt
@@ -104,11 +107,28 @@ ai-mlops:build-image:
 
     - test -f deploy/docker/Dockerfile.ai-mlops
 
+    # -------------------------------------------------------------------------
+    # Validate canonical AI matching implementation
+    # -------------------------------------------------------------------------
+
     - test -f src/ai/matching/features.py
     - test -f src/ai/matching/repository.py
     - test -f src/ai/matching/evaluate.py
     - test -f src/ai/matching/mlflow_tracking.py
     - test -f src/ai/matching/run_evaluation.py
+
+    # -------------------------------------------------------------------------
+    # Validate supervised matching dataset implementation
+    # -------------------------------------------------------------------------
+
+    - test -f src/ai/matching/training_dataset.py
+    - test -f src/ai/matching/run_training_dataset_validation.py
+
+    # -------------------------------------------------------------------------
+    # Validate Kubernetes Job manifests
+    # -------------------------------------------------------------------------
+
+    - test -f deploy/mlops/matching-evaluation-job.yaml
 
     # -------------------------------------------------------------------------
     # Build dedicated AI / MLOps image
@@ -152,7 +172,7 @@ ai-mlops:build-image:
         "import numpy; import pandas; import psycopg; import mlflow; print('NumPy:', numpy.__version__); print('Pandas:', pandas.__version__); print('psycopg:', psycopg.__version__); print('MLflow:', mlflow.__version__)"
 
     # -------------------------------------------------------------------------
-    # Validate matching modules inside image
+    # Validate canonical matching modules inside image
     # -------------------------------------------------------------------------
 
     - |
@@ -161,6 +181,17 @@ ai-mlops:build-image:
         "$IMAGE_NAME:$IMAGE_TAG" \
         python -c \
         "from src.ai.matching.features import MatchingWeights; from src.ai.matching.repository import load_matching_input; from src.ai.matching.evaluate import evaluate_demande_version; print('Matching modules imported successfully'); print(MatchingWeights())"
+
+    # -------------------------------------------------------------------------
+    # Validate supervised training dataset module inside image
+    # -------------------------------------------------------------------------
+
+    - |
+      docker run \
+        --rm \
+        "$IMAGE_NAME:$IMAGE_TAG" \
+        python -c \
+        "from src.ai.matching.training_dataset import build_training_dataset, build_training_group, dataset_summary; print('Training dataset module imported successfully')"
 
     # -------------------------------------------------------------------------
     # Validate MLflow tracking module inside image
@@ -174,7 +205,7 @@ ai-mlops:build-image:
         "from src.ai.matching.mlflow_tracking import configure_mlflow, log_deterministic_evaluation; print('MLflow tracking module imported successfully')"
 
     # -------------------------------------------------------------------------
-    # Validate Kubernetes evaluation entrypoint inside image
+    # Validate deterministic evaluation entrypoint inside image
     # -------------------------------------------------------------------------
 
     - |
@@ -183,6 +214,17 @@ ai-mlops:build-image:
         "$IMAGE_NAME:$IMAGE_TAG" \
         python -c \
         "import src.ai.matching.run_evaluation; print('run_evaluation module imported successfully')"
+
+    # -------------------------------------------------------------------------
+    # Validate training dataset validation entrypoint inside image
+    # -------------------------------------------------------------------------
+
+    - |
+      docker run \
+        --rm \
+        "$IMAGE_NAME:$IMAGE_TAG" \
+        python -c \
+        "import src.ai.matching.run_training_dataset_validation; print('run_training_dataset_validation module imported successfully')"
 
     # -------------------------------------------------------------------------
     # Push immutable image
@@ -223,12 +265,15 @@ ai-mlops:build-image:
       echo "$IMAGE_NAME:latest"
 
       echo
-      echo "Runtime:"
-      echo "deterministic matching + MLflow tracking"
+      echo "Runtime capabilities:"
+      echo "- deterministic matching evaluation"
+      echo "- MLflow tracking"
+      echo "- supervised dataset reconstruction"
+      echo "- supervised dataset validation"
 
       echo
-      echo "Training dependencies:"
-      echo "NOT installed"
+      echo "Model training:"
+      echo "NOT performed"
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
@@ -349,12 +394,7 @@ ai-mlops:evaluate:
     - rm -f "$RENDERED_JOB_PATH"
 
     # -------------------------------------------------------------------------
-    # 8. Render immutable image into Kubernetes Job manifest
-    #
-    # Source manifest must contain:
-    #
-    #   image: __AI_MLOPS_IMAGE__
-    #
+    # 8. Render immutable image and CI traceability into Kubernetes Job
     # -------------------------------------------------------------------------
 
     - |
@@ -391,6 +431,7 @@ ai-mlops:evaluate:
 
       test -s \
         "$RENDERED_JOB_PATH"
+
     # -------------------------------------------------------------------------
     # 9. Verify all rendering placeholders disappeared
     # -------------------------------------------------------------------------
@@ -459,9 +500,6 @@ ai-mlops:evaluate:
 
     # -------------------------------------------------------------------------
     # 14. Remove previous evaluation Job
-    #
-    # Jobs are immutable for several pod-template fields.
-    # We therefore remove the previous execution before creating the next one.
     # -------------------------------------------------------------------------
 
     - |
@@ -511,6 +549,8 @@ ai-mlops:evaluate:
       echo
       echo "Waiting for evaluation Pod..."
 
+      POD_NAME=""
+
       for i in $(seq 1 60); do
 
         POD_NAME="$(
@@ -539,8 +579,6 @@ ai-mlops:evaluate:
 
     # -------------------------------------------------------------------------
     # 18. Wait for Job completion
-    #
-    # The loop explicitly detects both success and failure.
     # -------------------------------------------------------------------------
 
     - |
@@ -704,9 +742,9 @@ ai-mlops:evaluate:
   after_script:
     # -------------------------------------------------------------------------
     # Preserve useful diagnostics in GitLab logs.
-    # Do not delete the completed Kubernetes Job automatically yet.
     #
-    # Keeping it temporarily gives us runtime evidence during this first phase.
+    # Completed Kubernetes Job is intentionally retained temporarily
+    # as runtime/certification evidence.
     # -------------------------------------------------------------------------
 
     - |
