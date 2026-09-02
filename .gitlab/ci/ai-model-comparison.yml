@@ -28,7 +28,7 @@ ai-model-comparison:compare:
     - shell
 
   needs:
-    - job: ai:validate
+    - job: ai-mlops:build-image
       artifacts: false
 
   variables:
@@ -240,16 +240,16 @@ ai-model-comparison:compare:
         "job/${COMPARISON_JOB_NAME:-real-estate-matching-model-comparison}" \
         2>/dev/null || true
 
-  rules:
+    rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
         - src/ai/**/*
         - tests/ai/**/*
-        - deploy/mlops/matching-model-comparison-job.yaml
-        - .gitlab/ci/ai-model-comparison.yml
-        - .gitlab/ci/ai-mlops.yml
         - requirements-ai.txt
         - requirements-ai-mlops.txt
-        - Dockerfile.ai-mlops
-
-    - when: never
+        - deploy/docker/Dockerfile.ai-mlops
+        - deploy/mlops/**/*
+        - .gitlab/ci/ai.yml
+        - .gitlab/ci/ai-mlops.yml
+        - .gitlab/ci/ai-model-comparison.yml
+        - .gitlab-ci.yml
