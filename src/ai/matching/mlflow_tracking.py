@@ -1,10 +1,14 @@
 from __future__ import annotations
 
 import json
+import shutil
+import tempfile
+
 from pathlib import Path
 from typing import Any
 
 import mlflow
+import mlflow.sklearn
 import pandas as pd
 
 from src.ai.matching.evaluate import MatchingEvaluationResult
@@ -194,6 +198,55 @@ def log_deterministic_evaluation(
         return run.info.run_id
 
 
+def _save_and_log_sklearn_model_compatibly(
+    *,
+    model: Any,
+) -> None:
+    """
+    Persist an sklearn model in a way compatible with MLflow 2.x servers.
+
+    The project currently uses an MLflow 3.x Python client against an
+    MLflow 2.16.2 tracking server. Calling mlflow.sklearn.log_model()
+    from the newer client uses the logged-models API, which is not
+    available on the older server.
+
+    Therefore:
+    1. save the MLflow sklearn model structure locally;
+    2. upload the generated directory through the standard artifact API.
+
+    This persists the model as a run artifact without using Model Registry
+    or the MLflow 3 logged-models endpoint.
+    """
+
+    temporary_directory = Path(
+        tempfile.mkdtemp(
+            prefix="matching-mlflow-model-"
+        )
+    )
+
+    model_directory = (
+        temporary_directory
+        / "model"
+    )
+
+    try:
+        mlflow.sklearn.save_model(
+            sk_model=model,
+            path=str(model_directory),
+        )
+
+        mlflow.log_artifacts(
+            local_dir=str(model_directory),
+            artifact_path="model",
+        )
+
+    finally:
+        shutil.rmtree(
+            temporary_directory,
+            ignore_errors=True,
+        )
+
+
 def log_supervised_training(
     *,
     model: Any,
@@ -213,18 +266,18 @@ def log_supervised_training(
     """
     Log one supervised matching-model training run to MLflow.
 
-    This function records:
+    Records:
     - model identity and methodology
     - exact feature set
     - dataset summary
     - frozen group-aware split
     - train / validation / test metrics
-    - model coefficients and intercept
+    - coefficients and intercept
     - GitLab CI traceability
     - training evidence artifact
+    - persisted sklearn model artifact
 
-    Ground-truth lineage and technical metadata are recorded only
-    for traceability and are never model features.
+    The model is NOT registered or promoted.
     """
 
     tags: dict[str, str] = {
@@ -251,6 +304,8 @@ def log_supervised_training(
             "postgresql-runtime-reconstruction"
         ),
         "model_promotion_status": "baseline",
+        "model_artifact_format": "mlflow-sklearn",
+        "model_registry_registered": "false",
     }
 
     if extra_tags:
@@ -324,16 +379,16 @@ def log_supervised_training(
             for group in groups
         )
 
-        for key in (
-            "group_count",
-            "rows",
-            "positive",
-            "negative",
+        for source_key, parameter_key in (
+            ("group_count", "group_count"),
+            ("rows", "rows"),
+            ("positives", "positives"),
+            ("negatives", "negatives"),
         ):
-            if key in split_details:
+            if source_key in split_details:
                 parameters[
-                    f"{split_name}_{key}"
-                ] = split_details[key]
+                    f"{split_name}_{parameter_key}"
+                ] = split_details[source_key]
 
     coefficients = model_metadata.get(
         "coefficients",
@@ -353,17 +408,17 @@ def log_supervised_training(
             model_metadata["intercept"]
         )
 
-    for key in (
-        "groups",
-        "rows",
-        "positive",
-        "negative",
-        "positive_rate",
+    for source_key, parameter_key in (
+        ("groups", "groups"),
+        ("rows", "rows"),
+        ("positives", "positives"),
+        ("negatives", "negatives"),
+        ("positive_rate", "positive_rate"),
     ):
-        if key in dataset_summary:
+        if source_key in dataset_summary:
             parameters[
-                f"dataset_{key}"
-            ] = dataset_summary[key]
+                f"dataset_{parameter_key}"
+            ] = dataset_summary[source_key]
 
     for key, value in (
         gitlab_traceability.items()
@@ -431,42 +486,44 @@ def log_supervised_training(
                     artifact_path="evidence",
                 )
 
-        model_metadata_artifact = Path(
-            "/tmp/"
-            "matching_supervised_model_metadata.json"
-        )
+        with tempfile.TemporaryDirectory(
+            prefix="matching-mlflow-evidence-"
+        ) as temporary_directory:
+            model_metadata_artifact = (
+                Path(temporary_directory)
+                / "matching_supervised_model_metadata.json"
+            )
 
-        model_metadata_artifact.write_text(
-            json.dumps(
-                {
-                    "model_metadata": model_metadata,
-                    "dataset_summary": dataset_summary,
-                    "split_summary": split_summary,
-                    "gitlab_traceability": (
-                        gitlab_traceability
-                    ),
-                },
-                indent=2,
-                sort_keys=True,
-                default=str,
-            ),
-            encoding="utf-8",
-        )
+            model_metadata_artifact.write_text(
+                json.dumps(
+                    {
+                        "model_metadata": (
+                            model_metadata
+                        ),
+                        "dataset_summary": (
+                            dataset_summary
+                        ),
+                        "split_summary": (
+                            split_summary
+                        ),
+                        "gitlab_traceability": (
+                            gitlab_traceability
+                        ),
+                    },
+                    indent=2,
+                    sort_keys=True,
+                    default=str,
+                ),
+                encoding="utf-8",
+            )
 
-        mlflow.log_artifact(
-            str(model_metadata_artifact),
-            artifact_path="evidence",
-        )
+            mlflow.log_artifact(
+                str(model_metadata_artifact),
+                artifact_path="evidence",
+            )
 
-        #
-        # Log the fitted sklearn estimator as an MLflow model artifact.
-        #
-        # This makes the fitted baseline reproducible and visible
-        # inside the MLflow run, but DOES NOT register or promote it.
-        #
-        mlflow.sklearn.log_model(
-            sk_model=model,
-            artifact_path="model",
+        _save_and_log_sklearn_model_compatibly(
+            model=model,
         )
 
         return run.info.run_id
