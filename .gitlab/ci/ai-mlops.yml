@@ -2489,4 +2489,5 @@ ai-mlops:train-matching-model:
         - deploy/mlops/**/*
         - .gitlab/ci/ai.yml
         - .gitlab/ci/ai-mlops.yml
+        - .gitlab/ci/ai-model-comparison.yml
         - .gitlab-ci.yml

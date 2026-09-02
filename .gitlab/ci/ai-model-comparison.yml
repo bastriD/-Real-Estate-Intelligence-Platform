@@ -245,11 +245,11 @@ ai-model-comparison:compare:
       changes:
         - src/ai/**/*
         - tests/ai/**/*
+        - deploy/mlops/matching-model-comparison-job.yaml
+        - .gitlab/ci/ai-model-comparison.yml
+        - .gitlab/ci/ai-mlops.yml
         - requirements-ai.txt
         - requirements-ai-mlops.txt
-        - deploy/docker/Dockerfile.ai-mlops
-        - deploy/mlops/**/*
-        - .gitlab/ci/ai.yml
-        - .gitlab/ci/ai-mlops.yml
-        - .gitlab/ci/ai-model-comparison.yml
-        - .gitlab-ci.yml
+        - Dockerfile.ai-mlops
+
+    - when: never
