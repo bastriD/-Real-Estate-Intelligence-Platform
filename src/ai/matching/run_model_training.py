@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 
 from datetime import datetime, timezone
 from pathlib import Path
@@ -14,6 +15,11 @@ from src.ai.matching.dataset_split import (
     DEFAULT_VALIDATION_FRACTION,
     create_group_aware_split,
     split_summary,
+)
+from src.ai.matching.mlflow_tracking import (
+    DEFAULT_SUPERVISED_EXPERIMENT_NAME,
+    configure_mlflow,
+    log_supervised_training,
 )
 from src.ai.matching.model_training import (
     model_metadata,
@@ -37,6 +43,16 @@ from src.ai.matching.training_dataset import (
     dataset_summary,
 )
 
+
+TRACKING_URI = os.getenv(
+    "MLFLOW_TRACKING_URI",
+    "http://mlflow-tracking.mlflow.svc.cluster.local:5000",
+)
+
+EXPERIMENT_NAME = os.getenv(
+    "MLFLOW_EXPERIMENT_NAME",
+    DEFAULT_SUPERVISED_EXPERIMENT_NAME,
+)
 
 OUTPUT_FILENAME = "matching_logistic_regression_training.json"
 
@@ -193,12 +209,11 @@ def write_training_artifact(
     validation_metrics: dict[str, Any],
     test_metrics: dict[str, Any],
     gitlab_traceability: dict[str, str],
+    mlflow_tracking: bool = False,
+    mlflow_run_id: str | None = None,
 ) -> Path:
     """
-    Write certification and MLOps evidence for the first supervised model.
-
-    The fitted model itself is deliberately not persisted yet. Model
-    registry/persistence belongs to the following MLflow integration step.
+    Write certification and MLOps evidence for the supervised baseline.
     """
 
     artifact_path = (
@@ -229,7 +244,8 @@ def write_training_artifact(
         "lineage_metadata_used_as_feature": False,
         "group_metadata_used_as_feature": False,
         "model_training": True,
-        "mlflow_tracking": False,
+        "mlflow_tracking": mlflow_tracking,
+        "mlflow_run_id": mlflow_run_id,
         "generated_batches_discovered": (
             count_generated_batches(
                 generated_demande_versions
@@ -655,6 +671,26 @@ def main() -> None:
         build_gitlab_traceability()
     )
 
+    print()
+    print(
+        "Configuring MLflow tracking..."
+    )
+
+    print(
+        "MLflow tracking URI: "
+        f"{TRACKING_URI}"
+    )
+
+    print(
+        "MLflow experiment: "
+        f"{EXPERIMENT_NAME}"
+    )
+
+    configure_mlflow(
+        tracking_uri=TRACKING_URI,
+        experiment_name=EXPERIMENT_NAME,
+    )
+
     connection = psycopg.connect(
         host=DATABASE_HOST,
         port=DATABASE_PORT,
@@ -662,6 +698,8 @@ def main() -> None:
         user=DATABASE_USER,
         password=DATABASE_PASSWORD,
     )
+
+    mlflow_run_id: str | None = None
 
     try:
         connection.read_only = True
@@ -818,6 +856,8 @@ def main() -> None:
                 gitlab_traceability=(
                     gitlab_traceability
                 ),
+                mlflow_tracking=False,
+                mlflow_run_id=None,
             )
         )
 
@@ -843,6 +883,77 @@ def main() -> None:
             artifact_path=(
                 artifact_path
             ),
+        )
+
+        print()
+        print(
+            "Logging supervised training run to MLflow..."
+        )
+
+        mlflow_run_id = log_supervised_training(
+            model=result.model,
+            model_metadata=model_details,
+            train_metrics=result.train_metrics,
+            validation_metrics=(
+                result.validation_metrics
+            ),
+            test_metrics=result.test_metrics,
+            split_summary=split_details,
+            dataset_summary=informative_summary,
+            gitlab_traceability=gitlab_traceability,
+            training_artifact_path=artifact_path,
+            run_name=(
+                "matching-logistic-regression-baseline-v1"
+            ),
+        )
+
+        print(
+            "MLflow training run created successfully."
+        )
+
+        print(
+            "MLflow run ID: "
+            f"{mlflow_run_id}"
+        )
+
+        artifact_path = (
+            write_training_artifact(
+                output_dir=output_dir,
+                generated_demande_versions=(
+                    generated_demande_versions
+                ),
+                informative_summary=(
+                    informative_summary
+                ),
+                split_details=(
+                    split_details
+                ),
+                frozen_split_validation=(
+                    frozen_split_validation
+                ),
+                model_details=(
+                    model_details
+                ),
+                train_metrics=(
+                    result.train_metrics
+                ),
+                validation_metrics=(
+                    result.validation_metrics
+                ),
+                test_metrics=(
+                    result.test_metrics
+                ),
+                gitlab_traceability=(
+                    gitlab_traceability
+                ),
+                mlflow_tracking=True,
+                mlflow_run_id=mlflow_run_id,
+            )
+        )
+
+        print(
+            "Training evidence artifact updated "
+            "with MLflow run traceability."
         )
 
     finally:
@@ -877,11 +988,20 @@ def main() -> None:
     )
 
     print(
-        "MLflow tracking performed: False"
+        "MLflow tracking performed: True"
     )
 
     print(
-        "Model persisted/registered: False"
+        "MLflow run ID: "
+        f"{mlflow_run_id}"
+    )
+
+    print(
+        "MLflow model artifact persisted: True"
+    )
+
+    print(
+        "MLflow Model Registry registration: False"
     )
 
     print()

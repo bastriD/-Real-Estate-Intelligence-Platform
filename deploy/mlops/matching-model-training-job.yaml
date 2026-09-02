@@ -1,13 +1,16 @@
 apiVersion: batch/v1
 kind: Job
+
 metadata:
   name: real-estate-matching-model-training
   namespace: real-estate
+
   labels:
     app.kubernetes.io/name: real-estate-matching-model-training
     app.kubernetes.io/part-of: chasse-immobiliere
     app.kubernetes.io/component: ai-mlops
     app.kubernetes.io/managed-by: gitlab-ci
+
 spec:
   backoffLimit: 1
 
@@ -37,6 +40,10 @@ spec:
             - src.ai.matching.run_model_training
 
           env:
+            # ---------------------------------------------------------------
+            # PostgreSQL runtime dataset
+            # ---------------------------------------------------------------
+
             - name: POSTGRES_HOST
               value: real-estate-postgresql.real-estate.svc.cluster.local
 
@@ -57,6 +64,20 @@ spec:
                 secretKeyRef:
                   name: real-estate-postgresql-secret
                   key: POSTGRES_PASSWORD
+
+            # ---------------------------------------------------------------
+            # MLflow experiment tracking
+            # ---------------------------------------------------------------
+
+            - name: MLFLOW_TRACKING_URI
+              value: http://mlflow-tracking.mlflow.svc.cluster.local:5000
+
+            - name: MLFLOW_EXPERIMENT_NAME
+              value: real-estate-supervised-matching
+
+            # ---------------------------------------------------------------
+            # GitLab CI traceability
+            # ---------------------------------------------------------------
 
             - name: CI_COMMIT_SHA
               value: "__CI_COMMIT_SHA__"
