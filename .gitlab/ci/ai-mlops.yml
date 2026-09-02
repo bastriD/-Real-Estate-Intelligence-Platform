@@ -1928,3 +1928,565 @@ ai-mlops:split-training-dataset:
         - .gitlab/ci/ai.yml
         - .gitlab/ci/ai-mlops.yml
         - .gitlab-ci.yml
+
+# =============================================================================
+# 5. EXECUTE SUPERVISED MATCHING MODEL TRAINING IN KUBERNETES
+# =============================================================================
+
+ai-mlops:train-matching-model:
+  stage: deploy
+
+  tags:
+    - shell
+
+  needs:
+    - job: ai-mlops:build-image
+      artifacts: false
+
+  variables:
+    K8S_NAMESPACE: "real-estate"
+
+    MODEL_TRAINING_JOB_NAME: "real-estate-matching-model-training"
+
+    MODEL_TRAINING_SOURCE_PATH: "$CI_PROJECT_DIR/deploy/mlops/matching-model-training-job.yaml"
+
+    MODEL_TRAINING_RENDERED_PATH: "/tmp/real-estate-matching-model-training.yaml"
+
+    IMAGE_NAME: "$CI_REGISTRY_IMAGE/ai-mlops"
+    IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+
+    REGISTRY_PULL_SECRET: "gitlab-registry-auth"
+
+    POSTGRES_SECRET: "real-estate-postgresql-secret"
+
+  script:
+    # -------------------------------------------------------------------------
+    # 5.1 Validate shell runner tooling
+    # -------------------------------------------------------------------------
+
+    - kubectl version --client
+
+    # -------------------------------------------------------------------------
+    # 5.2 Validate required source manifest
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "MATCHING MODEL TRAINING SOURCE CHECK"
+      echo "============================================================"
+
+      echo
+      echo "Job source:"
+      echo "$MODEL_TRAINING_SOURCE_PATH"
+
+      test -f "$MODEL_TRAINING_SOURCE_PATH"
+
+    # -------------------------------------------------------------------------
+    # 5.3 Validate Kubernetes namespace
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl get namespace \
+        "$K8S_NAMESPACE"
+
+    # -------------------------------------------------------------------------
+    # 5.4 Validate PostgreSQL Secret
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get secret \
+        "$POSTGRES_SECRET"
+
+    # -------------------------------------------------------------------------
+    # 5.5 Validate Registry pull Secret
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get secret \
+        "$REGISTRY_PULL_SECRET"
+
+    # -------------------------------------------------------------------------
+    # 5.6 Clean previous temporary rendered manifest
+    # -------------------------------------------------------------------------
+
+    - rm -f "$MODEL_TRAINING_RENDERED_PATH"
+
+    # -------------------------------------------------------------------------
+    # 5.7 Render immutable image and CI traceability into Kubernetes Job
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "RENDERING MATCHING MODEL TRAINING JOB"
+      echo "============================================================"
+
+      EXPECTED_IMAGE="${IMAGE_NAME}:${IMAGE_TAG}"
+
+      echo
+      echo "Expected image:"
+      echo "$EXPECTED_IMAGE"
+
+      echo
+      echo "Expected Kubernetes Job:"
+      echo "$MODEL_TRAINING_JOB_NAME"
+
+      grep \
+        "__AI_MLOPS_IMAGE__" \
+        "$MODEL_TRAINING_SOURCE_PATH"
+
+      sed \
+        -e "s|__AI_MLOPS_IMAGE__|${EXPECTED_IMAGE}|g" \
+        -e "s|__CI_COMMIT_SHA__|${CI_COMMIT_SHA}|g" \
+        -e "s|__CI_COMMIT_SHORT_SHA__|${CI_COMMIT_SHORT_SHA}|g" \
+        -e "s|__CI_COMMIT_BRANCH__|${CI_COMMIT_BRANCH}|g" \
+        -e "s|__CI_COMMIT_REF_NAME__|${CI_COMMIT_REF_NAME}|g" \
+        -e "s|__CI_PROJECT_URL__|${CI_PROJECT_URL}|g" \
+        -e "s|__CI_PROJECT_PATH__|${CI_PROJECT_PATH}|g" \
+        -e "s|__CI_PIPELINE_ID__|${CI_PIPELINE_ID}|g" \
+        -e "s|__CI_PIPELINE_URL__|${CI_PIPELINE_URL}|g" \
+        -e "s|__CI_JOB_ID__|${CI_JOB_ID}|g" \
+        -e "s|__CI_JOB_NAME__|${CI_JOB_NAME}|g" \
+        -e "s|__CI_JOB_URL__|${CI_JOB_URL}|g" \
+        "$MODEL_TRAINING_SOURCE_PATH" \
+        > "$MODEL_TRAINING_RENDERED_PATH"
+
+      test -s "$MODEL_TRAINING_RENDERED_PATH"
+
+    # -------------------------------------------------------------------------
+    # 5.8 Verify all rendering placeholders disappeared
+    # -------------------------------------------------------------------------
+
+    - |
+      if grep -E -q \
+        "__AI_MLOPS_IMAGE__|__CI_[A-Z0-9_]+__" \
+        "$MODEL_TRAINING_RENDERED_PATH"; then
+
+        echo
+        echo "ERROR:"
+        echo "Unresolved placeholder remains in rendered model training Job:"
+        echo
+
+        grep -E \
+          "__AI_MLOPS_IMAGE__|__CI_[A-Z0-9_]+__" \
+          "$MODEL_TRAINING_RENDERED_PATH" || true
+
+        exit 1
+      fi
+
+      echo "All model training placeholders replaced successfully."
+
+    # -------------------------------------------------------------------------
+    # 5.9 Validate immutable image reference
+    # -------------------------------------------------------------------------
+
+    - |
+      EXPECTED_IMAGE="${IMAGE_NAME}:${IMAGE_TAG}"
+
+      echo
+      echo "Validating rendered immutable image..."
+
+      grep \
+        "image: ${EXPECTED_IMAGE}" \
+        "$MODEL_TRAINING_RENDERED_PATH"
+
+      echo "Immutable image validated successfully."
+
+    # -------------------------------------------------------------------------
+    # 5.10 Validate expected Kubernetes Job name
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "Expected Kubernetes Job:"
+      echo "$MODEL_TRAINING_JOB_NAME"
+
+      echo
+      echo "Rendered Kubernetes names:"
+
+      grep \
+        "name:" \
+        "$MODEL_TRAINING_RENDERED_PATH" || true
+
+      grep \
+        "name: ${MODEL_TRAINING_JOB_NAME}" \
+        "$MODEL_TRAINING_RENDERED_PATH"
+
+      echo "Model training Kubernetes Job name validated successfully."
+
+    # -------------------------------------------------------------------------
+    # 5.11 Validate Python training entrypoint
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "Validating supervised model training entrypoint..."
+
+      grep \
+        "src.ai.matching.run_model_training" \
+        "$MODEL_TRAINING_RENDERED_PATH"
+
+      echo "Model training entrypoint validated successfully."
+
+    # -------------------------------------------------------------------------
+    # 5.12 Validate expected Registry pull Secret
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "Validating Registry pull Secret reference..."
+
+      grep \
+        "name: ${REGISTRY_PULL_SECRET}" \
+        "$MODEL_TRAINING_RENDERED_PATH"
+
+      echo "Registry pull Secret reference validated successfully."
+
+    # -------------------------------------------------------------------------
+    # 5.13 Client-side Kubernetes validation
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl apply \
+        --dry-run=client \
+        -f "$MODEL_TRAINING_RENDERED_PATH" \
+        > /dev/null
+
+      echo
+      echo "Model training Kubernetes Job manifest is valid."
+
+    # -------------------------------------------------------------------------
+    # 5.14 Remove previous model-training Job
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "CLEANING PREVIOUS MATCHING MODEL TRAINING"
+      echo "============================================================"
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        delete job \
+        "$MODEL_TRAINING_JOB_NAME" \
+        --ignore-not-found=true \
+        --wait=true
+
+    # -------------------------------------------------------------------------
+    # 5.15 Create new model-training Job
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "CREATING MATCHING MODEL TRAINING JOB"
+      echo "============================================================"
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        apply \
+        -f "$MODEL_TRAINING_RENDERED_PATH"
+
+    # -------------------------------------------------------------------------
+    # 5.16 Display created Job
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get job \
+        "$MODEL_TRAINING_JOB_NAME" \
+        -o wide
+
+    # -------------------------------------------------------------------------
+    # 5.17 Wait for Pod creation
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "Waiting for model training Pod..."
+
+      POD_NAME=""
+
+      for i in $(seq 1 60); do
+
+        POD_NAME="$(
+          kubectl \
+            -n "$K8S_NAMESPACE" \
+            get pods \
+            -l app.kubernetes.io/name="$MODEL_TRAINING_JOB_NAME" \
+            -o jsonpath='{.items[0].metadata.name}' \
+            2>/dev/null || true
+        )"
+
+        if [ -n "$POD_NAME" ]; then
+          echo
+          echo "Model training Pod:"
+          echo "$POD_NAME"
+          break
+        fi
+
+        sleep 2
+      done
+
+      if [ -z "${POD_NAME:-}" ]; then
+        echo
+        echo "ERROR:"
+        echo "Model training Pod was not created."
+
+        kubectl \
+          -n "$K8S_NAMESPACE" \
+          get job \
+          "$MODEL_TRAINING_JOB_NAME" \
+          -o wide || true
+
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # 5.18 Wait for Job completion
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "WAITING FOR MATCHING MODEL TRAINING"
+      echo "============================================================"
+
+      SUCCESS="false"
+
+      for i in $(seq 1 300); do
+
+        COMPLETE="$(
+          kubectl \
+            -n "$K8S_NAMESPACE" \
+            get job \
+            "$MODEL_TRAINING_JOB_NAME" \
+            -o jsonpath='{.status.succeeded}' \
+            2>/dev/null || true
+        )"
+
+        FAILED="$(
+          kubectl \
+            -n "$K8S_NAMESPACE" \
+            get job \
+            "$MODEL_TRAINING_JOB_NAME" \
+            -o jsonpath='{.status.failed}' \
+            2>/dev/null || true
+        )"
+
+        if [ "${COMPLETE:-0}" -ge 1 ] 2>/dev/null; then
+          SUCCESS="true"
+          echo "Matching model training completed successfully."
+          break
+        fi
+
+        if [ "${FAILED:-0}" -ge 1 ] 2>/dev/null; then
+          echo "Matching model training reported a failed Pod."
+          break
+        fi
+
+        echo "Model training still running..."
+        sleep 2
+      done
+
+      if [ "$SUCCESS" != "true" ]; then
+
+        echo
+        echo "ERROR:"
+        echo "Matching model training did not complete successfully."
+
+        echo
+        echo "Job status:"
+
+        kubectl \
+          -n "$K8S_NAMESPACE" \
+          get job \
+          "$MODEL_TRAINING_JOB_NAME" \
+          -o wide || true
+
+        echo
+        echo "Pod status:"
+
+        kubectl \
+          -n "$K8S_NAMESPACE" \
+          get pods \
+          -l app.kubernetes.io/name="$MODEL_TRAINING_JOB_NAME" \
+          -o wide || true
+
+        echo
+        echo "Model training logs:"
+
+        kubectl \
+          -n "$K8S_NAMESPACE" \
+          logs \
+          job/"$MODEL_TRAINING_JOB_NAME" \
+          --all-containers=true || true
+
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # 5.19 Print successful model-training logs
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "MATCHING MODEL TRAINING LOGS"
+      echo "============================================================"
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        logs \
+        job/"$MODEL_TRAINING_JOB_NAME" \
+        --all-containers=true
+
+    # -------------------------------------------------------------------------
+    # 5.20 Display final Job status
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "MATCHING MODEL TRAINING FINAL KUBERNETES STATUS"
+      echo "============================================================"
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get job \
+        "$MODEL_TRAINING_JOB_NAME" \
+        -o wide
+
+      kubectl \
+        -n "$K8S_NAMESPACE" \
+        get pods \
+        -l app.kubernetes.io/name="$MODEL_TRAINING_JOB_NAME" \
+        -o wide
+
+    # -------------------------------------------------------------------------
+    # 5.21 Final execution summary
+    # -------------------------------------------------------------------------
+
+    - |
+      echo
+      echo "============================================================"
+      echo "MATCHING MODEL TRAINING COMPLETED"
+      echo "============================================================"
+
+      echo
+      echo "Image:"
+      echo "${IMAGE_NAME}:${IMAGE_TAG}"
+
+      echo
+      echo "Namespace:"
+      echo "$K8S_NAMESPACE"
+
+      echo
+      echo "Kubernetes Job:"
+      echo "$MODEL_TRAINING_JOB_NAME"
+
+      echo
+      echo "Dataset source:"
+      echo "PostgreSQL runtime reconstruction"
+
+      echo
+      echo "Candidate engine:"
+      echo "Canonical matching repository"
+
+      echo
+      echo "Ground truth:"
+      echo "Explicit generated-search lineage"
+
+      echo
+      echo "Training dataset:"
+      echo "Informative demande_version groups only"
+
+      echo
+      echo "Split:"
+      echo "Frozen group-aware split V1"
+
+      echo
+      echo "Model:"
+      echo "Logistic Regression baseline V1"
+
+      echo
+      echo "Hard eligibility:"
+      echo "Preserved outside ML ranking"
+
+      echo
+      echo "Ground-truth leakage:"
+      echo "Forbidden"
+
+      echo
+      echo "Model training:"
+      echo "PERFORMED"
+
+      echo
+      echo "Model persistence:"
+      echo "NOT performed yet"
+
+      echo
+      echo "MLflow:"
+      echo "NOT used by this training workload yet"
+
+      echo
+      echo "Execution type:"
+      echo "GitLab-triggered ephemeral Kubernetes Job"
+
+      echo
+      echo "Deployment:"
+      echo "None"
+
+      echo
+      echo "Service:"
+      echo "None"
+
+      echo
+      echo "Argo CD:"
+      echo "Not used for this execution workload"
+
+  after_script:
+    - |
+      echo
+      echo "============================================================"
+      echo "MATCHING MODEL TRAINING AFTER-SCRIPT DIAGNOSTICS"
+      echo "============================================================"
+
+      kubectl \
+        -n real-estate \
+        get job \
+        real-estate-matching-model-training \
+        -o wide || true
+
+      kubectl \
+        -n real-estate \
+        get pods \
+        -l app.kubernetes.io/name=real-estate-matching-model-training \
+        -o wide || true
+
+      kubectl \
+        -n real-estate \
+        logs \
+        job/real-estate-matching-model-training \
+        --all-containers=true || true
+
+    - rm -f /tmp/real-estate-matching-model-training.yaml
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - src/ai/**/*
+        - tests/ai/**/*
+        - requirements-ai.txt
+        - requirements-ai-mlops.txt
+        - deploy/docker/Dockerfile.ai-mlops
+        - deploy/mlops/**/*
+        - .gitlab/ci/ai.yml
+        - .gitlab/ci/ai-mlops.yml
+        - .gitlab-ci.yml
