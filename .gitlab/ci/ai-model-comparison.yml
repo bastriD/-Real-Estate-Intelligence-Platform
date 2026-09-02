@@ -1,0 +1,255 @@
+# =============================================================================
+# AI MODEL COMPARISON
+# =============================================================================
+#
+# Purpose:
+#   Run a fair deterministic-vs-supervised matching comparison on the real
+#   PostgreSQL runtime dataset.
+#
+# Guarantees:
+#   - uses the immutable AI/MLOps image built by ai-mlops.yml
+#   - reconstructs the canonical informative dataset from PostgreSQL
+#   - recreates and validates the frozen group-aware split
+#   - trains the supervised baseline on TRAIN only
+#   - compares deterministic and ML rankers only on VALIDATION and TEST
+#   - uses identical candidate populations and explicit-lineage ground truth
+#   - does not promote or register any model
+#
+# Execution:
+#   GitLab CI -> Kubernetes ephemeral Job -> real-estate namespace
+#
+# =============================================================================
+
+
+ai-model-comparison:compare:
+  stage: deploy
+
+  tags:
+    - shell
+
+  needs:
+    - job: ai-mlops:build
+      artifacts: false
+
+  variables:
+    KUBERNETES_NAMESPACE: real-estate
+
+    COMPARISON_JOB_NAME: real-estate-matching-model-comparison
+
+    COMPARISON_MANIFEST:
+      deploy/mlops/matching-model-comparison-job.yaml
+
+    AI_MLOPS_IMAGE:
+      $CI_REGISTRY_IMAGE/ai-mlops:$CI_COMMIT_SHORT_SHA
+
+  before_script:
+    - kubectl version --client
+    - kubectl config current-context
+
+  script:
+    # -------------------------------------------------------------------------
+    # 1. Validate required files
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "=============================================="
+      echo "AI Model Comparison"
+      echo "=============================================="
+      echo
+      echo "Commit:   ${CI_COMMIT_SHA}"
+      echo "Pipeline: ${CI_PIPELINE_ID}"
+      echo "Job:      ${CI_JOB_ID}"
+      echo "Image:    ${AI_MLOPS_IMAGE}"
+      echo
+
+    - |
+      test -f "${COMPARISON_MANIFEST}" || {
+        echo "Missing Kubernetes manifest: ${COMPARISON_MANIFEST}"
+        exit 1
+      }
+
+    - |
+      test -f src/ai/matching/model_comparison.py || {
+        echo "Missing model comparison module"
+        exit 1
+      }
+
+    - |
+      test -f src/ai/matching/run_model_comparison.py || {
+        echo "Missing model comparison runtime runner"
+        exit 1
+      }
+
+    # -------------------------------------------------------------------------
+    # 2. Validate Kubernetes runtime dependencies
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl -n "${KUBERNETES_NAMESPACE}" \
+        get secret real-estate-postgresql-secret
+
+    - |
+      kubectl -n "${KUBERNETES_NAMESPACE}" \
+        get secret gitlab-registry-auth
+
+    # -------------------------------------------------------------------------
+    # 3. Render immutable runtime manifest
+    # -------------------------------------------------------------------------
+
+    - |
+      cp "${COMPARISON_MANIFEST}" /tmp/matching-model-comparison-job.yaml
+
+    - |
+      sed -i \
+        "s|__AI_MLOPS_IMAGE__|${AI_MLOPS_IMAGE}|g" \
+        /tmp/matching-model-comparison-job.yaml
+
+    - |
+      sed -i \
+        "s|__CI_COMMIT_SHA__|${CI_COMMIT_SHA}|g" \
+        /tmp/matching-model-comparison-job.yaml
+
+    - |
+      sed -i \
+        "s|__CI_COMMIT_SHORT_SHA__|${CI_COMMIT_SHORT_SHA}|g" \
+        /tmp/matching-model-comparison-job.yaml
+
+    - |
+      sed -i \
+        "s|__CI_COMMIT_BRANCH__|${CI_COMMIT_BRANCH:-}|g" \
+        /tmp/matching-model-comparison-job.yaml
+
+    - |
+      sed -i \
+        "s|__CI_COMMIT_REF_NAME__|${CI_COMMIT_REF_NAME}|g" \
+        /tmp/matching-model-comparison-job.yaml
+
+    - |
+      sed -i \
+        "s|__CI_PROJECT_URL__|${CI_PROJECT_URL}|g" \
+        /tmp/matching-model-comparison-job.yaml
+
+    - |
+      sed -i \
+        "s|__CI_PROJECT_PATH__|${CI_PROJECT_PATH}|g" \
+        /tmp/matching-model-comparison-job.yaml
+
+    - |
+      sed -i \
+        "s|__CI_PIPELINE_ID__|${CI_PIPELINE_ID}|g" \
+        /tmp/matching-model-comparison-job.yaml
+
+    - |
+      sed -i \
+        "s|__CI_PIPELINE_URL__|${CI_PIPELINE_URL}|g" \
+        /tmp/matching-model-comparison-job.yaml
+
+    - |
+      sed -i \
+        "s|__CI_JOB_ID__|${CI_JOB_ID}|g" \
+        /tmp/matching-model-comparison-job.yaml
+
+    - |
+      sed -i \
+        "s|__CI_JOB_NAME__|${CI_JOB_NAME}|g" \
+        /tmp/matching-model-comparison-job.yaml
+
+    - |
+      sed -i \
+        "s|__CI_JOB_URL__|${CI_JOB_URL}|g" \
+        /tmp/matching-model-comparison-job.yaml
+
+    # -------------------------------------------------------------------------
+    # 4. Validate rendered Kubernetes manifest
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl apply \
+        --dry-run=client \
+        -f /tmp/matching-model-comparison-job.yaml
+
+    # -------------------------------------------------------------------------
+    # 5. Remove stale comparison Job
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl -n "${KUBERNETES_NAMESPACE}" \
+        delete job "${COMPARISON_JOB_NAME}" \
+        --ignore-not-found=true
+
+    # -------------------------------------------------------------------------
+    # 6. Launch ephemeral comparison workload
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl apply \
+        -f /tmp/matching-model-comparison-job.yaml
+
+    # -------------------------------------------------------------------------
+    # 7. Wait for completion
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl -n "${KUBERNETES_NAMESPACE}" \
+        wait \
+        --for=condition=complete \
+        "job/${COMPARISON_JOB_NAME}" \
+        --timeout=300s
+
+    # -------------------------------------------------------------------------
+    # 8. Print authoritative runtime evidence
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl -n "${KUBERNETES_NAMESPACE}" \
+        logs \
+        "job/${COMPARISON_JOB_NAME}"
+
+    - |
+      echo
+      echo "=============================================="
+      echo "Kubernetes Job Summary"
+      echo "=============================================="
+
+      kubectl -n "${KUBERNETES_NAMESPACE}" \
+        get job "${COMPARISON_JOB_NAME}" \
+        -o wide
+
+  after_script:
+    - |
+      echo
+      echo "=============================================="
+      echo "Comparison Job Diagnostic"
+      echo "=============================================="
+
+      kubectl -n "${KUBERNETES_NAMESPACE:-real-estate}" \
+        get job "${COMPARISON_JOB_NAME:-real-estate-matching-model-comparison}" \
+        -o wide \
+        2>/dev/null || true
+
+    - |
+      kubectl -n "${KUBERNETES_NAMESPACE:-real-estate}" \
+        get pods \
+        -l app.kubernetes.io/name=real-estate-matching-model-comparison \
+        -o wide \
+        2>/dev/null || true
+
+    - |
+      kubectl -n "${KUBERNETES_NAMESPACE:-real-estate}" \
+        logs \
+        "job/${COMPARISON_JOB_NAME:-real-estate-matching-model-comparison}" \
+        2>/dev/null || true
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - src/ai/**/*
+        - tests/ai/**/*
+        - deploy/mlops/matching-model-comparison-job.yaml
+        - .gitlab/ci/ai-model-comparison.yml
+        - .gitlab/ci/ai-mlops.yml
+        - requirements-ai.txt
+        - requirements-ai-mlops.txt
+        - Dockerfile.ai-mlops
+
+    - when: never

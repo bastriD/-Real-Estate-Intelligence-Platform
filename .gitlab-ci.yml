@@ -16,3 +16,4 @@ include:
   - local: .gitlab/ci/backend.yml
   - local: .gitlab/ci/ai.yml
   - local: .gitlab/ci/ai-mlops.yml
+  - local: .gitlab/ci/ai-model-comparison.yml
