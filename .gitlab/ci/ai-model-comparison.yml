@@ -28,7 +28,7 @@ ai-model-comparison:compare:
     - shell
 
   needs:
-    - job: ai-mlops:build
+    - job: ai-mlops:build-image
       artifacts: false
 
   variables:
