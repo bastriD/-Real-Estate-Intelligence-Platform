@@ -129,7 +129,8 @@ ai-mlops:build-image:
     - test -f src/ai/matching/run_training_dataset_validation.py
     - test -f src/ai/matching/dataset_split.py
     - test -f src/ai/matching/run_training_dataset_split.py
-
+    - test -f src/ai/matching/model_training.py
+    - test -f src/ai/matching/run_model_training.py
     # -------------------------------------------------------------------------
     # 1.6 Validate Kubernetes Job manifests
     # -------------------------------------------------------------------------
@@ -137,7 +138,7 @@ ai-mlops:build-image:
     - test -f deploy/mlops/matching-evaluation-job.yaml
     - test -f deploy/mlops/matching-training-dataset-validation-job.yaml
     - test -f deploy/mlops/matching-training-dataset-split-job.yaml
-
+    - test -f deploy/mlops/matching-model-training-job.yaml
     # -------------------------------------------------------------------------
     # 1.7 Build dedicated AI / MLOps image
     # -------------------------------------------------------------------------
@@ -245,6 +246,19 @@ ai-mlops:build-image:
         python -c \
         "from src.ai.matching.dataset_split import create_group_aware_split, split_summary; import src.ai.matching.run_training_dataset_split; print('Group-aware dataset split modules imported successfully')"
 
+
+      # -------------------------------------------------------------------------
+    # 1.15,1 Validate supervised model training modules inside image
+    # -------------------------------------------------------------------------
+
+    - |
+      docker run \
+        --rm \
+        "$IMAGE_NAME:$IMAGE_TAG" \
+        python -c \
+        "from src.ai.matching.model_training import train_logistic_regression, train_and_evaluate_logistic_regression; import src.ai.matching.run_model_training; print('Supervised model training modules imported successfully')"
+    
+    
     # -------------------------------------------------------------------------
     # 1.16 Push immutable image
     # -------------------------------------------------------------------------
@@ -290,10 +304,11 @@ ai-mlops:build-image:
       echo "- supervised dataset reconstruction"
       echo "- supervised dataset validation"
       echo "- group-aware train / validation / test split"
+      echo "- supervised Logistic Regression training"
 
       echo
-      echo "Model training:"
-      echo "NOT performed"
+      echo "Model training capability:"
+      echo "PACKAGED in the immutable AI / MLOps image"
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
