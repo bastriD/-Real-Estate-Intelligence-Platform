@@ -240,7 +240,7 @@ ai-model-comparison:compare:
         "job/${COMPARISON_JOB_NAME:-real-estate-matching-model-comparison}" \
         2>/dev/null || true
 
-    rules:
+  rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
         - src/ai/**/*
