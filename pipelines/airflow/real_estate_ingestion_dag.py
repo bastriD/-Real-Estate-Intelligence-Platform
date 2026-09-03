@@ -78,6 +78,29 @@ S3_AND_POSTGRES_ENV = [
 
 # =============================================================================
 # DAG
+#
+# OPERATIONAL NOTE
+# ----------------
+# This DAG is intentionally manual (schedule=None).
+#
+# Data Quality and platform/business observability metrics are pushed by
+# short-lived KubernetesPodOperator tasks to Prometheus Pushgateway.
+# Pushgateway currently stores pushed metrics ephemerally. If the Pushgateway
+# pod restarts, previously pushed metrics can disappear until the corresponding
+# DQ / observability tasks are executed again.
+#
+# This behavior is an operational limitation to account for in monitoring and
+# PCA/PRA design. It is documented here but is NOT solved by this DAG.
+#
+# Prometheus scraping note:
+# The Pushgateway target itself is scraped with:
+#     job="retail-pushgateway"
+#
+# Therefore pushed job labels are exposed by Prometheus as:
+#     exported_job="real_estate_data_quality"
+#     exported_job="real_estate_data_platform"
+#
+# Grafana PromQL must filter on exported_job for these pushed metrics.
 # =============================================================================
 
 with DAG(
@@ -219,6 +242,26 @@ with DAG(
             is_delete_operator_pod=True,
         )
 
+
+        # ---------------------------------------------------------------------
+        # DQ METRICS
+        # ---------------------------------------------------------------------
+        # dq_runner.py publishes the latest blocking-check result for this layer
+        # to Pushgateway under:
+        #
+        #   PUSHGATEWAY_JOB = real_estate_data_quality
+        #
+        # grouping labels:
+        #   layer      = raw | staging | oltp | warehouse
+        #   medallion  = bronze | silver | gold
+        #
+        # In Prometheus the pushed job label is exposed as:
+        #   exported_job="real_estate_data_quality"
+        #
+        # These metrics are transient while Pushgateway has no persistent
+        # storage; a Pushgateway restart can remove them until republished.
+        # ---------------------------------------------------------------------
+
         validate_raw_task = KubernetesPodOperator(
             task_id="validate_raw",
             name="real-estate-validate-raw",
@@ -307,6 +350,26 @@ with DAG(
             is_delete_operator_pod=True,
         )
 
+
+        # ---------------------------------------------------------------------
+        # DQ METRICS
+        # ---------------------------------------------------------------------
+        # dq_runner.py publishes the latest blocking-check result for this layer
+        # to Pushgateway under:
+        #
+        #   PUSHGATEWAY_JOB = real_estate_data_quality
+        #
+        # grouping labels:
+        #   layer      = raw | staging | oltp | warehouse
+        #   medallion  = bronze | silver | gold
+        #
+        # In Prometheus the pushed job label is exposed as:
+        #   exported_job="real_estate_data_quality"
+        #
+        # These metrics are transient while Pushgateway has no persistent
+        # storage; a Pushgateway restart can remove them until republished.
+        # ---------------------------------------------------------------------
+
         validate_staging_task = KubernetesPodOperator(
             task_id="validate_staging",
             name="real-estate-validate-staging",
@@ -382,6 +445,26 @@ with DAG(
             get_logs=True,
             is_delete_operator_pod=True,
         )
+
+
+        # ---------------------------------------------------------------------
+        # DQ METRICS
+        # ---------------------------------------------------------------------
+        # dq_runner.py publishes the latest blocking-check result for this layer
+        # to Pushgateway under:
+        #
+        #   PUSHGATEWAY_JOB = real_estate_data_quality
+        #
+        # grouping labels:
+        #   layer      = raw | staging | oltp | warehouse
+        #   medallion  = bronze | silver | gold
+        #
+        # In Prometheus the pushed job label is exposed as:
+        #   exported_job="real_estate_data_quality"
+        #
+        # These metrics are transient while Pushgateway has no persistent
+        # storage; a Pushgateway restart can remove them until republished.
+        # ---------------------------------------------------------------------
 
         validate_oltp_task = KubernetesPodOperator(
             task_id="validate_oltp",
@@ -471,6 +554,26 @@ with DAG(
             get_logs=True,
             is_delete_operator_pod=True,
         )
+
+
+        # ---------------------------------------------------------------------
+        # DQ METRICS
+        # ---------------------------------------------------------------------
+        # dq_runner.py publishes the latest blocking-check result for this layer
+        # to Pushgateway under:
+        #
+        #   PUSHGATEWAY_JOB = real_estate_data_quality
+        #
+        # grouping labels:
+        #   layer      = raw | staging | oltp | warehouse
+        #   medallion  = bronze | silver | gold
+        #
+        # In Prometheus the pushed job label is exposed as:
+        #   exported_job="real_estate_data_quality"
+        #
+        # These metrics are transient while Pushgateway has no persistent
+        # storage; a Pushgateway restart can remove them until republished.
+        # ---------------------------------------------------------------------
 
         validate_warehouse_task = KubernetesPodOperator(
             task_id="validate_warehouse",
@@ -597,6 +700,22 @@ with DAG(
         tooltip="Platform metrics and observability",
         prefix_group_id=False,
     ) as observability_group:
+
+        # ---------------------------------------------------------------------
+        # PLATFORM / BUSINESS METRICS
+        # ---------------------------------------------------------------------
+        # collect_metrics.py publishes accumulated platform, OLTP, warehouse,
+        # analytics and business KPI metrics to Pushgateway under:
+        #
+        #   PUSHGATEWAY_JOB = real_estate_data_platform
+        #
+        # In Prometheus the pushed job label is exposed as:
+        #   exported_job="real_estate_data_platform"
+        #
+        # Like DQ metrics, these values are transient while Pushgateway has no
+        # persistent storage. Because this DAG is manual, a Pushgateway restart
+        # can leave Grafana panels empty until this task runs again.
+        # ---------------------------------------------------------------------
 
         collect_metrics_task = KubernetesPodOperator(
             task_id="collect_metrics",
