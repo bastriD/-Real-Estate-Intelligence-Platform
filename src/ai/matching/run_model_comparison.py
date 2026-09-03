@@ -444,7 +444,7 @@ def main() -> None:
         )
 
         validate_frozen_split(
-            split
+            split_details=split_summary(split),
         )
 
         print(
