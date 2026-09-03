@@ -6,6 +6,18 @@ import pandas as pd
 import pytest
 from sqlalchemy.exc import IntegrityError
 
+from prometheus_client import REGISTRY
+
+from src.api.observability.metrics import (
+    RECOMMENDATION_DURATION_SECONDS,
+    RECOMMENDATION_ELIGIBLE_CANDIDATES,
+    RECOMMENDATION_FAILURES_TOTAL,
+    RECOMMENDATION_PRESENTATIONS_CREATED,
+    RECOMMENDATION_PRESENTATIONS_EXISTING,
+    RECOMMENDATION_REQUESTS_TOTAL,
+    RECOMMENDATION_SELECTED_CANDIDATES,
+)
+
 from src.api.services.recommendation import (
     RecommendationPersistenceError,
     RecommendationService,
@@ -351,3 +363,236 @@ def test_generate_recommendations_rolls_back_on_integrity_error() -> None:
 
     db.rollback.assert_called_once()
     db.commit.assert_not_called()
+
+def _sample_value(
+    name: str,
+    labels: dict[str, str] | None = None,
+) -> float:
+    value = REGISTRY.get_sample_value(
+        name,
+        labels or {},
+    )
+
+    assert value is not None
+
+    return float(value)
+
+
+def test_recommendation_metrics_record_success() -> None:
+    db = MagicMock()
+    service = RecommendationService(db)
+
+    service._load_matching_input = MagicMock(
+        return_value=build_matching_input()
+    )
+
+    service.presentation_repository.get_by_demande_and_bien = MagicMock(
+        return_value=None
+    )
+
+    created_presentations = [
+        SimpleNamespace(
+            id_presentation=801
+        ),
+        SimpleNamespace(
+            id_presentation=802
+        ),
+    ]
+
+    service.presentation_repository.create = MagicMock(
+        side_effect=created_presentations
+    )
+
+    requests_before = _sample_value(
+        "real_estate_recommendation_requests_total"
+    )
+
+    eligible_count_before = _sample_value(
+        "real_estate_recommendation_eligible_candidates_count"
+    )
+
+    eligible_sum_before = _sample_value(
+        "real_estate_recommendation_eligible_candidates_sum"
+    )
+
+    selected_count_before = _sample_value(
+        "real_estate_recommendation_selected_candidates_count"
+    )
+
+    selected_sum_before = _sample_value(
+        "real_estate_recommendation_selected_candidates_sum"
+    )
+
+    created_count_before = _sample_value(
+        "real_estate_recommendation_presentations_created_count"
+    )
+
+    created_sum_before = _sample_value(
+        "real_estate_recommendation_presentations_created_sum"
+    )
+
+    existing_count_before = _sample_value(
+        "real_estate_recommendation_presentations_existing_count"
+    )
+
+    existing_sum_before = _sample_value(
+        "real_estate_recommendation_presentations_existing_sum"
+    )
+
+    duration_count_before = _sample_value(
+        "real_estate_recommendation_duration_seconds_count"
+    )
+
+    with patch(
+        "src.api.services.recommendation.build_matching_features",
+        return_value=build_ranked_candidates(),
+    ), patch(
+        "src.api.services.recommendation.compute_matching_score",
+        return_value=build_ranked_candidates(),
+    ):
+        result = service.generate_recommendations(
+            id_demande_version=55,
+            limit=2,
+        )
+
+    assert result.eligible_candidates == 3
+    assert result.selected_candidates == 2
+    assert result.created_presentations == 2
+    assert result.existing_presentations == 0
+
+    assert _sample_value(
+        "real_estate_recommendation_requests_total"
+    ) == requests_before + 1
+
+    assert _sample_value(
+        "real_estate_recommendation_eligible_candidates_count"
+    ) == eligible_count_before + 1
+
+    assert _sample_value(
+        "real_estate_recommendation_eligible_candidates_sum"
+    ) == eligible_sum_before + 3
+
+    assert _sample_value(
+        "real_estate_recommendation_selected_candidates_count"
+    ) == selected_count_before + 1
+
+    assert _sample_value(
+        "real_estate_recommendation_selected_candidates_sum"
+    ) == selected_sum_before + 2
+
+    assert _sample_value(
+        "real_estate_recommendation_presentations_created_count"
+    ) == created_count_before + 1
+
+    assert _sample_value(
+        "real_estate_recommendation_presentations_created_sum"
+    ) == created_sum_before + 2
+
+    assert _sample_value(
+        "real_estate_recommendation_presentations_existing_count"
+    ) == existing_count_before + 1
+
+    assert _sample_value(
+        "real_estate_recommendation_presentations_existing_sum"
+    ) == existing_sum_before
+
+    assert _sample_value(
+        "real_estate_recommendation_duration_seconds_count"
+    ) == duration_count_before + 1
+
+
+def test_recommendation_metrics_record_validation_failure() -> None:
+    db = MagicMock()
+    service = RecommendationService(db)
+
+    requests_before = _sample_value(
+        "real_estate_recommendation_requests_total"
+    )
+
+    failures_before = _sample_value(
+        "real_estate_recommendation_failures_total",
+        {
+            "failure_type": "validation",
+        },
+    )
+
+    duration_count_before = _sample_value(
+        "real_estate_recommendation_duration_seconds_count"
+    )
+
+    with pytest.raises(
+        RecommendationValidationError
+    ):
+        service.generate_recommendations(
+            id_demande_version=0,
+            limit=10,
+        )
+
+    assert _sample_value(
+        "real_estate_recommendation_requests_total"
+    ) == requests_before + 1
+
+    assert _sample_value(
+        "real_estate_recommendation_failures_total",
+        {
+            "failure_type": "validation",
+        },
+    ) == failures_before + 1
+
+    assert _sample_value(
+        "real_estate_recommendation_duration_seconds_count"
+    ) == duration_count_before + 1
+
+
+def test_recommendation_metrics_record_empty_success() -> None:
+    db = MagicMock()
+    service = RecommendationService(db)
+
+    service._load_matching_input = MagicMock(
+        return_value=(
+            {
+                "id_demande_version": 55,
+            },
+            pd.DataFrame(),
+        )
+    )
+
+    eligible_count_before = _sample_value(
+        "real_estate_recommendation_eligible_candidates_count"
+    )
+
+    eligible_sum_before = _sample_value(
+        "real_estate_recommendation_eligible_candidates_sum"
+    )
+
+    selected_count_before = _sample_value(
+        "real_estate_recommendation_selected_candidates_count"
+    )
+
+    selected_sum_before = _sample_value(
+        "real_estate_recommendation_selected_candidates_sum"
+    )
+
+    result = service.generate_recommendations(
+        id_demande_version=55,
+        limit=10,
+    )
+
+    assert result.eligible_candidates == 0
+    assert result.selected_candidates == 0
+
+    assert _sample_value(
+        "real_estate_recommendation_eligible_candidates_count"
+    ) == eligible_count_before + 1
+
+    assert _sample_value(
+        "real_estate_recommendation_eligible_candidates_sum"
+    ) == eligible_sum_before
+
+    assert _sample_value(
+        "real_estate_recommendation_selected_candidates_count"
+    ) == selected_count_before + 1
+
+    assert _sample_value(
+        "real_estate_recommendation_selected_candidates_sum"
+    ) == selected_sum_before

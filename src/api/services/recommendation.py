@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import time
 from decimal import Decimal
 from typing import Any
 
@@ -17,6 +18,15 @@ from src.ai.matching.repository import (
 )
 from src.api.core.config import settings
 from src.api.db.models.presentation import Presentation
+from src.api.observability.metrics import (
+    RECOMMENDATION_DURATION_SECONDS,
+    RECOMMENDATION_ELIGIBLE_CANDIDATES,
+    RECOMMENDATION_FAILURES_TOTAL,
+    RECOMMENDATION_PRESENTATIONS_CREATED,
+    RECOMMENDATION_PRESENTATIONS_EXISTING,
+    RECOMMENDATION_REQUESTS_TOTAL,
+    RECOMMENDATION_SELECTED_CANDIDATES,
+)
 from src.api.repositories.presentation import (
     PresentationRepository,
 )
@@ -54,6 +64,86 @@ class RecommendationService:
         id_demande_version: int,
         limit: int,
     ) -> RecommendationResponse:
+        """
+        Generate and persist deterministic Top-N recommendations.
+
+        Prometheus instrumentation records:
+
+        - total recommendation requests,
+        - failures by stable failure category,
+        - execution duration,
+        - eligible candidate distribution,
+        - selected candidate distribution,
+        - newly created presentation distribution,
+        - reused presentation distribution.
+
+        Business identifiers such as id_demande_version and id_bien are
+        intentionally not used as Prometheus labels in order to avoid
+        high-cardinality time series.
+        """
+
+        RECOMMENDATION_REQUESTS_TOTAL.inc()
+
+        start_time = time.perf_counter()
+
+        try:
+            response = self._generate_recommendations(
+                id_demande_version=id_demande_version,
+                limit=limit,
+            )
+
+        except RecommendationValidationError:
+            RECOMMENDATION_FAILURES_TOTAL.labels(
+                failure_type="validation",
+            ).inc()
+
+            raise
+
+        except RecommendationPersistenceError:
+            RECOMMENDATION_FAILURES_TOTAL.labels(
+                failure_type="persistence",
+            ).inc()
+
+            raise
+
+        except Exception:
+            RECOMMENDATION_FAILURES_TOTAL.labels(
+                failure_type="unexpected",
+            ).inc()
+
+            raise
+
+        else:
+            self._observe_recommendation_result(
+                response
+            )
+
+            return response
+
+        finally:
+            duration = (
+                time.perf_counter()
+                - start_time
+            )
+
+            RECOMMENDATION_DURATION_SECONDS.observe(
+                duration
+            )
+
+    def _generate_recommendations(
+        self,
+        *,
+        id_demande_version: int,
+        limit: int,
+    ) -> RecommendationResponse:
+        """
+        Execute the recommendation business workflow.
+
+        Prometheus lifecycle instrumentation is deliberately handled by
+        generate_recommendations() so that business logic remains focused
+        on matching and persistence.
+        """
+
         if id_demande_version <= 0:
             raise RecommendationValidationError(
                 "id_demande_version must be greater than 0."
@@ -73,12 +163,15 @@ class RecommendationService:
             demande, biens = self._load_matching_input(
                 id_demande_version=id_demande_version
             )
+
         except ValueError as exc:
             raise RecommendationValidationError(
                 str(exc)
             ) from exc
 
-        eligible_candidates = len(biens)
+        eligible_candidates = len(
+            biens
+        )
 
         if biens.empty:
             return RecommendationResponse(
@@ -219,9 +312,9 @@ class RecommendationService:
 
                 created_count += 1
 
-            # One flush assigns database-generated IDs to all
-            # newly created Presentation objects while keeping
-            # the whole recommendation operation transactional.
+            # One flush assigns database-generated IDs to all newly
+            # created Presentation objects while keeping the complete
+            # recommendation operation transactional.
             self.db.flush()
 
             for (
@@ -267,6 +360,32 @@ class RecommendationService:
             recommendations=(
                 recommendations
             ),
+        )
+
+    @staticmethod
+    def _observe_recommendation_result(
+        response: RecommendationResponse,
+    ) -> None:
+        """
+        Record business-result distributions for a successful request.
+
+        This includes valid requests returning zero eligible candidates.
+        """
+
+        RECOMMENDATION_ELIGIBLE_CANDIDATES.observe(
+            response.eligible_candidates
+        )
+
+        RECOMMENDATION_SELECTED_CANDIDATES.observe(
+            response.selected_candidates
+        )
+
+        RECOMMENDATION_PRESENTATIONS_CREATED.observe(
+            response.created_presentations
+        )
+
+        RECOMMENDATION_PRESENTATIONS_EXISTING.observe(
+            response.existing_presentations
         )
 
     def _load_matching_input(
