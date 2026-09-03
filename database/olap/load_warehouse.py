@@ -463,8 +463,8 @@ def load_fact_presentation(cur):
             p.id_presentation,
             ddv.demande_version_key,
             db.bien_key,
-            dc.client_key,
-            dh.chasseur_key,
+            COALESCE(dc.client_key, 0),
+            COALESCE(dh.chasseur_key, 0),
             TO_CHAR(p.date_selection::date, 'YYYYMMDD')::integer,
             CASE
                 WHEN p.date_presentation IS NULL THEN NULL
@@ -479,7 +479,7 @@ def load_fact_presentation(cur):
           ON dv.id_demande_version = p.id_demande_version
         JOIN real_estate.demande d
           ON d.id_demande = dv.id_demande
-        JOIN real_estate.mandat m
+        LEFT JOIN real_estate.mandat m
           ON m.id_mandat = d.id_mandat
         JOIN real_estate.bien b
           ON b.id_bien = p.id_bien
@@ -489,9 +489,9 @@ def load_fact_presentation(cur):
           ON db.id_source_source = b.id_source
          AND db.reference_externe = b.reference_externe
          AND db.is_current = TRUE
-        JOIN warehouse.dim_client dc
+        LEFT JOIN warehouse.dim_client dc
           ON dc.id_client_source = m.id_client
-        JOIN warehouse.dim_chasseur dh
+        LEFT JOIN warehouse.dim_chasseur dh
           ON dh.id_chasseur_source = m.id_chasseur
         ON CONFLICT (id_presentation_source)
         DO UPDATE SET
