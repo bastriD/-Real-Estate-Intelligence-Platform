@@ -1,8 +1,37 @@
 {
-  "version": "1.0.0",
-  "description": "Declarative OpenMetadata lineage for custom non-dbt warehouse loading paths in the Enterprise Real Estate Intelligence Platform.",
-
+  "version": "1.1.0",
+  "description": "Declarative OpenMetadata lineage for custom non-dbt ingestion, OLTP integration, and warehouse loading paths in the Enterprise Real Estate Intelligence Platform.",
   "lineage_edges": [
+    {
+      "from": "real-estate-postgresql.real_estate.raw.recherches",
+      "to": "real-estate-postgresql.real_estate.staging.recherches",
+      "entity_type": "table",
+      "description": "Generated search records are transformed from raw.recherches into typed and quality-controlled staging.recherches by database/seeds/transform_raw_to_staging.py."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.raw.annonces",
+      "to": "real-estate-postgresql.real_estate.staging.annonces",
+      "entity_type": "table",
+      "description": "Generated property listings are transformed from raw.annonces into typed and quality-controlled staging.annonces by database/seeds/transform_raw_to_staging.py."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.staging.recherches",
+      "to": "real-estate-postgresql.real_estate.real_estate.demande",
+      "entity_type": "table",
+      "description": "Validated generated searches from staging.recherches create or reuse operational demande records through database/seeds/load_staging_recherches_to_oltp.py."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.staging.recherches",
+      "to": "real-estate-postgresql.real_estate.real_estate.demande_version",
+      "entity_type": "table",
+      "description": "Validated generated searches from staging.recherches are loaded into demande_version with generated-search lineage fields through database/seeds/load_staging_recherches_to_oltp.py."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.staging.annonces",
+      "to": "real-estate-postgresql.real_estate.real_estate.bien",
+      "entity_type": "table",
+      "description": "Validated generated listings from staging.annonces are upserted into operational real_estate.bien through database/seeds/load_staging_to_oltp.py."
+    },
     {
       "from": "real-estate-postgresql.real_estate.real_estate.presentation",
       "to": "real-estate-postgresql.real_estate.warehouse.fact_presentation",
