@@ -1,6 +1,6 @@
 {
-  "version": "1.2.0",
-  "description": "Declarative OpenMetadata lineage for custom non-dbt ingestion, OLTP integration, and warehouse loading paths in the Enterprise Real Estate Intelligence Platform.",
+  "version": "1.3.0",
+  "description": "Declarative OpenMetadata lineage for custom non-dbt ingestion, OLTP integration, recommendation workflows, and warehouse loading paths in the Enterprise Real Estate Intelligence Platform.",
   "lineage_edges": [
     {
       "from": "real-estate-postgresql.real_estate.raw.recherches",
@@ -137,6 +137,19 @@
       "to": "real-estate-postgresql.real_estate.warehouse.bridge_mandat_secteur",
       "entity_type": "table",
       "description": "warehouse.dim_secteur supplies the sector surrogate key used by warehouse.bridge_mandat_secteur."
+    },
+
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.demande_version",
+      "to": "real-estate-postgresql.real_estate.real_estate.presentation",
+      "entity_type": "table",
+      "description": "The production recommendation workflow loads the selected demand version as matching input and persists Top-N deterministic recommendations as real_estate.presentation records through src/api/services/recommendation.py."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.bien",
+      "to": "real-estate-postgresql.real_estate.real_estate.presentation",
+      "entity_type": "table",
+      "description": "Eligible operational properties are filtered, scored and ranked by the production recommendation workflow, and selected Top-N properties are persisted as real_estate.presentation records through src/api/services/recommendation.py."
     },
 
     {
