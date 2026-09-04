@@ -1,0 +1,61 @@
+{
+  "version": "1.0.0",
+  "description": "Declarative OpenMetadata lineage for custom non-dbt warehouse loading paths in the Enterprise Real Estate Intelligence Platform.",
+
+  "lineage_edges": [
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.presentation",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_presentation",
+      "entity_type": "table",
+      "description": "Operational presentation records are loaded into warehouse.fact_presentation by database/olap/load_warehouse.py::load_fact_presentation."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.demande_version",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_presentation",
+      "entity_type": "table",
+      "description": "Demand-version context is joined when loading warehouse.fact_presentation."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.demande",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_presentation",
+      "entity_type": "table",
+      "description": "Demand records provide mandate linkage used during fact_presentation loading."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.mandat",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_presentation",
+      "entity_type": "table",
+      "description": "Mandate is an optional upstream dependency used to resolve client and hunter dimensions."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.bien",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_presentation",
+      "entity_type": "table",
+      "description": "Property records are joined to resolve the warehouse property dimension during fact_presentation loading."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.warehouse.dim_demande_version",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_presentation",
+      "entity_type": "table",
+      "description": "Warehouse demand-version dimension supplies the surrogate key used by fact_presentation."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.warehouse.dim_bien",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_presentation",
+      "entity_type": "table",
+      "description": "Warehouse property dimension supplies the surrogate key used by fact_presentation."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.warehouse.dim_client",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_presentation",
+      "entity_type": "table",
+      "description": "Warehouse client dimension optionally supplies the client surrogate key; UNKNOWN key 0 is used when no mandate/client exists."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.warehouse.dim_chasseur",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_presentation",
+      "entity_type": "table",
+      "description": "Warehouse hunter dimension optionally supplies the hunter surrogate key; UNKNOWN key 0 is used when no mandate/hunter exists."
+    }
+  ]
+}

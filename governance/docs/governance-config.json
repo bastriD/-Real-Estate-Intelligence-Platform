@@ -21,12 +21,14 @@
         "domains/real_estate_domains.json"
       ]
     },
+
     "data_products": {
-       "enabled": true,
-       "files": [
+      "enabled": true,
+      "files": [
         "data-products/real_estate_market_intelligence.json"
-     ]
+      ]
     },
+
     "metrics": {
       "enabled": true,
       "files": [
@@ -66,24 +68,35 @@
         "tagging/real_estate_data_layers.json"
       ]
     },
+
     "certification": {
       "enabled": true,
-       "files": [
+      "files": [
         "tagging/real_estate_certifications.json"
       ]
     },
+
     "ownership": {
       "enabled": true,
       "files": [
         "ownership/real_estate_ownership.json"
       ]
     },
+
     "descriptions": {
       "enabled": true,
       "files": [
         "descriptions/real_estate_descriptions.json"
       ]
     },
+
+    "lineage": {
+      "enabled": true,
+      "files": [
+        "lineage/real_estate_lineage.json"
+      ]
+    },
+
     "data_quality": {
       "enabled": true,
       "files": [

@@ -332,6 +332,80 @@ class OpenMetadataClient:
         return response.json()
 
     # =========================================================================
+    # Table lineage
+    # =========================================================================
+
+    def ensure_table_lineage(
+        self,
+        from_fqn: str,
+        to_fqn: str,
+        *,
+        description: str | None = None,
+    ) -> str:
+
+        from_entity = self.get_by_name("/v1/tables", from_fqn)
+        if not from_entity:
+            raise RuntimeError(
+                f"Lineage upstream table does not exist: {from_fqn}"
+            )
+
+        to_entity = self.get_by_name("/v1/tables", to_fqn)
+        if not to_entity:
+            raise RuntimeError(
+                f"Lineage downstream table does not exist: {to_fqn}"
+            )
+
+        from_id = from_entity["id"]
+        to_id = to_entity["id"]
+
+        response = self.get(
+            f"/v1/lineage/table/{to_id}",
+            allow_status=(404,),
+        )
+
+        if response.status_code != 404:
+            lineage = response.json()
+            upstream_edges = lineage.get("upstreamEdges", [])
+
+            if any(
+                edge.get("fromEntity") == from_id
+                and edge.get("toEntity") == to_id
+                for edge in upstream_edges
+            ):
+                logger.info(
+                    "Lineage already present: %s -> %s",
+                    from_fqn,
+                    to_fqn,
+                )
+                return "already"
+
+        edge_payload: dict[str, Any] = {
+            "fromEntity": {
+                "id": from_id,
+                "type": "table",
+            },
+            "toEntity": {
+                "id": to_id,
+                "type": "table",
+            },
+        }
+
+        if description:
+            edge_payload["description"] = description
+
+        self.put(
+            "/v1/lineage",
+            {"edge": edge_payload},
+        )
+
+        logger.info(
+            "Lineage applied: %s -> %s",
+            from_fqn,
+            to_fqn,
+        )
+        return "changed"
+
+    # =========================================================================
     # Table discovery
     # =========================================================================
 
@@ -2453,6 +2527,58 @@ class GovernanceEngine:
 
 
     # =========================================================================
+    # Lineage governance
+    # =========================================================================
+
+    def apply_lineage(
+        self,
+    ) -> None:
+
+        governance_config = self.config["governance"].get(
+            "lineage",
+            {},
+        )
+
+        if not governance_config.get("enabled", False):
+            logger.info("Lineage governance disabled")
+            return
+
+        processed_count = 0
+        changed_count = 0
+        already_count = 0
+
+        for relative_path in governance_config.get("files", []):
+            data = load_json(BASE_DIR / relative_path)
+
+            for edge in data.get("lineage_edges", []):
+                entity_type = edge.get("entity_type", "table")
+
+                if entity_type != "table":
+                    raise RuntimeError(
+                        f"Unsupported lineage entity type: {entity_type}"
+                    )
+
+                result = self.client.ensure_table_lineage(
+                    edge["from"],
+                    edge["to"],
+                    description=edge.get("description"),
+                )
+
+                processed_count += 1
+                if result == "changed":
+                    changed_count += 1
+                elif result == "already":
+                    already_count += 1
+
+        logger.info(
+            "Lineage governance completed: "
+            "%s processed, %s changed, %s already present",
+            processed_count,
+            changed_count,
+            already_count,
+        )
+
+    # =========================================================================
     # Quality metadata
     # =========================================================================
 
@@ -3203,121 +3329,75 @@ class GovernanceEngine:
         self,
     ) -> None:
 
-        project = self.config[
-            "project"
-        ]
+        project = self.config["project"]
 
         logger.info(
             "============================================================"
         )
-
-        logger.info(
-            "Real Estate Governance-as-Code"
-        )
-
+        logger.info("Real Estate Governance-as-Code")
         logger.info(
             "Project: %s",
-            project[
-                "display_name"
-            ],
+            project["display_name"],
         )
-
         logger.info(
             "Governance version: %s",
-            project[
-                "governance_version"
-            ],
+            project["governance_version"],
         )
-
         logger.info(
             "============================================================"
         )
 
         self.validate_connection()
 
-        logger.info(
-            "Step 1/12 - Applying domains"
-        )
-
+        logger.info("Step 1/13 - Applying domains")
         self.apply_domains()
 
-        logger.info(
-            "Step 2/12 - Applying business glossary"
-        )
-
+        logger.info("Step 2/13 - Applying business glossary")
         self.apply_glossary()
 
-        logger.info(
-            "Step 3/12 - Applying classifications and tags"
-        )
-
+        logger.info("Step 3/13 - Applying classifications and tags")
         self.apply_classifications()
 
-        logger.info(
-            "Step 4/12 - Applying Data Layer governance"
-        )
-
+        logger.info("Step 4/13 - Applying Data Layer governance")
         self.apply_data_layers()
 
-        logger.info(
-            "Step 5/12 - Applying ownership"
-        )
-
+        logger.info("Step 5/13 - Applying ownership")
         self.apply_ownership()
 
-        logger.info(
-            "Step 6/12 - Applying Catalog Descriptions"
-        )
-
+        logger.info("Step 6/13 - Applying Catalog Descriptions")
         self.apply_descriptions()
 
-        logger.info(
-            "Step 7/12 - Applying Data Quality governance"
-        )
+        logger.info("Step 7/13 - Applying lineage governance")
+        self.apply_lineage()
 
+        logger.info("Step 8/13 - Applying Data Quality governance")
         self.apply_quality_governance()
 
-        logger.info(
-            "Step 8/12 - Applying glossary assignments"
-        )
-
+        logger.info("Step 9/13 - Applying glossary assignments")
         self.apply_glossary_assignments()
 
-        logger.info(
-            "Step 9/12 - Applying privacy assignments"
-        )
-
+        logger.info("Step 10/13 - Applying privacy assignments")
         self.apply_privacy_assignments()
 
-        logger.info(
-            "Step 10/12 - Applying Data Products"
-        )
-
+        logger.info("Step 11/13 - Applying Data Products")
         self.apply_data_products()
 
-        logger.info(
-            "Step 11/12 - Applying Metrics"
-        )
-
+        logger.info("Step 12/13 - Applying Metrics")
         self.apply_metrics()
 
-        logger.info(
-            "Step 12/12 - Applying Certifications"
-        )
-
+        logger.info("Step 13/13 - Applying Certifications")
         self.apply_certifications()
 
         logger.info(
             "============================================================"
         )
-
         logger.info(
             "Governance-as-Code execution completed successfully"
         )
-
         logger.info(
             "============================================================"
         )
+
 # =============================================================================
 # Entrypoint
 # =============================================================================
