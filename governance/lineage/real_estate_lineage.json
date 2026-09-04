@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Declarative OpenMetadata lineage for custom non-dbt ingestion, OLTP integration, and warehouse loading paths in the Enterprise Real Estate Intelligence Platform.",
   "lineage_edges": [
     {
@@ -32,6 +32,113 @@
       "entity_type": "table",
       "description": "Validated generated listings from staging.annonces are upserted into operational real_estate.bien through database/seeds/load_staging_to_oltp.py."
     },
+
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.source",
+      "to": "real-estate-postgresql.real_estate.warehouse.dim_source",
+      "entity_type": "table",
+      "description": "Operational source reference data is loaded into warehouse.dim_source by database/olap/load_warehouse.py::load_dim_source."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.client",
+      "to": "real-estate-postgresql.real_estate.warehouse.dim_client",
+      "entity_type": "table",
+      "description": "Operational client records are loaded into warehouse.dim_client by database/olap/load_warehouse.py::load_dim_client."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.chasseur",
+      "to": "real-estate-postgresql.real_estate.warehouse.dim_chasseur",
+      "entity_type": "table",
+      "description": "Operational hunter records are loaded into warehouse.dim_chasseur by database/olap/load_warehouse.py::load_dim_chasseur."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.secteur",
+      "to": "real-estate-postgresql.real_estate.warehouse.dim_secteur",
+      "entity_type": "table",
+      "description": "Operational sector records are loaded into warehouse.dim_secteur by database/olap/load_warehouse.py::load_dim_secteur."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.demande_version",
+      "to": "real-estate-postgresql.real_estate.warehouse.dim_demande_version",
+      "entity_type": "table",
+      "description": "Operational demand versions are loaded into warehouse.dim_demande_version by database/olap/load_warehouse.py::load_dim_demande_version."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.bien",
+      "to": "real-estate-postgresql.real_estate.warehouse.dim_bien",
+      "entity_type": "table",
+      "description": "Operational property records are loaded into warehouse.dim_bien by database/olap/load_warehouse.py::load_dim_bien."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.bien",
+      "to": "real-estate-postgresql.real_estate.warehouse.dim_localisation",
+      "entity_type": "table",
+      "description": "Property geographical attributes are used to populate warehouse.dim_localisation by database/olap/load_warehouse.py::load_dim_localisation."
+    },
+
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.bien",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_annonce",
+      "entity_type": "table",
+      "description": "Operational property data supplies business measures and source identifiers when loading warehouse.fact_annonce."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.warehouse.dim_bien",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_annonce",
+      "entity_type": "table",
+      "description": "warehouse.dim_bien supplies the property surrogate key used by warehouse.fact_annonce."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.warehouse.dim_source",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_annonce",
+      "entity_type": "table",
+      "description": "warehouse.dim_source supplies the source surrogate key used by warehouse.fact_annonce."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.warehouse.dim_localisation",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_annonce",
+      "entity_type": "table",
+      "description": "warehouse.dim_localisation supplies the geographical surrogate key used by warehouse.fact_annonce."
+    },
+
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.mandat",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_mandat",
+      "entity_type": "table",
+      "description": "Operational mandate records provide the business measures and identifiers loaded into warehouse.fact_mandat."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.warehouse.dim_client",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_mandat",
+      "entity_type": "table",
+      "description": "warehouse.dim_client supplies the client surrogate key used by warehouse.fact_mandat."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.warehouse.dim_chasseur",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_mandat",
+      "entity_type": "table",
+      "description": "warehouse.dim_chasseur supplies the hunter surrogate key used by warehouse.fact_mandat."
+    },
+
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.mandat_secteur",
+      "to": "real-estate-postgresql.real_estate.warehouse.bridge_mandat_secteur",
+      "entity_type": "table",
+      "description": "Operational mandate-sector associations are loaded into warehouse.bridge_mandat_secteur."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.warehouse.fact_mandat",
+      "to": "real-estate-postgresql.real_estate.warehouse.bridge_mandat_secteur",
+      "entity_type": "table",
+      "description": "warehouse.fact_mandat supplies the mandate fact key used by warehouse.bridge_mandat_secteur."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.warehouse.dim_secteur",
+      "to": "real-estate-postgresql.real_estate.warehouse.bridge_mandat_secteur",
+      "entity_type": "table",
+      "description": "warehouse.dim_secteur supplies the sector surrogate key used by warehouse.bridge_mandat_secteur."
+    },
+
     {
       "from": "real-estate-postgresql.real_estate.real_estate.presentation",
       "to": "real-estate-postgresql.real_estate.warehouse.fact_presentation",
@@ -85,6 +192,37 @@
       "to": "real-estate-postgresql.real_estate.warehouse.fact_presentation",
       "entity_type": "table",
       "description": "Warehouse hunter dimension optionally supplies the hunter surrogate key; UNKNOWN key 0 is used when no mandate/hunter exists."
+    },
+
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.paiement",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_paiement",
+      "entity_type": "table",
+      "description": "Operational payment records provide the business measures and identifiers loaded into warehouse.fact_paiement."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.mandat",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_paiement",
+      "entity_type": "table",
+      "description": "Operational mandate data provides client and hunter relationships required while loading warehouse.fact_paiement."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.warehouse.fact_mandat",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_paiement",
+      "entity_type": "table",
+      "description": "warehouse.fact_mandat supplies the mandate fact key used by warehouse.fact_paiement."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.warehouse.dim_client",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_paiement",
+      "entity_type": "table",
+      "description": "warehouse.dim_client supplies the client surrogate key used by warehouse.fact_paiement."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.warehouse.dim_chasseur",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_paiement",
+      "entity_type": "table",
+      "description": "warehouse.dim_chasseur supplies the hunter surrogate key used by warehouse.fact_paiement."
     }
   ]
 }
