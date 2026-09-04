@@ -63,21 +63,60 @@ RECOMMENDATION_DURATION_SECONDS = Histogram(
 RECOMMENDATION_ELIGIBLE_CANDIDATES = Histogram(
     "real_estate_recommendation_eligible_candidates",
     "Number of eligible candidates per recommendation request",
+    buckets=(
+        0,
+        1,
+        5,
+        10,
+        25,
+        50,
+        100,
+        250,
+        500,
+        1000,
+    ),
 )
 
 RECOMMENDATION_SELECTED_CANDIDATES = Histogram(
     "real_estate_recommendation_selected_candidates",
     "Number of selected candidates per recommendation request",
+    buckets=(
+        0,
+        1,
+        5,
+        10,
+        25,
+        50,
+        100,
+    ),
 )
 
 RECOMMENDATION_PRESENTATIONS_CREATED = Histogram(
     "real_estate_recommendation_presentations_created",
     "Number of newly created presentations per recommendation request",
+    buckets=(
+        0,
+        1,
+        5,
+        10,
+        25,
+        50,
+        100,
+    ),
 )
 
 RECOMMENDATION_PRESENTATIONS_EXISTING = Histogram(
     "real_estate_recommendation_presentations_existing",
     "Number of existing presentations reused per recommendation request",
+    buckets=(
+        0,
+        1,
+        5,
+        10,
+        25,
+        50,
+        100,
+    ),
 )
 
 
