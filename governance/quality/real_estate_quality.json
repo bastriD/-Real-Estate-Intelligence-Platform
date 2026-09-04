@@ -5,6 +5,7 @@
     "description": "Référentiel de gouvernance reliant les actifs OpenMetadata aux contrôles de qualité réellement exécutés par les pipelines Airflow, SQL et dbt.",
     "version": "1.0.0"
   },
+
   "quality_domains": [
     {
       "id": "DQ-RAW",
@@ -23,6 +24,7 @@
         "cohérence minimale avant passage en staging"
       ]
     },
+
     {
       "id": "DQ-STAGING",
       "name": "Staging Data Quality",
@@ -47,6 +49,7 @@
         "contrôle du statut quality_valid"
       ]
     },
+
     {
       "id": "DQ-OLTP",
       "name": "OLTP Data Quality",
@@ -65,6 +68,7 @@
         "absence de doublons anormaux"
       ]
     },
+
     {
       "id": "DQ-WAREHOUSE",
       "name": "Warehouse Data Quality",
@@ -83,6 +87,7 @@
         "contrôle des volumes chargés"
       ]
     },
+
     {
       "id": "DQ-DBT",
       "name": "dbt Analytics Quality",
@@ -106,6 +111,7 @@
       ]
     }
   ],
+
   "asset_rules": [
     {
       "id": "ASSET-DQ-001",
@@ -120,6 +126,7 @@
         "DQ-OLTP"
       ]
     },
+
     {
       "id": "ASSET-DQ-002",
       "entity": "real-estate-postgresql.real_estate.warehouse.fact_annonce",
@@ -132,6 +139,7 @@
         "DQ-WAREHOUSE"
       ]
     },
+
     {
       "id": "ASSET-DQ-003",
       "entity": "real-estate-postgresql.real_estate.analytics.stg_fact_annonce",
@@ -144,6 +152,7 @@
         "DQ-DBT"
       ]
     },
+
     {
       "id": "ASSET-DQ-004",
       "entity": "real-estate-postgresql.real_estate.analytics.stg_dim_bien",
@@ -156,6 +165,7 @@
         "DQ-DBT"
       ]
     },
+
     {
       "id": "ASSET-DQ-005",
       "entity": "real-estate-postgresql.real_estate.analytics.mart_market_by_city",
@@ -170,6 +180,7 @@
       ]
     }
   ],
+
   "lineage_requirements": [
     {
       "entity": "real-estate-postgresql.real_estate.analytics.stg_fact_annonce",
@@ -177,14 +188,31 @@
         "real-estate-postgresql.real_estate.warehouse.fact_annonce"
       ]
     },
+
     {
       "entity": "real-estate-postgresql.real_estate.analytics.mart_market_by_city",
       "required_upstream": [
         "real-estate-postgresql.real_estate.analytics.stg_fact_annonce",
         "real-estate-postgresql.real_estate.warehouse.dim_localisation"
       ]
+    },
+
+    {
+      "entity": "real-estate-postgresql.real_estate.warehouse.fact_presentation",
+      "required_upstream": [
+        "real-estate-postgresql.real_estate.real_estate.presentation",
+        "real-estate-postgresql.real_estate.real_estate.demande_version",
+        "real-estate-postgresql.real_estate.real_estate.demande",
+        "real-estate-postgresql.real_estate.real_estate.mandat",
+        "real-estate-postgresql.real_estate.real_estate.bien",
+        "real-estate-postgresql.real_estate.warehouse.dim_demande_version",
+        "real-estate-postgresql.real_estate.warehouse.dim_bien",
+        "real-estate-postgresql.real_estate.warehouse.dim_client",
+        "real-estate-postgresql.real_estate.warehouse.dim_chasseur"
+      ]
     }
   ],
+
   "policies": {
     "pipeline_failure_on_quality_error": true,
     "quality_checks_must_be_traceable": true,
