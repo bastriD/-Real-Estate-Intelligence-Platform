@@ -3,7 +3,7 @@
     "name": "RealEstateDataQuality",
     "display_name": "Real Estate Data Quality",
     "description": "Référentiel de gouvernance reliant les actifs OpenMetadata aux contrôles de qualité réellement exécutés par les pipelines Airflow, SQL et dbt.",
-    "version": "1.2.0"
+    "version": "1.3.0"
   },
 
   "quality_domains": [
@@ -202,6 +202,14 @@
       "entity": "real-estate-postgresql.real_estate.real_estate.bien",
       "required_upstream": [
         "real-estate-postgresql.real_estate.staging.annonces"
+      ]
+    },
+
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.presentation",
+      "required_upstream": [
+        "real-estate-postgresql.real_estate.real_estate.demande_version",
+        "real-estate-postgresql.real_estate.real_estate.bien"
       ]
     },
 
