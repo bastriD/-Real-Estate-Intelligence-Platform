@@ -33,6 +33,8 @@ spec:
           envFrom:
             - secretRef:
                 name: real-estate-postgresql-secret
+            - secretRef:
+                name: real-estate-backend-auth
 
           livenessProbe:
             httpGet:
