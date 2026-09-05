@@ -104,6 +104,7 @@ backend:validate:
 
   variables:
     POSTGRES_PASSWORD: "ci-validation-only"
+    JWT_SECRET_KEY: "ci-validation-jwt-secret-only"
 
   before_script:
     - python --version
@@ -147,24 +148,18 @@ backend:validate:
 
     - test -f src/api/main.py
     - test -f src/api/core/config.py
+    - test -f src/api/core/security.py
     - test -f src/api/db/session.py
+    - test -f src/api/db/models/utilisateur.py
+    - test -f src/api/repositories/utilisateur.py
+    - test -f src/api/services/auth.py
+    - test -f src/api/schemas/auth.py
     - test -f src/api/api/v1/router.py
     - test -f src/api/api/v1/endpoints/health.py
+    - test -f src/api/api/v1/endpoints/auth.py
 
     # -------------------------------------------------------------------------
     # 3. Validate matching runtime source files required by Backend
-    #
-    # These files are packaged with the Backend image.
-    #
-    # Their database behavior is NOT mocked here.
-    #
-    # Pure deterministic AI tests:
-    #
-    #   ai:validate
-    #
-    # Real PostgreSQL / matching integration:
-    #
-    #   ai-mlops:evaluate
     # -------------------------------------------------------------------------
 
     - test -f src/ai/matching/features.py
@@ -191,45 +186,46 @@ backend:validate:
       python -m py_compile \
         src/api/main.py \
         src/api/core/config.py \
+        src/api/core/security.py \
         src/api/db/session.py \
+        src/api/db/models/utilisateur.py \
+        src/api/repositories/utilisateur.py \
+        src/api/services/auth.py \
+        src/api/schemas/auth.py \
         src/api/api/v1/router.py \
         src/api/api/v1/endpoints/health.py \
+        src/api/api/v1/endpoints/auth.py \
         src/ai/matching/features.py \
         src/ai/matching/repository.py \
         src/ai/matching/evaluate.py
 
     # -------------------------------------------------------------------------
     # 6. Validate lightweight runtime dependency imports
-    #
-    # IMPORTANT:
-    #
-    # scikit-learn
-    # MLflow
-    # PyTorch
-    #
-    # belong to requirements-ai-training.txt and are intentionally NOT
-    # imported or installed by this Backend job.
     # -------------------------------------------------------------------------
 
     - |
       python - <<'PY'
+      import jwt
       import numpy
       import pandas
       import psycopg
+
+      from pwdlib import PasswordHash
 
       print("Runtime dependency validation:")
       print(" - NumPy:", numpy.__version__)
       print(" - Pandas:", pandas.__version__)
       print(" - psycopg:", psycopg.__version__)
+      print(" - PyJWT:", jwt.__version__)
+      print(" - pwdlib: OK")
 
-      print("Backend + matching runtime dependencies imported successfully.")
+      PasswordHash.recommended()
+
+      print("Backend + matching + authentication runtime dependencies imported successfully.")
       PY
 
     # -------------------------------------------------------------------------
     # 7. Validate AI matching module compatibility
-    #
-    # No database connection is performed.
-    # No PostgreSQL behavior is mocked.
     # -------------------------------------------------------------------------
 
     - |
@@ -259,7 +255,42 @@ backend:validate:
       PY
 
     # -------------------------------------------------------------------------
-    # 8. Validate FastAPI/OpenAPI
+    # 8. Validate authentication primitives
+    # -------------------------------------------------------------------------
+
+    - |
+      python - <<'PY'
+      from src.api.core.security import (
+          create_access_token,
+          decode_access_token,
+          hash_password,
+          verify_password,
+      )
+
+      password = "ci-validation-password"
+      hashed = hash_password(password)
+
+      assert hashed != password
+      assert verify_password(password, hashed)
+      assert not verify_password("wrong-password", hashed)
+
+      token = create_access_token(
+          subject="ci-validation@example.test",
+          role="ADMIN",
+          utilisateur_id=1,
+      )
+
+      payload = decode_access_token(token)
+
+      assert payload["sub"] == "ci-validation@example.test"
+      assert payload["uid"] == 1
+      assert payload["role"] == "ADMIN"
+
+      print("Authentication primitives validation successful.")
+      PY
+
+    # -------------------------------------------------------------------------
+    # 9. Validate FastAPI/OpenAPI
     # -------------------------------------------------------------------------
 
     - |
@@ -282,6 +313,7 @@ backend:validate:
           "/ready",
           "/api/v1/health",
           "/api/v1/ready",
+          "/api/v1/auth/login",
       }
 
       missing_routes = required_routes.difference(paths)
@@ -295,7 +327,7 @@ backend:validate:
       PY
 
     # -------------------------------------------------------------------------
-    # 9. Validation responsibility summary
+    # 10. Validation responsibility summary
     # -------------------------------------------------------------------------
 
     - |
@@ -308,20 +340,27 @@ backend:validate:
       echo "Validated here:"
       echo "- Backend dependency compatibility"
       echo "- Backend Python syntax"
+      echo "- Authentication dependency compatibility"
+      echo "- Password hashing primitives"
+      echo "- JWT encode/decode primitives"
+      echo "- Authentication OpenAPI route"
       echo "- AI matching runtime import compatibility"
       echo "- Backend deployment structure"
       echo "- FastAPI/OpenAPI contract"
 
       echo
       echo "Not validated here:"
+      echo "- real authentication against PostgreSQL"
+      echo "- authorization / RBAC"
       echo "- deterministic AI scoring unit tests"
-      echo "- PostgreSQL repository behavior"
+      echo "- PostgreSQL matching repository behavior"
       echo "- real candidate eligibility"
       echo "- ground-truth lineage"
       echo "- MLflow integration"
 
       echo
       echo "Those responsibilities belong to:"
+      echo "- backend integration/runtime tests"
       echo "- ai:validate"
       echo "- ai-mlops:evaluate"
 
@@ -353,15 +392,7 @@ backend:build-image:
     IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
 
   before_script:
-    # -------------------------------------------------------------------------
-    # Validate Docker runner
-    # -------------------------------------------------------------------------
-
     - docker version
-
-    # -------------------------------------------------------------------------
-    # Authenticate against GitLab Container Registry
-    # -------------------------------------------------------------------------
 
     - |
       echo "$CI_REGISTRY_PASSWORD" |
@@ -373,11 +404,6 @@ backend:build-image:
   script:
     # -------------------------------------------------------------------------
     # 1. Build Backend image
-    #
-    # Dockerfile.backend installs requirements-ai.txt, which includes the
-    # Backend requirements plus NumPy/Pandas.
-    #
-    # Training dependencies are deliberately excluded.
     # -------------------------------------------------------------------------
 
     - |
@@ -407,7 +433,7 @@ backend:build-image:
         python --version
 
     # -------------------------------------------------------------------------
-    # 3. Validate lightweight AI runtime dependencies inside final image
+    # 3. Validate lightweight runtime dependencies inside final image
     # -------------------------------------------------------------------------
 
     - |
@@ -415,7 +441,7 @@ backend:build-image:
         --rm \
         "$IMAGE_NAME:$IMAGE_TAG" \
         python -c \
-        "import numpy; import pandas; import psycopg; print('AI runtime dependencies OK')"
+        "import jwt; import numpy; import pandas; import psycopg; from pwdlib import PasswordHash; PasswordHash.recommended(); print('Backend + AI + auth runtime dependencies OK')"
 
     # -------------------------------------------------------------------------
     # 4. Validate AI matching modules inside final image
@@ -436,6 +462,7 @@ backend:build-image:
       docker run \
         --rm \
         -e POSTGRES_PASSWORD=ci-image-validation-only \
+        -e JWT_SECRET_KEY=ci-image-validation-jwt-secret-only \
         "$IMAGE_NAME:$IMAGE_TAG" \
         python -c \
         "from src.api.main import app; print('Application:', app.title); print('Version:', app.version)"
@@ -448,9 +475,10 @@ backend:build-image:
       docker run \
         --rm \
         -e POSTGRES_PASSWORD=ci-image-validation-only \
+        -e JWT_SECRET_KEY=ci-image-validation-jwt-secret-only \
         "$IMAGE_NAME:$IMAGE_TAG" \
         python -c \
-        "from src.api.main import app; paths=set(app.openapi().get('paths', {}).keys()); required={'/health','/ready','/api/v1/health','/api/v1/ready'}; missing=required-paths; print('OpenAPI paths:', sorted(paths)); assert not missing, f'Missing routes: {sorted(missing)}'"
+        "from src.api.main import app; paths=set(app.openapi().get('paths', {}).keys()); required={'/health','/ready','/api/v1/health','/api/v1/ready','/api/v1/auth/login'}; missing=required-paths; print('OpenAPI paths:', sorted(paths)); assert not missing, f'Missing routes: {sorted(missing)}'"
 
     # -------------------------------------------------------------------------
     # 7. Push immutable commit tag
@@ -509,35 +537,15 @@ backend:publish-gitops:
       artifacts: false
 
   variables:
-    # -------------------------------------------------------------------------
-    # GitOps repository used by Argo CD root-app
-    # -------------------------------------------------------------------------
-
     GITOPS_REPOSITORY: "https://gitlab.local/root/lab-gitops.git"
     GITOPS_BRANCH: "main"
 
-    # -------------------------------------------------------------------------
-    # Temporary clone directory
-    # -------------------------------------------------------------------------
-
     GITOPS_WORKDIR: "/tmp/chasse-backend-gitops"
-
-    # -------------------------------------------------------------------------
-    # Absolute source path in chasse_immobiliere repository
-    # -------------------------------------------------------------------------
 
     BACKEND_SOURCE_PATH: "$CI_PROJECT_DIR/deploy/kubernetes/backend"
 
-    # -------------------------------------------------------------------------
-    # Destination paths inside lab-gitops
-    # -------------------------------------------------------------------------
-
     GITOPS_BACKEND_PATH: "workloads/real-estate/backend"
     GITOPS_APP_PATH: "apps/real-estate-backend"
-
-    # -------------------------------------------------------------------------
-    # Existing runtime Secret name used by the Deployment
-    # -------------------------------------------------------------------------
 
     REGISTRY_PULL_SECRET: "gitlab-registry-auth"
 
@@ -977,10 +985,6 @@ backend:publish-gitops:
 
     # -------------------------------------------------------------------------
     # 36. Client-side Kubernetes validation
-    #
-    # DRY RUN ONLY.
-    #
-    # We DO NOT directly deploy workload resources here.
     # -------------------------------------------------------------------------
 
     - |
@@ -1168,10 +1172,6 @@ backend:publish-gitops:
       echo "GitOps / Argo CD"
 
   after_script:
-    # -------------------------------------------------------------------------
-    # Remove temporary credentials and working files
-    # -------------------------------------------------------------------------
-
     - rm -f /tmp/.netrc
     - rm -rf /tmp/chasse-backend-gitops
     - rm -f /tmp/real-estate-backend-rendered.yaml
@@ -1179,21 +1179,17 @@ backend:publish-gitops:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
-        # Backend application
         - src/api/**/*
         - src/domain/**/*
         - src/services/**/*
 
-        # AI / deterministic matching runtime
         - src/ai/**/*
         - tests/ai/**/*
         - requirements-ai.txt
 
-        # Tests / Backend dependencies
         - tests/**/*
         - requirements-backend.txt
 
-        # Container / Kubernetes / CI
         - deploy/docker/Dockerfile.backend
         - deploy/kubernetes/backend/**/*
         - .gitlab/ci/backend.yml
