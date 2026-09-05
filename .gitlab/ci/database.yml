@@ -15,6 +15,7 @@ database:validate:
     - test -f database/migrations/002_migrate_legacy_data.sql
     - test -f database/migrations/004_add_visite_audit.sql
     - test -f database/migrations/005_demande_pre_mandat.sql
+    - test -f database/migrations/006_auth_identity.sql
 
     # -------------------------------------------------------------------------
     # Database tests
@@ -24,6 +25,7 @@ database:validate:
     - test -f database/tests/002_legacy_migration.sql
     - test -f database/tests/003_oltp_constraints.sql
     - test -f database/tests/008_visite_audit.sql
+    - test -f database/tests/009_auth_identity.sql
 
     # -------------------------------------------------------------------------
     # Legacy / OLTP / seed files
@@ -90,6 +92,31 @@ database:validate:
     - grep -q "^COMMIT;" database/migrations/005_demande_pre_mandat.sql
 
     # -------------------------------------------------------------------------
+    # Migration 006 validation
+    #
+    # Authentication identity model:
+    #
+    #   - dedicated utilisateur table;
+    #   - authentication separated from client/chasseur business entities;
+    #   - explicit roles;
+    #   - password hashes only;
+    #   - no default/bootstrap credential.
+    # -------------------------------------------------------------------------
+
+    - grep -q "CREATE TABLE real_estate.utilisateur" database/migrations/006_auth_identity.sql
+    - grep -q "password_hash" database/migrations/006_auth_identity.sql
+    - grep -q "ck_utilisateur_role" database/migrations/006_auth_identity.sql
+    - grep -q "ck_utilisateur_business_identity" database/migrations/006_auth_identity.sql
+    - grep -q "ck_utilisateur_password_hash_non_empty" database/migrations/006_auth_identity.sql
+    - grep -q "ck_utilisateur_email_basic" database/migrations/006_auth_identity.sql
+    - grep -q "uq_utilisateur_email_lower" database/migrations/006_auth_identity.sql
+    - grep -q "uq_utilisateur_client" database/migrations/006_auth_identity.sql
+    - grep -q "uq_utilisateur_chasseur" database/migrations/006_auth_identity.sql
+    - grep -q "'006'" database/migrations/006_auth_identity.sql
+    - grep -q "migration_control.schema_version" database/migrations/006_auth_identity.sql
+    - grep -q "^COMMIT;" database/migrations/006_auth_identity.sql
+
+    # -------------------------------------------------------------------------
     # Legacy fixture validation
     # -------------------------------------------------------------------------
 
@@ -102,6 +129,9 @@ database:validate:
     - grep -q "OLTP constraints enforced successfully" database/tests/003_oltp_constraints.sql
     - grep -q "real_estate.visite" database/tests/008_visite_audit.sql
     - grep -q "real_estate.audit_log" database/tests/008_visite_audit.sql
+
+    - grep -q "authentication identity schema validation completed successfully" database/tests/009_auth_identity.sql
+    - grep -q "real_estate.utilisateur" database/tests/009_auth_identity.sql
 
     # -------------------------------------------------------------------------
     # OLTP validation
@@ -515,9 +545,6 @@ database:migrate-005:
 
     # -------------------------------------------------------------------------
     # Verify legacy integrity
-    #
-    # Existing migrated business demandes must remain associated with their
-    # original mandates.
     # -------------------------------------------------------------------------
 
     - |
@@ -590,6 +617,207 @@ database:migrate-005:
                 WHERE id_mandat IS NULL
               ) AS pre_mandate_demandes
             FROM real_estate.demande;
+          "
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
+
+
+# =============================================================================
+# MIGRATION 006 - AUTHENTICATION IDENTITY
+#
+# Adds a dedicated authentication identity model.
+#
+# Important:
+#   - existing client/chasseur business tables remain unchanged;
+#   - no default credentials are created;
+#   - API behavior remains unchanged;
+#   - JWT/authentication is NOT enabled by this migration;
+#   - migration remains manually triggered.
+# =============================================================================
+
+database:migrate-006:
+  stage: database
+
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl version --client
+    - kubectl -n real-estate get deploy real-estate-postgresql
+
+    # -------------------------------------------------------------------------
+    # Migration prerequisites
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Checking migration 006 prerequisites..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              to_regclass('real_estate.client') AS client,
+              to_regclass('real_estate.chasseur') AS chasseur,
+              to_regclass('migration_control.schema_version') AS schema_version;
+          "
+
+    # -------------------------------------------------------------------------
+    # Check migration registry
+    # -------------------------------------------------------------------------
+
+    - |
+      MIGRATION_006_APPLIED="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT CASE
+               WHEN EXISTS (
+                 SELECT 1
+                 FROM migration_control.schema_version
+                 WHERE version = '006'
+               )
+               THEN 'yes'
+               ELSE 'no'
+             END;" 2>/dev/null || true
+      )"
+
+      if [ "$MIGRATION_006_APPLIED" = "yes" ]; then
+        echo "Migration 006 already applied - skipping safely."
+        exit 0
+      fi
+
+    # -------------------------------------------------------------------------
+    # Apply migration
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Applying migration 006..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/migrations/006_auth_identity.sql
+
+    # -------------------------------------------------------------------------
+    # Verify utilisateur table
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Verifying authentication identity table..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              to_regclass('real_estate.utilisateur') AS utilisateur;
+          "
+
+    # -------------------------------------------------------------------------
+    # Verify required columns
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Verifying utilisateur columns..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              column_name,
+              data_type,
+              is_nullable
+            FROM information_schema.columns
+            WHERE table_schema = 'real_estate'
+              AND table_name = 'utilisateur'
+            ORDER BY ordinal_position;
+          "
+
+    # -------------------------------------------------------------------------
+    # Verify zero bootstrap accounts
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Checking bootstrap account count..."
+
+      USER_COUNT="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT COUNT(*)
+             FROM real_estate.utilisateur;"
+      )"
+
+      echo "Authentication identities: ${USER_COUNT}"
+
+      if [ "${USER_COUNT}" != "0" ]; then
+        echo "ERROR: migration 006 unexpectedly created authentication accounts."
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # Verify migration registry
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Verifying migration registry..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              version,
+              description,
+              applied_at
+            FROM migration_control.schema_version
+            WHERE version = '006';
+          "
+
+    # -------------------------------------------------------------------------
+    # Final state
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "============================================================"
+      echo "MIGRATION 006 SUCCESSFULLY APPLIED"
+      echo "============================================================"
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              role,
+              COUNT(*) AS identities
+            FROM real_estate.utilisateur
+            GROUP BY role
+            ORDER BY role;
           "
 
   rules:
@@ -715,6 +943,37 @@ database:test-visite-audit:
           -d real_estate \
           -v ON_ERROR_STOP=1 \
           < database/tests/008_visite_audit.sql
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
+
+
+# =============================================================================
+# TEST AUTHENTICATION IDENTITY
+# =============================================================================
+
+database:test-auth-identity:
+  stage: database
+
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl -n real-estate get deploy real-estate-postgresql
+
+    - |
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/tests/009_auth_identity.sql
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
