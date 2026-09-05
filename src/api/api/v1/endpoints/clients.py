@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
+from src.api.core.dependencies import require_roles
 from src.api.db.session import get_db
+from src.api.schemas.auth import AuthenticatedUser
 from src.api.schemas.client import ClientCreate, ClientRead, ClientUpdate
 from src.api.services.client import (
     ClientAlreadyExistsError,
@@ -21,6 +23,7 @@ router = APIRouter(
 )
 def list_clients(
     db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(require_roles("ADMIN")),
 ) -> list[ClientRead]:
     service = ClientService(db)
     return service.list_clients()
