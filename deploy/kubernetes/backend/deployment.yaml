@@ -25,11 +25,25 @@ spec:
           image: gitlab.local:4567/root/chasse_immobiliere/backend:__BACKEND_IMAGE_TAG__
           imagePullPolicy: IfNotPresent
 
+          # -------------------------------------------------------------------
+          # Container security hardening
+          # -------------------------------------------------------------------
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+            runAsGroup: 10001
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+
           ports:
             - name: http
               containerPort: 8000
               protocol: TCP
 
+          # PostgreSQL credentials are injected from a Kubernetes Secret.
+          # No database password is stored in this Deployment manifest.
           envFrom:
             - secretRef:
                 name: real-estate-postgresql-secret
