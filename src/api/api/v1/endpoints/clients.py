@@ -23,7 +23,9 @@ router = APIRouter(
 )
 def list_clients(
     db: Session = Depends(get_db),
-    current_user: AuthenticatedUser = Depends(require_roles("ADMIN")),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN")
+    ),
 ) -> list[ClientRead]:
     service = ClientService(db)
     return service.list_clients()
@@ -36,6 +38,9 @@ def list_clients(
 def get_client(
     client_id: int,
     db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN")
+    ),
 ) -> ClientRead:
     service = ClientService(db)
 
@@ -57,6 +62,9 @@ def get_client(
 def create_client(
     payload: ClientCreate,
     db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN")
+    ),
 ) -> ClientRead:
     service = ClientService(db)
 
@@ -78,6 +86,9 @@ def update_client(
     client_id: int,
     payload: ClientUpdate,
     db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN")
+    ),
 ) -> ClientRead:
     service = ClientService(db)
 
@@ -104,6 +115,9 @@ def update_client(
 def delete_client(
     client_id: int,
     db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN")
+    ),
 ) -> None:
     service = ClientService(db)
 
