@@ -6,6 +6,7 @@ from src.api.db.models.presentation import Presentation
 from src.api.db.models.visite import Visite
 from src.api.repositories.visite import VisiteRepository
 from src.api.schemas.visite import VisiteCreate, VisiteUpdate
+from src.api.services.audit_log import AuditLogService
 
 
 class VisiteNotFoundError(Exception):
@@ -28,6 +29,7 @@ class VisiteService:
     def __init__(self, session: Session) -> None:
         self.session = session
         self.repository = VisiteRepository(session)
+        self.audit = AuditLogService(session)
 
     def list_visites(
         self,
@@ -54,6 +56,7 @@ class VisiteService:
     def create_visite(
         self,
         payload: VisiteCreate,
+        utilisateur: str | None = None,
     ) -> Visite:
         self._ensure_presentation_exists(
             payload.id_presentation
@@ -70,6 +73,14 @@ class VisiteService:
 
         try:
             visite = self.repository.create(visite)
+            self.audit.log_change(
+                table_name="visite",
+                operation="INSERT",
+                record_id=visite.id_visite,
+                utilisateur=utilisateur,
+                nouvelle_valeur=self._visite_snapshot(visite),
+                contexte={"source": "api", "action": "create_visite"},
+            )
             self.session.commit()
             self.session.refresh(visite)
             return visite
@@ -78,12 +89,18 @@ class VisiteService:
             self.session.rollback()
             raise VisiteValidationError from exc
 
+        except Exception:
+            self.session.rollback()
+            raise
+
     def update_visite(
         self,
         visite_id: int,
         payload: VisiteUpdate,
+        utilisateur: str | None = None,
     ) -> Visite:
         visite = self.get_visite(visite_id)
+        ancienne_valeur = self._visite_snapshot(visite)
 
         update_data = payload.model_dump(
             exclude_unset=True
@@ -98,6 +115,15 @@ class VisiteService:
             setattr(visite, field, value)
 
         try:
+            self.audit.log_change(
+                table_name="visite",
+                operation="UPDATE",
+                record_id=visite.id_visite,
+                utilisateur=utilisateur,
+                ancienne_valeur=ancienne_valeur,
+                nouvelle_valeur=self._visite_snapshot(visite),
+                contexte={"source": "api", "action": "update_visite"},
+            )
             self.session.commit()
             self.session.refresh(visite)
             return visite
@@ -106,19 +132,53 @@ class VisiteService:
             self.session.rollback()
             raise VisiteValidationError from exc
 
+        except Exception:
+            self.session.rollback()
+            raise
+
     def delete_visite(
         self,
         visite_id: int,
+        utilisateur: str | None = None,
     ) -> None:
         visite = self.get_visite(visite_id)
+        ancienne_valeur = self._visite_snapshot(visite)
 
         try:
             self.repository.delete(visite)
+            self.audit.log_change(
+                table_name="visite",
+                operation="DELETE",
+                record_id=visite.id_visite,
+                utilisateur=utilisateur,
+                ancienne_valeur=ancienne_valeur,
+                contexte={"source": "api", "action": "delete_visite"},
+            )
             self.session.commit()
 
         except IntegrityError as exc:
             self.session.rollback()
             raise VisiteDeleteConflictError from exc
+
+        except Exception:
+            self.session.rollback()
+            raise
+
+    @staticmethod
+    def _visite_snapshot(visite: Visite) -> dict[str, object]:
+        return {
+            "id_visite": visite.id_visite,
+            "id_presentation": visite.id_presentation,
+            "date_visite": (
+                visite.date_visite.isoformat()
+                if visite.date_visite is not None else None
+            ),
+            "statut": visite.statut,
+            "compte_rendu": visite.compte_rendu,
+            "note": visite.note,
+            # Detach the JSON list so later changes cannot alter an old snapshot.
+            "photos": list(visite.photos) if visite.photos is not None else None,
+        }
 
     def _ensure_presentation_exists(
         self,

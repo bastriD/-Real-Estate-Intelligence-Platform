@@ -82,7 +82,7 @@ def create_visite(
     ),
 ) -> VisiteRead:
     try:
-        return service.create_visite(payload)
+        return service.create_visite(payload, utilisateur=current_user.email)
 
     except PresentationNotFoundForVisiteError as exc:
         raise HTTPException(
@@ -113,6 +113,7 @@ def update_visite(
         return service.update_visite(
             visite_id,
             payload,
+            utilisateur=current_user.email,
         )
 
     except VisiteNotFoundError as exc:
@@ -140,7 +141,7 @@ def delete_visite(
     ),
 ) -> Response:
     try:
-        service.delete_visite(visite_id)
+        service.delete_visite(visite_id, utilisateur=current_user.email)
 
     except VisiteNotFoundError as exc:
         raise HTTPException(
