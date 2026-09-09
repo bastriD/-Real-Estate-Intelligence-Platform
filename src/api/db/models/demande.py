@@ -54,14 +54,14 @@ class Demande(Base):
         server_default=text("'ACTIVE'"),
     )
 
-    id_mandat: Mapped[int] = mapped_column(
+    id_mandat: Mapped[int | None] = mapped_column(
         BigInteger,
         ForeignKey(
             "real_estate.mandat.id_mandat",
             ondelete="RESTRICT",
             name="fk_demande_mandat",
         ),
-        nullable=False,
+        nullable=True,
         index=True,
     )
 

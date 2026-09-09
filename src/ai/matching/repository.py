@@ -72,6 +72,7 @@ def load_candidate_biens(
     Retrieve operational matching candidates.
 
     Hard business constraints:
+    - active property (exclude sold, expired and unavailable listings)
     - same city
     - same property type
     - price <= maximum budget
@@ -116,7 +117,7 @@ def load_candidate_biens(
           AND LOWER(TRIM(type_bien)) = LOWER(TRIM(%s))
           AND prix <= %s
           AND surface >= %s
-          AND statut IS NOT NULL
+          AND statut = 'ACTIF'
         ORDER BY id_bien
     """
 

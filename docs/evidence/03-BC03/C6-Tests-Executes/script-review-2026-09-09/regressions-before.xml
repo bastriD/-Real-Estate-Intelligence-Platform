@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="10" skipped="0" tests="14" time="2.303" timestamp="2026-09-09T11:45:18.461204+02:00" hostname="Bastri-PC"><testcase classname="tests.backend.test_review_regressions" name="test_generated_pre_mandate_request_can_be_serialized" time="0.003"><failure message="pydantic_core._pydantic_core.ValidationError: 1 validation error for DemandeRead&#10;id_mandat&#10;  Input should be a valid integer [type=int_type, input_value=None, input_type=NoneType]&#10;    For further information visit https://errors.pydantic.dev/2.13/v/int_type">tests\backend\test_review_regressions.py:18: in test_generated_pre_mandate_request_can_be_serialized
+    assert DemandeRead.model_validate(demande).id_mandat is None
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 1 validation error for DemandeRead
+E   id_mandat
+E     Input should be a valid integer [type=int_type, input_value=None, input_type=NoneType]
+E       For further information visit https://errors.pydantic.dev/2.13/v/int_type</failure></testcase><testcase classname="tests.backend.test_review_regressions" name="test_create_pre_mandate_request_does_not_lookup_a_null_mandate" time="0.001"><failure message="pydantic_core._pydantic_core.ValidationError: 1 validation error for DemandeCreate&#10;id_mandat&#10;  Field required [type=missing, input_value={'motif_modification': 'I... 'auteur_systeme': True}, input_type=dict]&#10;    For further information visit https://errors.pydantic.dev/2.13/v/missing">tests\backend\test_review_regressions.py:27: in test_create_pre_mandate_request_does_not_lookup_a_null_mandate
+    payload = DemandeCreate(motif_modification="Initial request", auteur_systeme=True)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   pydantic_core._pydantic_core.ValidationError: 1 validation error for DemandeCreate
+E   id_mandat
+E     Field required [type=missing, input_value={'motif_modification': 'I... 'auteur_systeme': True}, input_type=dict]
+E       For further information visit https://errors.pydantic.dev/2.13/v/missing</failure></testcase><testcase classname="tests.backend.test_review_regressions" name="test_explicit_unknown_mandate_still_rejected" time="0.001" /><testcase classname="tests.backend.test_review_regressions" name="test_database_url_preserves_special_characters_in_credentials" time="0.001"><failure message="ValueError: invalid literal for int() with base 10: ''">tests\backend\test_review_regressions.py:52: in test_database_url_preserves_special_characters_in_credentials
+    url = make_url(settings.database_url)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-review\Lib\site-packages\sqlalchemy\engine\url.py:856: in make_url
+    return _parse_url(name_or_url)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+.venv-review\Lib\site-packages\sqlalchemy\engine\url.py:919: in _parse_url
+    return URL.create(name, **components)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-review\Lib\site-packages\sqlalchemy\engine\url.py:213: in create
+    cls._assert_port(port),
+    ^^^^^^^^^^^^^^^^^^^^^^
+.venv-review\Lib\site-packages\sqlalchemy\engine\url.py:223: in _assert_port
+    return int(port)
+           ^^^^^^^^^
+E   ValueError: invalid literal for int() with base 10: ''</failure></testcase><testcase classname="tests.ai.test_candidate_availability" name="test_matching_excludes_sold_expired_and_unavailable_properties" time="0.006"><failure message="assert [1, 2, 3, 4] == [1]&#10;  &#10;  Left contains 3 more items, first extra item: 2&#10;  Use -v to get more diff">tests\ai\test_candidate_availability.py:51: in test_matching_excludes_sold_expired_and_unavailable_properties
+    assert result["id_bien"].tolist() == [1]
+E   assert [1, 2, 3, 4] == [1]
+E     
+E     Left contains 3 more items, first extra item: 2
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.data.test_numeric_parsing" name="test_non_finite_input_is_reported_as_bad_data_without_crashing[parse_decimal-NaN]" time="0.001"><failure message="decimal.InvalidOperation: [&lt;class 'decimal.InvalidOperation'&gt;]">tests\data\test_numeric_parsing.py:12: in test_non_finite_input_is_reported_as_bad_data_without_crashing
+    assert parser(value, "test_field", errors, minimum=0) is None
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+database\seeds\transform_raw_to_staging.py:172: in parse_decimal
+    if minimum is not None and result &lt; minimum:
+                               ^^^^^^^^^^^^^^^^
+E   decimal.InvalidOperation: [&lt;class 'decimal.InvalidOperation'&gt;]</failure></testcase><testcase classname="tests.data.test_numeric_parsing" name="test_non_finite_input_is_reported_as_bad_data_without_crashing[parse_decimal-sNaN]" time="0.000"><failure message="decimal.InvalidOperation: [&lt;class 'decimal.InvalidOperation'&gt;]">tests\data\test_numeric_parsing.py:12: in test_non_finite_input_is_reported_as_bad_data_without_crashing
+    assert parser(value, "test_field", errors, minimum=0) is None
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+database\seeds\transform_raw_to_staging.py:172: in parse_decimal
+    if minimum is not None and result &lt; minimum:
+                               ^^^^^^^^^^^^^^^^
+E   decimal.InvalidOperation: [&lt;class 'decimal.InvalidOperation'&gt;]</failure></testcase><testcase classname="tests.data.test_numeric_parsing" name="test_non_finite_input_is_reported_as_bad_data_without_crashing[parse_decimal-Infinity]" time="0.001"><failure message="AssertionError: assert Decimal('Infinity') is None&#10; +  where Decimal('Infinity') = &lt;function parse_decimal at 0x00000214C9D9C720&gt;('Infinity', 'test_field', [], minimum=0)">tests\data\test_numeric_parsing.py:12: in test_non_finite_input_is_reported_as_bad_data_without_crashing
+    assert parser(value, "test_field", errors, minimum=0) is None
+E   AssertionError: assert Decimal('Infinity') is None
+E    +  where Decimal('Infinity') = &lt;function parse_decimal at 0x00000214C9D9C720&gt;('Infinity', 'test_field', [], minimum=0)</failure></testcase><testcase classname="tests.data.test_numeric_parsing" name="test_non_finite_input_is_reported_as_bad_data_without_crashing[parse_decimal--Infinity]" time="0.000" /><testcase classname="tests.data.test_numeric_parsing" name="test_non_finite_input_is_reported_as_bad_data_without_crashing[parse_integer-NaN]" time="0.000" /><testcase classname="tests.data.test_numeric_parsing" name="test_non_finite_input_is_reported_as_bad_data_without_crashing[parse_integer-sNaN]" time="0.000"><failure message="decimal.InvalidOperation: [&lt;class 'decimal.InvalidOperation'&gt;]">tests\data\test_numeric_parsing.py:12: in test_non_finite_input_is_reported_as_bad_data_without_crashing
+    assert parser(value, "test_field", errors, minimum=0) is None
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+database\seeds\transform_raw_to_staging.py:218: in parse_integer
+    if number != number.to_integral_value():
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   decimal.InvalidOperation: [&lt;class 'decimal.InvalidOperation'&gt;]</failure></testcase><testcase classname="tests.data.test_numeric_parsing" name="test_non_finite_input_is_reported_as_bad_data_without_crashing[parse_integer-Infinity]" time="0.000"><failure message="OverflowError: cannot convert Infinity to integer">tests\data\test_numeric_parsing.py:12: in test_non_finite_input_is_reported_as_bad_data_without_crashing
+    assert parser(value, "test_field", errors, minimum=0) is None
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+database\seeds\transform_raw_to_staging.py:227: in parse_integer
+    result = int(number)
+             ^^^^^^^^^^^
+E   OverflowError: cannot convert Infinity to integer</failure></testcase><testcase classname="tests.data.test_numeric_parsing" name="test_non_finite_input_is_reported_as_bad_data_without_crashing[parse_integer--Infinity]" time="0.000"><failure message="OverflowError: cannot convert Infinity to integer">tests\data\test_numeric_parsing.py:12: in test_non_finite_input_is_reported_as_bad_data_without_crashing
+    assert parser(value, "test_field", errors, minimum=0) is None
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+database\seeds\transform_raw_to_staging.py:227: in parse_integer
+    result = int(number)
+             ^^^^^^^^^^^
+E   OverflowError: cannot convert Infinity to integer</failure></testcase><testcase classname="tests.data.test_numeric_parsing" name="test_finite_numeric_values_still_parse" time="0.000" /></testsuite></testsuites>

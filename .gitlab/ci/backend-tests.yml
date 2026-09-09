@@ -15,7 +15,7 @@ backend:tests:
     - pip install --no-cache-dir -r requirements-backend-test.txt
 
   script:
-    - python -m pytest tests/backend -v --cov=src/api --cov-report=term-missing --cov-report=xml --cov-fail-under=80
+    - python -m pytest tests/backend tests/data tests/ai/test_candidate_availability.py -v --cov=src/api --cov-report=term-missing --cov-report=xml --cov-fail-under=80
 
   artifacts:
     when: always
@@ -31,6 +31,10 @@ backend:tests:
     - changes:
         - src/api/**/*
         - tests/backend/**/*
+        - tests/data/**/*
+        - tests/ai/test_candidate_availability.py
+        - src/ai/matching/repository.py
+        - database/seeds/transform_raw_to_staging.py
         - requirements-backend.txt
         - requirements-backend-test.txt
         - .gitlab/ci/backend-tests.yml

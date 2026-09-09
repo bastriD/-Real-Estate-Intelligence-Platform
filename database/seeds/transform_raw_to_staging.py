@@ -169,6 +169,10 @@ def parse_decimal(
         )
         return None
 
+    if not result.is_finite():
+        add_error(errors, field, value, "numeric value must be finite")
+        return None
+
     if minimum is not None and result < minimum:
         add_error(
             errors,
@@ -213,6 +217,10 @@ def parse_integer(
             value,
             "invalid integer value",
         )
+        return None
+
+    if not number.is_finite():
+        add_error(errors, field, value, "integer value must be finite")
         return None
 
     if number != number.to_integral_value():

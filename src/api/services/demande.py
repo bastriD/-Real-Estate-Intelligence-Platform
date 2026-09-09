@@ -96,7 +96,8 @@ class DemandeService:
                 f"{payload.reference_demande} already exists"
             )
 
-        self._ensure_mandat_exists(payload.id_mandat)
+        if payload.id_mandat is not None:
+            self._ensure_mandat_exists(payload.id_mandat)
         self._validate_author(
             payload.auteur_client_id,
             payload.auteur_chasseur_id,

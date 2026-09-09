@@ -60,7 +60,7 @@ class DemandeCreate(DemandeVersionCriteria):
         max_length=80,
     )
     statut: DemandeStatut = DemandeStatut.ACTIVE
-    id_mandat: int = Field(gt=0)
+    id_mandat: int | None = Field(default=None, gt=0)
 
     motif_modification: str = Field(min_length=1)
 
@@ -136,7 +136,7 @@ class DemandeRead(BaseModel):
     reference_demande: str | None
     date_creation: datetime
     statut: DemandeStatut
-    id_mandat: int
+    id_mandat: int | None
 
 
 class DemandeWithCurrentVersion(DemandeRead):
