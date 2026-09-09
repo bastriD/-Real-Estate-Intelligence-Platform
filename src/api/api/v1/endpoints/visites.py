@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy.orm import Session
 
+from src.api.core.dependencies import require_roles
 from src.api.db.session import get_db
+from src.api.schemas.auth import AuthenticatedUser
 from src.api.schemas.visite import (
     VisiteCreate,
     VisiteRead,
@@ -37,6 +39,9 @@ def list_visites(
         gt=0,
     ),
     service: VisiteService = Depends(get_service),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR")
+    ),
 ) -> list[VisiteRead]:
     return service.list_visites(
         presentation_id=presentation_id
@@ -50,6 +55,9 @@ def list_visites(
 def get_visite(
     visite_id: int,
     service: VisiteService = Depends(get_service),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR")
+    ),
 ) -> VisiteRead:
     try:
         return service.get_visite(visite_id)
@@ -69,6 +77,9 @@ def get_visite(
 def create_visite(
     payload: VisiteCreate,
     service: VisiteService = Depends(get_service),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR")
+    ),
 ) -> VisiteRead:
     try:
         return service.create_visite(payload)
@@ -94,6 +105,9 @@ def update_visite(
     visite_id: int,
     payload: VisiteUpdate,
     service: VisiteService = Depends(get_service),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR")
+    ),
 ) -> VisiteRead:
     try:
         return service.update_visite(
@@ -121,6 +135,9 @@ def update_visite(
 def delete_visite(
     visite_id: int,
     service: VisiteService = Depends(get_service),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR")
+    ),
 ) -> Response:
     try:
         service.delete_visite(visite_id)
