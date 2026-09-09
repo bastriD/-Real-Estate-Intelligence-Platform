@@ -1,0 +1,226 @@
+apiVersion: batch/v1
+kind: CronJob
+
+metadata:
+  name: real-estate-postgresql-backup
+  namespace: real-estate
+  labels:
+    app: real-estate-postgresql-backup
+    app.kubernetes.io/name: real-estate-postgresql-backup
+    app.kubernetes.io/component: backup
+    app.kubernetes.io/part-of: real-estate
+    purpose: pra
+
+spec:
+  # Sauvegarde quotidienne à 02:00 UTC.
+  schedule: "0 2 * * *"
+
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+  startingDeadlineSeconds: 1800
+
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+
+      template:
+        metadata:
+          labels:
+            app: real-estate-postgresql-backup
+            app.kubernetes.io/name: real-estate-postgresql-backup
+            app.kubernetes.io/component: backup
+            app.kubernetes.io/part-of: real-estate
+            purpose: pra
+
+        spec:
+          restartPolicy: Never
+          automountServiceAccountToken: false
+
+          volumes:
+            - name: backup
+              emptyDir:
+                sizeLimit: 1Gi
+
+          initContainers:
+            - name: pg-dump
+              image: postgres:16
+              imagePullPolicy: IfNotPresent
+
+              envFrom:
+                - secretRef:
+                    name: real-estate-postgresql-secret
+
+              command:
+                - /bin/sh
+                - -ec
+                - |
+                  export PGPASSWORD="${POSTGRES_PASSWORD}"
+
+                  BACKUP_TS="$(date -u +%Y%m%dT%H%M%SZ)"
+                  BACKUP_FILE="real_estate-${BACKUP_TS}.dump"
+
+                  echo "=== POSTGRESQL BACKUP START ==="
+                  echo "timestamp=${BACKUP_TS}"
+                  echo "database=${POSTGRES_DB}"
+                  echo "backup_file=${BACKUP_FILE}"
+
+                  START_EPOCH="$(date +%s)"
+
+                  echo
+                  echo "=== DATABASE CONNECTION ==="
+
+                  pg_isready \
+                    --host="${POSTGRES_HOST}" \
+                    --port="${POSTGRES_PORT}" \
+                    --username="${POSTGRES_USER}" \
+                    --dbname="${POSTGRES_DB}"
+
+                  echo
+                  echo "=== PG_DUMP ==="
+
+                  pg_dump \
+                    --host="${POSTGRES_HOST}" \
+                    --port="${POSTGRES_PORT}" \
+                    --username="${POSTGRES_USER}" \
+                    --dbname="${POSTGRES_DB}" \
+                    --format=custom \
+                    --compress=6 \
+                    --no-password \
+                    --file="/backup/${BACKUP_FILE}"
+
+                  test -s "/backup/${BACKUP_FILE}"
+
+                  echo
+                  echo "=== STRUCTURAL VALIDATION ==="
+
+                  pg_restore \
+                    --list \
+                    "/backup/${BACKUP_FILE}" \
+                    > /tmp/restore-list.txt
+
+                  RESTORE_OBJECT_COUNT="$(wc -l < /tmp/restore-list.txt)"
+
+                  if [ "${RESTORE_OBJECT_COUNT}" -le 0 ]; then
+                    echo "ERROR: backup contains no restore objects"
+                    exit 1
+                  fi
+
+                  echo "restore_object_count=${RESTORE_OBJECT_COUNT}"
+
+                  echo
+                  echo "=== SHA256 CHECKSUM ==="
+
+                  cd /backup
+                  sha256sum "${BACKUP_FILE}" > "${BACKUP_FILE}.sha256"
+                  cat "${BACKUP_FILE}.sha256"
+
+                  END_EPOCH="$(date +%s)"
+
+                  BACKUP_DURATION_SECONDS="$((END_EPOCH - START_EPOCH))"
+                  BACKUP_BYTES="$(stat -c %s "/backup/${BACKUP_FILE}")"
+
+                  cat > /backup/backup.env <<META
+                  BACKUP_TS=${BACKUP_TS}
+                  BACKUP_FILE=${BACKUP_FILE}
+                  BACKUP_BYTES=${BACKUP_BYTES}
+                  BACKUP_DURATION_SECONDS=${BACKUP_DURATION_SECONDS}
+                  RESTORE_OBJECT_COUNT=${RESTORE_OBJECT_COUNT}
+                  META
+
+                  echo
+                  echo "=== LOCAL BACKUP RESULT ==="
+                  ls -lh \
+                    "/backup/${BACKUP_FILE}" \
+                    "/backup/${BACKUP_FILE}.sha256"
+
+                  echo "backup_bytes=${BACKUP_BYTES}"
+                  echo "backup_duration_seconds=${BACKUP_DURATION_SECONDS}"
+
+              volumeMounts:
+                - name: backup
+                  mountPath: /backup
+
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 128Mi
+                limits:
+                  cpu: 500m
+                  memory: 512Mi
+
+          containers:
+            - name: s3-upload
+              image: minio/mc:RELEASE.2025-08-13T08-35-41Z
+              imagePullPolicy: IfNotPresent
+
+              envFrom:
+                - secretRef:
+                    name: real-estate-backup-s3
+
+              command:
+                - /bin/sh
+                - -ec
+                - |
+                  . /backup/backup.env
+
+                  OBJECT_PREFIX="postgresql"
+                  DUMP_OBJECT="${OBJECT_PREFIX}/${BACKUP_FILE}"
+                  CHECKSUM_OBJECT="${DUMP_OBJECT}.sha256"
+
+                  echo "=== MINIO CONNECTION ==="
+
+                  mc alias set backup \
+                    "${AWS_ENDPOINT_URL}" \
+                    "${AWS_ACCESS_KEY_ID}" \
+                    "${AWS_SECRET_ACCESS_KEY}" \
+                    >/dev/null
+
+                  echo "bucket=${S3_BUCKET}"
+                  echo "object=${DUMP_OBJECT}"
+
+                  echo
+                  echo "=== UPLOAD DUMP ==="
+
+                  mc cp \
+                    "/backup/${BACKUP_FILE}" \
+                    "backup/${S3_BUCKET}/${DUMP_OBJECT}"
+
+                  echo
+                  echo "=== UPLOAD CHECKSUM ==="
+
+                  mc cp \
+                    "/backup/${BACKUP_FILE}.sha256" \
+                    "backup/${S3_BUCKET}/${CHECKSUM_OBJECT}"
+
+                  echo
+                  echo "=== REMOTE VERIFICATION ==="
+
+                  mc stat \
+                    "backup/${S3_BUCKET}/${DUMP_OBJECT}"
+
+                  mc stat \
+                    "backup/${S3_BUCKET}/${CHECKSUM_OBJECT}"
+
+                  echo
+                  echo "=== BACKUP COMPLETE ==="
+
+                  echo "backup_timestamp=${BACKUP_TS}"
+                  echo "backup_bytes=${BACKUP_BYTES}"
+                  echo "backup_duration_seconds=${BACKUP_DURATION_SECONDS}"
+                  echo "restore_object_count=${RESTORE_OBJECT_COUNT}"
+                  echo "s3_object=${S3_BUCKET}/${DUMP_OBJECT}"
+
+                  date -u +"completed_at=%Y-%m-%dT%H:%M:%SZ"
+
+              volumeMounts:
+                - name: backup
+                  mountPath: /backup
+
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 64Mi
+                limits:
+                  cpu: 250m
+                  memory: 256Mi
