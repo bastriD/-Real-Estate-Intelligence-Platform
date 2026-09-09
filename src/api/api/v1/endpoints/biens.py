@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
+from src.api.core.dependencies import require_roles
 from src.api.db.session import get_db
+from src.api.schemas.auth import AuthenticatedUser
 from src.api.schemas.bien import BienRead, BienStatut
 from src.api.services.bien import BienNotFoundError, BienService
 
@@ -26,6 +28,9 @@ def list_biens(
     statut: BienStatut | None = Query(default=None),
     type_bien: str | None = Query(default=None),
     service: BienService = Depends(get_service),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR", "CLIENT", "SERVICE")
+    ),
 ) -> list[BienRead]:
     return service.list_biens(
         ville=ville,
@@ -41,6 +46,9 @@ def list_biens(
 def get_bien(
     bien_id: int,
     service: BienService = Depends(get_service),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR", "CLIENT", "SERVICE")
+    ),
 ) -> BienRead:
     try:
         return service.get_bien(bien_id)
