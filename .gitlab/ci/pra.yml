@@ -4,63 +4,52 @@
 #
 # PURPOSE
 #
-#   - Validate the PostgreSQL backup CronJob source manifests.
-#   - Publish the permanent PRA desired state to lab-gitops.
-#   - Let Argo CD deploy and continuously reconcile the backup CronJob.
+#   - Validate PostgreSQL backup CronJob manifests.
 #   - Validate required PostgreSQL and MinIO backup Secrets.
-#   - Keep backup credentials outside Git.
+#   - Publish permanent PRA desired state to lab-gitops.
+#   - Let Argo CD deploy and reconcile the backup CronJob asynchronously.
 #
 # DEPLOYMENT FLOW
 #
-#   chasse_immobiliere
-#     deploy/kubernetes/pra/
-#       postgresql-backup-cronjob.yaml
-#       kustomization.yaml
-#       application.yaml
-#              |
-#              v
-#       pra:publish-gitops
-#              |
-#              v
+#   deploy/kubernetes/pra/
+#          |
+#          v
+#   pra:publish-gitops
+#          |
+#          v
 #   lab-gitops
-#     workloads/real-estate/pra/
-#     apps/real-estate-pra/
-#              |
-#              v
-#       Argo CD root-app
-#              |
-#              v
-#       real-estate-pra
-#              |
-#              v
+#     workloads/real-estate/pra
+#     apps/real-estate-pra
+#          |
+#          v
+#   Argo CD root-app
+#     repo: https://gitlab.local/root/lab-gitops.git
+#     branch: main
+#     path: apps
+#     directory.recurse: true
+#          |
+#          v
+#   Argo CD Application real-estate-pra
+#          |
+#          v
 #   Kubernetes namespace real-estate
-#              |
-#              v
+#          |
+#          v
 #   CronJob real-estate-postgresql-backup
 #
 # IMPORTANT
 #
 # - This is a PERMANENT workload.
 # - Deployment is GitOps-driven.
-# - GitLab CI does NOT directly create the CronJob.
-# - kubectl is used only for validation and runtime evidence.
+# - GitLab CI does NOT directly apply the CronJob.
+# - GitLab CI does NOT wait for Argo CD reconciliation.
+# - Argo CD reconciliation is asynchronous.
+# - kubectl is used here only for validation and dependency checks.
 # - PostgreSQL credentials remain in:
 #       real-estate-postgresql-secret
-# - MinIO backup credentials remain in:
+# - MinIO credentials remain in:
 #       real-estate-backup-s3
-# - No credential value is committed to Git.
-# - Backup target:
-#       real-estate-backups/postgresql/
-#
-# PRA EVIDENCE ALREADY ESTABLISHED BEFORE AUTOMATION
-#
-# - PostgreSQL database size: approximately 47 MB.
-# - pg_dump custom format successfully tested.
-# - Backup uploaded to MinIO successfully.
-# - Backup structural validation successfully tested.
-# - Backup restored into isolated PostgreSQL 16.
-# - Restore duration observed: 6 seconds.
-# - Business row counts matched the pre-backup baseline.
+# - Secret values are NOT committed to Git.
 #
 # =============================================================================
 
@@ -74,9 +63,10 @@ pra:publish-gitops:
 
   tags:
     - shell
+
   needs:
-    - database:validate
-  
+    - job: database:validate
+      artifacts: false
 
   variables:
     # -------------------------------------------------------------------------
@@ -97,7 +87,7 @@ pra:publish-gitops:
     PRA_SOURCE_PATH: "$CI_PROJECT_DIR/deploy/kubernetes/pra"
 
     # -------------------------------------------------------------------------
-    # GitOps
+    # GitOps repository
     # -------------------------------------------------------------------------
 
     GITOPS_REPOSITORY: "https://gitlab.local/root/lab-gitops.git"
@@ -109,30 +99,24 @@ pra:publish-gitops:
     GITOPS_APP_PATH: "apps/real-estate-pra"
 
     # -------------------------------------------------------------------------
-    # Temporary validation files
+    # Temporary validation file
     # -------------------------------------------------------------------------
 
     PRA_RENDERED_PATH: "/tmp/real-estate-pra-rendered.yaml"
 
   script:
 
-    # =========================================================================
-    # 1.1 Validate shell runner tooling
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 1. Validate shell runner tooling
+    # -------------------------------------------------------------------------
 
-    - |
-      echo
-      echo "============================================================"
-      echo "PRA RUNNER TOOLING"
-      echo "============================================================"
-
-      git --version
-      kubectl version --client
+    - git --version
+    - kubectl version --client
 
 
-    # =========================================================================
-    # 1.2 Validate PRA source directory
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 2. Validate PRA source repository
+    # -------------------------------------------------------------------------
 
     - |
       echo
@@ -163,9 +147,9 @@ pra:publish-gitops:
         -print
 
 
-    # =========================================================================
-    # 1.3 Validate Kubernetes namespace
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 3. Validate Kubernetes namespace
+    # -------------------------------------------------------------------------
 
     - |
       echo
@@ -177,41 +161,37 @@ pra:publish-gitops:
         "$K8S_NAMESPACE"
 
 
-    # =========================================================================
-    # 1.4 Validate PostgreSQL Secret
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 4. Validate PostgreSQL Secret
+    # -------------------------------------------------------------------------
 
     - |
-      echo
-      echo "Validating PostgreSQL Secret..."
-
       kubectl \
         -n "$K8S_NAMESPACE" \
         get secret \
         "$POSTGRES_SECRET"
 
+      echo
       echo "PostgreSQL Secret exists."
 
 
-    # =========================================================================
-    # 1.5 Validate dedicated MinIO backup Secret
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 5. Validate MinIO backup Secret
+    # -------------------------------------------------------------------------
 
     - |
-      echo
-      echo "Validating MinIO backup Secret..."
-
       kubectl \
         -n "$K8S_NAMESPACE" \
         get secret \
         "$BACKUP_S3_SECRET"
 
+      echo
       echo "MinIO backup Secret exists."
 
 
-    # =========================================================================
-    # 1.6 Validate required PostgreSQL Secret keys
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 6. Validate required PostgreSQL Secret keys
+    # -------------------------------------------------------------------------
 
     - |
       echo
@@ -243,12 +223,13 @@ pra:publish-gitops:
 
       done
 
+      echo
       echo "PostgreSQL Secret key validation successful."
 
 
-    # =========================================================================
-    # 1.7 Validate required backup S3 Secret keys
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 7. Validate required MinIO Secret keys
+    # -------------------------------------------------------------------------
 
     - |
       echo
@@ -279,12 +260,13 @@ pra:publish-gitops:
 
       done
 
+      echo
       echo "Backup S3 Secret key validation successful."
 
 
-    # =========================================================================
-    # 1.8 Validate source CronJob references expected Secrets
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 8. Validate CronJob Secret references
+    # -------------------------------------------------------------------------
 
     - |
       echo
@@ -304,40 +286,48 @@ pra:publish-gitops:
       echo "Expected Secret references found."
 
 
-    # =========================================================================
-    # 1.9 Validate expected CronJob name
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 9. Validate CronJob resource name
+    # -------------------------------------------------------------------------
 
     - |
       grep \
         "name: ${CRONJOB_NAME}" \
         "$PRA_SOURCE_PATH/postgresql-backup-cronjob.yaml"
 
+      echo
       echo "CronJob name validated."
 
 
-    # =========================================================================
-    # 1.10 Validate expected workload images
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 10. Validate PostgreSQL image
+    # -------------------------------------------------------------------------
 
     - |
-      echo
-      echo "Validating backup runtime images..."
-
       grep \
         "image: postgres:16" \
         "$PRA_SOURCE_PATH/postgresql-backup-cronjob.yaml"
 
+      echo
+      echo "PostgreSQL image validated."
+
+
+    # -------------------------------------------------------------------------
+    # 11. Validate MinIO client image
+    # -------------------------------------------------------------------------
+
+    - |
       grep \
         "image: minio/mc:" \
         "$PRA_SOURCE_PATH/postgresql-backup-cronjob.yaml"
 
-      echo "Backup runtime images validated."
+      echo
+      echo "MinIO client image validated."
 
 
-    # =========================================================================
-    # 1.11 Validate critical backup commands
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 12. Validate backup implementation
+    # -------------------------------------------------------------------------
 
     - |
       echo
@@ -364,36 +354,46 @@ pra:publish-gitops:
         "$PRA_SOURCE_PATH/postgresql-backup-cronjob.yaml"
 
       echo
-      echo "Backup implementation checks successful."
+      echo "Backup implementation validation successful."
 
 
-    # =========================================================================
-    # 1.12 Validate scheduling and concurrency policy
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 13. Validate CronJob schedule
+    # -------------------------------------------------------------------------
 
     - |
       echo
-      echo "Validating CronJob scheduling policy..."
+      echo "Validating CronJob schedule..."
 
       grep \
         'schedule: "0 2 \* \* \*"' \
         "$PRA_SOURCE_PATH/postgresql-backup-cronjob.yaml"
 
+      echo
+      echo "CronJob schedule validated."
+
+
+    # -------------------------------------------------------------------------
+    # 14. Validate concurrency policy
+    # -------------------------------------------------------------------------
+
+    - |
       grep \
         "concurrencyPolicy: Forbid" \
         "$PRA_SOURCE_PATH/postgresql-backup-cronjob.yaml"
 
-      echo "CronJob scheduling policy validated."
+      echo
+      echo "CronJob concurrency policy validated."
 
 
-    # =========================================================================
-    # 1.13 Render source Kustomization
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 15. Render PRA source through Kustomize
+    # -------------------------------------------------------------------------
 
     - |
       echo
       echo "============================================================"
-      echo "SOURCE KUSTOMIZE VALIDATION"
+      echo "SOURCE PRA KUSTOMIZE VALIDATION"
       echo "============================================================"
 
       rm -f "$PRA_RENDERED_PATH"
@@ -408,9 +408,9 @@ pra:publish-gitops:
       echo "PRA source Kustomize rendering successful."
 
 
-    # =========================================================================
-    # 1.14 Validate rendered CronJob
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 16. Validate rendered CronJob
+    # -------------------------------------------------------------------------
 
     - |
       grep \
@@ -421,12 +421,13 @@ pra:publish-gitops:
         "name: ${CRONJOB_NAME}" \
         "$PRA_RENDERED_PATH"
 
+      echo
       echo "Rendered PRA CronJob validated."
 
 
-    # =========================================================================
-    # 1.15 Client-side validation of source workload
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 17. Client-side validation of rendered workload
+    # -------------------------------------------------------------------------
 
     - |
       kubectl apply \
@@ -435,12 +436,12 @@ pra:publish-gitops:
         > /dev/null
 
       echo
-      echo "PRA workload Kubernetes manifest validation successful."
+      echo "PRA workload Kubernetes validation successful."
 
 
-    # =========================================================================
-    # 1.16 Client-side validation of Argo CD Application source
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 18. Client-side validation of Argo CD Application
+    # -------------------------------------------------------------------------
 
     - |
       kubectl apply \
@@ -452,9 +453,9 @@ pra:publish-gitops:
       echo "PRA Argo CD Application manifest validation successful."
 
 
-    # =========================================================================
-    # 1.17 Validate existing GitOps credential Secret
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 19. Validate GitOps credentials Secret
+    # -------------------------------------------------------------------------
 
     - |
       echo
@@ -468,18 +469,18 @@ pra:publish-gitops:
         lab-gitops-git-credentials
 
 
-    # =========================================================================
-    # 1.18 Clean previous temporary GitOps files
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 20. Clean previous temporary files
+    # -------------------------------------------------------------------------
 
-    - |
-      rm -rf "$GITOPS_WORKDIR"
-      rm -f /tmp/.netrc
+    - rm -rf "$GITOPS_WORKDIR"
+    - rm -f /tmp/.netrc
+    - rm -f "$PRA_RENDERED_PATH"
 
 
-    # =========================================================================
-    # 1.19 Load GitOps credentials
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 21. Load GitOps credentials
+    # -------------------------------------------------------------------------
 
     - |
       export LAB_GITOPS_GIT_USER="$(
@@ -503,12 +504,13 @@ pra:publish-gitops:
       test -n "$LAB_GITOPS_GIT_USER"
       test -n "$LAB_GITOPS_GIT_TOKEN"
 
+      echo
       echo "GitOps credentials loaded."
 
 
-    # =========================================================================
-    # 1.20 Create temporary Git authentication file
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 22. Create temporary Git authentication file
+    # -------------------------------------------------------------------------
 
     - |
       cat > /tmp/.netrc <<EOF_NETRC
@@ -520,9 +522,9 @@ pra:publish-gitops:
       chmod 600 /tmp/.netrc
 
 
-    # =========================================================================
-    # 1.21 Clone lab-gitops
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 23. Clone lab-gitops
+    # -------------------------------------------------------------------------
 
     - |
       echo
@@ -539,32 +541,32 @@ pra:publish-gitops:
         "$GITOPS_WORKDIR"
 
 
-    # =========================================================================
-    # 1.22 Validate GitOps branch
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 24. Validate GitOps branch and revision
+    # -------------------------------------------------------------------------
 
     - |
       echo
-      echo "Current GitOps branch:"
-
-      git -C "$GITOPS_WORKDIR" \
-        branch --show-current
+      echo "============================================================"
+      echo "GITOPS REPOSITORY DIAGNOSTICS"
+      echo "============================================================"
 
       echo
-      echo "Current GitOps revision:"
+      echo "Current branch:"
+      git -C "$GITOPS_WORKDIR" branch --show-current
 
-      git -C "$GITOPS_WORKDIR" \
-        rev-parse --short HEAD
+      echo
+      echo "Current revision:"
+      git -C "$GITOPS_WORKDIR" rev-parse --short HEAD
 
       test "$(
-        git -C "$GITOPS_WORKDIR" \
-          branch --show-current
+        git -C "$GITOPS_WORKDIR" branch --show-current
       )" = "$GITOPS_BRANCH"
 
 
-    # =========================================================================
-    # 1.23 Validate GitOps architecture
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 25. Validate GitOps repository structure
+    # -------------------------------------------------------------------------
 
     - |
       test -d "$GITOPS_WORKDIR/apps"
@@ -572,13 +574,13 @@ pra:publish-gitops:
 
       echo
       echo "GitOps structure validated:"
-      echo " - apps/"
-      echo " - workloads/"
+      echo "  $GITOPS_WORKDIR/apps"
+      echo "  $GITOPS_WORKDIR/workloads"
 
 
-    # =========================================================================
-    # 1.24 Create PRA GitOps destination directories
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 26. Create PRA GitOps destination directories
+    # -------------------------------------------------------------------------
 
     - |
       mkdir -p \
@@ -588,9 +590,9 @@ pra:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH"
 
 
-    # =========================================================================
-    # 1.25 Copy PRA workload CronJob
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 27. Copy PostgreSQL backup CronJob
+    # -------------------------------------------------------------------------
 
     - |
       cp \
@@ -598,9 +600,9 @@ pra:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_PRA_PATH/postgresql-backup-cronjob.yaml"
 
 
-    # =========================================================================
-    # 1.26 Copy PRA workload Kustomization
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 28. Copy Kustomization
+    # -------------------------------------------------------------------------
 
     - |
       cp \
@@ -608,9 +610,9 @@ pra:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_PRA_PATH/kustomization.yaml"
 
 
-    # =========================================================================
-    # 1.27 Copy PRA Argo CD Application
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 29. Copy Argo CD Application
+    # -------------------------------------------------------------------------
 
     - |
       cp \
@@ -618,9 +620,9 @@ pra:publish-gitops:
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
 
 
-    # =========================================================================
-    # 1.28 Render copied GitOps workload
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 30. Render copied GitOps workload
+    # -------------------------------------------------------------------------
 
     - |
       echo
@@ -634,12 +636,13 @@ pra:publish-gitops:
 
       test -s "$PRA_RENDERED_PATH"
 
+      echo
       echo "GitOps PRA Kustomize rendering successful."
 
 
-    # =========================================================================
-    # 1.29 Validate rendered GitOps workload
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 31. Validate rendered GitOps workload
+    # -------------------------------------------------------------------------
 
     - |
       grep \
@@ -662,9 +665,9 @@ pra:publish-gitops:
       echo "Rendered GitOps PRA workload validated."
 
 
-    # =========================================================================
-    # 1.30 Validate GitOps CronJob with Kubernetes client
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 32. Client-side Kubernetes validation
+    # -------------------------------------------------------------------------
 
     - |
       kubectl apply \
@@ -672,31 +675,45 @@ pra:publish-gitops:
         -f "$PRA_RENDERED_PATH" \
         > /dev/null
 
+      echo
       echo "GitOps PRA CronJob client validation successful."
 
 
-    # =========================================================================
-    # 1.31 Validate copied Argo CD Application
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 33. Validate Argo CD Application name
+    # -------------------------------------------------------------------------
 
     - |
-      kubectl apply \
-        --dry-run=client \
-        -f "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml" \
-        > /dev/null
-
       grep \
         "name: real-estate-pra" \
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
 
+
+    # -------------------------------------------------------------------------
+    # 34. Validate Argo CD Application workload path
+    # -------------------------------------------------------------------------
+
+    - |
       grep \
         "path: workloads/real-estate/pra" \
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
 
+
+    # -------------------------------------------------------------------------
+    # 35. Validate Argo CD Application repository
+    # -------------------------------------------------------------------------
+
+    - |
       grep \
         "repoURL: https://gitlab.local/root/lab-gitops.git" \
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
 
+
+    # -------------------------------------------------------------------------
+    # 36. Validate Argo CD Application branch
+    # -------------------------------------------------------------------------
+
+    - |
       grep \
         "targetRevision: main" \
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
@@ -705,9 +722,23 @@ pra:publish-gitops:
       echo "PRA Argo CD Application validated."
 
 
-    # =========================================================================
-    # 1.32 Display desired-state files
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 37. Client-side Application validation after copy
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl apply \
+        --dry-run=client \
+        -f "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml" \
+        > /dev/null
+
+      echo
+      echo "PRA Argo CD Application client validation successful."
+
+
+    # -------------------------------------------------------------------------
+    # 38. Display GitOps desired-state locations
+    # -------------------------------------------------------------------------
 
     - |
       echo
@@ -716,18 +747,21 @@ pra:publish-gitops:
       echo "============================================================"
 
       echo
-      echo "Workload:"
+      echo "Workload directory:"
       echo "$GITOPS_PRA_PATH"
+
+      echo
+      echo "Application directory:"
+      echo "$GITOPS_APP_PATH"
+
+      echo
+      echo "Files:"
 
       find \
         "$GITOPS_WORKDIR/$GITOPS_PRA_PATH" \
         -maxdepth 1 \
         -type f \
         -print
-
-      echo
-      echo "Argo CD Application:"
-      echo "$GITOPS_APP_PATH"
 
       find \
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH" \
@@ -736,9 +770,9 @@ pra:publish-gitops:
         -print
 
 
-    # =========================================================================
-    # 1.33 Configure Git identity
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 39. Configure Git identity
+    # -------------------------------------------------------------------------
 
     - |
       git -C "$GITOPS_WORKDIR" config \
@@ -750,9 +784,9 @@ pra:publish-gitops:
         "gitlab-ci@lab.local"
 
 
-    # =========================================================================
-    # 1.34 Stage only PRA GitOps resources
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 40. Stage only PRA GitOps resources
+    # -------------------------------------------------------------------------
 
     - |
       git -C "$GITOPS_WORKDIR" add \
@@ -762,13 +796,13 @@ pra:publish-gitops:
       echo
       echo "GitOps staged PRA changes:"
 
-      git -C "$GITOPS_WORKDIR" \
-        status --short
+      git -C "$GITOPS_WORKDIR" status \
+        --short
 
 
-    # =========================================================================
-    # 1.35 Commit and push only if desired state changed
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 41. Commit and push only when desired state changed
+    # -------------------------------------------------------------------------
 
     - |
       if git -C "$GITOPS_WORKDIR" diff --cached --quiet; then
@@ -799,196 +833,22 @@ pra:publish-gitops:
       fi
 
 
-    # =========================================================================
-    # 1.36 Wait for Argo CD Application discovery
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # 42. Final publication summary
+    # -------------------------------------------------------------------------
 
     - |
       echo
       echo "============================================================"
-      echo "WAITING FOR ARGO CD PRA APPLICATION"
-      echo "============================================================"
-
-      FOUND="false"
-
-      for i in $(seq 1 60); do
-
-        if kubectl \
-          -n argocd \
-          get application \
-          real-estate-pra \
-          > /dev/null 2>&1
-        then
-
-          FOUND="true"
-
-          echo
-          echo "Argo CD Application discovered."
-
-          break
-        fi
-
-        echo "Waiting for real-estate-pra Application..."
-        sleep 2
-
-      done
-
-      if [ "$FOUND" != "true" ]; then
-
-        echo
-        echo "ERROR:"
-        echo "Argo CD Application real-estate-pra was not discovered."
-
-        exit 1
-
-      fi
-
-
-    # =========================================================================
-    # 1.37 Wait for CronJob reconciliation
-    # =========================================================================
-
-    - |
-      echo
-      echo "============================================================"
-      echo "WAITING FOR PRA CRONJOB"
-      echo "============================================================"
-
-      FOUND="false"
-
-      for i in $(seq 1 60); do
-
-        if kubectl \
-          -n "$K8S_NAMESPACE" \
-          get cronjob \
-          "$CRONJOB_NAME" \
-          > /dev/null 2>&1
-        then
-
-          FOUND="true"
-
-          echo
-          echo "PRA CronJob discovered."
-
-          break
-        fi
-
-        echo "Waiting for ${CRONJOB_NAME}..."
-        sleep 2
-
-      done
-
-      if [ "$FOUND" != "true" ]; then
-
-        echo
-        echo "ERROR:"
-        echo "PRA CronJob was not reconciled by Argo CD."
-
-        kubectl \
-          -n argocd \
-          get application \
-          real-estate-pra \
-          -o wide || true
-
-        exit 1
-
-      fi
-
-
-    # =========================================================================
-    # 1.38 Display Argo CD Application status
-    # =========================================================================
-
-    - |
-      echo
-      echo "============================================================"
-      echo "ARGO CD PRA STATUS"
-      echo "============================================================"
-
-      kubectl \
-        -n argocd \
-        get application \
-        real-estate-pra \
-        -o wide
-
-
-    # =========================================================================
-    # 1.39 Display deployed CronJob
-    # =========================================================================
-
-    - |
-      echo
-      echo "============================================================"
-      echo "DEPLOYED PRA CRONJOB"
-      echo "============================================================"
-
-      kubectl \
-        -n "$K8S_NAMESPACE" \
-        get cronjob \
-        "$CRONJOB_NAME" \
-        -o wide
-
-
-    # =========================================================================
-    # 1.40 Validate deployed schedule
-    # =========================================================================
-
-    - |
-      DEPLOYED_SCHEDULE="$(
-        kubectl \
-          -n "$K8S_NAMESPACE" \
-          get cronjob \
-          "$CRONJOB_NAME" \
-          -o jsonpath='{.spec.schedule}'
-      )"
-
-      echo
-      echo "Deployed schedule:"
-      echo "$DEPLOYED_SCHEDULE"
-
-      test "$DEPLOYED_SCHEDULE" = "0 2 * * *"
-
-      echo "Deployed schedule validated."
-
-
-    # =========================================================================
-    # 1.41 Validate deployed concurrency policy
-    # =========================================================================
-
-    - |
-      DEPLOYED_CONCURRENCY="$(
-        kubectl \
-          -n "$K8S_NAMESPACE" \
-          get cronjob \
-          "$CRONJOB_NAME" \
-          -o jsonpath='{.spec.concurrencyPolicy}'
-      )"
-
-      echo
-      echo "Deployed concurrency policy:"
-      echo "$DEPLOYED_CONCURRENCY"
-
-      test "$DEPLOYED_CONCURRENCY" = "Forbid"
-
-      echo "Concurrency policy validated."
-
-
-    # =========================================================================
-    # 1.42 Final summary
-    # =========================================================================
-
-    - |
-      echo
-      echo "============================================================"
-      echo "REAL ESTATE PCA / PRA PUBLICATION COMPLETED"
+      echo "REAL ESTATE PCA / PRA GITOPS PUBLICATION SUMMARY"
       echo "============================================================"
 
       echo
-      echo "Source repository:"
+      echo "Application source repository:"
       echo "$CI_PROJECT_DIR"
 
       echo
-      echo "Source manifests:"
+      echo "PRA source manifests:"
       echo "$PRA_SOURCE_PATH"
 
       echo
@@ -996,23 +856,23 @@ pra:publish-gitops:
       echo "$GITOPS_REPOSITORY"
 
       echo
+      echo "GitOps branch:"
+      echo "$GITOPS_BRANCH"
+
+      echo
       echo "GitOps workload:"
       echo "$GITOPS_PRA_PATH"
 
       echo
       echo "Argo CD Application:"
-      echo "real-estate-pra"
-
-      echo
-      echo "Kubernetes namespace:"
-      echo "$K8S_NAMESPACE"
+      echo "$GITOPS_APP_PATH"
 
       echo
       echo "CronJob:"
       echo "$CRONJOB_NAME"
 
       echo
-      echo "Schedule:"
+      echo "Backup schedule:"
       echo "0 2 * * *"
 
       echo
@@ -1025,19 +885,22 @@ pra:publish-gitops:
 
       echo
       echo "Credential model:"
-      echo "Kubernetes Secrets only - no values stored in Git"
+      echo "Kubernetes Secrets - no credential values stored in Git"
+
+      echo
+      echo "Argo root discovery:"
+      echo "apps/ -> recursive directory discovery"
 
       echo
       echo "Deployment model:"
       echo "GitLab CI -> lab-gitops -> Argo CD -> Kubernetes"
 
       echo
-      echo "Previously proven PRA restore:"
-      echo "isolated PostgreSQL restore successful"
+      echo "Argo CD reconciliation:"
+      echo "asynchronous - intentionally not awaited by this CI job"
 
       echo
-      echo "Measured restore duration:"
-      echo "6 seconds"
+      echo "PRA GitOps desired state published successfully."
 
 
   # =============================================================================
@@ -1045,7 +908,6 @@ pra:publish-gitops:
   # =============================================================================
 
   after_script:
-
     - rm -f /tmp/.netrc
     - rm -rf /tmp/chasse-pra-gitops
     - rm -f /tmp/real-estate-pra-rendered.yaml
@@ -1056,7 +918,6 @@ pra:publish-gitops:
   # =============================================================================
 
   rules:
-
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
         - deploy/kubernetes/pra/**/*
