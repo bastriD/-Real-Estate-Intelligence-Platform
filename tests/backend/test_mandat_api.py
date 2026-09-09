@@ -1,4 +1,5 @@
 from datetime import date
+from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -23,6 +24,16 @@ from src.api.services.mandat import (
     MandatNotFoundError,
     MandatValidationError,
 )
+
+
+TEST_USER_EMAIL = "admin.auth.test@example.com"
+
+
+def build_current_user() -> SimpleNamespace:
+    return SimpleNamespace(
+        email=TEST_USER_EMAIL,
+        role="ADMIN",
+    )
 
 
 def build_mandat() -> Mandat:
@@ -70,6 +81,7 @@ def test_list_mandats_returns_all() -> None:
             client_id=None,
             chasseur_id=None,
             db=db,
+            current_user=build_current_user(),
         )
 
     assert len(result) == 1
@@ -91,6 +103,7 @@ def test_list_mandats_filters_by_client() -> None:
             client_id=1,
             chasseur_id=None,
             db=db,
+            current_user=build_current_user(),
         )
 
     assert len(result) == 1
@@ -113,12 +126,11 @@ def test_list_mandats_filters_by_chasseur() -> None:
             client_id=None,
             chasseur_id=1,
             db=db,
+            current_user=build_current_user(),
         )
 
     assert len(result) == 1
-    service.list_by_chasseur.assert_called_once_with(
-        1
-    )
+    service.list_by_chasseur.assert_called_once_with(1)
 
 
 def test_list_mandats_returns_404_for_missing_client() -> None:
@@ -139,6 +151,7 @@ def test_list_mandats_returns_404_for_missing_client() -> None:
                 client_id=999,
                 chasseur_id=None,
                 db=db,
+                current_user=build_current_user(),
             )
 
     assert exc.value.status_code == 404
@@ -163,6 +176,7 @@ def test_list_mandats_returns_404_for_missing_chasseur() -> None:
                 client_id=None,
                 chasseur_id=999,
                 db=db,
+                current_user=build_current_user(),
             )
 
     assert exc.value.status_code == 404
@@ -184,6 +198,7 @@ def test_get_mandat_success() -> None:
         result = get_mandat(
             mandat_id=36,
             db=db,
+            current_user=build_current_user(),
         )
 
     assert result is mandat
@@ -207,6 +222,7 @@ def test_get_mandat_returns_404_when_missing() -> None:
             get_mandat(
                 mandat_id=999,
                 db=db,
+                current_user=build_current_user(),
             )
 
     assert exc.value.status_code == 404
@@ -220,6 +236,7 @@ def test_create_mandat_success() -> None:
     service.create_mandat.return_value = mandat
 
     payload = build_create_payload()
+    current_user = build_current_user()
 
     with patch(
         "src.api.api.v1.endpoints.mandats.MandatService",
@@ -228,11 +245,13 @@ def test_create_mandat_success() -> None:
         result = create_mandat(
             payload=payload,
             db=db,
+            current_user=current_user,
         )
 
     assert result is mandat
     service.create_mandat.assert_called_once_with(
-        payload
+        payload,
+        utilisateur=TEST_USER_EMAIL,
     )
 
 
@@ -253,6 +272,7 @@ def test_create_mandat_returns_409_for_duplicate() -> None:
             create_mandat(
                 payload=build_create_payload(),
                 db=db,
+                current_user=build_current_user(),
             )
 
     assert exc.value.status_code == 409
@@ -278,6 +298,7 @@ def test_create_mandat_returns_404_for_missing_client() -> None:
             create_mandat(
                 payload=build_create_payload(),
                 db=db,
+                current_user=build_current_user(),
             )
 
     assert exc.value.status_code == 404
@@ -300,6 +321,7 @@ def test_create_mandat_returns_404_for_missing_chasseur() -> None:
             create_mandat(
                 payload=build_create_payload(),
                 db=db,
+                current_user=build_current_user(),
             )
 
     assert exc.value.status_code == 404
@@ -322,6 +344,7 @@ def test_create_mandat_returns_422_for_validation_error() -> None:
             create_mandat(
                 payload=build_create_payload(),
                 db=db,
+                current_user=build_current_user(),
             )
 
     assert exc.value.status_code == 422
@@ -339,6 +362,7 @@ def test_update_mandat_success() -> None:
     payload = MandatUpdate(
         statut="SUSPENDU"
     )
+    current_user = build_current_user()
 
     with patch(
         "src.api.api.v1.endpoints.mandats.MandatService",
@@ -348,6 +372,7 @@ def test_update_mandat_success() -> None:
             mandat_id=36,
             payload=payload,
             db=db,
+            current_user=current_user,
         )
 
     assert result is mandat
@@ -355,6 +380,7 @@ def test_update_mandat_success() -> None:
     service.update_mandat.assert_called_once_with(
         36,
         payload,
+        utilisateur=TEST_USER_EMAIL,
     )
 
 
@@ -380,6 +406,7 @@ def test_update_mandat_returns_404() -> None:
                 mandat_id=999,
                 payload=payload,
                 db=db,
+                current_user=build_current_user(),
             )
 
     assert exc.value.status_code == 404
@@ -407,6 +434,7 @@ def test_update_mandat_returns_409_for_duplicate() -> None:
                 mandat_id=36,
                 payload=payload,
                 db=db,
+                current_user=build_current_user(),
             )
 
     assert exc.value.status_code == 409
@@ -434,6 +462,7 @@ def test_update_mandat_returns_422_for_validation_error() -> None:
                 mandat_id=36,
                 payload=payload,
                 db=db,
+                current_user=build_current_user(),
             )
 
     assert exc.value.status_code == 422
@@ -450,11 +479,13 @@ def test_delete_mandat_success() -> None:
         result = delete_mandat(
             mandat_id=36,
             db=db,
+            current_user=build_current_user(),
         )
 
     assert result is None
     service.delete_mandat.assert_called_once_with(
-        36
+        36,
+        utilisateur=TEST_USER_EMAIL,
     )
 
 
@@ -475,6 +506,7 @@ def test_delete_mandat_returns_404_when_missing() -> None:
             delete_mandat(
                 mandat_id=999,
                 db=db,
+                current_user=build_current_user(),
             )
 
     assert exc.value.status_code == 404
@@ -497,6 +529,7 @@ def test_delete_mandat_returns_409_on_conflict() -> None:
             delete_mandat(
                 mandat_id=36,
                 db=db,
+                current_user=build_current_user(),
             )
 
     assert exc.value.status_code == 409

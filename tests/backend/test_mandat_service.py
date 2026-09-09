@@ -15,6 +15,9 @@ from src.api.services.mandat import (
 )
 
 
+TEST_USER_EMAIL = "admin.auth.test@example.com"
+
+
 def build_mandat() -> Mandat:
     return Mandat(
         id_mandat=36,
@@ -26,6 +29,20 @@ def build_mandat() -> Mandat:
         date_fin=date(2026, 12, 31),
         statut="ACTIF",
         commentaire=None,
+        id_client=1,
+        id_chasseur=1,
+    )
+
+
+def build_create_payload() -> MandatCreate:
+    return MandatCreate(
+        reference_mandat="API-TEST-MANDAT",
+        type_mandat="EXCLUSIF",
+        date_signature=date(2026, 8, 30),
+        mode_signature="ELECTRONIQUE",
+        date_debut=date(2026, 8, 30),
+        date_fin=date(2026, 12, 31),
+        statut="ACTIF",
         id_client=1,
         id_chasseur=1,
     )
@@ -135,17 +152,7 @@ def test_create_mandat_rejects_duplicate_reference() -> None:
         return_value=build_mandat()
     )
 
-    payload = MandatCreate(
-        reference_mandat="API-TEST-MANDAT",
-        type_mandat="EXCLUSIF",
-        date_signature=date(2026, 8, 30),
-        mode_signature="ELECTRONIQUE",
-        date_debut=date(2026, 8, 30),
-        date_fin=date(2026, 12, 31),
-        statut="ACTIF",
-        id_client=1,
-        id_chasseur=1,
-    )
+    payload = build_create_payload()
 
     with pytest.raises(
         MandatAlreadyExistsError
@@ -162,7 +169,6 @@ def test_create_mandat_success() -> None:
         return_value=None
     )
 
-    # Client existence check, then chasseur existence check.
     db.scalar.side_effect = [1, 1]
 
     created = build_mandat()
@@ -170,20 +176,14 @@ def test_create_mandat_success() -> None:
     service.repository.create = MagicMock(
         return_value=created
     )
+    service.audit.log_change = MagicMock()
 
-    payload = MandatCreate(
-        reference_mandat="API-TEST-MANDAT",
-        type_mandat="EXCLUSIF",
-        date_signature=date(2026, 8, 30),
-        mode_signature="ELECTRONIQUE",
-        date_debut=date(2026, 8, 30),
-        date_fin=date(2026, 12, 31),
-        statut="ACTIF",
-        id_client=1,
-        id_chasseur=1,
+    payload = build_create_payload()
+
+    result = service.create_mandat(
+        payload,
+        utilisateur=TEST_USER_EMAIL,
     )
-
-    result = service.create_mandat(payload)
 
     assert result is created
     assert result.reference_mandat == (
@@ -191,7 +191,33 @@ def test_create_mandat_success() -> None:
     )
 
     assert db.scalar.call_count == 2
+
     service.repository.create.assert_called_once()
+
+    service.audit.log_change.assert_called_once_with(
+        table_name="mandat",
+        operation="INSERT",
+        record_id=36,
+        utilisateur=TEST_USER_EMAIL,
+        nouvelle_valeur={
+            "id_mandat": 36,
+            "reference_mandat": "API-TEST-MANDAT",
+            "type_mandat": "EXCLUSIF",
+            "date_signature": "2026-08-30",
+            "mode_signature": "ELECTRONIQUE",
+            "date_debut": "2026-08-30",
+            "date_fin": "2026-12-31",
+            "statut": "ACTIF",
+            "commentaire": None,
+            "id_client": 1,
+            "id_chasseur": 1,
+        },
+        contexte={
+            "source": "api",
+            "action": "create_mandat",
+        },
+    )
+
     db.commit.assert_called_once()
 
 
@@ -224,6 +250,7 @@ def test_update_mandat_success() -> None:
     service.repository.get_by_id = MagicMock(
         return_value=mandat
     )
+    service.audit.log_change = MagicMock()
 
     payload = MandatUpdate(
         statut="SUSPENDU",
@@ -233,6 +260,7 @@ def test_update_mandat_success() -> None:
     result = service.update_mandat(
         mandat_id=36,
         payload=payload,
+        utilisateur=TEST_USER_EMAIL,
     )
 
     assert result is mandat
@@ -240,6 +268,45 @@ def test_update_mandat_success() -> None:
     assert (
         result.commentaire
         == "Runtime update validation"
+    )
+
+    service.audit.log_change.assert_called_once_with(
+        table_name="mandat",
+        operation="UPDATE",
+        record_id=36,
+        utilisateur=TEST_USER_EMAIL,
+        ancienne_valeur={
+            "id_mandat": 36,
+            "reference_mandat": "API-TEST-MANDAT",
+            "type_mandat": "EXCLUSIF",
+            "date_signature": "2026-08-30",
+            "mode_signature": "ELECTRONIQUE",
+            "date_debut": "2026-08-30",
+            "date_fin": "2026-12-31",
+            "statut": "ACTIF",
+            "commentaire": None,
+            "id_client": 1,
+            "id_chasseur": 1,
+        },
+        nouvelle_valeur={
+            "id_mandat": 36,
+            "reference_mandat": "API-TEST-MANDAT",
+            "type_mandat": "EXCLUSIF",
+            "date_signature": "2026-08-30",
+            "mode_signature": "ELECTRONIQUE",
+            "date_debut": "2026-08-30",
+            "date_fin": "2026-12-31",
+            "statut": "SUSPENDU",
+            "commentaire": (
+                "Runtime update validation"
+            ),
+            "id_client": 1,
+            "id_chasseur": 1,
+        },
+        contexte={
+            "source": "api",
+            "action": "update_mandat",
+        },
     )
 
     db.commit.assert_called_once()
@@ -285,10 +352,39 @@ def test_delete_mandat_success() -> None:
         return_value=mandat
     )
     service.repository.delete = MagicMock()
+    service.audit.log_change = MagicMock()
 
-    service.delete_mandat(36)
+    service.delete_mandat(
+        36,
+        utilisateur=TEST_USER_EMAIL,
+    )
 
     service.repository.delete.assert_called_once_with(
         mandat
     )
+
+    service.audit.log_change.assert_called_once_with(
+        table_name="mandat",
+        operation="DELETE",
+        record_id=36,
+        utilisateur=TEST_USER_EMAIL,
+        ancienne_valeur={
+            "id_mandat": 36,
+            "reference_mandat": "API-TEST-MANDAT",
+            "type_mandat": "EXCLUSIF",
+            "date_signature": "2026-08-30",
+            "mode_signature": "ELECTRONIQUE",
+            "date_debut": "2026-08-30",
+            "date_fin": "2026-12-31",
+            "statut": "ACTIF",
+            "commentaire": None,
+            "id_client": 1,
+            "id_chasseur": 1,
+        },
+        contexte={
+            "source": "api",
+            "action": "delete_mandat",
+        },
+    )
+
     db.commit.assert_called_once()

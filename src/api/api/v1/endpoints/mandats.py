@@ -4,7 +4,11 @@ from sqlalchemy.orm import Session
 from src.api.core.dependencies import require_roles
 from src.api.db.session import get_db
 from src.api.schemas.auth import AuthenticatedUser
-from src.api.schemas.mandat import MandatCreate, MandatRead, MandatUpdate
+from src.api.schemas.mandat import (
+    MandatCreate,
+    MandatRead,
+    MandatUpdate,
+)
 from src.api.services.mandat import (
     ChasseurNotFoundForMandatError,
     ClientNotFoundForMandatError,
@@ -13,6 +17,7 @@ from src.api.services.mandat import (
     MandatService,
     MandatValidationError,
 )
+
 
 router = APIRouter(
     prefix="/mandats",
@@ -91,7 +96,10 @@ def create_mandat(
     service = MandatService(db)
 
     try:
-        return service.create_mandat(payload)
+        return service.create_mandat(
+            payload,
+            utilisateur=current_user.email,
+        )
 
     except MandatAlreadyExistsError as exc:
         raise HTTPException(
@@ -130,7 +138,11 @@ def update_mandat(
     service = MandatService(db)
 
     try:
-        return service.update_mandat(mandat_id, payload)
+        return service.update_mandat(
+            mandat_id,
+            payload,
+            utilisateur=current_user.email,
+        )
 
     except (
         MandatNotFoundError,
@@ -169,7 +181,10 @@ def delete_mandat(
     service = MandatService(db)
 
     try:
-        service.delete_mandat(mandat_id)
+        service.delete_mandat(
+            mandat_id,
+            utilisateur=current_user.email,
+        )
 
     except MandatNotFoundError as exc:
         raise HTTPException(
