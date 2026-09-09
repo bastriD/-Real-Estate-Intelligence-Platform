@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
+from src.api.core.dependencies import require_roles
 from src.api.db.session import get_db
+from src.api.schemas.auth import AuthenticatedUser
 from src.api.schemas.demande import (
     DemandeCreate,
     DemandeHistory,
@@ -27,9 +29,15 @@ router = APIRouter(
 )
 
 
-@router.get("", response_model=list[DemandeRead])
+@router.get(
+    "",
+    response_model=list[DemandeRead],
+)
 def list_demandes(
     db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR", "SERVICE")
+    ),
 ) -> list[DemandeRead]:
     service = DemandeService(db)
     return service.list_demandes()
@@ -42,6 +50,9 @@ def list_demandes(
 def get_demande(
     demande_id: int,
     db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR", "SERVICE")
+    ),
 ) -> DemandeWithCurrentVersion:
     service = DemandeService(db)
 
@@ -78,6 +89,9 @@ def get_demande(
 def get_demande_history(
     demande_id: int,
     db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR", "SERVICE")
+    ),
 ) -> DemandeHistory:
     service = DemandeService(db)
 
@@ -108,6 +122,9 @@ def get_demande_history(
 def create_demande(
     payload: DemandeCreate,
     db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR", "SERVICE")
+    ),
 ) -> DemandeWithCurrentVersion:
     service = DemandeService(db)
 
@@ -155,6 +172,9 @@ def create_revision(
     demande_id: int,
     payload: DemandeRevision,
     db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR", "SERVICE")
+    ),
 ) -> DemandeVersionRead:
     service = DemandeService(db)
 
@@ -191,6 +211,9 @@ def update_demande_status(
     demande_id: int,
     payload: DemandeStatusUpdate,
     db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR", "SERVICE")
+    ),
 ) -> DemandeRead:
     service = DemandeService(db)
 
