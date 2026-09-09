@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
+from src.api.core.dependencies import require_roles
 from src.api.db.session import get_db
+from src.api.schemas.auth import AuthenticatedUser
 from src.api.schemas.mandat import MandatCreate, MandatRead, MandatUpdate
 from src.api.services.mandat import (
     ChasseurNotFoundForMandatError,
@@ -26,6 +28,9 @@ def list_mandats(
     client_id: int | None = Query(default=None, gt=0),
     chasseur_id: int | None = Query(default=None, gt=0),
     db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR")
+    ),
 ) -> list[MandatRead]:
     service = MandatService(db)
 
@@ -55,6 +60,9 @@ def list_mandats(
 def get_mandat(
     mandat_id: int,
     db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR")
+    ),
 ) -> MandatRead:
     service = MandatService(db)
 
@@ -76,6 +84,9 @@ def get_mandat(
 def create_mandat(
     payload: MandatCreate,
     db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR")
+    ),
 ) -> MandatRead:
     service = MandatService(db)
 
@@ -112,6 +123,9 @@ def update_mandat(
     mandat_id: int,
     payload: MandatUpdate,
     db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR")
+    ),
 ) -> MandatRead:
     service = MandatService(db)
 
@@ -148,6 +162,9 @@ def update_mandat(
 def delete_mandat(
     mandat_id: int,
     db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR")
+    ),
 ) -> None:
     service = MandatService(db)
 
