@@ -157,6 +157,11 @@ backend:validate:
     - test -f src/api/api/v1/router.py
     - test -f src/api/api/v1/endpoints/health.py
     - test -f src/api/api/v1/endpoints/auth.py
+    - test -f src/api/db/models/audit_log.py
+    - test -f src/api/repositories/audit_log.py
+    - test -f src/api/services/audit_log.py
+    - test -f src/api/services/presentation.py
+    - test -f src/api/api/v1/endpoints/presentations.py
 
     # -------------------------------------------------------------------------
     # 3. Validate matching runtime source files required by Backend
@@ -198,6 +203,11 @@ backend:validate:
         src/ai/matching/features.py \
         src/ai/matching/repository.py \
         src/ai/matching/evaluate.py
+        src/api/db/models/audit_log.py \
+        src/api/repositories/audit_log.py \
+        src/api/services/audit_log.py \
+        src/api/services/presentation.py \
+        src/api/api/v1/endpoints/presentations.py \
 
     # -------------------------------------------------------------------------
     # 6. Validate lightweight runtime dependency imports

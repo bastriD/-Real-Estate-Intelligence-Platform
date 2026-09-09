@@ -9,6 +9,7 @@ from src.api.schemas.presentation import (
     PresentationCreate,
     PresentationUpdate,
 )
+from src.api.services.audit_log import AuditLogService
 
 
 class PresentationNotFoundError(Exception):
@@ -39,6 +40,7 @@ class PresentationService:
     def __init__(self, session: Session) -> None:
         self.session = session
         self.repository = PresentationRepository(session)
+        self.audit = AuditLogService(session)
 
     def list_presentations(
         self,
@@ -71,6 +73,7 @@ class PresentationService:
     def create_presentation(
         self,
         payload: PresentationCreate,
+        utilisateur: str | None = None,
     ) -> Presentation:
         self._ensure_demande_version_exists(
             payload.id_demande_version
@@ -97,8 +100,24 @@ class PresentationService:
             presentation = self.repository.create(
                 presentation
             )
+
+            self.audit.log_change(
+                table_name="presentation",
+                operation="INSERT",
+                record_id=presentation.id_presentation,
+                utilisateur=utilisateur,
+                nouvelle_valeur=self._presentation_snapshot(
+                    presentation
+                ),
+                contexte={
+                    "source": "api",
+                    "action": "create_presentation",
+                },
+            )
+
             self.session.commit()
             self.session.refresh(presentation)
+
             return presentation
 
         except IntegrityError as exc:
@@ -109,9 +128,14 @@ class PresentationService:
         self,
         presentation_id: int,
         payload: PresentationUpdate,
+        utilisateur: str | None = None,
     ) -> Presentation:
         presentation = self.get_presentation(
             presentation_id
+        )
+
+        ancienne_valeur = self._presentation_snapshot(
+            presentation
         )
 
         update_data = payload.model_dump(
@@ -126,9 +150,27 @@ class PresentationService:
         for field, value in update_data.items():
             setattr(presentation, field, value)
 
+        nouvelle_valeur = self._presentation_snapshot(
+            presentation
+        )
+
         try:
+            self.audit.log_change(
+                table_name="presentation",
+                operation="UPDATE",
+                record_id=presentation.id_presentation,
+                utilisateur=utilisateur,
+                ancienne_valeur=ancienne_valeur,
+                nouvelle_valeur=nouvelle_valeur,
+                contexte={
+                    "source": "api",
+                    "action": "update_presentation",
+                },
+            )
+
             self.session.commit()
             self.session.refresh(presentation)
+
             return presentation
 
         except IntegrityError as exc:
@@ -138,18 +180,57 @@ class PresentationService:
     def delete_presentation(
         self,
         presentation_id: int,
+        utilisateur: str | None = None,
     ) -> None:
         presentation = self.get_presentation(
             presentation_id
         )
 
+        ancienne_valeur = self._presentation_snapshot(
+            presentation
+        )
+
         try:
             self.repository.delete(presentation)
+
+            self.audit.log_change(
+                table_name="presentation",
+                operation="DELETE",
+                record_id=presentation.id_presentation,
+                utilisateur=utilisateur,
+                ancienne_valeur=ancienne_valeur,
+                contexte={
+                    "source": "api",
+                    "action": "delete_presentation",
+                },
+            )
+
             self.session.commit()
 
         except IntegrityError as exc:
             self.session.rollback()
             raise PresentationDeleteConflictError from exc
+
+    @staticmethod
+    def _presentation_snapshot(
+        presentation: Presentation,
+    ) -> dict[str, object]:
+        return {
+            "id_presentation": presentation.id_presentation,
+            "id_demande_version": presentation.id_demande_version,
+            "id_bien": presentation.id_bien,
+            "score_matching": (
+                str(presentation.score_matching)
+                if presentation.score_matching is not None
+                else None
+            ),
+            "statut": presentation.statut,
+            "date_presentation": (
+                presentation.date_presentation.isoformat()
+                if presentation.date_presentation is not None
+                else None
+            ),
+        }
 
     def _ensure_demande_version_exists(
         self,

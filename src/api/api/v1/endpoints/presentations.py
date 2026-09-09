@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
 from src.api.core.dependencies import require_roles
@@ -67,7 +67,9 @@ def get_presentation(
     ),
 ) -> PresentationRead:
     try:
-        return service.get_presentation(presentation_id)
+        return service.get_presentation(
+            presentation_id
+        )
 
     except PresentationNotFoundError as exc:
         raise HTTPException(
@@ -89,7 +91,10 @@ def create_presentation(
     ),
 ) -> PresentationRead:
     try:
-        return service.create_presentation(payload)
+        return service.create_presentation(
+            payload,
+            utilisateur=current_user.email,
+        )
 
     except DemandeVersionNotFoundForPresentationError as exc:
         raise HTTPException(
@@ -135,6 +140,7 @@ def update_presentation(
         return service.update_presentation(
             presentation_id,
             payload,
+            utilisateur=current_user.email,
         )
 
     except PresentationNotFoundError as exc:
@@ -160,9 +166,12 @@ def delete_presentation(
     current_user: AuthenticatedUser = Depends(
         require_roles("ADMIN", "CHASSEUR", "SERVICE")
     ),
-) -> Response:
+) -> None:
     try:
-        service.delete_presentation(presentation_id)
+        service.delete_presentation(
+            presentation_id,
+            utilisateur=current_user.email,
+        )
 
     except PresentationNotFoundError as exc:
         raise HTTPException(
@@ -178,5 +187,3 @@ def delete_presentation(
                 "it is referenced by another resource"
             ),
         ) from exc
-
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
