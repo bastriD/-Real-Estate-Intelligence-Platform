@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy.orm import Session
 
+from src.api.core.dependencies import require_roles
 from src.api.db.session import get_db
+from src.api.schemas.auth import AuthenticatedUser
 from src.api.schemas.presentation import (
     PresentationCreate,
     PresentationRead,
@@ -43,6 +45,9 @@ def list_presentations(
         gt=0,
     ),
     service: PresentationService = Depends(get_service),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR", "SERVICE")
+    ),
 ) -> list[PresentationRead]:
     return service.list_presentations(
         demande_version_id=demande_version_id,
@@ -57,6 +62,9 @@ def list_presentations(
 def get_presentation(
     presentation_id: int,
     service: PresentationService = Depends(get_service),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR", "SERVICE")
+    ),
 ) -> PresentationRead:
     try:
         return service.get_presentation(presentation_id)
@@ -76,6 +84,9 @@ def get_presentation(
 def create_presentation(
     payload: PresentationCreate,
     service: PresentationService = Depends(get_service),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR", "SERVICE")
+    ),
 ) -> PresentationRead:
     try:
         return service.create_presentation(payload)
@@ -116,6 +127,9 @@ def update_presentation(
     presentation_id: int,
     payload: PresentationUpdate,
     service: PresentationService = Depends(get_service),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR", "SERVICE")
+    ),
 ) -> PresentationRead:
     try:
         return service.update_presentation(
@@ -143,6 +157,9 @@ def update_presentation(
 def delete_presentation(
     presentation_id: int,
     service: PresentationService = Depends(get_service),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR", "SERVICE")
+    ),
 ) -> Response:
     try:
         service.delete_presentation(presentation_id)
