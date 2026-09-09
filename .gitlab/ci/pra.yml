@@ -76,7 +76,7 @@ pra:publish-gitops:
     - shell
   needs:
     - database:validate
-    - artifact: false
+  
 
   variables:
     # -------------------------------------------------------------------------
