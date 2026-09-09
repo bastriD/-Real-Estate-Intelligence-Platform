@@ -45,9 +45,10 @@ def generate_recommendations(
 
     try:
         return service.generate_recommendations(
-            id_demande_version=id_demande_version,
-            limit=limit,
-        )
+        id_demande_version=id_demande_version,
+        limit=limit,
+        utilisateur=current_user.email,
+    )
 
     except RecommendationValidationError as exc:
         message = str(exc)

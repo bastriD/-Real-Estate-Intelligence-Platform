@@ -34,6 +34,7 @@ from src.api.schemas.recommendation import (
     RecommendationItem,
     RecommendationResponse,
 )
+from src.api.services.audit_log import AuditLogService
 
 
 class RecommendationValidationError(
@@ -57,12 +58,14 @@ class RecommendationService:
         self.presentation_repository = (
             PresentationRepository(db)
         )
+        self.audit = AuditLogService(db)
 
     def generate_recommendations(
         self,
         *,
         id_demande_version: int,
         limit: int,
+        utilisateur: str | None = None,
     ) -> RecommendationResponse:
         """
         Generate and persist deterministic Top-N recommendations.
@@ -90,6 +93,7 @@ class RecommendationService:
             response = self._generate_recommendations(
                 id_demande_version=id_demande_version,
                 limit=limit,
+                utilisateur=utilisateur,
             )
 
         except RecommendationValidationError:
@@ -135,13 +139,13 @@ class RecommendationService:
         *,
         id_demande_version: int,
         limit: int,
+        utilisateur: str | None = None,
     ) -> RecommendationResponse:
         """
         Execute the recommendation business workflow.
 
-        Prometheus lifecycle instrumentation is deliberately handled by
-        generate_recommendations() so that business logic remains focused
-        on matching and persistence.
+        Presentation persistence and audit logging are committed
+        atomically as one Top-N transaction.
         """
 
         if id_demande_version <= 0:
@@ -312,9 +316,8 @@ class RecommendationService:
 
                 created_count += 1
 
-            # One flush assigns database-generated IDs to all newly
-            # created Presentation objects while keeping the complete
-            # recommendation operation transactional.
+            # Assign database-generated presentation IDs while keeping
+            # the complete Top-N operation inside one transaction.
             self.db.flush()
 
             for (
@@ -325,7 +328,28 @@ class RecommendationService:
                     presentation.id_presentation
                 )
 
-            # One commit for the complete Top-N operation.
+                self.audit.log_change(
+                    table_name="presentation",
+                    operation="INSERT",
+                    record_id=(
+                        presentation.id_presentation
+                    ),
+                    utilisateur=utilisateur,
+                    nouvelle_valeur=(
+                        self._presentation_snapshot(
+                            presentation
+                        )
+                    ),
+                    contexte={
+                        "source": "recommendation",
+                        "action": (
+                            "generate_recommendations"
+                        ),
+                    },
+                )
+
+            # Presentation rows and their audit rows are committed
+            # atomically.
             self.db.commit()
 
         except IntegrityError as exc:
@@ -361,6 +385,33 @@ class RecommendationService:
                 recommendations
             ),
         )
+
+    @staticmethod
+    def _presentation_snapshot(
+        presentation: Presentation,
+    ) -> dict[str, object]:
+        return {
+            "id_presentation": (
+                presentation.id_presentation
+            ),
+            "id_demande_version": (
+                presentation.id_demande_version
+            ),
+            "id_bien": presentation.id_bien,
+            "score_matching": (
+                str(presentation.score_matching)
+                if presentation.score_matching
+                is not None
+                else None
+            ),
+            "statut": presentation.statut,
+            "date_presentation": (
+                presentation.date_presentation.isoformat()
+                if presentation.date_presentation
+                is not None
+                else None
+            ),
+        }
 
     @staticmethod
     def _observe_recommendation_result(

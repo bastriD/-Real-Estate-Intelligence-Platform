@@ -1,4 +1,5 @@
 from decimal import Decimal
+from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -46,9 +47,17 @@ def build_response() -> RecommendationResponse:
     )
 
 
+def build_current_user():
+    return SimpleNamespace(
+        email="admin.auth.test@example.com",
+        role="ADMIN",
+    )
+
+
 def test_generate_recommendations_success() -> None:
     db = MagicMock()
     service = MagicMock()
+    current_user = build_current_user()
 
     expected = build_response()
 
@@ -64,6 +73,7 @@ def test_generate_recommendations_success() -> None:
             id_demande_version=55,
             limit=10,
             db=db,
+            current_user=current_user,
         )
 
     assert result is expected
@@ -74,12 +84,14 @@ def test_generate_recommendations_success() -> None:
     service.generate_recommendations.assert_called_once_with(
         id_demande_version=55,
         limit=10,
+        utilisateur="admin.auth.test@example.com",
     )
 
 
 def test_generate_recommendations_returns_404_when_demande_missing() -> None:
     db = MagicMock()
     service = MagicMock()
+    current_user = build_current_user()
 
     service.generate_recommendations.side_effect = (
         RecommendationValidationError(
@@ -98,6 +110,7 @@ def test_generate_recommendations_returns_404_when_demande_missing() -> None:
                 id_demande_version=999,
                 limit=10,
                 db=db,
+                current_user=current_user,
             )
 
     assert exc.value.status_code == 404
@@ -109,6 +122,7 @@ def test_generate_recommendations_returns_404_when_demande_missing() -> None:
 def test_generate_recommendations_returns_422_for_validation_error() -> None:
     db = MagicMock()
     service = MagicMock()
+    current_user = build_current_user()
 
     service.generate_recommendations.side_effect = (
         RecommendationValidationError(
@@ -128,6 +142,7 @@ def test_generate_recommendations_returns_422_for_validation_error() -> None:
                 id_demande_version=55,
                 limit=10,
                 db=db,
+                current_user=current_user,
             )
 
     assert exc.value.status_code == 422
@@ -136,6 +151,7 @@ def test_generate_recommendations_returns_422_for_validation_error() -> None:
 def test_generate_recommendations_returns_409_on_persistence_error() -> None:
     db = MagicMock()
     service = MagicMock()
+    current_user = build_current_user()
 
     service.generate_recommendations.side_effect = (
         RecommendationPersistenceError(
@@ -155,6 +171,7 @@ def test_generate_recommendations_returns_409_on_persistence_error() -> None:
                 id_demande_version=55,
                 limit=10,
                 db=db,
+                current_user=current_user,
             )
 
     assert exc.value.status_code == 409

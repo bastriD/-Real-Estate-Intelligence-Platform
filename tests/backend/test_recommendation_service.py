@@ -186,10 +186,20 @@ def test_generate_recommendations_creates_ranked_presentations() -> None:
 
     created_presentations = [
         SimpleNamespace(
-            id_presentation=501
+            id_presentation=501,
+            id_demande_version=55,
+            id_bien=101,
+            score_matching=Decimal("98.5"),
+            statut="IDENTIFIE",
+            date_presentation=None,
         ),
         SimpleNamespace(
-            id_presentation=502
+            id_presentation=502,
+            id_demande_version=55,
+            id_bien=102,
+            score_matching=Decimal("94.25"),
+            statut="IDENTIFIE",
+            date_presentation=None,
         ),
     ]
 
@@ -197,9 +207,7 @@ def test_generate_recommendations_creates_ranked_presentations() -> None:
         side_effect=created_presentations
     )
 
-    service.presentation_repository.get_by_id = MagicMock(
-        side_effect=created_presentations
-    )
+    service.audit.log_change = MagicMock()
 
     with patch(
         "src.api.services.recommendation.build_matching_features",
@@ -211,6 +219,7 @@ def test_generate_recommendations_creates_ranked_presentations() -> None:
         result = service.generate_recommendations(
             id_demande_version=55,
             limit=2,
+            utilisateur="admin.auth.test@example.com",
         )
 
     assert result.id_demande_version == 55
@@ -226,13 +235,55 @@ def test_generate_recommendations_creates_ranked_presentations() -> None:
     assert result.recommendations[0].matching_score == Decimal(
         "98.5"
     )
+    assert result.recommendations[0].presentation_id == 501
 
     assert result.recommendations[1].id_bien == 102
     assert result.recommendations[1].rank == 2
+    assert result.recommendations[1].presentation_id == 502
 
     assert (
         service.presentation_repository.create.call_count
         == 2
+    )
+
+    assert service.audit.log_change.call_count == 2
+
+    service.audit.log_change.assert_any_call(
+        table_name="presentation",
+        operation="INSERT",
+        record_id=501,
+        utilisateur="admin.auth.test@example.com",
+        nouvelle_valeur={
+            "id_presentation": 501,
+            "id_demande_version": 55,
+            "id_bien": 101,
+            "score_matching": "98.5",
+            "statut": "IDENTIFIE",
+            "date_presentation": None,
+        },
+        contexte={
+            "source": "recommendation",
+            "action": "generate_recommendations",
+        },
+    )
+
+    service.audit.log_change.assert_any_call(
+        table_name="presentation",
+        operation="INSERT",
+        record_id=502,
+        utilisateur="admin.auth.test@example.com",
+        nouvelle_valeur={
+            "id_presentation": 502,
+            "id_demande_version": 55,
+            "id_bien": 102,
+            "score_matching": "94.25",
+            "statut": "IDENTIFIE",
+            "date_presentation": None,
+        },
+        contexte={
+            "source": "recommendation",
+            "action": "generate_recommendations",
+        },
     )
 
     db.flush.assert_called_once()
@@ -252,7 +303,12 @@ def test_generate_recommendations_reuses_existing_presentation() -> None:
     )
 
     created = SimpleNamespace(
-        id_presentation=701
+        id_presentation=701,
+        id_demande_version=55,
+        id_bien=102,
+        score_matching=Decimal("94.25"),
+        statut="IDENTIFIE",
+        date_presentation=None,
     )
 
     service.presentation_repository.get_by_demande_and_bien = MagicMock(
@@ -266,9 +322,7 @@ def test_generate_recommendations_reuses_existing_presentation() -> None:
         return_value=created
     )
 
-    service.presentation_repository.get_by_id = MagicMock(
-        return_value=created
-    )
+    service.audit.log_change = MagicMock()
 
     with patch(
         "src.api.services.recommendation.build_matching_features",
@@ -280,6 +334,7 @@ def test_generate_recommendations_reuses_existing_presentation() -> None:
         result = service.generate_recommendations(
             id_demande_version=55,
             limit=2,
+            utilisateur="admin.auth.test@example.com",
         )
 
     assert result.created_presentations == 1
@@ -297,6 +352,26 @@ def test_generate_recommendations_reuses_existing_presentation() -> None:
 
     service.presentation_repository.create.assert_called_once()
 
+    service.audit.log_change.assert_called_once_with(
+        table_name="presentation",
+        operation="INSERT",
+        record_id=701,
+        utilisateur="admin.auth.test@example.com",
+        nouvelle_valeur={
+            "id_presentation": 701,
+            "id_demande_version": 55,
+            "id_bien": 102,
+            "score_matching": "94.25",
+            "statut": "IDENTIFIE",
+            "date_presentation": None,
+        },
+        contexte={
+            "source": "recommendation",
+            "action": "generate_recommendations",
+        },
+    )
+
+    db.flush.assert_called_once()
     db.commit.assert_called_once()
 
 
@@ -392,16 +467,28 @@ def test_recommendation_metrics_record_success() -> None:
 
     created_presentations = [
         SimpleNamespace(
-            id_presentation=801
+            id_presentation=801,
+            id_demande_version=55,
+            id_bien=101,
+            score_matching=Decimal("98.5"),
+            statut="IDENTIFIE",
+            date_presentation=None,
         ),
         SimpleNamespace(
-            id_presentation=802
+            id_presentation=802,
+            id_demande_version=55,
+            id_bien=102,
+            score_matching=Decimal("94.25"),
+            statut="IDENTIFIE",
+            date_presentation=None,
         ),
     ]
 
     service.presentation_repository.create = MagicMock(
         side_effect=created_presentations
     )
+
+    service.audit.log_change = MagicMock()
 
     requests_before = _sample_value(
         "real_estate_recommendation_requests_total"
@@ -453,12 +540,15 @@ def test_recommendation_metrics_record_success() -> None:
         result = service.generate_recommendations(
             id_demande_version=55,
             limit=2,
+            utilisateur="admin.auth.test@example.com",
         )
 
     assert result.eligible_candidates == 3
     assert result.selected_candidates == 2
     assert result.created_presentations == 2
     assert result.existing_presentations == 0
+
+    assert service.audit.log_change.call_count == 2
 
     assert _sample_value(
         "real_estate_recommendation_requests_total"
@@ -499,7 +589,6 @@ def test_recommendation_metrics_record_success() -> None:
     assert _sample_value(
         "real_estate_recommendation_duration_seconds_count"
     ) == duration_count_before + 1
-
 
 def test_recommendation_metrics_record_validation_failure() -> None:
     db = MagicMock()
