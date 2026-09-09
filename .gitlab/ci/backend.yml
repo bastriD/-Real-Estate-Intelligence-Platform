@@ -202,7 +202,7 @@ backend:validate:
         src/api/api/v1/endpoints/auth.py \
         src/ai/matching/features.py \
         src/ai/matching/repository.py \
-        src/ai/matching/evaluate.py
+        src/ai/matching/evaluate.py   \
         src/api/db/models/audit_log.py \
         src/api/repositories/audit_log.py \
         src/api/services/audit_log.py \
