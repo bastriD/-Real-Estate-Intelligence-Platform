@@ -6,7 +6,9 @@ from fastapi import (
 )
 from sqlalchemy.orm import Session
 
+from src.api.core.dependencies import require_roles
 from src.api.db.session import get_db
+from src.api.schemas.auth import AuthenticatedUser
 from src.api.schemas.recommendation import (
     RecommendationResponse,
 )
@@ -35,6 +37,9 @@ def generate_recommendations(
         le=100,
     ),
     db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR", "SERVICE")
+    ),
 ) -> RecommendationResponse:
     service = RecommendationService(db)
 
