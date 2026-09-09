@@ -200,14 +200,14 @@ backend:validate:
         src/api/api/v1/router.py \
         src/api/api/v1/endpoints/health.py \
         src/api/api/v1/endpoints/auth.py \
-        src/ai/matching/features.py \
-        src/ai/matching/repository.py \
-        src/ai/matching/evaluate.py   \
         src/api/db/models/audit_log.py \
         src/api/repositories/audit_log.py \
         src/api/services/audit_log.py \
         src/api/services/presentation.py \
         src/api/api/v1/endpoints/presentations.py \
+        src/ai/matching/features.py \
+        src/ai/matching/repository.py \
+        src/ai/matching/evaluate.py
 
     # -------------------------------------------------------------------------
     # 6. Validate lightweight runtime dependency imports
