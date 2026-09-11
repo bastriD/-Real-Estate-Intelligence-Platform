@@ -418,6 +418,7 @@ def load_fact_mandat(cur):
             duree_jours = EXCLUDED.duree_jours,
             dw_loaded_at = CURRENT_TIMESTAMP;
     """)
+    
 def load_fact_mandat_periode(cur):
     cur.execute("""
         INSERT INTO warehouse.fact_mandat_periode (
@@ -700,7 +701,7 @@ def main():
 
                 print("Loading fact_mandat...")
                 load_fact_mandat(cur)
-                
+
                 print("Loading fact_mandat_periode...")
                 load_fact_mandat_periode(cur)
 
