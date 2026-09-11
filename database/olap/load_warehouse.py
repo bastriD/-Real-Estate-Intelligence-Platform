@@ -418,7 +418,59 @@ def load_fact_mandat(cur):
             duree_jours = EXCLUDED.duree_jours,
             dw_loaded_at = CURRENT_TIMESTAMP;
     """)
-
+def load_fact_mandat_periode(cur):
+    cur.execute("""
+        INSERT INTO warehouse.fact_mandat_periode (
+            id_mandat_periode_source,
+            mandat_fact_key,
+            numero_periode,
+            type_periode,
+            date_debut_key,
+            date_fin_key,
+            date_renouvellement_key,
+            est_historique_legacy,
+            duree_jours,
+            periode_count,
+            created_at_source,
+            dw_loaded_at
+        )
+        SELECT
+            mp.id_mandat_periode,
+            fm.mandat_fact_key,
+            mp.numero_periode,
+            mp.type_periode,
+            TO_CHAR(mp.date_debut, 'YYYYMMDD')::integer,
+            TO_CHAR(mp.date_fin, 'YYYYMMDD')::integer,
+            CASE
+                WHEN mp.date_renouvellement IS NULL THEN NULL
+                ELSE TO_CHAR(
+                    mp.date_renouvellement,
+                    'YYYYMMDD'
+                )::integer
+            END,
+            mp.est_historique_legacy,
+            (mp.date_fin - mp.date_debut),
+            1,
+            mp.created_at,
+            CURRENT_TIMESTAMP
+        FROM real_estate.mandat_periode mp
+        JOIN warehouse.fact_mandat fm
+          ON fm.id_mandat_source = mp.id_mandat
+        ON CONFLICT (id_mandat_periode_source)
+        DO UPDATE SET
+            mandat_fact_key = EXCLUDED.mandat_fact_key,
+            numero_periode = EXCLUDED.numero_periode,
+            type_periode = EXCLUDED.type_periode,
+            date_debut_key = EXCLUDED.date_debut_key,
+            date_fin_key = EXCLUDED.date_fin_key,
+            date_renouvellement_key =
+                EXCLUDED.date_renouvellement_key,
+            est_historique_legacy =
+                EXCLUDED.est_historique_legacy,
+            duree_jours = EXCLUDED.duree_jours,
+            created_at_source = EXCLUDED.created_at_source,
+            dw_loaded_at = CURRENT_TIMESTAMP;
+    """)
 
 def load_bridge_mandat_secteur(cur):
     cur.execute("""
@@ -596,6 +648,7 @@ def print_counts(cur):
         "dim_demande_version",
         "fact_annonce",
         "fact_mandat",
+        "fact_mandat_periode",
         "bridge_mandat_secteur",
         "fact_presentation",
         "fact_paiement",
@@ -647,6 +700,9 @@ def main():
 
                 print("Loading fact_mandat...")
                 load_fact_mandat(cur)
+                
+                print("Loading fact_mandat_periode...")
+                load_fact_mandat_periode(cur)
 
                 print("Loading bridge_mandat_secteur...")
                 load_bridge_mandat_secteur(cur)
