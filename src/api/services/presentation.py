@@ -57,6 +57,18 @@ class PresentationService:
 
         return self.repository.list_all()
 
+    def list_presentations_for_chasseur(
+        self,
+        chasseur_id: int,
+        demande_version_id: int | None = None,
+        bien_id: int | None = None,
+    ) -> list[Presentation]:
+        return self.repository.list_accessible_by_chasseur(
+            chasseur_id=chasseur_id,
+            demande_version_id=demande_version_id,
+            bien_id=bien_id,
+        )
+
     def get_presentation(
         self,
         presentation_id: int,
@@ -69,6 +81,32 @@ class PresentationService:
             raise PresentationNotFoundError
 
         return presentation
+
+    def get_demande_id_for_presentation(
+        self,
+        presentation_id: int,
+    ) -> int:
+        demande_id = self.repository.get_demande_id(
+            presentation_id
+        )
+
+        if demande_id is None:
+            raise PresentationNotFoundError
+
+        return demande_id
+
+    def get_demande_id_for_version(
+        self,
+        demande_version_id: int,
+    ) -> int:
+        demande_id = self.repository.get_demande_id_for_version(
+            demande_version_id
+        )
+
+        if demande_id is None:
+            raise DemandeVersionNotFoundForPresentationError
+
+        return demande_id
 
     def create_presentation(
         self,

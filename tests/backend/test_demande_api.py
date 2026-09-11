@@ -14,13 +14,14 @@ from src.api.api.v1.endpoints.demandes import (
     list_demandes,
     update_demande_status,
 )
+from src.api.schemas.auth import AuthenticatedUser
 from src.api.schemas.demande import (
     DemandeCreate,
+    DemandeHistory,
     DemandeRevision,
     DemandeStatusUpdate,
     DemandeVersionRead,
     DemandeWithCurrentVersion,
-    DemandeHistory,
 )
 from src.api.services.demande import (
     ChasseurNotFoundForDemandeError,
@@ -30,6 +31,14 @@ from src.api.services.demande import (
     DemandeValidationError,
     MandatNotFoundForDemandeError,
 )
+
+
+def build_admin_user() -> AuthenticatedUser:
+    return AuthenticatedUser(
+        id_utilisateur=1,
+        email="admin@example.com",
+        role="ADMIN",
+    )
 
 
 def build_demande():
@@ -140,7 +149,10 @@ def test_list_demandes_returns_all() -> None:
         "src.api.api.v1.endpoints.demandes.DemandeService",
         return_value=service,
     ):
-        result = list_demandes(db=db)
+        result = list_demandes(
+            db=db,
+            current_user=build_admin_user(),
+        )
 
     assert len(result) == 1
     assert result[0].id_demande == 4
@@ -164,6 +176,7 @@ def test_get_demande_success() -> None:
         result = get_demande(
             demande_id=4,
             db=db,
+            current_user=build_admin_user(),
         )
 
     assert isinstance(
@@ -196,6 +209,7 @@ def test_get_demande_returns_404_when_missing() -> None:
             get_demande(
                 demande_id=999,
                 db=db,
+                current_user=build_admin_user(),
             )
 
     assert exc.value.status_code == 404
@@ -223,6 +237,7 @@ def test_get_demande_returns_409_when_no_active_version() -> None:
             get_demande(
                 demande_id=4,
                 db=db,
+                current_user=build_admin_user(),
             )
 
     assert exc.value.status_code == 409
@@ -259,6 +274,7 @@ def test_get_demande_history_success() -> None:
         result = get_demande_history(
             demande_id=4,
             db=db,
+            current_user=build_admin_user(),
         )
 
     assert isinstance(
@@ -291,6 +307,7 @@ def test_get_demande_history_returns_404() -> None:
             get_demande_history(
                 demande_id=999,
                 db=db,
+                current_user=build_admin_user(),
             )
 
     assert exc.value.status_code == 404
@@ -320,6 +337,7 @@ def test_create_demande_success() -> None:
         result = create_demande(
             payload=payload,
             db=db,
+            current_user=build_admin_user(),
         )
 
     assert isinstance(
@@ -352,6 +370,7 @@ def test_create_demande_returns_409_for_duplicate() -> None:
             create_demande(
                 payload=build_create_payload(),
                 db=db,
+                current_user=build_admin_user(),
             )
 
     assert exc.value.status_code == 409
@@ -378,6 +397,7 @@ def test_create_demande_returns_404_for_missing_mandat() -> None:
             create_demande(
                 payload=build_create_payload(),
                 db=db,
+                current_user=build_admin_user(),
             )
 
     assert exc.value.status_code == 404
@@ -404,6 +424,7 @@ def test_create_demande_returns_404_for_missing_client() -> None:
             create_demande(
                 payload=build_create_payload(),
                 db=db,
+                current_user=build_admin_user(),
             )
 
     assert exc.value.status_code == 404
@@ -427,6 +448,7 @@ def test_create_demande_returns_404_for_missing_chasseur() -> None:
             create_demande(
                 payload=build_create_payload(),
                 db=db,
+                current_user=build_admin_user(),
             )
 
     assert exc.value.status_code == 404
@@ -450,6 +472,7 @@ def test_create_demande_returns_422_for_validation_error() -> None:
             create_demande(
                 payload=build_create_payload(),
                 db=db,
+                current_user=build_admin_user(),
             )
 
     assert exc.value.status_code == 422
@@ -479,6 +502,7 @@ def test_create_revision_success() -> None:
             demande_id=4,
             payload=payload,
             db=db,
+            current_user=build_admin_user(),
         )
 
     assert result is version
@@ -510,6 +534,7 @@ def test_create_revision_returns_404_for_missing_demande() -> None:
                 demande_id=999,
                 payload=build_revision_payload(),
                 db=db,
+                current_user=build_admin_user(),
             )
 
     assert exc.value.status_code == 404
@@ -534,6 +559,7 @@ def test_create_revision_returns_404_for_missing_client() -> None:
                 demande_id=4,
                 payload=build_revision_payload(),
                 db=db,
+                current_user=build_admin_user(),
             )
 
     assert exc.value.status_code == 404
@@ -558,6 +584,7 @@ def test_create_revision_returns_404_for_missing_chasseur() -> None:
                 demande_id=4,
                 payload=build_revision_payload(),
                 db=db,
+                current_user=build_admin_user(),
             )
 
     assert exc.value.status_code == 404
@@ -582,6 +609,7 @@ def test_create_revision_returns_422_for_validation_error() -> None:
                 demande_id=4,
                 payload=build_revision_payload(),
                 db=db,
+                current_user=build_admin_user(),
             )
 
     assert exc.value.status_code == 422
@@ -611,6 +639,7 @@ def test_update_demande_status_success() -> None:
             demande_id=4,
             payload=payload,
             db=db,
+            current_user=build_admin_user(),
         )
 
     assert result.statut == "SUSPENDUE"
@@ -644,6 +673,7 @@ def test_update_demande_status_returns_404() -> None:
                 demande_id=999,
                 payload=payload,
                 db=db,
+                current_user=build_admin_user(),
             )
 
     assert exc.value.status_code == 404
@@ -675,6 +705,7 @@ def test_update_demande_status_returns_422() -> None:
                 demande_id=4,
                 payload=payload,
                 db=db,
+                current_user=build_admin_user(),
             )
 
     assert exc.value.status_code == 422

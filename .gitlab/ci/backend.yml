@@ -6,38 +6,50 @@
 #
 #   backend:validate
 #          |
-#          v
-#   backend:build-image
+#          +-------------------+
+#          |                   |
+#          v                   v
+#   backend:tests       validation complete
+#   (backend-tests.yml)
 #          |
-#          v
-#   GitLab Container Registry
-#          |
-#          v
-#   backend:publish-gitops
-#          |
-#          +--> real-estate/gitlab-registry-auth
-#          |
-#          +--> lab-gitops/workloads/real-estate/backend
-#          |
-#          +--> lab-gitops/apps/real-estate-backend/application.yaml
-#          |
-#          v
-#   Argo CD root-app
-#     repo: https://gitlab.local/root/lab-gitops.git
-#     branch: main
-#     path: apps
-#     directory.recurse: true
-#          |
-#          v
-#   Argo CD Application real-estate-backend
-#          |
-#          v
-#   Kubernetes namespace real-estate
+#          +-------------------+
+#                              |
+#                              v
+#                     backend:build-image
+#                              |
+#                              v
+#                     GitLab Container Registry
+#                              |
+#                              v
+#                     backend:publish-gitops
+#                              |
+#                              +--> real-estate/gitlab-registry-auth
+#                              |
+#                              +--> lab-gitops/workloads/real-estate/backend
+#                              |
+#                              +--> lab-gitops/apps/real-estate-backend/application.yaml
+#                              |
+#                              v
+#                     Argo CD root-app
+#                       repo: https://gitlab.local/root/lab-gitops.git
+#                       branch: main
+#                       path: apps
+#                       directory.recurse: true
+#                              |
+#                              v
+#                     Argo CD Application real-estate-backend
+#                              |
+#                              v
+#                     Kubernetes namespace real-estate
+#
 #
 # DEPENDENCY ARCHITECTURE
 #
 #   requirements-backend.txt
 #       Backend / API runtime
+#
+#   requirements-backend-test.txt
+#       Backend / API automated test dependencies
 #
 #   requirements-ai.txt
 #       -r requirements-backend.txt
@@ -52,17 +64,35 @@
 #       + PyTorch
 #       Dedicated ML training environment only
 #
+#
 # VALIDATION RESPONSIBILITY
 #
 #   backend:validate
 #       Backend syntax
 #       Backend runtime compatibility
+#       Authentication primitives
+#       Authorization / ownership module imports
+#       Demande assignment module imports
 #       Matching runtime import compatibility
 #       FastAPI/OpenAPI contract
 #
 #   backend:tests
-#       Backend/API automated tests
-#       Coverage validation
+#       Defined in .gitlab/ci/backend-tests.yml
+#
+#       Backend/API automated regression tests
+#       Data tests
+#       Candidate availability test
+#       Coverage >= 80 %
+#
+#       Includes:
+#       - authentication
+#       - role RBAC
+#       - Mandat ownership
+#       - Demande assignment lifecycle
+#       - Demande ownership
+#       - Presentation ownership
+#       - Visite ownership
+#       - audit compatibility
 #
 #   ai:validate
 #       Pure deterministic matching unit tests
@@ -75,7 +105,17 @@
 #       Real ground-truth lineage
 #       MLflow tracking
 #
-# IMPORTANT:
+#
+# IMPORTANT
+#
+# - backend:tests is defined in .gitlab/ci/backend-tests.yml.
+# - DO NOT redefine backend:tests in this file.
+# - backend:build-image waits for backend:tests whenever that conditional
+#   job is present.
+# - backend:tests is optional at pipeline graph level because its own
+#   rules:changes may omit it for unrelated commits.
+# - For src/api/**/* and tests/backend/**/* changes, backend:tests is
+#   created and therefore acts as a blocking build gate.
 #
 # - apps/ is NOT managed through a kustomization.yaml.
 # - root-app recursively discovers apps/*/application.yaml.
@@ -133,6 +173,7 @@ backend:validate:
         -r requirements-ai.txt
 
   script:
+
     # -------------------------------------------------------------------------
     # 1. Validate dependency files
     # -------------------------------------------------------------------------
@@ -142,37 +183,85 @@ backend:validate:
     - test -f requirements-backend-test.txt
     - test -f requirements-ai-training.txt
 
+
     # -------------------------------------------------------------------------
-    # 2. Validate expected Backend source files
+    # 2. Validate expected Backend core files
     # -------------------------------------------------------------------------
 
     - test -f src/api/main.py
+
     - test -f src/api/core/config.py
     - test -f src/api/core/security.py
+    - test -f src/api/core/dependencies.py
+    - test -f src/api/core/authorization.py
+
     - test -f src/api/db/session.py
-    - test -f src/api/db/models/utilisateur.py
-    - test -f src/api/repositories/utilisateur.py
-    - test -f src/api/services/auth.py
-    - test -f src/api/schemas/auth.py
-    - test -f src/api/api/v1/router.py
-    - test -f src/api/api/v1/endpoints/health.py
-    - test -f src/api/api/v1/endpoints/auth.py
-    - test -f src/api/db/models/audit_log.py
-    - test -f src/api/repositories/audit_log.py
-    - test -f src/api/services/audit_log.py
-    - test -f src/api/services/presentation.py
-    - test -f src/api/api/v1/endpoints/presentations.py
+
 
     # -------------------------------------------------------------------------
-    # 3. Validate matching runtime source files required by Backend
+    # 3. Validate authentication / audit models
+    # -------------------------------------------------------------------------
+
+    - test -f src/api/db/models/utilisateur.py
+    - test -f src/api/db/models/audit_log.py
+
+    - test -f src/api/repositories/utilisateur.py
+    - test -f src/api/repositories/audit_log.py
+
+    - test -f src/api/services/auth.py
+    - test -f src/api/services/audit_log.py
+
+    - test -f src/api/schemas/auth.py
+
+
+    # -------------------------------------------------------------------------
+    # 4. Validate ownership / assignment models
+    # -------------------------------------------------------------------------
+
+    - test -f src/api/db/models/demande.py
+    - test -f src/api/db/models/demande_affectation.py
+    - test -f src/api/db/models/presentation.py
+    - test -f src/api/db/models/visite.py
+
+    - test -f src/api/repositories/demande.py
+    - test -f src/api/repositories/demande_affectation.py
+    - test -f src/api/repositories/presentation.py
+    - test -f src/api/repositories/visite.py
+
+    - test -f src/api/services/demande.py
+    - test -f src/api/services/demande_affectation.py
+    - test -f src/api/services/presentation.py
+    - test -f src/api/services/visite.py
+
+    - test -f src/api/schemas/demande_affectation.py
+
+
+    # -------------------------------------------------------------------------
+    # 5. Validate API router/endpoints
+    # -------------------------------------------------------------------------
+
+    - test -f src/api/api/v1/router.py
+
+    - test -f src/api/api/v1/endpoints/health.py
+    - test -f src/api/api/v1/endpoints/auth.py
+
+    - test -f src/api/api/v1/endpoints/mandats.py
+    - test -f src/api/api/v1/endpoints/demandes.py
+    - test -f src/api/api/v1/endpoints/presentations.py
+    - test -f src/api/api/v1/endpoints/visites.py
+
+
+    # -------------------------------------------------------------------------
+    # 6. Validate matching runtime source files required by Backend
     # -------------------------------------------------------------------------
 
     - test -f src/ai/matching/features.py
     - test -f src/ai/matching/repository.py
     - test -f src/ai/matching/evaluate.py
 
+
     # -------------------------------------------------------------------------
-    # 4. Validate deployment files
+    # 7. Validate deployment files
     # -------------------------------------------------------------------------
 
     - test -f deploy/docker/Dockerfile.backend
@@ -183,8 +272,9 @@ backend:validate:
     - test -f deploy/kubernetes/backend/kustomization.yaml
     - test -f deploy/kubernetes/backend/application.yaml
 
+
     # -------------------------------------------------------------------------
-    # 5. Python syntax validation
+    # 8. Python syntax validation
     # -------------------------------------------------------------------------
 
     - |
@@ -192,25 +282,43 @@ backend:validate:
         src/api/main.py \
         src/api/core/config.py \
         src/api/core/security.py \
+        src/api/core/dependencies.py \
+        src/api/core/authorization.py \
         src/api/db/session.py \
         src/api/db/models/utilisateur.py \
+        src/api/db/models/audit_log.py \
+        src/api/db/models/demande.py \
+        src/api/db/models/demande_affectation.py \
+        src/api/db/models/presentation.py \
+        src/api/db/models/visite.py \
         src/api/repositories/utilisateur.py \
+        src/api/repositories/audit_log.py \
+        src/api/repositories/demande.py \
+        src/api/repositories/demande_affectation.py \
+        src/api/repositories/presentation.py \
+        src/api/repositories/visite.py \
         src/api/services/auth.py \
+        src/api/services/audit_log.py \
+        src/api/services/demande.py \
+        src/api/services/demande_affectation.py \
+        src/api/services/presentation.py \
+        src/api/services/visite.py \
         src/api/schemas/auth.py \
+        src/api/schemas/demande_affectation.py \
         src/api/api/v1/router.py \
         src/api/api/v1/endpoints/health.py \
         src/api/api/v1/endpoints/auth.py \
-        src/api/db/models/audit_log.py \
-        src/api/repositories/audit_log.py \
-        src/api/services/audit_log.py \
-        src/api/services/presentation.py \
+        src/api/api/v1/endpoints/mandats.py \
+        src/api/api/v1/endpoints/demandes.py \
         src/api/api/v1/endpoints/presentations.py \
+        src/api/api/v1/endpoints/visites.py \
         src/ai/matching/features.py \
         src/ai/matching/repository.py \
         src/ai/matching/evaluate.py
 
+
     # -------------------------------------------------------------------------
-    # 6. Validate lightweight runtime dependency imports
+    # 9. Validate lightweight runtime dependency imports
     # -------------------------------------------------------------------------
 
     - |
@@ -231,11 +339,15 @@ backend:validate:
 
       PasswordHash.recommended()
 
-      print("Backend + matching + authentication runtime dependencies imported successfully.")
+      print(
+          "Backend + matching + authentication runtime "
+          "dependencies imported successfully."
+      )
       PY
 
+
     # -------------------------------------------------------------------------
-    # 7. Validate AI matching module compatibility
+    # 10. Validate AI matching module compatibility
     # -------------------------------------------------------------------------
 
     - |
@@ -260,12 +372,16 @@ backend:validate:
 
       weights = MatchingWeights()
 
-      print("Backend-compatible matching modules imported successfully.")
+      print(
+          "Backend-compatible matching modules "
+          "imported successfully."
+      )
       print("Matching weights:", weights)
       PY
 
+
     # -------------------------------------------------------------------------
-    # 8. Validate authentication primitives
+    # 11. Validate authentication primitives
     # -------------------------------------------------------------------------
 
     - |
@@ -278,11 +394,15 @@ backend:validate:
       )
 
       password = "ci-validation-password"
+
       hashed = hash_password(password)
 
       assert hashed != password
       assert verify_password(password, hashed)
-      assert not verify_password("wrong-password", hashed)
+      assert not verify_password(
+          "wrong-password",
+          hashed,
+      )
 
       token = create_access_token(
           subject="ci-validation@example.test",
@@ -292,15 +412,52 @@ backend:validate:
 
       payload = decode_access_token(token)
 
-      assert payload["sub"] == "ci-validation@example.test"
+      assert (
+          payload["sub"]
+          == "ci-validation@example.test"
+      )
+
       assert payload["uid"] == 1
       assert payload["role"] == "ADMIN"
 
-      print("Authentication primitives validation successful.")
+      print(
+          "Authentication primitives "
+          "validation successful."
+      )
       PY
 
+
     # -------------------------------------------------------------------------
-    # 9. Validate FastAPI/OpenAPI
+    # 12. Validate authorization / assignment module compatibility
+    # -------------------------------------------------------------------------
+
+    - |
+      python - <<'PY'
+      from src.api.core.authorization import (
+          enforce_chasseur_ownership,
+          enforce_demande_access,
+          enforce_demande_ownership,
+          require_chasseur_identity,
+      )
+
+      from src.api.services.demande_affectation import (
+          DemandeAffectationService,
+      )
+
+      print(
+          "Authorization / ownership "
+          "module imports successful."
+      )
+
+      print(
+          "Demande assignment service "
+          "import successful."
+      )
+      PY
+
+
+    # -------------------------------------------------------------------------
+    # 13. Validate FastAPI/OpenAPI
     # -------------------------------------------------------------------------
 
     - |
@@ -311,7 +468,13 @@ backend:validate:
       print("Version:", app.version)
 
       schema = app.openapi()
-      paths = sorted(schema.get("paths", {}).keys())
+
+      paths = sorted(
+          schema.get(
+              "paths",
+              {},
+          ).keys()
+      )
 
       print("OpenAPI routes:")
 
@@ -326,18 +489,25 @@ backend:validate:
           "/api/v1/auth/login",
       }
 
-      missing_routes = required_routes.difference(paths)
+      missing_routes = (
+          required_routes.difference(paths)
+      )
 
       if missing_routes:
           raise RuntimeError(
-              f"Missing required API routes: {sorted(missing_routes)}"
+              "Missing required API routes: "
+              f"{sorted(missing_routes)}"
           )
 
-      print("Backend OpenAPI validation successful.")
+      print(
+          "Backend OpenAPI validation "
+          "successful."
+      )
       PY
 
+
     # -------------------------------------------------------------------------
-    # 10. Validation responsibility summary
+    # 14. Validation responsibility summary
     # -------------------------------------------------------------------------
 
     - |
@@ -353,24 +523,30 @@ backend:validate:
       echo "- Authentication dependency compatibility"
       echo "- Password hashing primitives"
       echo "- JWT encode/decode primitives"
-      echo "- Authentication OpenAPI route"
+      echo "- Authorization / ownership imports"
+      echo "- Demande assignment imports"
+      echo "- Ownership endpoint syntax"
       echo "- AI matching runtime import compatibility"
       echo "- Backend deployment structure"
       echo "- FastAPI/OpenAPI contract"
 
       echo
-      echo "Not validated here:"
-      echo "- real authentication against PostgreSQL"
-      echo "- authorization / RBAC"
-      echo "- deterministic AI scoring unit tests"
-      echo "- PostgreSQL matching repository behavior"
-      echo "- real candidate eligibility"
-      echo "- ground-truth lineage"
-      echo "- MLflow integration"
+      echo "Behavioral validation is performed by backend:tests:"
+      echo "- Backend/API automated tests"
+      echo "- Authentication"
+      echo "- RBAC"
+      echo "- Mandat ownership"
+      echo "- Demande assignment lifecycle"
+      echo "- Demande ownership"
+      echo "- Presentation ownership"
+      echo "- Visite ownership"
+      echo "- Audit compatibility"
+      echo "- Data tests"
+      echo "- Candidate availability"
+      echo "- API coverage >= 80 percent"
 
       echo
-      echo "Those responsibilities belong to:"
-      echo "- backend integration/runtime tests"
+      echo "Additional validation responsibilities:"
       echo "- ai:validate"
       echo "- ai-mlops:evaluate"
 
@@ -380,7 +556,35 @@ backend:validate:
 
 
 # =============================================================================
-# 2. BUILD AND PUBLISH BACKEND + AI MATCHING IMAGE
+# 2. BACKEND TESTS
+# =============================================================================
+#
+# backend:tests is intentionally NOT defined here.
+#
+# It is defined in:
+#
+#   .gitlab/ci/backend-tests.yml
+#
+# Current test command:
+#
+#   python -m pytest \
+#     tests/backend \
+#     tests/data \
+#     tests/ai/test_candidate_availability.py \
+#     -v \
+#     --cov=src/api \
+#     --cov-report=term-missing \
+#     --cov-report=xml \
+#     --cov-fail-under=80
+#
+# Ownership changes under src/api/**/* and tests/backend/**/*
+# trigger that job.
+#
+# =============================================================================
+
+
+# =============================================================================
+# 3. BUILD AND PUBLISH BACKEND + AI MATCHING IMAGE
 # =============================================================================
 
 backend:build-image:
@@ -389,9 +593,25 @@ backend:build-image:
   tags:
     - docker
 
+  # ---------------------------------------------------------------------------
+  # backend:validate always exists for main/MR Backend pipelines.
+  #
+  # backend:tests is defined in backend-tests.yml and uses rules:changes.
+  #
+  # optional:true is required because GitLab must still be able to create a
+  # pipeline where backend:tests is legitimately absent.
+  #
+  # When backend:tests IS present, backend:build-image waits for it and cannot
+  # start if the test job fails.
+  # ---------------------------------------------------------------------------
+
   needs:
     - job: backend:validate
       artifacts: false
+
+    - job: backend:tests
+      artifacts: false
+      optional: true
 
   image: docker:27.5.1
 
@@ -412,6 +632,7 @@ backend:build-image:
           --password-stdin
 
   script:
+
     # -------------------------------------------------------------------------
     # 1. Build Backend image
     # -------------------------------------------------------------------------
@@ -432,6 +653,7 @@ backend:build-image:
         -t "$IMAGE_NAME:latest" \
         .
 
+
     # -------------------------------------------------------------------------
     # 2. Validate Python inside final image
     # -------------------------------------------------------------------------
@@ -441,6 +663,7 @@ backend:build-image:
         --rm \
         "$IMAGE_NAME:$IMAGE_TAG" \
         python --version
+
 
     # -------------------------------------------------------------------------
     # 3. Validate lightweight runtime dependencies inside final image
@@ -453,6 +676,7 @@ backend:build-image:
         python -c \
         "import jwt; import numpy; import pandas; import psycopg; from pwdlib import PasswordHash; PasswordHash.recommended(); print('Backend + AI + auth runtime dependencies OK')"
 
+
     # -------------------------------------------------------------------------
     # 4. Validate AI matching modules inside final image
     # -------------------------------------------------------------------------
@@ -464,8 +688,23 @@ backend:build-image:
         python -c \
         "from src.ai.matching.features import MatchingWeights, build_matching_features, compute_matching_score, filter_candidates; from src.ai.matching.repository import load_demande_version, load_candidate_biens, load_matching_input; print('AI matching modules OK'); print(MatchingWeights())"
 
+
     # -------------------------------------------------------------------------
-    # 5. Validate FastAPI import inside final image
+    # 5. Validate ownership modules inside final image
+    # -------------------------------------------------------------------------
+
+    - |
+      docker run \
+        --rm \
+        -e POSTGRES_PASSWORD=ci-image-validation-only \
+        -e JWT_SECRET_KEY=ci-image-validation-jwt-secret-only \
+        "$IMAGE_NAME:$IMAGE_TAG" \
+        python -c \
+        "from src.api.core.authorization import enforce_chasseur_ownership, enforce_demande_access, enforce_demande_ownership, require_chasseur_identity; from src.api.services.demande_affectation import DemandeAffectationService; print('Authorization + ownership modules OK')"
+
+
+    # -------------------------------------------------------------------------
+    # 6. Validate FastAPI import inside final image
     # -------------------------------------------------------------------------
 
     - |
@@ -477,8 +716,9 @@ backend:build-image:
         python -c \
         "from src.api.main import app; print('Application:', app.title); print('Version:', app.version)"
 
+
     # -------------------------------------------------------------------------
-    # 6. Validate required OpenAPI routes inside image
+    # 7. Validate required OpenAPI routes inside image
     # -------------------------------------------------------------------------
 
     - |
@@ -490,8 +730,9 @@ backend:build-image:
         python -c \
         "from src.api.main import app; paths=set(app.openapi().get('paths', {}).keys()); required={'/health','/ready','/api/v1/health','/api/v1/ready','/api/v1/auth/login'}; missing=required-paths; print('OpenAPI paths:', sorted(paths)); assert not missing, f'Missing routes: {sorted(missing)}'"
 
+
     # -------------------------------------------------------------------------
-    # 7. Push immutable commit tag
+    # 8. Push immutable commit tag
     # -------------------------------------------------------------------------
 
     - |
@@ -502,16 +743,18 @@ backend:build-image:
       docker push \
         "$IMAGE_NAME:$IMAGE_TAG"
 
+
     # -------------------------------------------------------------------------
-    # 8. Push latest convenience tag
+    # 9. Push latest convenience tag
     # -------------------------------------------------------------------------
 
     - |
       docker push \
         "$IMAGE_NAME:latest"
 
+
     # -------------------------------------------------------------------------
-    # 9. Build summary
+    # 10. Build summary
     # -------------------------------------------------------------------------
 
     - |
@@ -533,7 +776,7 @@ backend:build-image:
 
 
 # =============================================================================
-# 3. PUBLISH BACKEND DESIRED STATE TO LAB-GITOPS
+# 4. PUBLISH BACKEND DESIRED STATE TO LAB-GITOPS
 # =============================================================================
 
 backend:publish-gitops:
@@ -560,12 +803,14 @@ backend:publish-gitops:
     REGISTRY_PULL_SECRET: "gitlab-registry-auth"
 
   script:
+
     # -------------------------------------------------------------------------
     # 1. Validate shell runner tooling
     # -------------------------------------------------------------------------
 
     - git --version
     - kubectl version --client
+
 
     # -------------------------------------------------------------------------
     # 2. Validate original Backend source repository
@@ -596,6 +841,7 @@ backend:publish-gitops:
       echo
       echo "Backend source manifests found."
 
+
     # -------------------------------------------------------------------------
     # 3. Validate Kubernetes namespace
     # -------------------------------------------------------------------------
@@ -603,6 +849,7 @@ backend:publish-gitops:
     - |
       kubectl get namespace \
         real-estate
+
 
     # -------------------------------------------------------------------------
     # 4. Validate PostgreSQL Secret
@@ -614,6 +861,7 @@ backend:publish-gitops:
         get secret \
         real-estate-postgresql-secret
 
+
     # -------------------------------------------------------------------------
     # 5. Validate existing GitOps/PAT Secret
     # -------------------------------------------------------------------------
@@ -624,6 +872,7 @@ backend:publish-gitops:
         get secret \
         lab-gitops-git-credentials
 
+
     # -------------------------------------------------------------------------
     # 6. Clean previous temporary files
     # -------------------------------------------------------------------------
@@ -631,6 +880,7 @@ backend:publish-gitops:
     - rm -rf "$GITOPS_WORKDIR"
     - rm -f /tmp/.netrc
     - rm -f /tmp/real-estate-backend-rendered.yaml
+
 
     # -------------------------------------------------------------------------
     # 7. Load GitOps credentials from existing Kubernetes Secret
@@ -660,6 +910,7 @@ backend:publish-gitops:
 
       echo "GitOps/PAT credentials loaded."
 
+
     # -------------------------------------------------------------------------
     # 8. Create/update GitLab Registry pull Secret
     # -------------------------------------------------------------------------
@@ -676,6 +927,7 @@ backend:publish-gitops:
         -o yaml |
       kubectl apply -f -
 
+
     # -------------------------------------------------------------------------
     # 9. Verify Registry pull Secret
     # -------------------------------------------------------------------------
@@ -686,6 +938,7 @@ backend:publish-gitops:
         get secret \
         "$REGISTRY_PULL_SECRET"
 
+
     # -------------------------------------------------------------------------
     # 10. Verify Deployment source references expected Secret
     # -------------------------------------------------------------------------
@@ -694,6 +947,7 @@ backend:publish-gitops:
       grep \
         "name: ${REGISTRY_PULL_SECRET}" \
         "$BACKEND_SOURCE_PATH/deployment.yaml"
+
 
     # -------------------------------------------------------------------------
     # 11. Build temporary Git authentication file
@@ -707,6 +961,7 @@ backend:publish-gitops:
       EOF_NETRC
 
       chmod 600 /tmp/.netrc
+
 
     # -------------------------------------------------------------------------
     # 12. Clone exact branch used by Argo CD
@@ -725,6 +980,7 @@ backend:publish-gitops:
         --single-branch \
         "$GITOPS_REPOSITORY" \
         "$GITOPS_WORKDIR"
+
 
     # -------------------------------------------------------------------------
     # 13. Validate exact GitOps branch and revision
@@ -750,6 +1006,7 @@ backend:publish-gitops:
 
       echo
       echo "Top-level directories:"
+
       find "$GITOPS_WORKDIR" \
         -maxdepth 1 \
         -mindepth 1 \
@@ -759,6 +1016,7 @@ backend:publish-gitops:
       test "$(
         git -C "$GITOPS_WORKDIR" branch --show-current
       )" = "$GITOPS_BRANCH"
+
 
     # -------------------------------------------------------------------------
     # 14. Validate real GitOps architecture
@@ -773,6 +1031,7 @@ backend:publish-gitops:
       echo "  $GITOPS_WORKDIR/apps"
       echo "  $GITOPS_WORKDIR/workloads"
 
+
     # -------------------------------------------------------------------------
     # 15. Create Backend destination directories
     # -------------------------------------------------------------------------
@@ -784,6 +1043,7 @@ backend:publish-gitops:
       mkdir -p \
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH"
 
+
     # -------------------------------------------------------------------------
     # 16. Copy Backend Deployment
     # -------------------------------------------------------------------------
@@ -792,6 +1052,7 @@ backend:publish-gitops:
       cp \
         "$BACKEND_SOURCE_PATH/deployment.yaml" \
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
+
 
     # -------------------------------------------------------------------------
     # 17. Copy Backend Service
@@ -802,6 +1063,7 @@ backend:publish-gitops:
         "$BACKEND_SOURCE_PATH/service.yaml" \
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/service.yaml"
 
+
     # -------------------------------------------------------------------------
     # 18. Copy Backend ServiceMonitor
     # -------------------------------------------------------------------------
@@ -810,6 +1072,7 @@ backend:publish-gitops:
       cp \
         "$BACKEND_SOURCE_PATH/servicemonitor.yaml" \
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/servicemonitor.yaml"
+
 
     # -------------------------------------------------------------------------
     # 19. Copy Backend workload Kustomization
@@ -820,6 +1083,7 @@ backend:publish-gitops:
         "$BACKEND_SOURCE_PATH/kustomization.yaml" \
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/kustomization.yaml"
 
+
     # -------------------------------------------------------------------------
     # 20. Copy Argo CD Application
     # -------------------------------------------------------------------------
@@ -828,6 +1092,7 @@ backend:publish-gitops:
       cp \
         "$BACKEND_SOURCE_PATH/application.yaml" \
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
+
 
     # -------------------------------------------------------------------------
     # 21. Inject immutable image tag into GitOps Deployment
@@ -841,6 +1106,7 @@ backend:publish-gitops:
       sed -i \
         "s/__BACKEND_IMAGE_TAG__/${CI_COMMIT_SHORT_SHA}/g" \
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
+
 
     # -------------------------------------------------------------------------
     # 22. Ensure placeholder has disappeared
@@ -861,6 +1127,7 @@ backend:publish-gitops:
 
       echo "Image placeholder replaced successfully."
 
+
     # -------------------------------------------------------------------------
     # 23. Validate immutable image reference
     # -------------------------------------------------------------------------
@@ -876,6 +1143,7 @@ backend:publish-gitops:
         "image: ${EXPECTED_IMAGE}" \
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
 
+
     # -------------------------------------------------------------------------
     # 24. Validate Registry Secret reference after copy
     # -------------------------------------------------------------------------
@@ -884,6 +1152,7 @@ backend:publish-gitops:
       grep \
         "name: ${REGISTRY_PULL_SECRET}" \
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
+
 
     # -------------------------------------------------------------------------
     # 25. Validate Backend workload Kustomization
@@ -900,6 +1169,7 @@ backend:publish-gitops:
       echo
       echo "Backend Kustomize rendering successful."
 
+
     # -------------------------------------------------------------------------
     # 26. Validate rendered workload contains Deployment
     # -------------------------------------------------------------------------
@@ -908,6 +1178,7 @@ backend:publish-gitops:
       grep \
         "kind: Deployment" \
         /tmp/real-estate-backend-rendered.yaml
+
 
     # -------------------------------------------------------------------------
     # 27. Validate rendered workload contains Service
@@ -918,6 +1189,7 @@ backend:publish-gitops:
         "kind: Service" \
         /tmp/real-estate-backend-rendered.yaml
 
+
     # -------------------------------------------------------------------------
     # 28. Validate rendered workload contains ServiceMonitor
     # -------------------------------------------------------------------------
@@ -926,6 +1198,7 @@ backend:publish-gitops:
       grep \
         "kind: ServiceMonitor" \
         /tmp/real-estate-backend-rendered.yaml
+
 
     # -------------------------------------------------------------------------
     # 29. Validate rendered resource name
@@ -936,6 +1209,7 @@ backend:publish-gitops:
         "name: real-estate-backend" \
         /tmp/real-estate-backend-rendered.yaml
 
+
     # -------------------------------------------------------------------------
     # 30. Validate rendered immutable image
     # -------------------------------------------------------------------------
@@ -944,6 +1218,7 @@ backend:publish-gitops:
       grep \
         "${CI_REGISTRY_IMAGE}/backend:${CI_COMMIT_SHORT_SHA}" \
         /tmp/real-estate-backend-rendered.yaml
+
 
     # -------------------------------------------------------------------------
     # 31. Validate rendered Registry pull Secret
@@ -954,6 +1229,7 @@ backend:publish-gitops:
         "$REGISTRY_PULL_SECRET" \
         /tmp/real-estate-backend-rendered.yaml
 
+
     # -------------------------------------------------------------------------
     # 32. Validate Argo CD Application name
     # -------------------------------------------------------------------------
@@ -962,6 +1238,7 @@ backend:publish-gitops:
       grep \
         "name: real-estate-backend" \
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
+
 
     # -------------------------------------------------------------------------
     # 33. Validate Argo CD Application workload path
@@ -972,6 +1249,7 @@ backend:publish-gitops:
         "path: workloads/real-estate/backend" \
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
 
+
     # -------------------------------------------------------------------------
     # 34. Validate Argo CD Application repository
     # -------------------------------------------------------------------------
@@ -980,6 +1258,7 @@ backend:publish-gitops:
       grep \
         "repoURL: https://gitlab.local/root/lab-gitops.git" \
         "$GITOPS_WORKDIR/$GITOPS_APP_PATH/application.yaml"
+
 
     # -------------------------------------------------------------------------
     # 35. Validate Argo CD Application branch
@@ -992,6 +1271,7 @@ backend:publish-gitops:
 
       echo
       echo "Backend Argo CD Application validation successful."
+
 
     # -------------------------------------------------------------------------
     # 36. Client-side Kubernetes validation
@@ -1021,6 +1301,7 @@ backend:publish-gitops:
       echo
       echo "Kubernetes client-side manifest validation successful."
 
+
     # -------------------------------------------------------------------------
     # 37. Display final desired-state locations
     # -------------------------------------------------------------------------
@@ -1041,6 +1322,7 @@ backend:publish-gitops:
 
       echo
       echo "Files:"
+
       find "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH" \
         -maxdepth 1 \
         -type f \
@@ -1050,6 +1332,7 @@ backend:publish-gitops:
         -maxdepth 1 \
         -type f \
         -print
+
 
     # -------------------------------------------------------------------------
     # 38. Display deployed image desired state
@@ -1063,6 +1346,7 @@ backend:publish-gitops:
         "image:" \
         "$GITOPS_WORKDIR/$GITOPS_BACKEND_PATH/deployment.yaml"
 
+
     # -------------------------------------------------------------------------
     # 39. Configure Git identity
     # -------------------------------------------------------------------------
@@ -1075,6 +1359,7 @@ backend:publish-gitops:
       git -C "$GITOPS_WORKDIR" config \
         user.email \
         "gitlab-ci@lab.local"
+
 
     # -------------------------------------------------------------------------
     # 40. Stage Backend GitOps resources
@@ -1090,6 +1375,7 @@ backend:publish-gitops:
 
       git -C "$GITOPS_WORKDIR" status \
         --short
+
 
     # -------------------------------------------------------------------------
     # 41. Commit and push only when desired state changed
@@ -1122,6 +1408,7 @@ backend:publish-gitops:
         echo "Backend GitOps publication completed."
 
       fi
+
 
     # -------------------------------------------------------------------------
     # 42. Final summary
@@ -1199,8 +1486,11 @@ backend:publish-gitops:
 
         - tests/**/*
         - requirements-backend.txt
+        - requirements-backend-test.txt
 
         - deploy/docker/Dockerfile.backend
         - deploy/kubernetes/backend/**/*
+
         - .gitlab/ci/backend.yml
+        - .gitlab/ci/backend-tests.yml
         - .gitlab-ci.yml

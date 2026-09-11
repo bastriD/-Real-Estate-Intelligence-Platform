@@ -46,7 +46,18 @@ class DemandeService:
     def list_demandes(self) -> list[Demande]:
         return self.repository.list_all()
 
-    def get_demande(self, demande_id: int) -> Demande:
+    def list_demandes_for_chasseur(
+        self,
+        chasseur_id: int,
+    ) -> list[Demande]:
+        return self.repository.list_accessible_by_chasseur(
+            chasseur_id
+        )
+
+    def get_demande(
+        self,
+        demande_id: int,
+    ) -> Demande:
         demande = self.repository.get_by_id(demande_id)
 
         if demande is None:
@@ -62,7 +73,9 @@ class DemandeService:
     ) -> DemandeVersion:
         self.get_demande(demande_id)
 
-        version = self.repository.get_current_version(demande_id)
+        version = self.repository.get_current_version(
+            demande_id
+        )
 
         if version is None:
             raise DemandeValidationError(
@@ -76,7 +89,9 @@ class DemandeService:
         demande_id: int,
     ) -> tuple[Demande, list[DemandeVersion]]:
         demande = self.get_demande(demande_id)
-        versions = self.repository.list_versions(demande_id)
+        versions = self.repository.list_versions(
+            demande_id
+        )
 
         return demande, versions
 
@@ -97,7 +112,10 @@ class DemandeService:
             )
 
         if payload.id_mandat is not None:
-            self._ensure_mandat_exists(payload.id_mandat)
+            self._ensure_mandat_exists(
+                payload.id_mandat
+            )
+
         self._validate_author(
             payload.auteur_client_id,
             payload.auteur_chasseur_id,
@@ -110,11 +128,15 @@ class DemandeService:
         )
 
         try:
-            demande = self.repository.create_demande(demande)
+            demande = self.repository.create_demande(
+                demande
+            )
 
             version = DemandeVersion(
                 numero_version=1,
-                motif_modification=payload.motif_modification,
+                motif_modification=(
+                    payload.motif_modification
+                ),
                 ville=payload.ville,
                 code_postal=payload.code_postal,
                 type_bien=payload.type_bien,
@@ -122,21 +144,33 @@ class DemandeService:
                 budget_max=payload.budget_max,
                 surface_min=payload.surface_min,
                 nb_pieces_min=payload.nb_pieces_min,
-                nb_chambres_min=payload.nb_chambres_min,
+                nb_chambres_min=(
+                    payload.nb_chambres_min
+                ),
                 dpe_max=(
                     payload.dpe_max.value
                     if payload.dpe_max is not None
                     else None
                 ),
-                criteres_souhaites=payload.criteres_souhaites,
+                criteres_souhaites=(
+                    payload.criteres_souhaites
+                ),
                 active=True,
                 id_demande=demande.id_demande,
-                auteur_client_id=payload.auteur_client_id,
-                auteur_chasseur_id=payload.auteur_chasseur_id,
-                auteur_systeme=payload.auteur_systeme,
+                auteur_client_id=(
+                    payload.auteur_client_id
+                ),
+                auteur_chasseur_id=(
+                    payload.auteur_chasseur_id
+                ),
+                auteur_systeme=(
+                    payload.auteur_systeme
+                ),
             )
 
-            version = self.repository.create_version(version)
+            version = self.repository.create_version(
+                version
+            )
 
             self.session.commit()
 
@@ -146,7 +180,8 @@ class DemandeService:
             self.session.rollback()
 
             raise DemandeValidationError(
-                "Demande creation violates a database constraint"
+                "Demande creation violates a "
+                "database constraint"
             ) from exc
 
     def create_revision(
@@ -169,17 +204,22 @@ class DemandeService:
 
             if current is None:
                 raise DemandeValidationError(
-                    f"Demande {demande_id} has no active version"
+                    f"Demande {demande_id} has no "
+                    "active version"
                 )
 
-            new_version_number = current.numero_version + 1
+            new_version_number = (
+                current.numero_version + 1
+            )
 
             current.active = False
             self.session.flush()
 
             new_version = DemandeVersion(
                 numero_version=new_version_number,
-                motif_modification=payload.motif_modification,
+                motif_modification=(
+                    payload.motif_modification
+                ),
                 ville=payload.ville,
                 code_postal=payload.code_postal,
                 type_bien=payload.type_bien,
@@ -187,18 +227,28 @@ class DemandeService:
                 budget_max=payload.budget_max,
                 surface_min=payload.surface_min,
                 nb_pieces_min=payload.nb_pieces_min,
-                nb_chambres_min=payload.nb_chambres_min,
+                nb_chambres_min=(
+                    payload.nb_chambres_min
+                ),
                 dpe_max=(
                     payload.dpe_max.value
                     if payload.dpe_max is not None
                     else None
                 ),
-                criteres_souhaites=payload.criteres_souhaites,
+                criteres_souhaites=(
+                    payload.criteres_souhaites
+                ),
                 active=True,
                 id_demande=demande_id,
-                auteur_client_id=payload.auteur_client_id,
-                auteur_chasseur_id=payload.auteur_chasseur_id,
-                auteur_systeme=payload.auteur_systeme,
+                auteur_client_id=(
+                    payload.auteur_client_id
+                ),
+                auteur_chasseur_id=(
+                    payload.auteur_chasseur_id
+                ),
+                auteur_systeme=(
+                    payload.auteur_systeme
+                ),
             )
 
             new_version = self.repository.create_version(
@@ -217,7 +267,8 @@ class DemandeService:
             self.session.rollback()
 
             raise DemandeValidationError(
-                "Demande revision violates a database constraint"
+                "Demande revision violates a "
+                "database constraint"
             ) from exc
 
     def update_status(
@@ -225,7 +276,9 @@ class DemandeService:
         demande_id: int,
         payload: DemandeStatusUpdate,
     ) -> Demande:
-        demande = self.get_demande(demande_id)
+        demande = self.get_demande(
+            demande_id
+        )
 
         demande.statut = payload.statut.value
 
@@ -239,14 +292,17 @@ class DemandeService:
             self.session.rollback()
 
             raise DemandeValidationError(
-                "Demande status update violates a database constraint"
+                "Demande status update violates a "
+                "database constraint"
             ) from exc
 
     def _ensure_mandat_exists(
         self,
         mandat_id: int,
     ) -> None:
-        statement = select(Mandat.id_mandat).where(
+        statement = select(
+            Mandat.id_mandat
+        ).where(
             Mandat.id_mandat == mandat_id
         )
 
@@ -261,7 +317,9 @@ class DemandeService:
         chasseur_id: int | None,
     ) -> None:
         if client_id is not None:
-            statement = select(Client.id_client).where(
+            statement = select(
+                Client.id_client
+            ).where(
                 Client.id_client == client_id
             )
 
@@ -271,7 +329,9 @@ class DemandeService:
                 )
 
         if chasseur_id is not None:
-            statement = select(Chasseur.id_chasseur).where(
+            statement = select(
+                Chasseur.id_chasseur
+            ).where(
                 Chasseur.id_chasseur == chasseur_id
             )
 

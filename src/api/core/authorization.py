@@ -1,17 +1,14 @@
 from fastapi import HTTPException, status
 
 from src.api.schemas.auth import AuthenticatedUser
+from src.api.services.demande_affectation import (
+    DemandeAffectationService,
+)
 
 
 def require_chasseur_identity(
     current_user: AuthenticatedUser,
 ) -> int:
-    """
-    Return the authenticated hunter identifier.
-
-    ADMIN users do not use this helper because they have unrestricted
-    access at the resource-policy level.
-    """
     if (
         current_user.role != "CHASSEUR"
         or current_user.id_chasseur is None
@@ -28,21 +25,52 @@ def enforce_chasseur_ownership(
     current_user: AuthenticatedUser,
     resource_chasseur_id: int,
 ) -> None:
-    """
-    ADMIN has unrestricted resource access.
-
-    A CHASSEUR may access only resources assigned to the same
-    id_chasseur.
-
-    A 404 is deliberately returned for cross-owner access so the API
-    does not disclose the existence of another hunter's resource.
-    """
     if current_user.role == "ADMIN":
         return
 
     chasseur_id = require_chasseur_identity(current_user)
 
     if resource_chasseur_id != chasseur_id:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Resource not found",
+        )
+
+
+def enforce_demande_access(
+    current_user: AuthenticatedUser,
+    demande_id: int,
+    affectation_service: DemandeAffectationService,
+) -> None:
+    if current_user.role in {"ADMIN", "SERVICE"}:
+        return
+
+    chasseur_id = require_chasseur_identity(current_user)
+
+    if not affectation_service.hunter_can_access_demande(
+        demande_id=demande_id,
+        chasseur_id=chasseur_id,
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Resource not found",
+        )
+
+
+def enforce_demande_ownership(
+    current_user: AuthenticatedUser,
+    demande_id: int,
+    affectation_service: DemandeAffectationService,
+) -> None:
+    if current_user.role in {"ADMIN", "SERVICE"}:
+        return
+
+    chasseur_id = require_chasseur_identity(current_user)
+
+    if not affectation_service.hunter_owns_demande(
+        demande_id=demande_id,
+        chasseur_id=chasseur_id,
+    ):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Resource not found",

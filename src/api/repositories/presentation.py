@@ -1,6 +1,8 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from src.api.db.models.demande import DemandeVersion
+from src.api.db.models.demande_affectation import DemandeAffectation
 from src.api.db.models.presentation import Presentation
 
 
@@ -14,6 +16,53 @@ class PresentationRepository:
         )
         return list(self.session.scalars(statement).all())
 
+    def list_accessible_by_chasseur(
+        self,
+        chasseur_id: int,
+        demande_version_id: int | None = None,
+        bien_id: int | None = None,
+    ) -> list[Presentation]:
+        statement = (
+            select(Presentation)
+            .join(
+                DemandeVersion,
+                DemandeVersion.id_demande_version
+                == Presentation.id_demande_version,
+            )
+            .join(
+                DemandeAffectation,
+                DemandeAffectation.id_demande
+                == DemandeVersion.id_demande,
+            )
+            .where(
+                DemandeAffectation.id_chasseur
+                == chasseur_id,
+                DemandeAffectation.statut.in_(
+                    (
+                        "ASSIGNEE",
+                        "ACCEPTEE",
+                    )
+                ),
+            )
+        )
+
+        if demande_version_id is not None:
+            statement = statement.where(
+                Presentation.id_demande_version
+                == demande_version_id
+            )
+
+        if bien_id is not None:
+            statement = statement.where(
+                Presentation.id_bien == bien_id
+            )
+
+        statement = statement.order_by(
+            Presentation.id_presentation
+        )
+
+        return list(self.session.scalars(statement).all())
+
     def get_by_id(
         self,
         presentation_id: int,
@@ -23,13 +72,46 @@ class PresentationRepository:
         )
         return self.session.scalar(statement)
 
+    def get_demande_id(
+        self,
+        presentation_id: int,
+    ) -> int | None:
+        statement = (
+            select(DemandeVersion.id_demande)
+            .join(
+                Presentation,
+                Presentation.id_demande_version
+                == DemandeVersion.id_demande_version,
+            )
+            .where(
+                Presentation.id_presentation
+                == presentation_id
+            )
+        )
+
+        return self.session.scalar(statement)
+
+    def get_demande_id_for_version(
+        self,
+        demande_version_id: int,
+    ) -> int | None:
+        statement = select(
+            DemandeVersion.id_demande
+        ).where(
+            DemandeVersion.id_demande_version
+            == demande_version_id
+        )
+
+        return self.session.scalar(statement)
+
     def get_by_demande_and_bien(
         self,
         demande_version_id: int,
         bien_id: int,
     ) -> Presentation | None:
         statement = select(Presentation).where(
-            Presentation.id_demande_version == demande_version_id,
+            Presentation.id_demande_version
+            == demande_version_id,
             Presentation.id_bien == bien_id,
         )
         return self.session.scalar(statement)

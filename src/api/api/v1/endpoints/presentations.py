@@ -1,6 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
+from src.api.core.authorization import (
+    enforce_demande_access,
+    require_chasseur_identity,
+)
 from src.api.core.dependencies import require_roles
 from src.api.db.session import get_db
 from src.api.schemas.auth import AuthenticatedUser
@@ -8,6 +12,9 @@ from src.api.schemas.presentation import (
     PresentationCreate,
     PresentationRead,
     PresentationUpdate,
+)
+from src.api.services.demande_affectation import (
+    DemandeAffectationService,
 )
 from src.api.services.presentation import (
     BienNotFoundForPresentationError,
@@ -49,6 +56,17 @@ def list_presentations(
         require_roles("ADMIN", "CHASSEUR", "SERVICE")
     ),
 ) -> list[PresentationRead]:
+    if current_user.role == "CHASSEUR":
+        chasseur_id = require_chasseur_identity(
+            current_user
+        )
+
+        return service.list_presentations_for_chasseur(
+            chasseur_id=chasseur_id,
+            demande_version_id=demande_version_id,
+            bien_id=bien_id,
+        )
+
     return service.list_presentations(
         demande_version_id=demande_version_id,
         bien_id=bien_id,
@@ -67,6 +85,21 @@ def get_presentation(
     ),
 ) -> PresentationRead:
     try:
+        if current_user.role == "CHASSEUR":
+            demande_id = (
+                service.get_demande_id_for_presentation(
+                    presentation_id
+                )
+            )
+
+            enforce_demande_access(
+                current_user=current_user,
+                demande_id=demande_id,
+                affectation_service=DemandeAffectationService(
+                    service.session
+                ),
+            )
+
         return service.get_presentation(
             presentation_id
         )
@@ -91,6 +124,21 @@ def create_presentation(
     ),
 ) -> PresentationRead:
     try:
+        if current_user.role == "CHASSEUR":
+            demande_id = (
+                service.get_demande_id_for_version(
+                    payload.id_demande_version
+                )
+            )
+
+            enforce_demande_access(
+                current_user=current_user,
+                demande_id=demande_id,
+                affectation_service=DemandeAffectationService(
+                    service.session
+                ),
+            )
+
         return service.create_presentation(
             payload,
             utilisateur=current_user.email,
@@ -137,6 +185,21 @@ def update_presentation(
     ),
 ) -> PresentationRead:
     try:
+        if current_user.role == "CHASSEUR":
+            demande_id = (
+                service.get_demande_id_for_presentation(
+                    presentation_id
+                )
+            )
+
+            enforce_demande_access(
+                current_user=current_user,
+                demande_id=demande_id,
+                affectation_service=DemandeAffectationService(
+                    service.session
+                ),
+            )
+
         return service.update_presentation(
             presentation_id,
             payload,
@@ -168,6 +231,21 @@ def delete_presentation(
     ),
 ) -> None:
     try:
+        if current_user.role == "CHASSEUR":
+            demande_id = (
+                service.get_demande_id_for_presentation(
+                    presentation_id
+                )
+            )
+
+            enforce_demande_access(
+                current_user=current_user,
+                demande_id=demande_id,
+                affectation_service=DemandeAffectationService(
+                    service.session
+                ),
+            )
+
         service.delete_presentation(
             presentation_id,
             utilisateur=current_user.email,

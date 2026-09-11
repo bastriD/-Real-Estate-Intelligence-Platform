@@ -2,6 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from src.api.db.models.demande import Demande, DemandeVersion
+from src.api.db.models.demande_affectation import DemandeAffectation
 
 
 class DemandeRepository:
@@ -9,13 +10,50 @@ class DemandeRepository:
         self.session = session
 
     def list_all(self) -> list[Demande]:
-        statement = select(Demande).order_by(Demande.id_demande)
-        return list(self.session.scalars(statement).all())
+        statement = select(Demande).order_by(
+            Demande.id_demande
+        )
 
-    def get_by_id(self, demande_id: int) -> Demande | None:
+        return list(
+            self.session.scalars(statement).all()
+        )
+
+    def list_accessible_by_chasseur(
+        self,
+        chasseur_id: int,
+    ) -> list[Demande]:
+        statement = (
+            select(Demande)
+            .join(
+                DemandeAffectation,
+                DemandeAffectation.id_demande
+                == Demande.id_demande,
+            )
+            .where(
+                DemandeAffectation.id_chasseur
+                == chasseur_id,
+                DemandeAffectation.statut.in_(
+                    (
+                        "ASSIGNEE",
+                        "ACCEPTEE",
+                    )
+                ),
+            )
+            .order_by(Demande.id_demande)
+        )
+
+        return list(
+            self.session.scalars(statement).all()
+        )
+
+    def get_by_id(
+        self,
+        demande_id: int,
+    ) -> Demande | None:
         statement = select(Demande).where(
             Demande.id_demande == demande_id
         )
+
         return self.session.scalar(statement)
 
     def get_by_reference(
@@ -23,14 +61,20 @@ class DemandeRepository:
         reference_demande: str,
     ) -> Demande | None:
         statement = select(Demande).where(
-            Demande.reference_demande == reference_demande
+            Demande.reference_demande
+            == reference_demande
         )
+
         return self.session.scalar(statement)
 
-    def create_demande(self, demande: Demande) -> Demande:
+    def create_demande(
+        self,
+        demande: Demande,
+    ) -> Demande:
         self.session.add(demande)
         self.session.flush()
         self.session.refresh(demande)
+
         return demande
 
     def get_current_version(
@@ -40,7 +84,8 @@ class DemandeRepository:
         for_update: bool = False,
     ) -> DemandeVersion | None:
         statement = select(DemandeVersion).where(
-            DemandeVersion.id_demande == demande_id,
+            DemandeVersion.id_demande
+            == demande_id,
             DemandeVersion.active.is_(True),
         )
 
@@ -55,11 +100,18 @@ class DemandeRepository:
     ) -> list[DemandeVersion]:
         statement = (
             select(DemandeVersion)
-            .where(DemandeVersion.id_demande == demande_id)
-            .order_by(DemandeVersion.numero_version)
+            .where(
+                DemandeVersion.id_demande
+                == demande_id
+            )
+            .order_by(
+                DemandeVersion.numero_version
+            )
         )
 
-        return list(self.session.scalars(statement).all())
+        return list(
+            self.session.scalars(statement).all()
+        )
 
     def create_version(
         self,
@@ -68,4 +120,5 @@ class DemandeRepository:
         self.session.add(version)
         self.session.flush()
         self.session.refresh(version)
+
         return version

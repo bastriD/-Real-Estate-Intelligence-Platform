@@ -1,6 +1,17 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    Query,
+    Response,
+    status,
+)
 from sqlalchemy.orm import Session
 
+from src.api.core.authorization import (
+    enforce_demande_access,
+    require_chasseur_identity,
+)
 from src.api.core.dependencies import require_roles
 from src.api.db.session import get_db
 from src.api.schemas.auth import AuthenticatedUser
@@ -8,6 +19,9 @@ from src.api.schemas.visite import (
     VisiteCreate,
     VisiteRead,
     VisiteUpdate,
+)
+from src.api.services.demande_affectation import (
+    DemandeAffectationService,
 )
 from src.api.services.visite import (
     PresentationNotFoundForVisiteError,
@@ -43,6 +57,16 @@ def list_visites(
         require_roles("ADMIN", "CHASSEUR")
     ),
 ) -> list[VisiteRead]:
+    if current_user.role == "CHASSEUR":
+        chasseur_id = require_chasseur_identity(
+            current_user
+        )
+
+        return service.list_visites_for_chasseur(
+            chasseur_id=chasseur_id,
+            presentation_id=presentation_id,
+        )
+
     return service.list_visites(
         presentation_id=presentation_id
     )
@@ -60,6 +84,21 @@ def get_visite(
     ),
 ) -> VisiteRead:
     try:
+        if current_user.role == "CHASSEUR":
+            demande_id = (
+                service.get_demande_id_for_visite(
+                    visite_id
+                )
+            )
+
+            enforce_demande_access(
+                current_user=current_user,
+                demande_id=demande_id,
+                affectation_service=DemandeAffectationService(
+                    service.session
+                ),
+            )
+
         return service.get_visite(visite_id)
 
     except VisiteNotFoundError as exc:
@@ -82,7 +121,25 @@ def create_visite(
     ),
 ) -> VisiteRead:
     try:
-        return service.create_visite(payload, utilisateur=current_user.email)
+        if current_user.role == "CHASSEUR":
+            demande_id = (
+                service.get_demande_id_for_presentation(
+                    payload.id_presentation
+                )
+            )
+
+            enforce_demande_access(
+                current_user=current_user,
+                demande_id=demande_id,
+                affectation_service=DemandeAffectationService(
+                    service.session
+                ),
+            )
+
+        return service.create_visite(
+            payload,
+            utilisateur=current_user.email,
+        )
 
     except PresentationNotFoundForVisiteError as exc:
         raise HTTPException(
@@ -110,6 +167,21 @@ def update_visite(
     ),
 ) -> VisiteRead:
     try:
+        if current_user.role == "CHASSEUR":
+            demande_id = (
+                service.get_demande_id_for_visite(
+                    visite_id
+                )
+            )
+
+            enforce_demande_access(
+                current_user=current_user,
+                demande_id=demande_id,
+                affectation_service=DemandeAffectationService(
+                    service.session
+                ),
+            )
+
         return service.update_visite(
             visite_id,
             payload,
@@ -141,7 +213,25 @@ def delete_visite(
     ),
 ) -> Response:
     try:
-        service.delete_visite(visite_id, utilisateur=current_user.email)
+        if current_user.role == "CHASSEUR":
+            demande_id = (
+                service.get_demande_id_for_visite(
+                    visite_id
+                )
+            )
+
+            enforce_demande_access(
+                current_user=current_user,
+                demande_id=demande_id,
+                affectation_service=DemandeAffectationService(
+                    service.session
+                ),
+            )
+
+        service.delete_visite(
+            visite_id,
+            utilisateur=current_user.email,
+        )
 
     except VisiteNotFoundError as exc:
         raise HTTPException(
@@ -158,4 +248,6 @@ def delete_visite(
             ),
         ) from exc
 
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    return Response(
+        status_code=status.HTTP_204_NO_CONTENT
+    )

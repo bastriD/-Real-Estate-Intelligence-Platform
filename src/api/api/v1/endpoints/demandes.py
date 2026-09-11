@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
+from src.api.core.authorization import enforce_demande_access
 from src.api.core.dependencies import require_roles
 from src.api.db.session import get_db
 from src.api.schemas.auth import AuthenticatedUser
@@ -13,6 +14,11 @@ from src.api.schemas.demande import (
     DemandeVersionRead,
     DemandeWithCurrentVersion,
 )
+from src.api.schemas.demande_affectation import (
+    DemandeAffectationCreate,
+    DemandeAffectationDecision,
+    DemandeAffectationRead,
+)
 from src.api.services.demande import (
     ChasseurNotFoundForDemandeError,
     ClientNotFoundForDemandeError,
@@ -21,6 +27,14 @@ from src.api.services.demande import (
     DemandeService,
     DemandeValidationError,
     MandatNotFoundForDemandeError,
+)
+from src.api.services.demande_affectation import (
+    ChasseurNotFoundForAffectationError,
+    DemandeAffectationAuthorizationError,
+    DemandeAffectationConflictError,
+    DemandeAffectationNotFoundError,
+    DemandeAffectationService,
+    DemandeAffectationValidationError,
 )
 
 router = APIRouter(
@@ -40,6 +54,18 @@ def list_demandes(
     ),
 ) -> list[DemandeRead]:
     service = DemandeService(db)
+
+    if current_user.role == "CHASSEUR":
+        if current_user.id_chasseur is None:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Hunter identity is not available",
+            )
+
+        return service.list_demandes_for_chasseur(
+            current_user.id_chasseur
+        )
+
     return service.list_demandes()
 
 
@@ -55,8 +81,15 @@ def get_demande(
     ),
 ) -> DemandeWithCurrentVersion:
     service = DemandeService(db)
+    affectation_service = DemandeAffectationService(db)
 
     try:
+        enforce_demande_access(
+            current_user=current_user,
+            demande_id=demande_id,
+            affectation_service=affectation_service,
+        )
+
         demande = service.get_demande(demande_id)
         current_version = service.get_current_version(demande_id)
 
@@ -94,8 +127,15 @@ def get_demande_history(
     ),
 ) -> DemandeHistory:
     service = DemandeService(db)
+    affectation_service = DemandeAffectationService(db)
 
     try:
+        enforce_demande_access(
+            current_user=current_user,
+            demande_id=demande_id,
+            affectation_service=affectation_service,
+        )
+
         demande, versions = service.get_history(demande_id)
 
         return DemandeHistory(
@@ -177,8 +217,15 @@ def create_revision(
     ),
 ) -> DemandeVersionRead:
     service = DemandeService(db)
+    affectation_service = DemandeAffectationService(db)
 
     try:
+        enforce_demande_access(
+            current_user=current_user,
+            demande_id=demande_id,
+            affectation_service=affectation_service,
+        )
+
         return service.create_revision(demande_id, payload)
 
     except DemandeNotFoundError as exc:
@@ -216,8 +263,15 @@ def update_demande_status(
     ),
 ) -> DemandeRead:
     service = DemandeService(db)
+    affectation_service = DemandeAffectationService(db)
 
     try:
+        enforce_demande_access(
+            current_user=current_user,
+            demande_id=demande_id,
+            affectation_service=affectation_service,
+        )
+
         return service.update_status(demande_id, payload)
 
     except DemandeNotFoundError as exc:
@@ -227,6 +281,152 @@ def update_demande_status(
         ) from exc
 
     except DemandeValidationError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(exc),
+        ) from exc
+
+
+@router.post(
+    "/{demande_id}/affectations",
+    response_model=DemandeAffectationRead,
+    status_code=status.HTTP_201_CREATED,
+)
+def create_demande_affectation(
+    demande_id: int,
+    payload: DemandeAffectationCreate,
+    db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN")
+    ),
+) -> DemandeAffectationRead:
+    service = DemandeAffectationService(db)
+
+    try:
+        return service.create_assignment(
+            demande_id=demande_id,
+            chasseur_id=payload.id_chasseur,
+            current_user=current_user,
+        )
+
+    except (
+        DemandeAffectationNotFoundError,
+        ChasseurNotFoundForAffectationError,
+    ) as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
+        ) from exc
+
+    except DemandeAffectationAuthorizationError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
+        ) from exc
+
+    except DemandeAffectationConflictError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(exc),
+        ) from exc
+
+    except DemandeAffectationValidationError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(exc),
+        ) from exc
+
+
+@router.get(
+    "/{demande_id}/affectations",
+    response_model=list[DemandeAffectationRead],
+)
+def list_demande_affectations(
+    demande_id: int,
+    db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR")
+    ),
+) -> list[DemandeAffectationRead]:
+    service = DemandeAffectationService(db)
+
+    try:
+        affectations = service.list_by_demande(demande_id)
+
+        if current_user.role == "ADMIN":
+            return affectations
+
+        if (
+            current_user.role != "CHASSEUR"
+            or current_user.id_chasseur is None
+        ):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Hunter identity is not available",
+            )
+
+        visible_affectations = [
+            affectation
+            for affectation in affectations
+            if affectation.id_chasseur
+            == current_user.id_chasseur
+        ]
+
+        if not visible_affectations:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Assignment history not found",
+            )
+
+        return visible_affectations
+
+    except DemandeAffectationNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
+        ) from exc
+
+
+@router.patch(
+    "/{demande_id}/affectations/decision",
+    response_model=DemandeAffectationRead,
+)
+def decide_demande_affectation(
+    demande_id: int,
+    payload: DemandeAffectationDecision,
+    db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("CHASSEUR")
+    ),
+) -> DemandeAffectationRead:
+    service = DemandeAffectationService(db)
+
+    try:
+        return service.decide_assignment(
+            demande_id=demande_id,
+            payload=payload,
+            current_user=current_user,
+        )
+
+    except DemandeAffectationNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
+        ) from exc
+
+    except DemandeAffectationAuthorizationError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
+        ) from exc
+
+    except DemandeAffectationConflictError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(exc),
+        ) from exc
+
+    except DemandeAffectationValidationError as exc:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(exc),
