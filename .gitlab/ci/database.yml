@@ -17,6 +17,7 @@ database:validate:
     - test -f database/migrations/005_demande_pre_mandat.sql
     - test -f database/migrations/006_auth_identity.sql
     - test -f database/migrations/007_demande_chasseur_affectation.sql
+    - test -f database/migrations/008_mandat_lifecycle.sql
 
     # -------------------------------------------------------------------------
     # Database tests
@@ -28,6 +29,7 @@ database:validate:
     - test -f database/tests/008_visite_audit.sql
     - test -f database/tests/009_auth_identity.sql
     - test -f database/tests/010_demande_affectation.sql
+    - test -f database/tests/011_mandat_lifecycle.sql
 
     # -------------------------------------------------------------------------
     # Legacy / OLTP / seed files
@@ -145,6 +147,32 @@ database:validate:
     - grep -q "^COMMIT;" database/migrations/007_demande_chasseur_affectation.sql
 
     # -------------------------------------------------------------------------
+    # Migration 008 validation
+    #
+    # Mandat contractual lifecycle:
+    #
+    #   MANDAT
+    #      -> INITIAL contractual period
+    #      -> RENOUVELLEMENT
+    #      -> RENOUVELLEMENT
+    #
+    # Historical periods are preserved.
+    # New periods must last exactly six calendar months.
+    # -------------------------------------------------------------------------
+
+    - grep -q "CREATE TABLE real_estate.mandat_periode" database/migrations/008_mandat_lifecycle.sql
+    - grep -q "ck_mandat_periode_duree" database/migrations/008_mandat_lifecycle.sql
+    - grep -q "uq_mandat_periode_initial" database/migrations/008_mandat_lifecycle.sql
+    - grep -q "trg_validate_mandat_periode_insert" database/migrations/008_mandat_lifecycle.sql
+    - grep -q "trg_prevent_mandat_periode_update" database/migrations/008_mandat_lifecycle.sql
+    - grep -q "trg_prevent_mandat_periode_overlap" database/migrations/008_mandat_lifecycle.sql
+    - grep -q "'INITIAL'" database/migrations/008_mandat_lifecycle.sql
+    - grep -q "'RENOUVELLEMENT'" database/migrations/008_mandat_lifecycle.sql
+    - grep -q "'008'" database/migrations/008_mandat_lifecycle.sql
+    - grep -q "migration_control.schema_version" database/migrations/008_mandat_lifecycle.sql
+    - grep -q "^COMMIT;" database/migrations/008_mandat_lifecycle.sql
+
+    # -------------------------------------------------------------------------
     # Legacy fixture validation
     # -------------------------------------------------------------------------
 
@@ -164,6 +192,10 @@ database:validate:
     - grep -q "Demande assignment constraints and lifecycle validated successfully" database/tests/010_demande_affectation.sql
     - grep -q "real_estate.demande_affectation" database/tests/010_demande_affectation.sql
     - grep -q "uq_demande_affectation_current" database/migrations/007_demande_chasseur_affectation.sql
+
+    - grep -q "Mandat lifecycle constraints validated" database/tests/011_mandat_lifecycle.sql
+    - grep -q "real_estate.mandat_periode" database/tests/011_mandat_lifecycle.sql
+    - grep -q "RENOUVELLEMENT" database/tests/011_mandat_lifecycle.sql
 
     # -------------------------------------------------------------------------
     # OLTP validation
@@ -1072,6 +1104,230 @@ database:migrate-007:
 
 
 # =============================================================================
+# MIGRATION 008 - MANDAT CONTRACTUAL LIFECYCLE
+#
+# Adds contractual period history for Mandats:
+#
+#   MANDAT
+#      -> INITIAL
+#      -> RENOUVELLEMENT
+#      -> RENOUVELLEMENT
+#
+# Existing Mandat dates are backfilled as legacy historical periods without
+# rewriting historical business facts. New periods are constrained to six
+# calendar months.
+#
+# This migration remains manually triggered.
+# =============================================================================
+
+database:migrate-008:
+  stage: database
+
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl version --client
+    - kubectl -n real-estate get deploy real-estate-postgresql
+
+    # -------------------------------------------------------------------------
+    # Migration prerequisites
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Checking migration 008 prerequisites..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              to_regclass('real_estate.mandat') AS mandat,
+              to_regclass('migration_control.schema_version') AS schema_version;
+          "
+
+    # -------------------------------------------------------------------------
+    # Check migration registry
+    # -------------------------------------------------------------------------
+
+    - |
+      MIGRATION_008_APPLIED="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT CASE
+               WHEN EXISTS (
+                 SELECT 1
+                 FROM migration_control.schema_version
+                 WHERE version = '008'
+               )
+               THEN 'yes'
+               ELSE 'no'
+             END;" 2>/dev/null || true
+      )"
+
+      if [ "$MIGRATION_008_APPLIED" = "yes" ]; then
+        echo "Migration 008 already applied - skipping safely."
+        exit 0
+      fi
+
+    # -------------------------------------------------------------------------
+    # Apply migration
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Applying migration 008..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/migrations/008_mandat_lifecycle.sql
+
+    # -------------------------------------------------------------------------
+    # Verify table and lifecycle objects
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Verifying Mandat lifecycle schema..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              to_regclass('real_estate.mandat_periode') AS mandat_periode,
+              to_regclass('real_estate.uq_mandat_periode_initial') AS initial_period_index;
+
+            SELECT
+              tgname AS trigger_name
+            FROM pg_trigger
+            WHERE tgrelid = 'real_estate.mandat_periode'::regclass
+              AND NOT tgisinternal
+            ORDER BY tgname;
+          "
+
+    # -------------------------------------------------------------------------
+    # Verify historical backfill
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Checking Mandat period backfill..."
+
+      BACKFILL_MISMATCH_COUNT="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT COUNT(*)
+             FROM real_estate.mandat m
+             LEFT JOIN real_estate.mandat_periode mp
+               ON mp.id_mandat = m.id_mandat
+              AND mp.numero_periode = 1
+              AND mp.type_periode = 'INITIAL'
+             WHERE mp.id_mandat_periode IS NULL
+                OR mp.date_debut <> m.date_debut
+                OR mp.date_fin <> m.date_fin;"
+      )"
+
+      echo "Mandat lifecycle backfill mismatches: ${BACKFILL_MISMATCH_COUNT}"
+
+      if [ "${BACKFILL_MISMATCH_COUNT}" != "0" ]; then
+        echo "ERROR: Mandat lifecycle backfill verification failed."
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # Verify one INITIAL period per existing Mandat
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Checking INITIAL period cardinality..."
+
+      INITIAL_CARDINALITY_ERRORS="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT COUNT(*)
+             FROM (
+               SELECT
+                 m.id_mandat,
+                 COUNT(mp.id_mandat_periode) AS initial_count
+               FROM real_estate.mandat m
+               LEFT JOIN real_estate.mandat_periode mp
+                 ON mp.id_mandat = m.id_mandat
+                AND mp.type_periode = 'INITIAL'
+               GROUP BY m.id_mandat
+               HAVING COUNT(mp.id_mandat_periode) <> 1
+             ) invalid_mandats;"
+      )"
+
+      echo "Mandats with invalid INITIAL period count: ${INITIAL_CARDINALITY_ERRORS}"
+
+      if [ "${INITIAL_CARDINALITY_ERRORS}" != "0" ]; then
+        echo "ERROR: invalid INITIAL period cardinality detected."
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # Verify migration registry and final state
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Verifying migration registry..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              version,
+              description,
+              applied_at
+            FROM migration_control.schema_version
+            WHERE version = '008';
+
+            SELECT
+              type_periode,
+              est_historique_legacy,
+              COUNT(*) AS periodes
+            FROM real_estate.mandat_periode
+            GROUP BY
+              type_periode,
+              est_historique_legacy
+            ORDER BY
+              type_periode,
+              est_historique_legacy;
+          "
+
+    - |
+      echo "============================================================"
+      echo "MIGRATION 008 SUCCESSFULLY APPLIED"
+      echo "============================================================"
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
+
+
+# =============================================================================
 # TEST BASE SCHEMA
 # =============================================================================
 
@@ -1273,6 +1529,60 @@ database:test-demande-affectation:
           -d real_estate \
           -v ON_ERROR_STOP=1 \
           < database/tests/010_demande_affectation.sql
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
+
+
+# =============================================================================
+# TEST MANDAT CONTRACTUAL LIFECYCLE
+# =============================================================================
+
+database:test-mandat-lifecycle:
+  stage: database
+
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl -n real-estate get deploy real-estate-postgresql
+
+    - |
+      MIGRATION_008_APPLIED="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT CASE
+               WHEN EXISTS (
+                 SELECT 1
+                 FROM migration_control.schema_version
+                 WHERE version = '008'
+               )
+               THEN 'yes'
+               ELSE 'no'
+             END;" 2>/dev/null || true
+      )"
+
+      if [ "$MIGRATION_008_APPLIED" != "yes" ]; then
+        echo "ERROR: migration 008 must be applied before running Mandat lifecycle tests."
+        exit 1
+      fi
+
+    - |
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/tests/011_mandat_lifecycle.sql
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
