@@ -882,7 +882,7 @@ Les responsabilités restent distinctes.
 
 | Élément | Statut |
 |---|---|
-| RACI source | EXISTANT |
+| RACI source | MATRICE DOCUMENTÉE / FICHIER AUTONOME À RATTACHER |
 | Roles architecture | DOCUMENTÉS |
 | Roles Data | DOCUMENTÉS |
 | Roles AI | DOCUMENTÉS |
@@ -897,6 +897,31 @@ Les responsabilités restent distinctes.
 ---
 
 # 49. Preuves complémentaires
+
+## Responsabilités reliées aux pièces du projet
+
+Les responsabilités sont identifiables dans les documents existants.
+
+| Responsabilité | Pièce disponible | Portée |
+|---|---|---|
+| Stratégie et cohérence SI | BC01 / C2 — Stratégie SI, Owner Bastri Murad | Orientation et arbitrages du projet |
+| Suivi des risques | Registre des risques, Owner Bastri Murad | Contrôles, risque résiduel et traitement |
+| Réalisation applicative et Data | Historique Git, services, migrations et pipelines | Traçabilité des changements techniques |
+| Gouvernance des données | Définitions et moteur Governance as Code | Affectations et métadonnées configurées |
+| Validation métier / pédagogique | Revue locale du StarterPack | Exigences et écarts, sans validation finale implicite |
+
+Sources :
+
+```text
+../../01-BC01/C2-Strategie-SI/README.md
+../../../95-GOVERNANCE/11-Risk-Register.md
+../../../95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md
+../../../../governance/README.md
+```
+
+Le fichier autonome `RACI.md` n'est pas présent dans la copie locale consultée. La matrice de rôles de ce dossier constitue la base disponible ; sa validation par les parties prenantes reste à rattacher.
+
+Un auteur Git n'est pas automatiquement l'approbateur métier. De même, le propriétaire technique PostgreSQL ne constitue pas le Data Owner métier. Aucune réunion ni approbation n'est reconstituée artificiellement.
 
 Les preuves pertinentes peuvent inclure :
 

@@ -4,7 +4,7 @@
 **Compétence :** C7 — Mettre en place un suivi automatisé de la qualité via l'intégration continue  
 **Projet :** Real Estate Intelligence Platform  
 **Plateforme :** Enterprise AI Platform  
-**Statut :** Baseline documentaire — preuves CI à consolider
+**Statut :** Pipeline modulaire et contrôles implémentés — preuves d'exécution à rattacher
 
 ---
 
@@ -1525,6 +1525,60 @@ apply / reconcile
 
 # 90. Preuves existantes
 
+## Pipeline actuelle du projet
+
+La pipeline racine comporte les étapes :
+
+```text
+validate
+    |
+    v
+database
+    |
+    v
+build
+    |
+    v
+deploy
+```
+
+Elle inclut les fichiers spécialisés de `.gitlab/ci/` pour la base, Airflow, les images Data, le warehouse, la gouvernance, OpenMetadata, l'observabilité, le backend, l'IA/MLOps et le PRA.
+
+## Contrôle backend
+
+Le job `backend:tests` installe `requirements-backend-test.txt` puis exécute :
+
+```text
+python -m pytest tests/backend tests/data tests/ai/test_candidate_availability.py -v --cov=src/api --cov-report=term-missing --cov-report=xml --cov-fail-under=80
+```
+
+Le rapport Cobertura `coverage.xml` est déclaré comme artifact GitLab, y compris en cas d'échec, avec une expiration de 30 jours. Les rapports locaux déjà disponibles sont référencés dans C6 ; ils prouvent une exécution locale de la sélection et non un succès du job distant.
+
+## Séparation livraison et exécution
+
+Le job PRA publie les manifestes dans le dépôt GitOps. Argo CD assure ensuite la réconciliation. Le succès de publication ne démontre pas à lui seul la réussite du CronJob ou la santé du service.
+
+Sources depuis la racine :
+
+```text
+.gitlab-ci.yml
+.gitlab/ci/backend-tests.yml
+.gitlab/ci/backend.yml
+.gitlab/ci/warehouse.yml
+.gitlab/ci/governance.yml
+.gitlab/ci/pra.yml
+```
+
+Preuves complémentaires :
+
+```text
+../C6-Tests-Executes/README.md
+../../../60-SECURITY/RECOMMENDATION-AUDIT-RUNTIME-EVIDENCE.md
+../../../PCA PRA/PCA-PRA-POSTGRESQL.md
+```
+
+Les contrôles SAST, DAST et scans d'images cités dans les exemples ne sont pas déclarés exécutés sans rapport correspondant.
+
 | Élément | Statut |
 |---|---|
 | GitLab | OPÉRATIONNEL |
@@ -1533,10 +1587,10 @@ apply / reconcile
 | GitOps | OPÉRATIONNEL |
 | ADR CI/CD | DISPONIBLE |
 | Automated tests in training projects | DÉJÀ PRATIQUÉS |
-| Final project CI pipeline | À CONSOLIDER |
+| Final project CI pipeline | CONFIGURATION MODULAIRE IMPLÉMENTÉE |
 | Security CI | À CONSOLIDER |
-| Quality reports | À PRODUIRE |
-| Governance CI | À CONSOLIDER |
+| Quality reports | JUNIT / COUVERTURE LOCAUX DISPONIBLES EN C6 |
+| Governance CI | CONFIGURATION PRÉSENTE / RÉSULTAT DISTANT À RATTACHER |
 
 ---
 
@@ -1621,8 +1675,8 @@ CI architecture              COMPLETE
 GitLab Runner                OPERATIONAL
 GitOps separation            COMPLETE
 Quality controls             DOCUMENTED
-Application CI               TO CONSOLIDATE
-Automated test evidence      TO CONSOLIDATE
+Application CI               IMPLEMENTED / REMOTE RUN TO LINK
+Automated test evidence      LOCAL REPORTS AVAILABLE
 Security CI evidence         TO CONSOLIDATE
 Governance CI evidence       TO CONSOLIDATE
 Pipeline runtime proof       TO COMPLETE

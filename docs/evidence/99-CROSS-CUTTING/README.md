@@ -22,6 +22,24 @@ Il ne doit pas dupliquer les documents déjà présents dans :
 
 # Preuves transverses principales
 
+## Preuves déjà disponibles dans le projet
+
+| Réalisation | Pièce existante | Compétences concernées |
+|---|---|---|
+| Audit et stratégie du SI | `../01-BC01/C1-Audit-SI/README.md`, `../01-BC01/C2-Strategie-SI/README.md` | BC01, cadrage BC02 |
+| Revue corrective, 217 tests locaux réussis | `../03-BC03/C6-Tests-Executes/script-review-2026-09-09/review-tests.xml` | BC03 qualité, BC05 Data / IA |
+| Audit Visite et régression locale | `../03-BC03/C6-Tests-Executes/visite-audit-2026-09-09/README.md` | BC03 processus, sécurité et tests |
+| Recommandation et audit PostgreSQL | `../../60-SECURITY/RECOMMENDATION-AUDIT-RUNTIME-EVIDENCE.md` | BC03 application / sécurité, BC05 matching |
+| Architecture Data et validations historiques | `../../40-DATA/ARCHITECTURE-DATA-IMPLEMENTEE.md` | BC05 OLTP / OLAP, BC03 qualité |
+| Sauvegarde et restauration PostgreSQL | `../../PCA PRA/PCA-PRA-POSTGRESQL.md` | BC02 PCA / PRA, BC05 intégrité des données |
+| Risques et contrôles actuels | `../../95-GOVERNANCE/11-Risk-Register.md` | BC01 stratégie, BC02 risques |
+
+Chaque pièce conserve son périmètre, sa date et ses limites. Les campagnes de tests ne s'additionnent pas ; une validation historique ne constitue pas une nouvelle inspection du déploiement courant.
+
+Les captures déjà présentes sous `../../../evidence/` restent des pièces complémentaires à contextualiser. Leur nom seul ne prouve pas une date d'exécution ou une version de la plateforme.
+
+## Autres catégories de preuve
+
 Les artifacts suivants peuvent démontrer plusieurs compétences simultanément :
 
 ```text

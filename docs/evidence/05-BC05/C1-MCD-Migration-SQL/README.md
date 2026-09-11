@@ -4,7 +4,7 @@
 **Compétence :** C1 — Concevoir le modèle de données et produire le script de création/migration associé  
 **Projet :** Real Estate Intelligence Platform  
 **Plateforme :** Enterprise AI Platform  
-**Statut :** Modèle existant — preuve SQL à consolider
+**Statut :** MCD / MLD / MPD et migrations disponibles — preuves SQL référencées et recette à compléter
 
 ---
 
@@ -49,13 +49,15 @@ Validation
 
 # 2. Source principale — MCD
 
-Le livrable principal existant est :
+Les livrables du modèle présents dans ce dossier sont :
 
 ```text
-MCD-MERISE.md
+MCD-MERISE-PROJET.md
+MLD-PROJET.md
+MPD-POSTGRESQL.md
 ```
 
-Ce document doit rester la source de vérité pour le modèle conceptuel.
+Le MCD reste la référence conceptuelle. Le MLD et le MPD décrivent sa traduction relationnelle et physique. Les migrations versionnées portent l'état d'implémentation à comparer avec ces documents.
 
 Le présent dossier ne doit pas dupliquer le MCD.
 
@@ -899,6 +901,50 @@ Il ne doit pas être inventé indépendamment du modèle.
 
 # 54. Preuves attendues
 
+## Migrations effectivement présentes
+
+Le dépôt contient une chaîne de migrations, plutôt qu'un fichier unique `migration.sql`.
+
+| Version | Réalisation | Fichier depuis la racine |
+|---|---|---|
+| 001 | Schéma métier initial, relations et contraintes | `database/migrations/001_initial_schema.sql` |
+| 002 | Reprise des données héritées | `database/migrations/002_migrate_legacy_data.sql` |
+| 003 | Schéma warehouse et dimensions/faits | `database/migrations/003_warehouse_schema.sql` |
+| 004 | Visites et audit | `database/migrations/004_add_visite_audit.sql` |
+| 005 | Demande avant mandat et traçabilité des recherches générées | `database/migrations/005_demande_pre_mandat.sql` |
+| 006 | Identités applicatives | `database/migrations/006_auth_identity.sql` |
+
+La demande sans mandat, `visite`, `audit_log` et `utilisateur` complètent le modèle initial. Ils doivent être considérés lors de la lecture des représentations V2 qui précèdent ces évolutions.
+
+## Correspondance modèle / code / vérification
+
+```text
+MCD-MERISE-PROJET.md
+        |
+        v
+MLD-PROJET.md / MPD-POSTGRESQL.md
+        |
+        v
+database/migrations/
+        |
+        v
+src/api/db/models/
+        |
+        v
+database/tests/
+```
+
+Les scripts `001_schema_structure.sql`, `002_legacy_migration.sql`, `003_oltp_constraints.sql`, `008_visite_audit.sql` et `009_auth_identity.sql` définissent les contrôles SQL correspondants. Leur présence ne signifie pas que tous ont été rejoués sur la version actuellement déployée.
+
+Les rapports existants apportent déjà une preuve ciblée de persistance de présentation/audit et de restauration des données métier :
+
+```text
+../../../60-SECURITY/RECOMMENDATION-AUDIT-RUNTIME-EVIDENCE.md
+../../../PCA PRA/PCA-PRA-POSTGRESQL.md
+```
+
+La recette exhaustive de migration, les contraintes et la concordance finale MCD / SQL restent à consolider. La présence de tables de paiement ne prouve pas l'implémentation du calcul de rémunération.
+
 Minimum recommandé :
 
 ```text
@@ -946,11 +992,11 @@ Executed Validation
 | Data architecture | DOCUMENTÉE |
 | Data model documentation | DOCUMENTÉE |
 | Relational principles | DOCUMENTÉS |
-| migration.sql | À PRODUIRE / CENTRALISER |
+| Migrations SQL | VERSIONS 001 À 006 PRÉSENTES |
 | Migration execution | À PROUVER |
 | Constraints evidence | À PRODUIRE |
 | Schema evidence | À PRODUIRE |
-| MCD → SQL traceability | À CONSOLIDER |
+| MCD → SQL traceability | SOURCES RATTACHÉES / ÉVOLUTIONS 004 À 006 À RÉCONCILIER |
 
 ---
 

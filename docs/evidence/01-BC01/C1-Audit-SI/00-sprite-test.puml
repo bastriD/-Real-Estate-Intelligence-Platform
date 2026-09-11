@@ -1,0 +1,56 @@
+@startuml
+
+!define SPRITES ../../../plantuml/gilbarbara-plantuml-sprites/sprites
+
+!include SPRITES/gitlab.puml
+!include SPRITES/kubernetes.puml
+!include SPRITES/postgresql.puml
+
+left to right direction
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 2
+
+<style>
+diagram {
+  padding 25
+}
+
+rectangle {
+  BackgroundColor #FFFFFF
+  LineColor #CBD5E1
+  LineThickness 1
+  RoundCorner 16
+  FontColor #172033
+  FontSize 13
+}
+
+database {
+  BackgroundColor #FFFFFF
+  LineColor #CBD5E1
+  LineThickness 1
+  FontColor #172033
+  FontSize 13
+}
+
+arrow {
+  LineColor #64748B
+  LineThickness 2
+  FontColor #475569
+  FontSize 11
+}
+</style>
+
+rectangle "<$gitlab,color=#FC6D26>\n<b>GitLab CE</b>\n<size:11>Source Control</size>" as gitlab #FFF7F3
+
+rectangle "<$kubernetes,color=#326CE5>\n<b>Kubernetes</b>\n<size:11>kubeadm HA Platform</size>" as k8s #F3F7FF
+
+database "<$postgresql,color=#336791>\n<b>PostgreSQL</b>\n<size:11>Operational + Analytical Data</size>" as pg #F3F8FC
+
+gitlab --> k8s : GitOps delivery
+k8s --> pg : application data
+
+@enduml

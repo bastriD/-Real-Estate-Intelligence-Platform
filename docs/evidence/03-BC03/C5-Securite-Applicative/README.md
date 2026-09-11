@@ -4,7 +4,7 @@
 **Compétence :** C5 — Concevoir et intégrer les exigences de sécurité au niveau applicatif  
 **Projet :** Real Estate Intelligence Platform  
 **Plateforme :** Enterprise AI Platform  
-**Statut :** Baseline documentaire — preuves runtime à consolider
+**Statut :** Authentification, RBAC et audit implémentés — preuves locales et runtime partiel disponibles
 
 ---
 
@@ -1316,6 +1316,70 @@ curl TLS test
 
 # 81. Preuves existantes
 
+## Identité et autorisation applicatives
+
+La migration 006 introduit `real_estate.utilisateur`. Le backend vérifie le mot de passe, émet un JWT et contrôle l'existence ainsi que l'activité du compte sur les requêtes protégées.
+
+```text
+Identité applicative
+        |
+        v
+Vérification du mot de passe
+        |
+        v
+JWT
+        |
+        v
+Compte existant et actif
+        |
+        v
+Rôle autorisé
+        |
+        v
+Opération métier
+```
+
+La matrice présente dans les routes est :
+
+| Module | Rôles autorisés |
+|---|---|
+| Clients | ADMIN |
+| Mandats | ADMIN, CHASSEUR |
+| Demandes | ADMIN, CHASSEUR, SERVICE |
+| Biens | ADMIN, CHASSEUR, CLIENT, SERVICE |
+| Présentations | ADMIN, CHASSEUR, SERVICE |
+| Recommandations | ADMIN, CHASSEUR, SERVICE |
+| Visites | ADMIN, CHASSEUR |
+
+Cette matrice décrit les rôles, pas un contrôle exhaustif de propriété des ressources. Le contrôle fin des ressources et de l'auteur des demandes reste à renforcer.
+
+## Audit métier
+
+Le rapport des recommandations du 9 septembre 2026 relie une requête authentifiée à une présentation persistée et à sa ligne `audit_log`. L'acteur, le snapshot et le contexte sont vérifiés dans PostgreSQL.
+
+L'audit Visite couvre INSERT, UPDATE et DELETE dans le service. Les tests locaux vérifient les états, la propagation de l'acteur et le rollback. La preuve runtime propre aux visites reste à compléter.
+
+Sources documentaires :
+
+```text
+../../../60-SECURITY/SECURITY-RBAC-AUDIT-IMPLEMENTATION-EVIDENCE.md
+../../../60-SECURITY/RECOMMENDATION-AUDIT-RUNTIME-EVIDENCE.md
+../C6-Tests-Executes/visite-audit-2026-09-09/README.md
+```
+
+Implémentation depuis la racine :
+
+```text
+database/migrations/006_auth_identity.sql
+src/api/core/security.py
+src/api/core/dependencies.py
+src/api/services/audit_log.py
+src/api/services/visite.py
+tests/backend/test_auth_rbac_api.py
+```
+
+## Synthèse
+
 | Élément | Statut |
 |---|---|
 | Security architecture | DOCUMENTÉE |
@@ -1328,8 +1392,8 @@ curl TLS test
 | Kubernetes security | DOCUMENTÉE |
 | AI security | DOCUMENTÉE |
 | Security monitoring | DOCUMENTÉ |
-| Runtime application security proof | À CONSOLIDER |
-| Executed security tests | À CONSOLIDER |
+| Runtime application security proof | RECOMMANDATION AUDITÉE VÉRIFIÉE / PÉRIMÈTRE PARTIEL |
+| Executed security tests | RAPPORTS LOCAUX DISPONIBLES DANS C6 |
 
 ---
 
@@ -1395,14 +1459,14 @@ Evidence
 ```text
 Security design              COMPLETE
 Security architecture        COMPLETE
-Application controls         DOCUMENTED
+Application controls         IMPLEMENTED / TESTED
 Data security                DOCUMENTED
 AI security                  DOCUMENTED
 Secrets model                DOCUMENTED
 TLS architecture             DOCUMENTED
-RBAC architecture            DOCUMENTED
-Executed security tests      TO COMPLETE
-Runtime evidence             TO COMPLETE
+RBAC architecture            IMPLEMENTED / ROLE MATRIX REFERENCED
+Executed security tests      LOCAL REPORTS AVAILABLE
+Runtime evidence             PARTIAL / RECOMMENDATION AUDIT VERIFIED
 ```
 
 ---

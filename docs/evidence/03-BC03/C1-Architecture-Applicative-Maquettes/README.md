@@ -4,7 +4,7 @@
 **Compétence :** C1 — Concevoir l'architecture applicative et formaliser l'expérience utilisateur  
 **Projet :** Real Estate Intelligence Platform  
 **Plateforme :** Enterprise AI Platform  
-**Statut :** Architecture documentée — maquettes fonctionnelles à consolider
+**Statut :** Backend implémenté et preuves référencées — maquettes fonctionnelles à consolider
 
 ---
 
@@ -1032,6 +1032,50 @@ Accessible where applicable
 
 # 49. Preuves attendues
 
+## Architecture réellement implémentée
+
+Le backend du projet est organisé dans `src/api/`.
+
+```text
+Requête HTTP
+     |
+     v
+Routes FastAPI / schémas Pydantic
+     |
+     v
+Identité / rôle autorisé
+     |
+     v
+Service métier
+     |
+     v
+Repository / session
+     |
+     v
+PostgreSQL
+```
+
+| Responsabilité | Implémentation depuis la racine du dépôt |
+|---|---|
+| Point d'entrée et intégration des routes | `src/api/main.py`, `src/api/api/v1/router.py` |
+| Contrats d'entrée et de sortie | `src/api/schemas/` |
+| Règles métier | `src/api/services/` |
+| Accès aux données | `src/api/repositories/`, `src/api/db/` |
+| Identité et rôles | `src/api/core/security.py`, `src/api/core/dependencies.py` |
+| Métriques | `src/api/observability/metrics.py` |
+| Vérification locale | `tests/backend/` et rapports BC03 / C6 |
+
+Les modules métier couvrent clients, mandats, demandes/version, biens, présentations, recommandations et visites. Les services Python constituent les modules internes du backend ; leur séparation ne signifie pas qu'ils sont déployés comme microservices indépendants.
+
+L'intégration actuelle du matching est déterministe. L'interface React, les écrans et l'assistant RAG restent des cibles lorsqu'aucune réalisation correspondante n'est fournie.
+
+Références de validation :
+
+```text
+../../../60-SECURITY/RECOMMENDATION-AUDIT-RUNTIME-EVIDENCE.md
+../C6-Tests-Executes/visite-audit-2026-09-09/README.md
+```
+
 Les preuves pertinentes peuvent inclure :
 
 ```text
@@ -1135,7 +1179,7 @@ Exemple cible :
 | AI Assistant | `/ai/query` |
 | Health | `/health` |
 
-Les endpoints doivent être adaptés à l'implémentation réelle.
+Ces routes illustrent les écrans cibles et ne constituent pas le contrat actuel de l'API. Les routes métier réalisées se trouvent sous `/api/v1`, notamment `/biens`, `/demandes`, `/mandats`, `/presentations` et `/visites`. Les recommandations utilisent `/api/v1/demande-versions/{id_demande_version}/recommendations`. Les sondes sont `/health` et `/ready`.
 
 ---
 
@@ -1145,14 +1189,14 @@ Les endpoints doivent être adaptés à l'implémentation réelle.
 |---|---|
 | Architecture applicative | DOCUMENTÉE |
 | Diagramme application | DISPONIBLE |
-| Backend technology | DÉFINIE |
+| Backend technology | FASTAPI / IMPLÉMENTÉ |
 | Data integration | DOCUMENTÉE |
 | AI integration | DOCUMENTÉE |
 | Security architecture | DOCUMENTÉE |
 | Observability | DOCUMENTÉE |
 | User flows | BASELINE |
 | Maquettes finales | À PRODUIRE |
-| API métier finale | À CONSOLIDER |
+| API métier finale | MODULES PRIORITAIRES IMPLÉMENTÉS / RECETTE COMPLÈTE À CONSOLIDER |
 | Application runtime | À CONSOLIDER |
 | Tests exécutés | TRAITÉS DANS C6 |
 

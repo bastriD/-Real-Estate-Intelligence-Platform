@@ -4,7 +4,7 @@
 **Compétence :** C2 — Construire, organiser et prioriser le backlog du projet  
 **Projet :** Real Estate Intelligence Platform  
 **Plateforme :** Enterprise AI Platform  
-**Statut :** Baseline documentaire
+**Statut :** Backlog actualisé à partir des réalisations documentées — recette finale à consolider
 
 ---
 
@@ -304,8 +304,8 @@ Automatiser validation, build et intégration.
 - [x] Documentation CI/CD
 - [x] ADR GitLab CI/CD
 - [ ] Consolider une pipeline complète
-- [ ] Ajouter validation automatique
-- [ ] Ajouter tests
+- [x] Ajouter validation automatique
+- [x] Ajouter tests
 - [ ] Ajouter contrôles de sécurité pertinents
 - [ ] Produire une preuve CI réussie
 
@@ -333,8 +333,8 @@ Construire la chaîne Data principale.
 - [x] Vues analytiques
 - [x] Data Quality
 - [x] Documentation Data
-- [ ] Consolider MCD métier
-- [ ] Consolider `migration.sql`
+- [x] Consolider MCD métier
+- [x] Consolider les migrations versionnées dans `database/migrations/`
 - [ ] Ajouter preuves `EXPLAIN ANALYZE`
 - [ ] Ajouter comparaison avant/après index
 - [ ] Consolider preuve OLTP
@@ -427,8 +427,10 @@ Fournir une capacité d'inférence locale.
 
 # 16. Epic 10 — RAG
 
-**Priorité : P2**  
-**MoSCoW : SHOULD**
+**Priorité : P4 — différé**
+**MoSCoW : WON'T / LATER**
+
+La stratégie SI C2 conserve cette extension comme `DEFERRED / REQUIREMENT-DRIVEN`. Elle ne bloque pas la consolidation du parcours immobilier actuel.
 
 Objectif :
 
@@ -464,14 +466,31 @@ Exposer les capacités métier de la plateforme.
 
 - [x] Architecture applicative documentée
 - [ ] Formaliser cas d'usage métier
-- [ ] Définir API métier
-- [ ] Implémenter endpoints prioritaires
-- [ ] Ajouter validation Pydantic
-- [ ] Ajouter tests API
-- [ ] Ajouter health endpoints
-- [ ] Ajouter observabilité
-- [ ] Ajouter authentification lorsque requise
+- [x] Définir API métier
+- [x] Implémenter endpoints prioritaires
+- [x] Ajouter validation Pydantic
+- [x] Ajouter tests API
+- [x] Ajouter health endpoints
+- [x] Ajouter observabilité
+- [x] Ajouter authentification lorsque requise
 - [ ] Ajouter interface utilisateur si nécessaire
+
+Les réalisations correspondent aux modules de `src/api/`, aux tests de `tests/backend/` et à la documentation sécurité du 9 septembre 2026.
+
+Les compléments métier restant ouverts comprennent :
+
+- [ ] Consolider le contrôle de propriété des ressources et des auteurs de demandes
+- [ ] Réaliser le calcul de rémunération et ses règles d'éligibilité
+- [ ] Formaliser le renouvellement des mandats et les règles temporelles associées
+- [ ] Démontrer le parcours complet avec PostgreSQL
+
+Sources :
+
+```text
+../../../95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md
+../../../95-GOVERNANCE/SCRIPT-REVIEW-2026-09-09.md
+../../../60-SECURITY/SECURITY-RBAC-AUDIT-IMPLEMENTATION-EVIDENCE.md
+```
 
 ---
 
@@ -545,12 +564,18 @@ Démontrer la capacité de reprise.
 - [x] Backup strategy documentée
 - [x] Velero présent
 - [x] RPO / RTO conceptualisés
-- [ ] Exécuter backup contrôlé
-- [ ] Exécuter restore contrôlé
-- [ ] Valider données restaurées
-- [ ] Mesurer durée
-- [ ] Produire preuve restore
-- [ ] Documenter résultat
+- [x] Exécuter backup PostgreSQL contrôlé
+- [x] Exécuter restore PostgreSQL isolé
+- [x] Comparer les volumes métier sélectionnés avant et après restauration
+- [x] Mesurer la durée de `pg_restore`
+- [x] Documenter la preuve et le résultat de restauration
+- [x] Définir le CronJob permanent et sa publication GitOps
+- [ ] Consolider la preuve d'exécution du CronJob permanent
+- [ ] Formaliser et appliquer la rétention / ILM
+- [ ] Superviser les échecs et l'ancienneté des sauvegardes
+- [ ] Mesurer le RTO applicatif complet
+
+Ces cases s'appuient sur le rapport existant `../../../PCA PRA/PCA-PRA-POSTGRESQL.md`. Le temps d'environ six secondes concerne uniquement la restauration PostgreSQL testée.
 
 Principe :
 
@@ -668,13 +693,13 @@ Transformer les réalisations en preuves vérifiables.
 - [x] Structure `docs/evidence/`
 - [x] BC01 evidence structure
 - [x] BC02 evidence structure
-- [ ] BC03 evidence structure
-- [ ] BC05 evidence structure
-- [ ] Cross-cutting evidence
+- [x] BC03 evidence structure
+- [x] BC05 evidence structure
+- [x] Cross-cutting evidence structure
 - [ ] Runtime commands
 - [ ] Screenshots utiles
 - [ ] SQL evidence
-- [ ] Test reports
+- [x] Rapports locaux de tests du 9 septembre 2026 dans BC03 / C6
 - [ ] CI evidence
 - [ ] Data Quality evidence
 - [ ] ML evidence
@@ -711,6 +736,10 @@ Préparer une démonstration cohérente du projet.
 
 # 27. Backlog consolidé par priorité
 
+La présence d'une implémentation ne clôt pas automatiquement sa recette. Les cases cochées ci-dessus distinguent explicitement code, tests locaux et expérience runtime documentée.
+
+Les modules d'entraînement et de comparaison ML existent dans `src/ai/matching/`. Leur intégration éventuelle au classement de l'API reste distincte du matching déterministe actuellement utilisé. Les extensions ML ne remplacent pas les travaux métier de rémunération identifiés dans la revue StarterPack.
+
 ## P0 — Fondation / bloquant
 
 ```text
@@ -741,7 +770,6 @@ Soutenance
 ## P2 — Important
 
 ```text
-RAG
 Eco-conception
 Accessibility
 Advanced optimization
@@ -759,6 +787,7 @@ Developer experience
 ## P4 — Future
 
 ```text
+RAG
 Kafka
 Dedicated Vector DB if justified
 Service Mesh

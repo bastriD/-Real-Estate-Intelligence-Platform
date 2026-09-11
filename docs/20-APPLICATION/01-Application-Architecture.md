@@ -1,340 +1,124 @@
 # Application Architecture
 
-**Version:** 1.0  
-**Status:** Draft  
+**Version:** 1.1
+
+**Status:** Implementation-aligned repository snapshot
+
 **Owner:** Bastri Murad  
 **Project:** Real Estate Intelligence Platform  
 **Platform:** Enterprise AI Platform  
-**Last Updated:** 2026-07-30
+**Last Updated:** 2026-09-11
 
----
+## 1. Scope and current architecture
 
-# 1. Purpose
+The application is a modular FastAPI backend. HTTP handlers, business services, repositories, schemas, and deterministic matching are packaged together in one image. They are Python modules within one deployment, not independently deployed business services.
 
-This document describes the application architecture of the Real Estate Intelligence Platform.
-
-It defines the logical components, business services, communication patterns, responsibilities, and interactions between the application and the Enterprise AI Platform.
-
-The objective is to provide a modular, scalable, maintainable, and secure application architecture following modern cloud-native principles.
-
----
-
-# 2. Architecture Overview
-
-The Real Estate Intelligence Platform is implemented as a modular service-oriented application deployed on Kubernetes.
-
-Rather than embedding infrastructure capabilities within the application, it consumes shared services provided by the Enterprise AI Platform.
-
-The architecture separates:
-
-- Presentation
-- Business Logic
-- Data Processing
-- AI Services
-- Platform Services
-
----
-
-# 3. High-Level Architecture
+This document describes repository implementation. Manifests and historical evidence do not independently establish current deployment health. Broader platform documents describe shared infrastructure and target capabilities that may be managed elsewhere.
 
 ```text
-                    Users
-                       │
-            React Web Application
-                       │
-────────────────────────────────────────────
-
-                 FastAPI Gateway
-
-────────────────────────────────────────────
-
-Business Services
-
-• Property Service
-• Search Service
-• Recommendation Service
-• Notification Service
-• Analytics Service
-• User Service
-
-────────────────────────────────────────────
-
-Enterprise AI Platform
-
-Authentication
-Data Platform
-AI Platform
-Observability
-Infrastructure
-
-────────────────────────────────────────────
-
-Kubernetes
+API client / FastAPI OpenAPI UI
+              |
+              v
+FastAPI routes (/api/v1)
+              |
+       JWT identity + role checks
+              |
+              v
+Business services -----------------> Deterministic matching
+              |                            |
+              v                            v
+SQLAlchemy repositories             Psycopg candidate queries
+              |                            |
+              +------------+---------------+
+                           v
+               PostgreSQL real_estate
+                  business + audit data
 ```
 
----
+React is planned. No React application or frontend build is implemented in this repository; the current browser interface is FastAPI's API documentation.
 
-# 4. Architectural Style
+## 2. Components and source locations
 
-The application follows a modular service-oriented architecture.
+| Component | Location | Responsibility |
+|---|---|---|
+| Entry point | `src/api/main.py` | FastAPI app, routes, metrics middleware |
+| HTTP API | `src/api/api/v1/` | Authentication, clients, mandates, demands, properties, presentations, recommendations, visits, health |
+| Business services | `src/api/services/` | Business validation, operations, recommendation persistence, auditing |
+| Persistence | `src/api/repositories/`, `src/api/db/` | SQLAlchemy access, models, sessions |
+| API schemas | `src/api/schemas/` | Request and response contracts |
+| Security/configuration | `src/api/core/` | Settings, password/JWT helpers, identity and role dependencies |
+| Matching and experiments | `src/ai/matching/` | Retrieval, scoring, evaluation, datasets, training, comparison, MLflow tracking |
+| Metrics | `src/api/observability/metrics.py` | HTTP and business Prometheus instrumentation |
 
-Key characteristics:
+`src/services/`, `src/domain/`, and `ml/` are directory skeletons, not current implementation locations. Standalone notification and analytics HTTP services are not implemented; analytical transformations are in `pipelines/dbt/`.
 
-- API-first
-- Stateless services
-- Domain separation
-- Shared platform services
-- Independent deployment
-- Event-ready architecture
+## 3. Business and data behavior
 
-Future evolution may progressively introduce microservices where justified by business needs.
+The backend manages clients, mandates, versioned search demands, properties, presentations, and visits. A demand can exist before a mandate, as introduced by migration 005. Matching uses a specific `demande_version`, preserving the association between results and the customer's criteria used for evaluation.
 
----
+The recommendation service retrieves PostgreSQL candidates, computes deterministic scores, and persists presentations with business audit handling. It imports matching code directly; it does not call an LLM or a separately deployed recommendation service.
 
-# 5. Logical Components
+Separate pipeline code implements raw ingestion, staging, warehouse loading, and dbt analytics. Airflow orchestrates the data workflow, and OpenMetadata governance code manages metadata. These workflows complement the transactional API.
 
-## Frontend
+## 4. Authentication, authorization, and secrets
 
-Responsibilities:
+The implemented identity flow is:
 
-- User interface
-- Authentication
-- Property search
-- Dashboards
-- Administration
+1. `POST /api/v1/auth/login` accepts JSON email and password.
+2. `AuthService` checks `real_estate.utilisateur` and verifies its password hash.
+3. The backend issues a JWT; defaults are HS256 and a 30-minute lifetime.
+4. Protected requests supply `Authorization: Bearer <token>`.
+5. `get_current_user()` validates the token and reloads the active PostgreSQL identity. `require_roles()` enforces endpoint role requirements using that identity.
 
-Technology:
+Roles are `ADMIN`, `CHASSEUR`, `CLIENT`, and `SERVICE`. Password hashing uses `pwdlib` with Argon2 support. Business audit records are stored in `real_estate.audit_log`. Migration 006 creates no default account.
 
-- React
+Configuration comes from environment variables or a local `.env`. `POSTGRES_PASSWORD` and `JWT_SECRET_KEY` are required. The backend Deployment references `real-estate-postgresql-secret` and `real-estate-backend-auth` Kubernetes Secrets.
 
----
+Keycloak, OAuth2/OIDC federation, and Vault are future integration options. They are not the current authentication or secret-loading mechanisms. The backend serves HTTP on port 8000; TLS termination is an infrastructure responsibility and is not established by its Deployment manifest.
 
-## API Layer
+## 5. Deployment and availability
 
-Responsibilities:
+`deploy/docker/Dockerfile.backend` uses Python 3.12, copies `src/`, installs `requirements-ai.txt` (which includes backend dependencies), and starts `uvicorn src.api.main:app` as a non-root user.
 
-- Request routing
-- Validation
-- Authentication
-- Authorization
-- OpenAPI documentation
+`deploy/kubernetes/backend/` contains a Deployment, Service, ServiceMonitor, Kustomize configuration, and Argo CD Application. The Deployment specifies one replica, resource requests/limits, registry credentials, and liveness/readiness probes. One replica does not establish high availability or tested horizontal scalability.
 
-Technology:
+Backend CI validates and builds the image, substitutes its tag, and publishes desired state to a separate GitOps repository. Argo CD reconciles the permanent workload. CI additionally performs secret bootstrap; database and transient job workflows have separate execution paths.
 
-- FastAPI
+React deployment, independent business-service deployments, autoscaling, and event consumers remain future work requiring implementation and validation evidence.
 
----
+## 6. Health and observability
 
-## Business Layer
+| Endpoint | Behavior |
+|---|---|
+| `/docs`, `/redoc`, `/openapi.json` | Generated API documentation and contract |
+| `/health` | Liveness without a database query |
+| `/ready` | PostgreSQL connectivity; 503 when unavailable |
+| `/api/v1/health`, `/api/v1/ready` | Versioned health routes |
+| `/metrics` | Prometheus metrics; excluded from OpenAPI |
 
-Contains business logic.
+HTTP middleware and business services expose Prometheus metrics. Dashboards and alert definitions are maintained in observability directories. Loki, Tempo, and OpenTelemetry appear in platform architecture, but `src/api/main.py` does not configure distributed tracing or an OpenTelemetry exporter.
 
-Modules include:
+## 7. Validation and evidence
 
-- Property Management
-- Search
-- User Management
-- Recommendations
-- Analytics
-- Notifications
+Python suites are in `tests/backend/`, `tests/data/`, and `tests/ai/`; SQL tests are in `database/tests/`. Backend CI runs its selected tests with an 80% API coverage threshold.
 
----
+On 2026-09-11, the complete local Python suite passed in the existing review environment: 239 tests, 7 deprecation warnings. This confirms that run, not live database integration, deployment health, fresh dependency installation, or historical runtime claims.
 
-## Data Layer
+Use the [root README](../../Readme.md) for dependencies, settings, tests, and API startup. Dated security and recommendation evidence describes the scope of earlier live validation.
 
-Responsible for:
+## 8. Planned capabilities
 
-- Data persistence
-- Queries
-- Transactions
-- Data integrity
+- React interface using the existing API and backend authorization.
+- Enterprise identity federation and secret-manager integration where justified.
+- Semantic search, Ollama/LLM integration, and an AI assistant; Qdrant is a target option, not a current application dependency.
+- Notifications, event-driven workers, independent deployment, and scaling based on measured needs.
 
-Primary database:
+Training and comparison tooling already exists in `src/ai/matching/`; its presence does not mean a trained model replaces the deterministic recommendation path.
 
-- PostgreSQL
+## 9. Related documentation
 
----
-
-## AI Layer
-
-Responsibilities:
-
-- Recommendation Engine
-- Semantic Search
-- Market Analysis
-- AI Assistant (future)
-
-Technologies:
-
-- MLflow
-- Ollama
-- Qdrant
-
----
-
-## Platform Layer
-
-Provided by the Enterprise AI Platform.
-
-Includes:
-
-- Keycloak
-- PostgreSQL
-- Airflow
-- OpenMetadata
-- Monitoring
-- Vault
-- GitOps
-
----
-
-# 6. Component Responsibilities
-
-| Component | Responsibility |
-|------------|---------------|
-| React | User Interface |
-| FastAPI | REST API |
-| Property Service | Property lifecycle |
-| Search Service | Property discovery |
-| Recommendation Service | AI recommendations |
-| Analytics Service | Business analytics |
-| Notification Service | Alerts |
-| User Service | User profiles |
-| PostgreSQL | Persistence |
-| Airflow | Data workflows |
-| MLflow | Model lifecycle |
-| Qdrant | Semantic search |
-
----
-
-# 7. Communication
-
-Current communication:
-
-```
-Frontend
-      │
- REST API
-      │
- FastAPI
-      │
- PostgreSQL
-```
-
-Future communication:
-
-```
-Frontend
-      │
- REST API
-      │
- FastAPI
-      │
-Kafka Events
-      │
-Business Services
-```
-
----
-
-# 8. Deployment Model
-
-Each component is deployed independently using Kubernetes.
-
-Deployment is managed through GitOps using Argo CD.
-
-All workloads include:
-
-- Resource limits
-- Health probes
-- Monitoring
-- Logging
-- TLS
-- RBAC
-
----
-
-# 9. Security
-
-Authentication:
-
-- Keycloak
-- OAuth2
-- OpenID Connect
-
-Authorization:
-
-- RBAC
-
-Secrets:
-
-- Vault
-
-Communication:
-
-- HTTPS
-- TLS
-
----
-
-# 10. Scalability
-
-Application services are horizontally scalable.
-
-Future scaling includes:
-
-- Kafka consumers
-- AI inference workers
-- Background processing
-- Event-driven services
-
----
-
-# 11. Availability
-
-The application benefits from platform capabilities:
-
-- Kubernetes self-healing
-- ReplicaSets
-- Rolling updates
-- Automatic restart
-- GitOps reconciliation
-
----
-
-# 12. Design Principles
-
-The application follows:
-
-- Single Responsibility
-- Separation of Concerns
-- Stateless Services
-- API-first
-- Reuse before Build
-- Security by Design
-- Observability by Default
-
----
-
-# 13. Future Evolution
-
-Future capabilities include:
-
-- Mobile application
-- Public API
-- AI Agent
-- Event-driven microservices
-- GraphQL API
-- Multi-tenant architecture
-
----
-
-# 14. Related Documents
-
-- Business Architecture
-- Infrastructure Architecture
-- Kubernetes Architecture
-- Security Architecture
-- Data Architecture
-- AI Architecture
-- GitOps Strategy
+- [Documentation index](../README.md)
+- [Implemented data architecture](../40-DATA/ARCHITECTURE-DATA-IMPLEMENTEE.md)
+- [Matching baseline](../50-AI/11-Matching-Baseline-Implementation.md)
+- [Authentication, RBAC, and audit](../60-SECURITY/SECURITY-RBAC-AUDIT-IMPLEMENTATION-EVIDENCE.md)
+- [Recommendation audit runtime evidence](../60-SECURITY/RECOMMENDATION-AUDIT-RUNTIME-EVIDENCE.md)

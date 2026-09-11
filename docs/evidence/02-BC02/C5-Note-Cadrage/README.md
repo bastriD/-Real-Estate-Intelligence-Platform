@@ -66,7 +66,7 @@ Emplacement projet attendu :
 ../../../../NOTE-DE-CADRAGE.md
 ```
 
-Ce document doit rester la source de vérité pour le cadrage opérationnel.
+Ce fichier autonome n'est pas présent à cet emplacement dans la copie locale consultée. Son rattachement reste à compléter ; les sources de fondation, le backlog et la stratégie SI fournissent les éléments disponibles de cadrage.
 
 Le présent README sert uniquement d'index de preuve.
 
@@ -1054,6 +1054,30 @@ afin de rendre la documentation :
 
 # 47. Pilotage par preuves
 
+## Périmètre réalisé et périmètre restant
+
+Le cadrage actuel s'appuie sur la stratégie SI C2 : consolider la plateforme existante et relier les réalisations aux besoins du métier de chasse immobilière.
+
+| Périmètre | État du projet | Limite de la preuve |
+|---|---|---|
+| Backend métier | FastAPI, demandes/version, mandats, biens, recommandations, présentations et visites | Recette globale à terminer |
+| Data | PostgreSQL, Airflow, dbt et OpenMetadata | Architecture implémentée documentée ; preuves datées à conserver |
+| Sécurité | Authentification, rôles et audit métier partiel | Contrôle fin de propriété à renforcer |
+| Continuité | Sauvegarde/restauration PostgreSQL testée et CronJob défini | Exploitation permanente et RTO complet à consolider |
+| ML | Baseline et modules d'entraînement/comparaison | Promotion et gain métier à démontrer |
+| Rémunération | Écart identifié dans la revue du StarterPack | Implémentation métier restante |
+
+Le développement d'une nouvelle interface et les extensions RAG restent conditionnés au périmètre applicable. Ils ne remplacent pas les livrables métier et Data prioritaires.
+
+Sources :
+
+```text
+../../01-BC01/C2-Strategie-SI/README.md
+../../../95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md
+../../../60-SECURITY/SECURITY-RBAC-AUDIT-IMPLEMENTATION-EVIDENCE.md
+../../../PCA PRA/PCA-PRA-POSTGRESQL.md
+```
+
 Le projet évolue progressivement vers :
 
 ```text
@@ -1139,7 +1163,7 @@ Les points de surveillance comprennent :
 | Backlog | DOCUMENTÉ |
 | Technologies différées | DOCUMENTÉES |
 | Critères de réussite | DOCUMENTÉS |
-| Note de cadrage principale | EXISTANTE |
+| Note de cadrage principale | SOURCES DISPONIBLES / DOCUMENT AUTONOME À RATTACHER |
 | Planning détaillé | À CENTRALISER |
 | RACI | À CENTRALISER |
 | Runtime evidence | À COMPLÉTER |

@@ -16,6 +16,7 @@ database:validate:
     - test -f database/migrations/004_add_visite_audit.sql
     - test -f database/migrations/005_demande_pre_mandat.sql
     - test -f database/migrations/006_auth_identity.sql
+    - test -f database/migrations/007_demande_chasseur_affectation.sql
 
     # -------------------------------------------------------------------------
     # Database tests
@@ -26,6 +27,7 @@ database:validate:
     - test -f database/tests/003_oltp_constraints.sql
     - test -f database/tests/008_visite_audit.sql
     - test -f database/tests/009_auth_identity.sql
+    - test -f database/tests/010_demande_affectation.sql
 
     # -------------------------------------------------------------------------
     # Legacy / OLTP / seed files
@@ -117,6 +119,32 @@ database:validate:
     - grep -q "^COMMIT;" database/migrations/006_auth_identity.sql
 
     # -------------------------------------------------------------------------
+    # Migration 007 validation
+    #
+    # Hunter assignment / acceptance lifecycle:
+    #
+    #   DEMANDE
+    #      -> ASSIGNEE
+    #      -> ACCEPTEE / REFUSEE
+    #
+    # DEMANDE_VERSION.auteur_chasseur_id remains authorship metadata.
+    # DEMANDE_AFFECTATION is the persisted assignment/ownership relation.
+    # -------------------------------------------------------------------------
+
+    - grep -q "CREATE TABLE real_estate.demande_affectation" database/migrations/007_demande_chasseur_affectation.sql
+    - grep -q "ck_demande_affectation_statut" database/migrations/007_demande_chasseur_affectation.sql
+    - grep -q "ck_demande_affectation_decision" database/migrations/007_demande_chasseur_affectation.sql
+    - grep -q "ck_demande_affectation_motif_refus" database/migrations/007_demande_chasseur_affectation.sql
+    - grep -q "ck_demande_affectation_dates" database/migrations/007_demande_chasseur_affectation.sql
+    - grep -q "uq_demande_affectation_current" database/migrations/007_demande_chasseur_affectation.sql
+    - grep -q "'ASSIGNEE'" database/migrations/007_demande_chasseur_affectation.sql
+    - grep -q "'ACCEPTEE'" database/migrations/007_demande_chasseur_affectation.sql
+    - grep -q "'REFUSEE'" database/migrations/007_demande_chasseur_affectation.sql
+    - grep -q "'007'" database/migrations/007_demande_chasseur_affectation.sql
+    - grep -q "migration_control.schema_version" database/migrations/007_demande_chasseur_affectation.sql
+    - grep -q "^COMMIT;" database/migrations/007_demande_chasseur_affectation.sql
+
+    # -------------------------------------------------------------------------
     # Legacy fixture validation
     # -------------------------------------------------------------------------
 
@@ -132,6 +160,10 @@ database:validate:
 
     - grep -q "authentication identity schema validation completed successfully" database/tests/009_auth_identity.sql
     - grep -q "real_estate.utilisateur" database/tests/009_auth_identity.sql
+
+    - grep -q "Demande assignment constraints and lifecycle validated successfully" database/tests/010_demande_affectation.sql
+    - grep -q "real_estate.demande_affectation" database/tests/010_demande_affectation.sql
+    - grep -q "uq_demande_affectation_current" database/migrations/007_demande_chasseur_affectation.sql
 
     # -------------------------------------------------------------------------
     # OLTP validation
@@ -827,6 +859,219 @@ database:migrate-006:
 
 
 # =============================================================================
+# MIGRATION 007 - DEMANDE / CHASSEUR ASSIGNMENT
+#
+# Persists the hunter assignment / acceptance lifecycle required between:
+#
+#   DEMANDE
+#      -> hunter assignment
+#      -> hunter acceptance / refusal
+#      -> matching / refinement
+#      -> MANDAT
+#
+# Historical legacy demandes already linked to a mandate are backfilled with
+# one accepted assignment derived from MANDAT.id_chasseur.
+#
+# This migration remains manually triggered.
+# =============================================================================
+
+database:migrate-007:
+  stage: database
+
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl version --client
+    - kubectl -n real-estate get deploy real-estate-postgresql
+
+    # -------------------------------------------------------------------------
+    # Migration prerequisites
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Checking migration 007 prerequisites..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              to_regclass('real_estate.demande') AS demande,
+              to_regclass('real_estate.chasseur') AS chasseur,
+              to_regclass('real_estate.utilisateur') AS utilisateur,
+              to_regclass('migration_control.schema_version') AS schema_version;
+          "
+
+    # -------------------------------------------------------------------------
+    # Check migration registry
+    # -------------------------------------------------------------------------
+
+    - |
+      MIGRATION_007_APPLIED="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT CASE
+               WHEN EXISTS (
+                 SELECT 1
+                 FROM migration_control.schema_version
+                 WHERE version = '007'
+               )
+               THEN 'yes'
+               ELSE 'no'
+             END;" 2>/dev/null || true
+      )"
+
+      if [ "$MIGRATION_007_APPLIED" = "yes" ]; then
+        echo "Migration 007 already applied - skipping safely."
+        exit 0
+      fi
+
+    # -------------------------------------------------------------------------
+    # Apply migration
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Applying migration 007..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/migrations/007_demande_chasseur_affectation.sql
+
+    # -------------------------------------------------------------------------
+    # Verify table and current-state index
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Verifying demande assignment schema..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              to_regclass('real_estate.demande_affectation') AS demande_affectation,
+              to_regclass('real_estate.uq_demande_affectation_current') AS current_assignment_index;
+          "
+
+    # -------------------------------------------------------------------------
+    # Verify legacy backfill
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Checking legacy assignment reconciliation..."
+
+      LEGACY_MISMATCH_COUNT="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT COUNT(*)
+             FROM real_estate.demande d
+             LEFT JOIN real_estate.demande_affectation da
+               ON da.id_demande = d.id_demande
+              AND da.statut = 'ACCEPTEE'
+             LEFT JOIN real_estate.mandat m
+               ON m.id_mandat = d.id_mandat
+             WHERE d.origine = 'LEGACY'
+               AND (
+                 da.id_affectation IS NULL
+                 OR da.id_chasseur <> m.id_chasseur
+               );"
+      )"
+
+      echo "Legacy assignment mismatches: ${LEGACY_MISMATCH_COUNT}"
+
+      if [ "${LEGACY_MISMATCH_COUNT}" != "0" ]; then
+        echo "ERROR: legacy assignment reconciliation failed."
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # Verify current-state uniqueness
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Checking current assignment uniqueness..."
+
+      CURRENT_DUPLICATES="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT COUNT(*)
+             FROM (
+               SELECT id_demande
+               FROM real_estate.demande_affectation
+               WHERE statut IN ('ASSIGNEE', 'ACCEPTEE')
+               GROUP BY id_demande
+               HAVING COUNT(*) > 1
+             ) duplicate_rows;"
+      )"
+
+      echo "Demandes with multiple current assignments: ${CURRENT_DUPLICATES}"
+
+      if [ "${CURRENT_DUPLICATES}" != "0" ]; then
+        echo "ERROR: multiple current assignments detected."
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # Verify migration registry and final state
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Verifying migration registry..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              version,
+              description,
+              applied_at
+            FROM migration_control.schema_version
+            WHERE version = '007';
+
+            SELECT
+              statut,
+              COUNT(*) AS affectations
+            FROM real_estate.demande_affectation
+            GROUP BY statut
+            ORDER BY statut;
+          "
+
+    - |
+      echo "============================================================"
+      echo "MIGRATION 007 SUCCESSFULLY APPLIED"
+      echo "============================================================"
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
+
+
+# =============================================================================
 # TEST BASE SCHEMA
 # =============================================================================
 
@@ -974,6 +1219,60 @@ database:test-auth-identity:
           -d real_estate \
           -v ON_ERROR_STOP=1 \
           < database/tests/009_auth_identity.sql
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
+
+
+# =============================================================================
+# TEST DEMANDE / CHASSEUR ASSIGNMENT
+# =============================================================================
+
+database:test-demande-affectation:
+  stage: database
+
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl -n real-estate get deploy real-estate-postgresql
+
+    - |
+      MIGRATION_007_APPLIED="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT CASE
+               WHEN EXISTS (
+                 SELECT 1
+                 FROM migration_control.schema_version
+                 WHERE version = '007'
+               )
+               THEN 'yes'
+               ELSE 'no'
+             END;" 2>/dev/null || true
+      )"
+
+      if [ "$MIGRATION_007_APPLIED" != "yes" ]; then
+        echo "ERROR: migration 007 must be applied before running assignment tests."
+        exit 1
+      fi
+
+    - |
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/tests/010_demande_affectation.sql
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'

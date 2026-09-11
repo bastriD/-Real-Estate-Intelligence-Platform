@@ -1896,6 +1896,8 @@ httpx
 
 # 121. Evidence Location
 
+Les sources réellement mobilisées sont les modules `src/ai/matching/`, le service `src/api/services/recommendation.py` et les dépendances d'identité de `src/api/core/`.
+
 Implementation :
 
 ```text
@@ -1908,8 +1910,9 @@ deploy/
 Tests :
 
 ```text
-tests/security/
-tests/integration/
+tests/ai/
+tests/backend/test_auth_rbac_api.py
+tests/backend/test_recommendation_api.py
 ```
 
 Documentation :
@@ -1921,6 +1924,44 @@ docs/evidence/05-BC05/C8-Souverainete-Securite-IA/
 ---
 
 # 122. Evidence Runtime
+
+## Périmètre actuel
+
+Le matching exposé par l'API est déterministe et n'envoie pas les critères à un LLM pour effectuer le classement. L'accès à la recommandation est limité aux rôles ADMIN, CHASSEUR et SERVICE.
+
+Le travail ML s'appuie sur un dataset dont les features sont explicites, un partitionnement par version de demande, une régression logistique et une intégration de tracking MLflow. Les labels actuels reposent sur la traçabilité des données générées.
+
+```text
+Données du projet
+      |
+      v
+Candidats / features
+      |
+      +--> Baseline déterministe / API autorisée
+      |
+      +--> Dataset contrôlé / entraînement séparé
+                              |
+                              v
+                        Évaluation / MLflow
+```
+
+## Preuves disponibles
+
+```text
+../../../50-AI/11-Matching-Baseline-Implementation.md
+../../../50-AI/12-Labelled-Dataset-Strategy.md
+../../../60-SECURITY/RECOMMENDATION-AUDIT-RUNTIME-EVIDENCE.md
+../../01-BC01/C2-Strategie-SI/README.md
+../../03-BC03/C6-Tests-Executes/README.md
+```
+
+La stratégie SI positionne Ollama/Qwen comme capacité locale expérimentale. Elle ne le présente pas comme le moteur de matching en production.
+
+## Limites restant à couvrir
+
+La souveraineté ne se réduit pas à l'emplacement du calcul. Les flux sortants, les accès MLflow/MinIO, l'origine et la version des modèles doivent être documentés pour la version effectivement exploitée.
+
+Les contrôles de prompt injection, RAG, base vectorielle et rollback de modèle restent des exigences de conception lorsqu'aucune intégration ni résultat de test ne les établit. Les statuts de conception ci-dessous ne doivent pas être lus comme une validation runtime.
 
 Preuves futures :
 
@@ -2001,15 +2042,15 @@ GPU metrics
 | MinIO artifact security | ADDED |
 | Dataset supply chain | ADDED |
 | Synthetic data governance | ADDED |
-| Prompt security | COMPLETE |
-| RAG authorization | COMPLETE |
-| Vector DB governance | COMPLETE |
-| Model supply chain | COMPLETE |
-| Model rollback | COMPLETE |
-| Graceful degradation | COMPLETE |
+| Prompt security | DOCUMENTED / EXPERIMENTAL SCOPE |
+| RAG authorization | TARGET DOCUMENTED |
+| Vector DB governance | TARGET DOCUMENTED |
+| Model supply chain | REQUIREMENTS DOCUMENTED / EXECUTION TO EVIDENCE |
+| Model rollback | TARGET DOCUMENTED |
+| Graceful degradation | TARGET DOCUMENTED |
 | AI use case governance | COMPLETE |
-| Runtime tests | PENDING |
-| Runtime security evidence | PENDING |
+| Runtime tests | BASELINE / API EVIDENCE AVAILABLE ; EXTENSIONS PENDING |
+| Runtime security evidence | PARTIAL — AUTHENTICATED RECOMMENDATION AUDIT |
 
 ---
 

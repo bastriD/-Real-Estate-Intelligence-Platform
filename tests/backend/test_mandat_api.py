@@ -536,3 +536,229 @@ def test_delete_mandat_returns_409_on_conflict() -> None:
     assert exc.value.detail == (
         "Mandat is referenced"
     )
+def build_chasseur_user(
+    id_chasseur: int | None,
+) -> SimpleNamespace:
+    return SimpleNamespace(
+        email="hunter.auth.test@example.com",
+        role="CHASSEUR",
+        id_chasseur=id_chasseur,
+        id_client=None,
+    )
+
+
+def test_chasseur_list_mandats_is_scoped_to_own_id() -> None:
+    db = MagicMock()
+    service = MagicMock()
+
+    own_mandat = build_mandat()
+    own_mandat.id_chasseur = 7
+
+    service.list_by_chasseur.return_value = [
+        own_mandat
+    ]
+
+    with patch(
+        "src.api.api.v1.endpoints.mandats.MandatService",
+        return_value=service,
+    ):
+        result = list_mandats(
+            client_id=None,
+            chasseur_id=None,
+            db=db,
+            current_user=build_chasseur_user(7),
+        )
+
+    assert result == [own_mandat]
+    service.list_by_chasseur.assert_called_once_with(7)
+    service.list_mandats.assert_not_called()
+
+
+def test_chasseur_cannot_list_other_chasseur_mandats() -> None:
+    db = MagicMock()
+    service = MagicMock()
+
+    with patch(
+        "src.api.api.v1.endpoints.mandats.MandatService",
+        return_value=service,
+    ):
+        with pytest.raises(HTTPException) as exc:
+            list_mandats(
+                client_id=None,
+                chasseur_id=8,
+                db=db,
+                current_user=build_chasseur_user(7),
+            )
+
+    assert exc.value.status_code == 404
+    assert exc.value.detail == "Resource not found"
+    service.list_by_chasseur.assert_not_called()
+
+
+def test_chasseur_gets_own_mandat() -> None:
+    db = MagicMock()
+    service = MagicMock()
+
+    mandat = build_mandat()
+    mandat.id_chasseur = 7
+    service.get_mandat.return_value = mandat
+
+    with patch(
+        "src.api.api.v1.endpoints.mandats.MandatService",
+        return_value=service,
+    ):
+        result = get_mandat(
+            mandat_id=36,
+            db=db,
+            current_user=build_chasseur_user(7),
+        )
+
+    assert result is mandat
+
+
+def test_chasseur_cannot_get_other_chasseur_mandat() -> None:
+    db = MagicMock()
+    service = MagicMock()
+
+    mandat = build_mandat()
+    mandat.id_chasseur = 8
+    service.get_mandat.return_value = mandat
+
+    with patch(
+        "src.api.api.v1.endpoints.mandats.MandatService",
+        return_value=service,
+    ):
+        with pytest.raises(HTTPException) as exc:
+            get_mandat(
+                mandat_id=36,
+                db=db,
+                current_user=build_chasseur_user(7),
+            )
+
+    assert exc.value.status_code == 404
+    assert exc.value.detail == "Resource not found"
+
+
+def test_chasseur_cannot_create_mandat_for_other_chasseur() -> None:
+    db = MagicMock()
+    service = MagicMock()
+
+    payload = build_create_payload()
+    payload.id_chasseur = 8
+
+    with patch(
+        "src.api.api.v1.endpoints.mandats.MandatService",
+        return_value=service,
+    ):
+        with pytest.raises(HTTPException) as exc:
+            create_mandat(
+                payload=payload,
+                db=db,
+                current_user=build_chasseur_user(7),
+            )
+
+    assert exc.value.status_code == 404
+    assert exc.value.detail == "Resource not found"
+    service.create_mandat.assert_not_called()
+
+
+def test_chasseur_cannot_reassign_mandat_to_other_chasseur() -> None:
+    db = MagicMock()
+    service = MagicMock()
+
+    mandat = build_mandat()
+    mandat.id_chasseur = 7
+    service.get_mandat.return_value = mandat
+
+    payload = MandatUpdate(
+        id_chasseur=8
+    )
+
+    with patch(
+        "src.api.api.v1.endpoints.mandats.MandatService",
+        return_value=service,
+    ):
+        with pytest.raises(HTTPException) as exc:
+            update_mandat(
+                mandat_id=36,
+                payload=payload,
+                db=db,
+                current_user=build_chasseur_user(7),
+            )
+
+    assert exc.value.status_code == 404
+    assert exc.value.detail == "Resource not found"
+    service.update_mandat.assert_not_called()
+
+
+def test_chasseur_cannot_update_other_chasseur_mandat() -> None:
+    db = MagicMock()
+    service = MagicMock()
+
+    mandat = build_mandat()
+    mandat.id_chasseur = 8
+    service.get_mandat.return_value = mandat
+
+    with patch(
+        "src.api.api.v1.endpoints.mandats.MandatService",
+        return_value=service,
+    ):
+        with pytest.raises(HTTPException) as exc:
+            update_mandat(
+                mandat_id=36,
+                payload=MandatUpdate(
+                    commentaire="Forbidden update"
+                ),
+                db=db,
+                current_user=build_chasseur_user(7),
+            )
+
+    assert exc.value.status_code == 404
+    assert exc.value.detail == "Resource not found"
+    service.update_mandat.assert_not_called()
+
+
+def test_chasseur_cannot_delete_other_chasseur_mandat() -> None:
+    db = MagicMock()
+    service = MagicMock()
+
+    mandat = build_mandat()
+    mandat.id_chasseur = 8
+    service.get_mandat.return_value = mandat
+
+    with patch(
+        "src.api.api.v1.endpoints.mandats.MandatService",
+        return_value=service,
+    ):
+        with pytest.raises(HTTPException) as exc:
+            delete_mandat(
+                mandat_id=36,
+                db=db,
+                current_user=build_chasseur_user(7),
+            )
+
+    assert exc.value.status_code == 404
+    assert exc.value.detail == "Resource not found"
+    service.delete_mandat.assert_not_called()
+
+
+def test_chasseur_without_linked_identity_is_rejected() -> None:
+    db = MagicMock()
+    service = MagicMock()
+
+    with patch(
+        "src.api.api.v1.endpoints.mandats.MandatService",
+        return_value=service,
+    ):
+        with pytest.raises(HTTPException) as exc:
+            list_mandats(
+                client_id=None,
+                chasseur_id=None,
+                db=db,
+                current_user=build_chasseur_user(None),
+            )
+
+    assert exc.value.status_code == 403
+    assert exc.value.detail == (
+        "Hunter identity is not available"
+    )

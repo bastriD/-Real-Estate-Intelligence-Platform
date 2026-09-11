@@ -4,7 +4,7 @@
 **Compétence :** Concevoir et alimenter une architecture décisionnelle adaptée aux traitements analytiques  
 **Projet :** Real Estate Intelligence Platform  
 **Version :** 2.0  
-**Statut :** Baseline documentaire corrigée — implémentation runtime à produire  
+**Statut :** Warehouse, chargement et dbt implémentés — preuves historiques disponibles et état courant à consolider
 **Source OLTP :** PostgreSQL / `real_estate`  
 **Orchestration cible :** Apache Airflow  
 **Transformation :** SQL / Python / dbt lorsque justifié  
@@ -1463,6 +1463,43 @@ pourront être évalués via une nouvelle décision d'architecture.
 
 # 82. Evidence Runtime
 
+## Chaîne documentée et état du code
+
+Le rapport `ARCHITECTURE-DATA-IMPLEMENTEE.md` décrit la validation du 24 août 2026 : chaîne Data, warehouse marché, trois modèles dbt exécutés et dix-neuf tests dbt réussis, ainsi que l'ingestion et la lineage OpenMetadata.
+
+Ces résultats sont ceux du périmètre décrit à cette date. Ils ne doivent pas être appliqués automatiquement aux modèles ajoutés depuis.
+
+Le code actuel comporte les dimensions et faits suivants :
+
+```text
+warehouse
+   |
+   +--> dim_date / dim_source / dim_localisation / dim_bien
+   +--> dim_client / dim_chasseur / dim_secteur
+   +--> dim_demande_version
+   +--> fact_annonce
+   +--> fact_mandat
+   +--> bridge_mandat_secteur
+   +--> fact_presentation
+   +--> fact_paiement
+```
+
+La migration 003 définit ces objets et `load_warehouse.py` contient leur alimentation depuis les tables `real_estate`. Le code actuel étend donc le périmètre marché décrit dans le rapport initial. La présence du chargement d'un fait ne démontre pas qu'il contient déjà des observations métier suffisantes.
+
+## Sources de preuve
+
+```text
+../../../40-DATA/ARCHITECTURE-DATA-IMPLEMENTEE.md
+../../../../database/migrations/003_warehouse_schema.sql
+../../../../database/olap/load_warehouse.py
+../../../../database/tests/007_warehouse_data_quality.sql
+../../../../pipelines/airflow/real_estate_ingestion_dag.py
+../../../../pipelines/dbt/models/
+../../../../.gitlab/ci/warehouse.yml
+```
+
+Les preuves de peuplement, de qualité et de lineage des faits métier étendus restent à rattacher à leur exécution. Le modèle de rémunération ne devient pas opérationnel du seul fait que `fact_paiement` existe.
+
 Les preuves finales devront inclure :
 
 ```text
@@ -1525,16 +1562,16 @@ Les preuves pourront être référencées depuis ce README sous forme :
 
 ```text
 Implementation:
-../../../../../database/olap/
+../../../../database/olap/
 
 Pipeline:
-../../../../../pipelines/airflow/
+../../../../pipelines/airflow/
 
 Tests:
-../../../../../database/tests/
+../../../../database/tests/
 ```
 
-Les liens exacts seront ajoutés lorsque les fichiers existeront réellement.
+Ces répertoires existent. La section 82 référence les fichiers effectivement utilisés ; les résultats d'exécution complémentaires restent à rattacher.
 
 ---
 
@@ -1663,18 +1700,18 @@ aux données personnelles.
 | OLAP architecture | UPDATED |
 | Staging strategy | UPDATED |
 | Dimensions | UPDATED |
-| fact_presentation | DEFINED |
-| fact_mandate | ADDED |
-| fact_payment | ADDED |
+| fact_presentation | DDL / CHARGEMENT IMPLÉMENTÉS |
+| fact_mandat | DDL / CHARGEMENT IMPLÉMENTÉS |
+| fact_paiement | DDL / CHARGEMENT IMPLÉMENTÉS |
 | Airflow design | COMPLETE |
 | dbt strategy | COMPLETE |
 | Data Quality | COMPLETE |
 | KPI model | UPDATED |
 | Growth assumptions | ALIGNED WITH STARTERPACK |
-| Runtime warehouse | PENDING |
-| Airflow execution | PENDING |
-| Data Quality execution | PENDING |
-| Runtime evidence | PENDING |
+| Runtime warehouse | PÉRIMÈTRE INITIAL VALIDÉ DANS LE RAPPORT DU 24 AOÛT |
+| Airflow execution | DOCUMENTÉE / RUN COURANT À RATTACHER |
+| Data Quality execution | RÉSULTATS HISTORIQUES DISPONIBLES / EXTENSIONS À VALIDER |
+| Runtime evidence | RAPPORT DATA RÉFÉRENCÉ / FAITS ÉTENDUS À CONSOLIDER |
 
 ---
 

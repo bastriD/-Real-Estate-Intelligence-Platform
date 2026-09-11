@@ -4,7 +4,7 @@
 **Compétence :** C7 — Identifier les risques projet et définir les mesures de continuité et de reprise  
 **Projet :** Real Estate Intelligence Platform  
 **Plateforme :** Enterprise AI Platform  
-**Statut :** Baseline documentaire — preuves de reprise à consolider
+**Statut :** PRA PostgreSQL documenté et testé — exploitation permanente et RTO complet à consolider
 
 ---
 
@@ -1049,6 +1049,78 @@ Restore-test frequency
 
 # 48. Preuves disponibles
 
+## Registre des risques
+
+Le registre actif existe dans le projet :
+
+```text
+../../../95-GOVERNANCE/11-Risk-Register.md
+```
+
+Il relie les risques aux contrôles existants, à l'exposition résiduelle et aux actions de traitement. Il complète le cadre général de gestion des risques déjà référencé.
+
+## Restauration PostgreSQL démontrée
+
+Le rapport existant décrit le cycle réellement testé :
+
+```text
+PostgreSQL
+     |
+     v
+pg_dump custom
+     |
+     v
+Validation du catalogue
+     |
+     v
+MinIO externe / objet versionné
+     |
+     v
+PostgreSQL 16 isolé
+     |
+     v
+pg_restore
+     |
+     v
+Comparaison des données métier
+```
+
+| Mesure du test documenté | Résultat |
+|---|---|
+| Taille de la base source | 49 462 295 octets, environ 47 MB |
+| Sauvegarde compressée | Environ 4,3 MiB |
+| Catalogue `pg_restore --list` | 394 entrées |
+| Durée de `pg_restore` | Environ 6 secondes |
+| Biens avant / après | 14 000 / 14 000 |
+| Demandes avant / après | 87 / 87 |
+| Versions de demande avant / après | 88 / 88 |
+| Autres tables comparées | `audit_log`, `client`, `mandat`, `presentation`, `visite` : volumes identiques |
+
+Source de ces résultats :
+
+```text
+../../../PCA PRA/PCA-PRA-POSTGRESQL.md
+```
+
+Ces résultats concernent l'expérience décrite dans ce rapport. Les six secondes ne représentent pas le RTO complet de l'application. La comparaison porte sur les contrôles métier effectués, pas sur une recette de tous les services.
+
+## Automatisation permanente
+
+La configuration actuelle contient le CronJob `real-estate-postgresql-backup`, la production d'une empreinte SHA-256 et la publication de son état désiré par GitOps.
+
+Depuis la racine du dépôt :
+
+```text
+deploy/kubernetes/pra/postgresql-backup-cronjob.yaml
+deploy/kubernetes/pra/kustomization.yaml
+deploy/kubernetes/pra/application.yaml
+.gitlab/ci/pra.yml
+```
+
+Le rapport conserve comme travail restant la preuve finale d'exécution du CronJob permanent, la rétention, les alertes et la reprise applicative complète.
+
+## Synthèse
+
 | Élément | Statut |
 |---|---|
 | Risk Management | DOCUMENTÉ |
@@ -1059,8 +1131,9 @@ Restore-test frequency
 | RPO/RTO model | DOCUMENTÉ |
 | Recovery order | DOCUMENTÉ |
 | PlantUML DR | DISPONIBLE |
-| Real restore test | À CONSOLIDER |
-| Measured RTO | À PRODUIRE |
+| Real restore test | POSTGRESQL ISOLÉ — DOCUMENTÉ ET VALIDÉ |
+| Measured restore duration | ENVIRON 6 S POUR `pg_restore` |
+| Measured RTO | REPRISE APPLICATIVE COMPLÈTE À MESURER |
 | Measured RPO | À PRODUIRE |
 
 ---
@@ -1120,9 +1193,10 @@ PCA documentation          COMPLETE
 PRA documentation          COMPLETE
 Backup architecture        COMPLETE
 Recovery sequence          COMPLETE
-Restore execution          TO COMPLETE
-Measured RPO/RTO           TO COMPLETE
-Recovery evidence          TO COMPLETE
+PostgreSQL restore          RUNTIME VERIFIED / RAPPORT EXISTANT
+Permanent backup CronJob    IMPLEMENTED / FINAL RUNTIME EVIDENCE PENDING
+Full application RPO/RTO    TO COMPLETE
+Recovery evidence          PARTIAL / POSTGRESQL REPORT AVAILABLE
 ```
 
 ---

@@ -1406,9 +1406,48 @@ No Sensitive Data
 
 # 74. Preuves existantes
 
+## Choix effectivement matérialisés
+
+Le manifeste backend précise les ressources demandées et limitées :
+
+| Paramètre | Valeur configurée |
+|---|---|
+| Réplicas backend | 1 |
+| CPU demandé | 100m |
+| Mémoire demandée | 128Mi |
+| Limite CPU | 500m |
+| Limite mémoire | 512Mi |
+
+Source :
+
+```text
+../../../../deploy/kubernetes/backend/deployment.yaml
+```
+
+Ces valeurs sont des paramètres de configuration. Elles ne représentent pas une mesure de consommation ni la preuve d'un dimensionnement optimal.
+
+D'autres choix contribuent à la maîtrise des traitements :
+
+- matching déterministe dans l'API sans appel LLM pour chaque recommandation ;
+- sélection des biens actifs avant scoring ;
+- réutilisation de PostgreSQL pour les couches du projet ;
+- orchestration Data par tâches plutôt qu'ajout systématique d'une plateforme de streaming ;
+- technologies RAG, Kafka et plateformes supplémentaires différées selon la stratégie SI.
+
+Sources complémentaires :
+
+```text
+../../../../src/api/services/recommendation.py
+../../../../src/ai/matching/repository.py
+../../../../pipelines/airflow/real_estate_ingestion_dag.py
+../../01-BC01/C2-Strategie-SI/README.md
+```
+
+La preuve d'éco-conception porte ici sur les choix et les configurations. Un gain énergétique, carbone ou financier reste à mesurer sur un périmètre défini.
+
 | Élément | Statut |
 |---|---|
-| Note éco-conception | EXISTANTE |
+| Note éco-conception | PRINCIPES DOCUMENTÉS / NOTE AUTONOME À RATTACHER |
 | Capacity Planning | DOCUMENTÉ |
 | Data Lifecycle | DOCUMENTÉ |
 | Resource efficiency principles | DOCUMENTÉS |

@@ -1,0 +1,156 @@
+@startuml
+title <size:22><b>Enterprise AI Platform — Current-State Architecture</b></size>\n<size:13>Real Estate Intelligence Platform · BC01-C1</size>
+
+top to bottom direction
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam roundCorner 18
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.3
+
+skinparam package {
+  BackgroundColor #FFFFFF
+  BorderColor #CBD5E1
+  FontColor #0F172A
+  FontStyle bold
+  RoundCorner 18
+}
+
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #94A3B8
+  FontColor #0F172A
+  RoundCorner 14
+}
+
+skinparam database {
+  BackgroundColor #EFF6FF
+  BorderColor #3B82F6
+  FontColor #1E3A8A
+}
+
+actor "Business Users" as Users
+actor "Data / AI Engineer" as DataAI
+actor "Platform / DevOps Engineer" as DevOps
+
+package "Engineering & Delivery" #FFF7F7 {
+  rectangle "GitLab CE\nSource Code" as GitLab
+  rectangle "GitLab CI\nTest · Build · Publish" as CI
+  rectangle "GitOps\nlab-gitops" as GitOps
+  rectangle "Argo CD\nReconciliation" as Argo
+
+  GitLab --> CI
+  CI --> GitOps
+  GitOps --> Argo
+}
+
+DataAI --> GitLab
+DevOps --> GitLab
+
+package "Kubernetes Platform" #EEF6FF {
+
+  package "Application" #ECFDF3 {
+    rectangle "FastAPI\nBusiness API" as API
+    rectangle "JWT + RBAC\nADMIN · CLIENT\nCHASSEUR · SERVICE" as Auth
+    rectangle "Deterministic Matching\nEligibility + Ranking" as Matching
+
+    API --> Auth
+    API --> Matching
+  }
+
+  package "Data Platform" #F5F3FF {
+    rectangle "Airflow\nOrchestration" as Airflow
+    rectangle "dbt\nTransformations + Tests" as DBT
+    rectangle "OpenMetadata\nCatalog · Lineage · Profiling" as OM
+    rectangle "MLflow\nExperiment Tracking" as MLflow
+    database "PostgreSQL" as PostgreSQL
+  }
+
+  package "Observability" #ECFEFF {
+    rectangle "Prometheus\nMetrics" as Prometheus
+    rectangle "Grafana\nDashboards" as Grafana
+    rectangle "Loki\nLogs" as Loki
+    rectangle "Tempo\nTraces" as Tempo
+    rectangle "OpenTelemetry\nCollector" as OTEL
+  }
+}
+
+Users --> API
+Argo --> API
+Argo --> Airflow
+Argo --> OM
+Argo --> MLflow
+
+API --> PostgreSQL
+Matching --> PostgreSQL
+Airflow --> PostgreSQL
+DBT --> PostgreSQL
+OM --> PostgreSQL
+
+API ..> Prometheus
+API ..> OTEL
+Prometheus --> Grafana
+Loki --> Grafana
+Tempo --> Grafana
+OTEL --> Tempo
+
+package "Data Flow" #F8FAFC {
+  rectangle "RAW\nBronze" as RAW
+  rectangle "STAGING\nSilver" as STAGING
+  rectangle "REAL_ESTATE\nOLTP" as OLTP
+  rectangle "WAREHOUSE\nGold" as WH
+  rectangle "ANALYTICS\nMarts" as Analytics
+
+  RAW --> STAGING
+  STAGING --> OLTP
+  OLTP --> WH
+  WH --> Analytics
+}
+
+PostgreSQL --> RAW
+PostgreSQL --> STAGING
+PostgreSQL --> OLTP
+PostgreSQL --> WH
+PostgreSQL --> Analytics
+
+package "External / Dedicated" #FFFBEB {
+  rectangle "MinIO\nBackups + ML Artifacts" as MinIO
+  rectangle "AI Node\nGTX 1080 · 8 GB\nOllama · Qwen3" as AI
+}
+
+PostgreSQL --> MinIO : Backup
+MLflow --> MinIO : Artifacts
+DataAI --> AI : Local AI / experiments
+
+package "Governance" #FFF1F2 {
+  rectangle "Policies" as Policies
+  rectangle "Risk Register\n11-Risk-Register.md" as Risks
+  rectangle "Controls" as Controls
+  rectangle "Evidence" as Evidence
+
+  Policies --> Risks
+  Risks --> Controls
+  Controls --> Evidence
+}
+
+OM ..> Evidence
+Prometheus ..> Evidence
+MinIO ..> Evidence
+
+note bottom
+<b>Current production state</b>
+
+Production recommendation:
+Deterministic eligibility + weighted ranking
+
+Existing local AI:
+GTX 1080 + Ollama/Qwen
+
+Not current production:
+RAG · MCP · Qdrant · Keycloak · Vault · Kafka · Lakehouse · React frontend
+end note
+
+@enduml

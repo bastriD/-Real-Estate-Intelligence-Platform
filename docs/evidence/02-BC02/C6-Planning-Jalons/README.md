@@ -1108,7 +1108,26 @@ Decision journal
 
 # 44. Preuves à consolider
 
-Ce dossier doit progressivement référencer :
+## Jalons réels documentés
+
+| Date de la pièce | Réalisation documentée | Source |
+|---|---|---|
+| 24 août 2026 | Chaîne Data, warehouse marché, dbt et ingestion OpenMetadata validés dans le rapport | `../../../40-DATA/ARCHITECTURE-DATA-IMPLEMENTEE.md` |
+| 1 septembre 2026 | Baseline déterministe et stratégie de dataset étiqueté | `../../../50-AI/11-Matching-Baseline-Implementation.md` et `../../../50-AI/12-Labelled-Dataset-Strategy.md` |
+| 9 septembre 2026 | Revue corrective et 217 tests locaux réussis | `../../../95-GOVERNANCE/SCRIPT-REVIEW-2026-09-09.md` |
+| 9 septembre 2026 | Recommandation auditée vérifiée via API et PostgreSQL | `../../../60-SECURITY/RECOMMENDATION-AUDIT-RUNTIME-EVIDENCE.md` |
+| 9 septembre 2026 | Audit Visite, 28 tests ciblés et 167 tests de la sélection CI locale | `../../03-BC03/C6-Tests-Executes/visite-audit-2026-09-09/README.md` |
+| 9–10 septembre 2026 | Sauvegarde externe, restauration isolée et définition du CronJob GitOps | `../../../PCA PRA/PCA-PRA-POSTGRESQL.md` |
+
+Ces dates sont celles des réalisations décrites dans les pièces disponibles. Elles ne sont ni des durées de travail ni un planning initial reconstitué.
+
+## Écart entre réalisé et planifié
+
+Le prochain jalon porte sur la consolidation des preuves et de la recette : parcours métier PostgreSQL, rémunération, contrôle d'accès fin et exploitation permanente du PRA.
+
+Les dates prévues et les validations de jalons ne sont pas renseignées lorsqu'aucune pièce ne les établit. Un Gantt théorique ne doit pas être présenté comme le suivi réel du projet.
+
+Ce dossier peut référencer les livrables suivants lorsqu'ils existent :
 
 ```text
 01-gantt.*
@@ -1134,7 +1153,7 @@ uniquement si ces artifacts sont effectivement créés et utilisés.
 | Scope de délestage | DÉFINI |
 | Planning evidence | PARTIEL |
 | Gantt daté | À PRODUIRE / CENTRALISER |
-| Dates réelles | À RENSEIGNER |
+| Dates réelles | JALONS DOCUMENTÉS RATTACHÉS EN SECTION 44 |
 | Actual vs planned | À CONSOLIDER |
 
 ---

@@ -1,5 +1,21 @@
 # Enterprise AI Platform — Documentation
 
+## Current implementation references — 2026-09-11
+
+This catalog includes architecture baselines and future platform designs. A document marked complete describes documentation maturity, not proof that every capability is implemented or currently running.
+
+Start with the [project README](../Readme.md) and [application architecture](20-APPLICATION/01-Application-Architecture.md). The current backend is one FastAPI application with local JWT authentication, business services, and deterministic matching. React, Keycloak/OIDC, Vault, and semantic/LLM application integrations remain future capabilities in this repository.
+
+Implementation and dated evidence references:
+
+- [Implemented data architecture](40-DATA/ARCHITECTURE-DATA-IMPLEMENTEE.md)
+- [Deterministic matching baseline](50-AI/11-Matching-Baseline-Implementation.md)
+- [Labelled dataset strategy](50-AI/12-Labelled-Dataset-Strategy.md)
+- [Authentication, RBAC, and audit](60-SECURITY/SECURITY-RBAC-AUDIT-IMPLEMENTATION-EVIDENCE.md)
+- [Recommendation audit runtime evidence](60-SECURITY/RECOMMENDATION-AUDIT-RUNTIME-EVIDENCE.md)
+
+Use these implementation references to interpret older target designs. Historical runtime evidence applies to its recorded date and scope; current infrastructure health requires separate verification.
+
 ## Project Fil Rouge
 
 This directory contains the complete architecture, engineering, operations, security, data, AI and governance documentation for the **Enterprise AI Platform**.
@@ -1670,7 +1686,9 @@ Then continue according to the reader's role.
 
 ---
 
-# 30. Current Documentation Inventory
+# 30. Initial Documentation Baseline Inventory
+
+The counts below describe the initial architecture baseline. Later implementation and evidence documents are additional; this is not a live file count. Current implementation references are listed at the top of this index.
 
 ```text
 Foundation                 11 documents
@@ -1707,7 +1725,7 @@ provide documentation navigation and framework guidance.
 |---|---|
 | Foundation | Complete |
 | Business Architecture | Baseline complete |
-| Application Architecture | Baseline complete |
+| Application Architecture | Updated to repository implementation on 2026-09-11 |
 | Infrastructure | Complete |
 | Data | Complete |
 | AI | Complete |

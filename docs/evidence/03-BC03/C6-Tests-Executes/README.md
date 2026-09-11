@@ -4,7 +4,7 @@
 **Compétence :** C6 — Définir, exécuter et documenter des scénarios de tests  
 **Projet :** Real Estate Intelligence Platform  
 **Plateforme :** Enterprise AI Platform  
-**Statut :** Baseline documentaire — preuves d'exécution à consolider
+**Statut :** Rapports de tests locaux disponibles — preuves runtime partielles référencées
 
 ---
 
@@ -55,7 +55,7 @@ Le document Fil Rouge associé est :
 PLAN-DE-TESTS.md
 ```
 
-Ce document définit les scénarios de test.
+Ce nom désigne le plan de tests attendu. Le fichier autonome n'est pas présent dans la copie locale consultée ; les scénarios ci-dessous et les suites de `tests/` constituent les sources disponibles.
 
 Le présent dossier doit progressivement contenir les **preuves d'exécution** correspondantes.
 
@@ -1333,6 +1333,51 @@ Le projet a déjà exécuté ce contrôle.
 
 # 62. Preuve d'exécution
 
+## Rapports déjà présents — 9 septembre 2026
+
+Les dossiers existants contiennent les résultats suivants :
+
+| Campagne | Périmètre | Résultat | Artifact |
+|---|---|---|---|
+| Revue corrective avant correction | 14 cas de régression | 10 échecs, 4 réussites | `script-review-2026-09-09/regressions-before.xml` |
+| Revue corrective après correction | Backend, IA et Data | 217 réussites, 0 échec | `script-review-2026-09-09/review-tests.xml` |
+| Sélection CI exécutée localement | Sélection configurée au moment de la revue | 145 réussites, 0 échec | `script-review-2026-09-09/ci-tests.xml` |
+| Audit Visite ciblé | Services et API Visite | 28 réussites, 0 échec | `visite-audit-2026-09-09/visite-audit-focused.xml` |
+| Régression après audit Visite | 157 backend, 9 Data, 1 disponibilité des candidats | 167 réussites, 0 échec | `visite-audit-2026-09-09/visite-audit-regression.xml` |
+
+Couverture backend enregistrée :
+
+| Campagne | Couverture `src/api` | Artifact |
+|---|---|---|
+| Revue corrective | 83,09 % | `script-review-2026-09-09/coverage.xml` |
+| Audit Visite | 85,24 % | `visite-audit-2026-09-09/visite-audit-coverage.xml` |
+
+Le seuil de la sélection CI backend est de 80 %. Les campagnes ne doivent pas être additionnées : leurs périmètres se recouvrent et correspondent à des états successifs du code.
+
+Les échecs avant correction sont conservés comme preuve de reproduction des défauts. Ils ne constituent pas le résultat de la campagne après correction.
+
+## Contexte et limites
+
+Les notes associées décrivent Python 3.12.14, des paramètres PostgreSQL factices pointant vers le port local 1 et des dépendances remplacées pour les tests API/services.
+
+Ces résultats démontrent l'exécution locale. Ils ne sont pas présentés comme des jobs GitLab distants ni comme une validation PostgreSQL de toutes les transactions.
+
+```text
+../../../95-GOVERNANCE/SCRIPT-REVIEW-2026-09-09.md
+visite-audit-2026-09-09/README.md
+```
+
+## Expériences runtime déjà documentées
+
+Deux documents apportent des preuves sur des périmètres complémentaires :
+
+```text
+../../../60-SECURITY/RECOMMENDATION-AUDIT-RUNTIME-EVIDENCE.md
+../../../PCA PRA/PCA-PRA-POSTGRESQL.md
+```
+
+Le premier décrit une recommandation authentifiée et son audit PostgreSQL. Le second décrit une sauvegarde puis une restauration PostgreSQL isolée avec comparaison des données métier. Ils ne remplacent pas une recette complète de l'application ni les tests d'accessibilité et de charge restant à réaliser.
+
 Chaque test réellement exécuté doit produire une preuve.
 
 Formats possibles :
@@ -1706,12 +1751,12 @@ et constater que les tests n'ont pas seulement été écrits mais exécutés.
 Test strategy                 COMPLETE
 Test categories               COMPLETE
 Test scenarios baseline       COMPLETE
-Existing test plan            AVAILABLE
+Existing test plan            SCENARIOS AVAILABLE / SEPARATE FILE TO LINK
 Some runtime tests            ALREADY EXECUTED
-Centralized evidence          TO COMPLETE
+Centralized evidence          LOCAL JUNIT / COVERAGE REPORTS AVAILABLE
 Application final tests       TO COMPLETE
-Security test campaign        TO COMPLETE
-Restore test                  TO COMPLETE
+Security test campaign        LOCAL TESTS / PARTIAL RUNTIME EVIDENCE
+PostgreSQL restore test       DOCUMENTED / FULL APPLICATION RECOVERY PENDING
 Accessibility tests           TO COMPLETE
 ```
 

@@ -1,0 +1,304 @@
+@startuml
+
+title <size:22><b>Cartographie du SI actuel</b></size>\n<size:13>Real Estate Intelligence Platform · BC01-C1 · État actuel 2026</size>
+
+top to bottom direction
+
+!pragma layout smetana
+
+
+' ============================================================
+' LOCAL TECHNOLOGY SPRITES
+' ============================================================
+
+!define SPRITES ../../../plantuml/gilbarbara-plantuml-sprites/sprites
+
+!include SPRITES/gitlab.puml
+!include SPRITES/argo.puml
+!include SPRITES/kubernetes.puml
+!include SPRITES/postgresql.puml
+!include SPRITES/airflow.puml
+!include SPRITES/dbt.puml
+!include SPRITES/prometheus.puml
+!include SPRITES/grafana.puml
+!include SPRITES/opentelemetry.puml
+!include SPRITES/python.puml
+!include SPRITES/jwt.puml
+!include SPRITES/nvidia.puml
+
+
+' ============================================================
+' GLOBAL STYLE
+' ============================================================
+
+skinparam backgroundColor #F8FAFC
+skinparam shadowing false
+skinparam roundCorner 16
+skinparam defaultFontName "Arial"
+skinparam defaultFontSize 12
+skinparam defaultTextAlignment center
+
+skinparam linetype ortho
+
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.5
+skinparam ArrowFontColor #475569
+skinparam ArrowFontSize 10
+
+skinparam package {
+    BackgroundColor #FFFFFF
+    BorderColor #CBD5E1
+    FontColor #0F172A
+    FontSize 14
+    FontStyle bold
+    RoundCorner 18
+}
+
+skinparam rectangle {
+    BackgroundColor #FFFFFF
+    BorderColor #CBD5E1
+    FontColor #0F172A
+    RoundCorner 13
+}
+
+skinparam database {
+    BackgroundColor #FFFFFF
+    BorderColor #94A3B8
+    FontColor #0F172A
+}
+
+skinparam legend {
+    BackgroundColor #FFFFFF
+    BorderColor #CBD5E1
+    FontColor #334155
+}
+
+
+' ============================================================
+' ROW 1 — ACTORS
+' ============================================================
+
+rectangle "<b>UTILISATEURS MÉTIER</b>\n<size:11>Client · Chasseur · Admin</size>" as USERS #F8FAFC
+
+rectangle "<b>DATA / PLATFORM ENGINEER</b>\n<size:11>Build · Data · Operations</size>" as ENGINEER #F8FAFC
+
+USERS -[hidden]right-> ENGINEER
+
+
+' ============================================================
+' ROW 2 — DELIVERY + APPLICATION
+' ============================================================
+
+package "DELIVERY & GITOPS" as DELIVERY #FFF7F3 {
+
+    rectangle "<$gitlab,color=#FC6D26>\n<b>GitLab CE</b>\n<size:10>Source Code</size>" as GITLAB #FFFFFF
+
+    rectangle "<$gitlab,color=#E24329>\n<b>GitLab CI</b>\n<size:10>Test · Build · Publish</size>" as CI #FFFFFF
+
+    rectangle "<b>lab-gitops</b>\n<size:10>Desired State</size>" as GITOPS #FFFFFF
+
+    rectangle "<$argo,color=#EF7B4D>\n<b>Argo CD</b>\n<size:10>Reconciliation</size>" as ARGO #FFFFFF
+
+    GITLAB -right-> CI
+    CI -right-> GITOPS
+    GITOPS -right-> ARGO
+}
+
+
+package "APPLICATION MÉTIER" as APPLICATION #EFF6FF {
+
+    rectangle "<$python,color=#3776AB>\n<b>FastAPI</b>\n<size:10>Business API</size>" as API #FFFFFF
+
+    rectangle "<$jwt,color=#D63AFF>\n<b>Authentication</b>\n<size:10>Argon2id · JWT</size>" as AUTH #FFFFFF
+
+    rectangle "<b>RBAC</b>\n<size:10>ADMIN · CLIENT\nCHASSEUR · SERVICE</size>" as RBAC #FFFFFF
+
+    rectangle "<b>Matching Engine</b>\n<size:10>Hard Eligibility\n+ Weighted Ranking</size>" as MATCHING #FFFFFF
+
+    API -right-> AUTH
+    AUTH -right-> RBAC
+    RBAC -right-> MATCHING
+}
+
+
+DELIVERY -[hidden]right-> APPLICATION
+
+ENGINEER -down-> GITLAB : "2 · Code"
+USERS -down-> API : "1 · Accès métier"
+
+
+' ============================================================
+' ROW 3 — KUBERNETES PLATFORM
+' ============================================================
+
+package "KUBERNETES PLATFORM · kubeadm HA · v1.30.14" as K8S_PLATFORM #F8FAFC {
+
+    rectangle "<$kubernetes,color=#326CE5>\n<b>Kubernetes</b>\n<size:10>HA Runtime Platform</size>" as K8S #EFF6FF
+
+
+    package "DATA PLATFORM" as DATA_PLATFORM #F0FDF4 {
+
+        rectangle "<$airflow,color=#017CEE>\n<b>Airflow</b>\n<size:10>Orchestration</size>" as AIRFLOW #FFFFFF
+
+        rectangle "<$dbt,color=#FF694B>\n<b>dbt</b>\n<size:10>Transform · Test</size>" as DBT #FFFFFF
+
+        rectangle "<b>OpenMetadata</b>\n<size:10>Catalog · Lineage\nProfiling · Governance</size>" as OM #FFFFFF
+
+        rectangle "<b>MLflow</b>\n<size:10>Experiment Tracking</size>" as MLFLOW #FFFFFF
+
+        AIRFLOW -right-> DBT
+
+        OM -[hidden]right-> MLFLOW
+
+        AIRFLOW -[hidden]down-> OM
+        DBT -[hidden]down-> MLFLOW
+    }
+
+
+    package "SYSTEM OF RECORD" as SOR #EFF6FF {
+
+        database "<$postgresql,color=#336791>\n<b>PostgreSQL</b>\n<size:10>Operational + Analytical DB</size>" as POSTGRES #FFFFFF
+    }
+
+
+    package "OBSERVABILITY" as OBS #FAF5FF {
+
+        rectangle "<$prometheus,color=#E6522C>\n<b>Prometheus</b>\n<size:10>Metrics</size>" as PROM #FFFFFF
+
+        rectangle "<b>Loki</b>\n<size:10>Logs</size>" as LOKI #FFFFFF
+
+        rectangle "<b>Tempo</b>\n<size:10>Traces</size>" as TEMPO #FFFFFF
+
+        rectangle "<$opentelemetry,color=#425CC7>\n<b>OpenTelemetry</b>\n<size:10>Telemetry</size>" as OTEL #FFFFFF
+
+        rectangle "<$grafana,color=#F46800>\n<b>Grafana</b>\n<size:10>Dashboards</size>" as GRAFANA #FFFFFF
+
+        PROM -right-> GRAFANA
+        LOKI -right-> GRAFANA
+        TEMPO -right-> GRAFANA
+
+        OTEL -up-> TEMPO
+
+        PROM -[hidden]down-> LOKI
+        LOKI -[hidden]down-> TEMPO
+    }
+
+
+    K8S -[hidden]right-> AIRFLOW
+    DATA_PLATFORM -[hidden]right-> SOR
+    SOR -[hidden]right-> OBS
+}
+
+
+ARGO -down-> K8S : "3 · GitOps"
+
+API -down-> POSTGRES : "4 · OLTP"
+
+API ..right..> PROM : metrics
+API ..right..> OTEL : traces
+
+AIRFLOW ..right..> PROM : metrics
+
+OM ..right..> POSTGRES : metadata
+
+
+' ============================================================
+' ROW 4 — DATA LAYERS
+' ============================================================
+
+package "DATA LAYERS · MEDALLION" as DATA_LAYERS #F8FAFC {
+
+    database "<b>RAW</b>\n<size:10>Bronze</size>" as RAW #FEF3C7
+
+    database "<b>STAGING</b>\n<size:10>Silver</size>" as STAGING #E2E8F0
+
+    database "<b>REAL_ESTATE</b>\n<size:10>OLTP métier</size>" as OLTP #DBEAFE
+
+    database "<b>WAREHOUSE</b>\n<size:10>Gold</size>" as WAREHOUSE #DCFCE7
+
+    database "<b>ANALYTICS</b>\n<size:10>Marts</size>" as ANALYTICS #CCFBF1
+
+    RAW -right-> STAGING
+    STAGING -right-> OLTP
+    OLTP -right-> WAREHOUSE
+    WAREHOUSE -right-> ANALYTICS
+}
+
+
+AIRFLOW -down-> RAW : "5 · Ingestion"
+
+DBT -down-> WAREHOUSE : "6 · Transformation"
+
+POSTGRES ..down..> OLTP : schemas
+
+
+' ============================================================
+' ROW 5 — EXTERNAL SERVICES
+' ============================================================
+
+package "EXTERNAL / DEDICATED SERVICES" as EXTERNAL #FFF7ED {
+
+    rectangle "<b>MinIO</b>\n<size:10>Backup Storage\nML Artifacts</size>" as MINIO #FFFBEB
+
+    rectangle "<$nvidia,color=#76B900>\n<b>AI NODE</b>\n<size:10>GTX 1080 · 8 GB VRAM\nOllama · Qwen3 8B</size>" as AI #F0FDF4
+
+    MINIO -[hidden]right-> AI
+}
+
+
+POSTGRES -down-> MINIO : "7 · Daily backup"
+
+MLFLOW ..down..> MINIO : artifacts
+MLFLOW ..down..> AI : experiments
+
+
+' ============================================================
+' STATUS LABELS
+' ============================================================
+
+rectangle "<b>PRODUCTION</b>\n<size:10>Hard eligibility → Ranking\n→ Recommendation → Presentation</size>" as PROD_STATUS #E0F2FE
+
+rectangle "<b>RECOVERY VERIFIED</b>\n<size:10>PostgreSQL → MinIO\n→ isolated restore → integrity check</size>" as PRA_STATUS #FEF3C7
+
+rectangle "<b>AI CAPABILITY AVAILABLE</b>\n<size:10>GPU inference validated\nNot production matching</size>" as AI_STATUS #ECFCCB
+
+PROD_STATUS -[hidden]right-> PRA_STATUS
+PRA_STATUS -[hidden]right-> AI_STATUS
+
+MATCHING ..down..> PROD_STATUS
+MINIO ..down..> PRA_STATUS
+AI ..down..> AI_STATUS
+
+
+' ============================================================
+' GLOBAL GRID CONTROL
+' ============================================================
+
+USERS -[hidden]down-> DELIVERY
+ENGINEER -[hidden]down-> APPLICATION
+
+DELIVERY -[hidden]down-> K8S_PLATFORM
+APPLICATION -[hidden]down-> K8S_PLATFORM
+
+K8S_PLATFORM -[hidden]down-> DATA_LAYERS
+
+DATA_LAYERS -[hidden]down-> EXTERNAL
+
+EXTERNAL -[hidden]down-> PROD_STATUS
+
+
+' ============================================================
+' LEGEND
+' ============================================================
+
+legend bottom
+  |= <b>Couleur</b> |= <b>Zone</b> |
+  | <#EFF6FF> | Application métier |
+  | <#F0FDF4> | Data Platform |
+  | <#FAF5FF> | Observabilité |
+  | <#FFF7F3> | Delivery / GitOps |
+  | <#FEF3C7> | Recovery vérifié |
+  | <#ECFCCB> | IA disponible hors matching de production |
+endlegend
+
+@enduml

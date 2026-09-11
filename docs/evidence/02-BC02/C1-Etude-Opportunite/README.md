@@ -788,7 +788,33 @@ avec des capacités transverses présentes tout au long du cycle.
 
 # 30. Preuves complémentaires à joindre
 
-Pour la soutenance, les preuves pertinentes peuvent inclure :
+## État disponible dans le projet
+
+L'opportunité est désormais reliée à des réalisations concrètes.
+
+| Besoin | Réalisation | Preuve disponible |
+|---|---|---|
+| Conserver les critères du client | Demandes et versions de demande | Services et modèles FastAPI |
+| Sélectionner des biens compatibles | Matching déterministe et recommandations persistées | Rapport de vérification des recommandations du 9 septembre 2026 |
+| Centraliser les traitements Data | Chaîne RAW / STAGING / OLTP / Warehouse / analytics | Architecture Data implémentée et DAG Airflow |
+| Attribuer les opérations | Identité applicative, RBAC et audit métier | Documentation sécurité et résultats de tests |
+| Protéger les données | Sauvegarde MinIO et restauration PostgreSQL isolée | Rapport PRA |
+
+Sources complémentaires :
+
+```text
+../../../40-DATA/ARCHITECTURE-DATA-IMPLEMENTEE.md
+../../../60-SECURITY/RECOMMENDATION-AUDIT-RUNTIME-EVIDENCE.md
+../../../60-SECURITY/SECURITY-RBAC-AUDIT-IMPLEMENTATION-EVIDENCE.md
+../../../PCA PRA/PCA-PRA-POSTGRESQL.md
+../../01-BC01/C2-Strategie-SI/README.md
+```
+
+## Bénéfices restant à mesurer
+
+Les réalisations démontrent la faisabilité technique de la solution. Le gain de temps des chasseurs, le taux de conversion et le retour sur investissement restent des bénéfices attendus. Aucun montant économisé ni pourcentage d'amélioration métier n'est déduit de la seule présence de l'API ou des pipelines.
+
+Pour la soutenance, les preuves complémentaires pertinentes peuvent inclure :
 
 ```text
 Architecture diagrams

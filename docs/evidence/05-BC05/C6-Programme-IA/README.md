@@ -4,7 +4,7 @@
 **Compétence :** Concevoir, développer, intégrer et exploiter un programme IA complet  
 **Projet :** Real Estate Intelligence Platform  
 **Version :** 2.0  
-**Statut :** Baseline documentaire — implémentation exécutable à produire  
+**Statut :** Programme de matching, entraînement et comparaison implémenté — intégration ML finale à consolider
 **Extension projet :** entraînement réel, MLflow, registry, serving et observabilité  
 
 ---
@@ -82,6 +82,8 @@ monitoring
 ---
 
 # 3. Architecture générale
+
+La vue ci-dessous décrit la chaîne cible complète. Dans l'état actuel, l'API sert le baseline déterministe. L'entraînement et la comparaison ML sont des programmes distincts ; aucun modèle approuvé n'est chargé automatiquement par cette API.
 
 ```text
 PostgreSQL
@@ -1645,6 +1647,25 @@ Metrics / Logs / Trace
 
 # 102. Implementation Locations
 
+## Modules exécutables présents
+
+| Fonction | Module depuis la racine du dépôt |
+|---|---|
+| Accès aux demandes et biens éligibles | `src/ai/matching/repository.py` |
+| Features et score déterministe | `src/ai/matching/features.py` |
+| Construction du dataset | `src/ai/matching/training_dataset.py` |
+| Partitionnement par groupe | `src/ai/matching/dataset_split.py` |
+| Régression logistique | `src/ai/matching/model_training.py` |
+| Évaluation et comparaison | `src/ai/matching/evaluate.py`, `model_comparison.py` |
+| Tracking | `src/ai/matching/mlflow_tracking.py` |
+| Service métier de recommandation | `src/api/services/recommendation.py` |
+
+Les points d'entrée `run_evaluation.py`, `run_training_dataset_validation.py`, `run_training_dataset_split.py`, `run_model_training.py` et `run_model_comparison.py` se trouvent dans le même répertoire `src/ai/matching/`.
+
+Les Jobs Kubernetes correspondants sont définis sous `deploy/mlops/`. Leur définition constitue une preuve d'implémentation ; chaque résultat runtime doit être rattaché à son Job et son run MLflow.
+
+## Répertoires du projet
+
 Application :
 
 ```text
@@ -1696,6 +1717,23 @@ pour documentation et index de preuves.
 ---
 
 # 104. Evidence Runtime
+
+## Preuves déjà disponibles
+
+```text
+../../../50-AI/11-Matching-Baseline-Implementation.md
+../../../60-SECURITY/RECOMMENDATION-AUDIT-RUNTIME-EVIDENCE.md
+../../../95-GOVERNANCE/SCRIPT-REVIEW-2026-09-09.md
+../../03-BC03/C6-Tests-Executes/script-review-2026-09-09/review-tests.xml
+```
+
+Ces pièces décrivent l'évaluation du baseline, son usage par l'API et les tests locaux du programme. Le rapport runtime des recommandations relie une sélection à sa présentation et à son audit.
+
+Le dataset d'apprentissage actuel utilise la provenance synthétique du générateur. La généralisation à du feedback métier réel, les critères de promotion et le serving d'un modèle supervisé restent à démontrer séparément.
+
+L'API ne dépend pas d'Ollama pour produire les recommandations actuelles. Les parties Ollama, RAG, fallback de modèle et registry décrivent des extensions lorsque leur intégration n'est pas attestée.
+
+## Pièces complémentaires
 
 Preuves prévues :
 
@@ -1765,26 +1803,26 @@ dans le même projet.
 |---|---|
 | AI program architecture | V2 COMPLETE |
 | Dataset strategy | DEFINED |
-| Feature pipeline | DEFINED |
-| Rules baseline | DEFINED |
-| Logistic Regression | PLANNED |
+| Feature pipeline | IMPLEMENTED |
+| Rules baseline | IMPLEMENTED / TESTED |
+| Logistic Regression | IMPLEMENTED / LOCAL TESTS AVAILABLE |
 | Random Forest | PLANNED |
-| Evaluation | DEFINED |
-| MLflow | PLANNED |
+| Evaluation | IMPLEMENTED |
+| MLflow | TRACKING CODE IMPLEMENTED / RUN EVIDENCE TO CONSOLIDATE |
 | Model Registry | PLANNED |
 | Model Card | DEFINED |
-| FastAPI serving | DEFINED |
+| FastAPI serving | DETERMINISTIC RECOMMENDATIONS IMPLEMENTED |
 | Ollama integration | DEFINED |
 | Docker | DEFINED |
-| GitLab CI | DEFINED |
-| GitOps | DEFINED |
-| Kubernetes | DEFINED |
-| Observability | DEFINED |
-| Security | DEFINED |
-| Runtime code | PENDING |
+| GitLab CI | CONFIGURATION IMPLEMENTED |
+| GitOps | PUBLICATION CONFIGURATION AVAILABLE |
+| Kubernetes | MLOPS JOB MANIFESTS AVAILABLE |
+| Observability | RECOMMENDATION METRICS IMPLEMENTED |
+| Security | API AUTHENTICATION / RBAC IMPLEMENTED |
+| Runtime code | EXECUTABLE MODULES AVAILABLE |
 | Runtime training | PENDING |
 | Runtime deployment | PENDING |
-| Runtime evidence | PENDING |
+| Runtime evidence | BASELINE / API DOCUMENTED ; SUPERVISED WORKFLOW TO CONSOLIDATE |
 
 ---
 

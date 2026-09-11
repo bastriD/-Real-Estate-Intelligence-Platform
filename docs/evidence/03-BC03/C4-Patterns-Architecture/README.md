@@ -1412,7 +1412,28 @@ Governance as Code
 
 # 70. Patterns applicatifs à prouver dans le code final
 
-À consolider avec l'application :
+## Patterns observables dans le backend
+
+| Pattern | Problème traité | Implémentation depuis la racine |
+|---|---|---|
+| Architecture en couches | Séparer HTTP, règles et persistence | `src/api/api/`, `services/`, `repositories/`, `db/` |
+| Service Layer | Porter les règles de création, modification et recommandation | `src/api/services/` |
+| Repository | Isoler les accès aux entités | `src/api/repositories/` |
+| Dependency Injection | Fournir session, utilisateur et services aux routes | Dépendances FastAPI dans `src/api/core/dependencies.py` et les endpoints |
+| Validation de schémas | Contrôler les entrées et les réponses | `src/api/schemas/` |
+| Audit transactionnel | Relier mutation et audit avant commit | `src/api/services/visite.py`, `presentation.py`, `recommendation.py` |
+| Health Checks | Distinguer santé et préparation du service | `src/api/api/v1/endpoints/health.py` |
+
+Les tests de services et d'API montrent l'intérêt du découplage : ils remplacent les dépendances externes pour vérifier les règles et les erreurs. Ils ne constituent pas une preuve d'intégration PostgreSQL complète.
+
+```text
+../C6-Tests-Executes/visite-audit-2026-09-09/README.md
+../../../60-SECURITY/RECOMMENDATION-AUDIT-RUNTIME-EVIDENCE.md
+```
+
+Les patterns Adapter généralisé, journalisation structurée complète et dégradation automatique d'un service LLM restent à démontrer selon leur implémentation effective.
+
+Rappel du périmètre applicatif :
 
 ```text
 Layered Architecture
@@ -1447,6 +1468,22 @@ CI output
 ---
 
 # 72. Exemple de structure cible
+
+La structure réelle du backend est :
+
+```text
+src/api/
+├── main.py
+├── api/v1/endpoints/
+├── core/
+├── db/models/
+├── observability/
+├── repositories/
+├── schemas/
+└── services/
+```
+
+L'exemple ci-dessous décrit seulement une organisation générique comparable :
 
 ```text
 app/
@@ -1510,9 +1547,9 @@ How were they validated?
 | Registry pattern | IMPLEMENTED |
 | Observability pattern | IMPLEMENTED |
 | Governance as Code | IMPLEMENTED / EVOLVING |
-| Application layered pattern | TO CONSOLIDATE |
-| Repository pattern | TO VERIFY IN FINAL APP |
-| DI | TO VERIFY |
+| Application layered pattern | IMPLEMENTED — `src/api/` |
+| Repository pattern | IMPLEMENTED — `src/api/repositories/` |
+| DI | IMPLEMENTED — FASTAPI DEPENDENCIES |
 | Adapter pattern | TARGET |
 | Graceful degradation | TO TEST |
 | Pattern runtime evidence | TO CONSOLIDATE |

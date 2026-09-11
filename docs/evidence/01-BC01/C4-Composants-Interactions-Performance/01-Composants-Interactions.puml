@@ -1,0 +1,252 @@
+@startuml
+title BC01-C4 — Composants, interactions, dépendances et performance
+caption Enterprise Real Estate Intelligence Platform — Septembre 2026
+
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam ArrowColor #666666
+skinparam defaultTextAlignment center
+
+legend right
+  |= Statut |= Signification |
+  | CURRENT / VERIFIED | Présent et/ou vérifié |
+  | IMMEDIATE-TARGET | Prochaine évolution décidée |
+  | EXPERIMENTAL | Hors chemin critique production |
+endlegend
+
+package "1. Application / Request Plane" {
+
+  actor "Utilisateur / Client API" as user
+
+  component "NGINX Ingress\nIMMEDIATE-TARGET\nHTTPS / TLS" as ingress
+
+  component "Service Kubernetes\nreal-estate-backend\nClusterIP :8000\nRUNTIME-VERIFIED" as backend_svc
+
+  component "FastAPI Backend\nreal-estate-backend\n1 replica\nRUNTIME-VERIFIED" as backend
+
+  component "Auth\nArgon2id + JWT HS256\nRBAC applicatif" as auth
+
+  component "RecommendationService\nValidation + matching + persistence" as reco
+
+  component "Moteur de matching\ndéterministe\nEligibility + weighted scoring" as matching
+
+  component "PresentationRepository\nSQLAlchemy" as presentation_repo
+
+  component "AuditLogService" as audit
+
+  database "PostgreSQL\nreal-estate-postgresql\nService :5432\n1 replica\nRUNTIME-VERIFIED" as pg
+
+  user --> ingress : HTTPS\n[après déploiement]
+  user ..> backend_svc : accès interne actuel
+
+  ingress --> backend_svc : HTTP :8000
+  backend_svc --> backend : targetPort http
+
+  backend --> auth : authentification /\nautorisation
+  backend --> reco : endpoint\n/recommendations
+
+  reco --> matching : build features\n+ scoring
+  reco --> pg : psycopg\nchargement matching
+
+  reco --> presentation_repo
+  presentation_repo --> pg : SQLAlchemy
+
+  reco --> audit
+  audit --> pg : INSERT audit
+
+  note right of backend
+    Resources runtime :
+    CPU 100m -> 500m
+    RAM 128Mi -> 512Mi
+
+    Liveness : /health
+    Readiness : /ready
+  end note
+
+  note bottom of reco
+    limit Top-N :
+    1 <= limit <= 100
+
+    ML/GPU non requis
+    dans ce chemin
+  end note
+}
+
+package "2. Data / Batch Plane" {
+
+  component "Sources / Génération\nde données" as sources
+  database "raw" as raw
+  database "staging" as staging
+  database "real_estate\nOLTP" as oltp
+  database "warehouse\nOLAP" as warehouse
+  database "analytics" as analytics
+
+  component "Airflow\nOrchestration batch" as airflow
+  component "dbt / SQL\nTransformations + tests" as dbt
+  component "OpenMetadata\nCatalogue + lineage\n+ gouvernance" as om
+  component "MLflow\nExpérimentation / tracking" as mlflow
+
+  sources --> raw
+  raw --> staging
+  staging --> oltp
+  oltp --> warehouse
+  warehouse --> analytics
+
+  airflow --> raw : ingestion
+  airflow --> dbt : orchestration
+  dbt --> staging
+  dbt --> warehouse
+  dbt --> analytics
+
+  om ..> pg : métadonnées
+  om ..> airflow : métadonnées
+  om ..> dbt : lineage
+
+  mlflow ..> pg : datasets /\névaluations
+}
+
+package "3. Deployment / Control Plane" {
+
+  component "Poste développeur\nWindows / VS Code" as dev
+  component "GitLab\nchasse_immobiliere" as gitlab
+  component "GitLab CI" as ci
+  component "GitLab Container Registry\n:4567" as registry
+  component "lab-gitops\nDesired State" as gitops
+  component "Argo CD\nAutomated sync\nprune + selfHeal" as argocd
+  component "Kubernetes\nkubeadm HA" as k8s
+
+  dev --> gitlab : git push
+  gitlab --> ci : pipeline
+  ci --> registry : build / push image
+  ci --> gitops : publish manifests
+  gitops --> argocd : desired state
+  argocd --> k8s : reconciliation
+  registry --> k8s : image pull
+
+  k8s ..> backend : déploie
+  k8s ..> pg : déploie
+  k8s ..> airflow : déploie
+}
+
+package "4. Observability Plane" {
+
+  component "ServiceMonitor\n30s\n/metrics" as sm
+  component "Prometheus" as prometheus
+  component "Grafana" as grafana
+  component "Alertmanager" as alertmanager
+  component "Pushgateway" as pushgateway
+  component "Loki" as loki
+  component "Tempo" as tempo
+  component "OpenTelemetry\nCollector" as otel
+
+  backend --> sm : /metrics
+  sm --> prometheus : scrape 30s
+
+  prometheus --> grafana
+  prometheus --> alertmanager
+
+  airflow ..> pushgateway : métriques batch
+  pushgateway --> prometheus
+
+  backend ..> loki : logs
+  backend ..> otel : télémétrie
+  otel ..> tempo : traces
+
+  note right of prometheus
+    Recommendation metrics :
+    - requests
+    - failures
+    - duration
+    - eligible candidates
+    - selected candidates
+    - presentations created/existing
+
+    Instrumentation :
+    RUNTIME-VERIFIED
+  end note
+
+  note bottom of prometheus
+    Historical measurement :
+    eligible = 400
+    selected = 10
+    failures = 0
+    P95 ~ 0.2425 s
+
+    Current pod benchmark :
+    non réalisé
+  end note
+}
+
+package "5. Backup / Recovery Plane" {
+
+  component "PostgreSQL Backup CronJob\n0 2 * * *\nconcurrencyPolicy: Forbid" as backup_job
+
+  component "pg_dump\ncustom + compress=6" as pgdump
+
+  component "Validation\npg_restore --list\n+ SHA-256" as validation
+
+  cloud "MinIO externe\nminio.lab.local:9000" as minio
+
+  folder "Bucket\nreal-estate-backups\nVersioning enabled" as backup_bucket
+
+  component "PostgreSQL 16\nRestore isolé" as restore_pg
+
+  component "Validation métier\nrow counts / intégrité" as restore_check
+
+  pg --> backup_job
+  backup_job --> pgdump
+  pgdump --> validation
+  validation --> minio : upload dump\n+ checksum
+  minio --> backup_bucket
+
+  backup_bucket --> restore_pg : download backup
+  restore_pg --> restore_check : pg_restore
+
+  note right of restore_pg
+    Test mesuré :
+    DB production ~47 MB
+    Dump ~4.3 MiB
+    Catalogue : 394 entrées
+    pg_restore : 6 s
+
+    6 s != RTO complet
+  end note
+}
+
+package "6. Experimental AI Plane" {
+
+  node "AI Node" as ainode {
+    component "Ollama" as ollama
+    component "Qwen" as qwen
+    component "GTX 1080\n8 GB" as gpu
+  }
+
+  ollama --> qwen
+  qwen --> gpu
+
+  note right of ainode
+    EXPERIMENTAL
+
+    Pas dans le chemin
+    critique du matching
+    de production
+  end note
+}
+
+' Cross-plane dependencies
+pg -[hidden]-> sources
+
+backend ..> prometheus : métriques exposées
+airflow ..> pg : traitements Data
+dbt ..> pg : SQL
+backup_job ..> minio : dépendance PRA
+
+note "Dépendance critique principale :\nPostgreSQL\n\nUne indisponibilité peut affecter\nAPI, matching, persistance,\naudit et traitements Data." as critical
+critical .. pg
+
+note "Limite actuelle :\nbackend = 1 replica\nPostgreSQL = 1 replica\nPVC = local-path / RWO\n\nKubernetes restart != HA PostgreSQL" as limits
+limits .. backend
+limits .. pg
+
+@enduml

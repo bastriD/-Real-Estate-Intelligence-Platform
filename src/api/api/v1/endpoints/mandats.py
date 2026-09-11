@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
+from src.api.core.authorization import enforce_chasseur_ownership
 from src.api.core.dependencies import require_roles
 from src.api.db.session import get_db
 from src.api.schemas.auth import AuthenticatedUser
@@ -40,6 +41,34 @@ def list_mandats(
     service = MandatService(db)
 
     try:
+        if current_user.role == "CHASSEUR":
+            if current_user.id_chasseur is None:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="Hunter identity is not available",
+                )
+
+            own_chasseur_id = current_user.id_chasseur
+
+            if chasseur_id is not None:
+                enforce_chasseur_ownership(
+                    current_user,
+                    chasseur_id,
+                )
+
+            if client_id is not None:
+                mandats = service.list_by_client(client_id)
+
+                return [
+                    mandat
+                    for mandat in mandats
+                    if mandat.id_chasseur == own_chasseur_id
+                ]
+
+            return service.list_by_chasseur(
+                own_chasseur_id
+            )
+
         if client_id is not None:
             return service.list_by_client(client_id)
 
@@ -72,7 +101,14 @@ def get_mandat(
     service = MandatService(db)
 
     try:
-        return service.get_mandat(mandat_id)
+        mandat = service.get_mandat(mandat_id)
+
+        enforce_chasseur_ownership(
+            current_user,
+            mandat.id_chasseur,
+        )
+
+        return mandat
 
     except MandatNotFoundError as exc:
         raise HTTPException(
@@ -96,6 +132,11 @@ def create_mandat(
     service = MandatService(db)
 
     try:
+        enforce_chasseur_ownership(
+            current_user,
+            payload.id_chasseur,
+        )
+
         return service.create_mandat(
             payload,
             utilisateur=current_user.email,
@@ -138,6 +179,21 @@ def update_mandat(
     service = MandatService(db)
 
     try:
+        existing_mandat = service.get_mandat(
+            mandat_id
+        )
+
+        enforce_chasseur_ownership(
+            current_user,
+            existing_mandat.id_chasseur,
+        )
+
+        if payload.id_chasseur is not None:
+            enforce_chasseur_ownership(
+                current_user,
+                payload.id_chasseur,
+            )
+
         return service.update_mandat(
             mandat_id,
             payload,
@@ -181,6 +237,15 @@ def delete_mandat(
     service = MandatService(db)
 
     try:
+        existing_mandat = service.get_mandat(
+            mandat_id
+        )
+
+        enforce_chasseur_ownership(
+            current_user,
+            existing_mandat.id_chasseur,
+        )
+
         service.delete_mandat(
             mandat_id,
             utilisateur=current_user.email,

@@ -1,0 +1,261 @@
+@startuml
+title <size:22><b>Cartographie du SI actuel</b></size>\n<size:13>Real Estate Intelligence Platform · BC01-C1 · État actuel 2026</size>
+
+left to right direction
+
+' ============================================================
+' MODERN VISUAL STYLE
+' ============================================================
+
+skinparam backgroundColor #F8FAFC
+skinparam shadowing false
+skinparam roundCorner 18
+skinparam defaultFontName "Arial"
+skinparam defaultFontSize 13
+skinparam defaultTextAlignment center
+
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.5
+skinparam ArrowFontColor #475569
+skinparam ArrowFontSize 11
+
+skinparam package {
+    BackgroundColor #FFFFFF
+    BorderColor #CBD5E1
+    FontColor #0F172A
+    FontSize 15
+    FontStyle bold
+    RoundCorner 20
+}
+
+skinparam rectangle {
+    BackgroundColor #FFFFFF
+    BorderColor #94A3B8
+    FontColor #0F172A
+    RoundCorner 15
+}
+
+skinparam database {
+    BackgroundColor #EFF6FF
+    BorderColor #3B82F6
+    FontColor #1E3A8A
+}
+
+skinparam node {
+    BackgroundColor #FFFFFF
+    BorderColor #94A3B8
+    FontColor #0F172A
+    RoundCorner 15
+}
+
+skinparam note {
+    BackgroundColor #FFFBEB
+    BorderColor #F59E0B
+    FontColor #78350F
+    RoundCorner 12
+}
+
+' ============================================================
+' ACTORS
+' ============================================================
+
+actor "Utilisateurs\nClient · Chasseur · Admin" as Users
+actor "Data / Platform\nEngineer" as Engineer
+
+' ============================================================
+' DELIVERY
+' ============================================================
+
+package "  DELIVERY & GITOPS  " #F1F5F9 {
+
+    rectangle "<b>GitLab CE</b>\n<size:11>Source Code</size>" as GitLab #F8FAFC
+
+    rectangle "<b>GitLab CI</b>\n<size:11>Test · Build · Publish</size>" as CI #F8FAFC
+
+    rectangle "<b>lab-gitops</b>\n<size:11>Desired State</size>" as GitOps #F8FAFC
+
+    rectangle "<b>Argo CD</b>\n<size:11>Continuous Reconciliation</size>" as Argo #F8FAFC
+
+    GitLab -right-> CI
+    CI -right-> GitOps
+    GitOps -right-> Argo
+}
+
+' ============================================================
+' KUBERNETES
+' ============================================================
+
+package "  KUBERNETES PLATFORM · kubeadm HA  " #F8FAFC {
+
+    package "APPLICATION" #EFF6FF {
+
+        rectangle "<b>FastAPI</b>\n<size:11>Business API</size>" as API #DBEAFE
+
+        rectangle "<b>Authentication</b>\n<size:11>Argon2id · JWT</size>" as Auth #DBEAFE
+
+        rectangle "<b>RBAC</b>\n<size:10>ADMIN · CLIENT\nCHASSEUR · SERVICE</size>" as RBAC #DBEAFE
+
+        rectangle "<b>Matching</b>\n<size:11>Hard Eligibility\n+ Weighted Ranking</size>" as Matching #DBEAFE
+
+        API -down-> Auth
+        Auth -down-> RBAC
+        API -right-> Matching
+    }
+
+    package "DATA PLATFORM" #F0FDF4 {
+
+        rectangle "<b>Airflow</b>\n<size:11>Orchestration</size>" as Airflow #DCFCE7
+
+        rectangle "<b>dbt</b>\n<size:11>Transform · Test</size>" as DBT #DCFCE7
+
+        rectangle "<b>OpenMetadata</b>\n<size:11>Catalog · Lineage\nProfiling · Governance</size>" as OM #DCFCE7
+
+        rectangle "<b>MLflow</b>\n<size:11>Experiment Tracking</size>" as MLflow #DCFCE7
+    }
+
+    package "OBSERVABILITY" #FAF5FF {
+
+        rectangle "<b>Prometheus</b>\n<size:10>Metrics</size>" as Prometheus #F3E8FF
+
+        rectangle "<b>Grafana</b>\n<size:10>Dashboards</size>" as Grafana #F3E8FF
+
+        rectangle "<b>Loki</b>\n<size:10>Logs</size>" as Loki #F3E8FF
+
+        rectangle "<b>Tempo</b>\n<size:10>Traces</size>" as Tempo #F3E8FF
+
+        rectangle "<b>OpenTelemetry</b>\n<size:10>Telemetry</size>" as OTEL #F3E8FF
+    }
+
+    database "<b>PostgreSQL</b>\n<size:11>System of Record</size>" as PostgreSQL
+}
+
+' ============================================================
+' DATA ARCHITECTURE
+' ============================================================
+
+package "  DATA LAYERS  " #F8FAFC {
+
+    database "<b>RAW</b>\n<size:10>Bronze</size>" as RAW
+
+    database "<b>STAGING</b>\n<size:10>Silver</size>" as STAGING
+
+    database "<b>REAL_ESTATE</b>\n<size:10>OLTP métier</size>" as OLTP
+
+    database "<b>WAREHOUSE</b>\n<size:10>Gold</size>" as WH
+
+    database "<b>ANALYTICS</b>\n<size:10>Marts</size>" as Analytics
+
+    RAW -right-> STAGING
+    STAGING -right-> OLTP
+    OLTP -right-> WH
+    WH -right-> Analytics
+}
+
+' ============================================================
+' EXTERNAL / DEDICATED SERVICES
+' ============================================================
+
+package "  EXTERNAL / DEDICATED SERVICES  " #F8FAFC {
+
+    rectangle "<b>MinIO</b>\n<size:11>Backups · ML Artifacts</size>" as MinIO #FEF3C7
+
+    rectangle "<b>AI NODE</b>\n<size:11>GTX 1080 · 8 GB VRAM</size>\n\nOllama · Qwen3 8B" as AI #FFEDD5
+}
+
+' ============================================================
+' MAIN FLOWS
+' ============================================================
+
+Users -right-> API : " 1  Business access "
+
+Engineer -right-> GitLab : " 2  Code "
+
+Argo -down-> API : " 3  Deploy "
+Argo -down-> Airflow
+Argo -down-> OM
+Argo -down-> MLflow
+
+API -down-> PostgreSQL : " 4  OLTP "
+
+Airflow -down-> RAW : " 5  Ingestion "
+Airflow -down-> STAGING
+
+DBT -down-> WH : " 6  Transform "
+DBT -down-> Analytics
+
+PostgreSQL ..> RAW
+PostgreSQL ..> STAGING
+PostgreSQL ..> OLTP
+PostgreSQL ..> WH
+PostgreSQL ..> Analytics
+
+OM ..> PostgreSQL : metadata
+OM ..> Airflow : lineage
+OM ..> DBT : lineage
+
+PostgreSQL -right-> MinIO : " 7  Daily backup "
+MLflow -right-> MinIO : artifacts
+
+API ..> OTEL
+OTEL ..> Tempo
+
+API ..> Prometheus
+Airflow ..> Prometheus
+
+Prometheus --> Grafana
+Loki --> Grafana
+Tempo --> Grafana
+
+' ============================================================
+' CURRENT STATE NOTES
+' ============================================================
+
+note bottom of Matching
+<b>CURRENT PRODUCTION PATH</b>
+
+Hard business eligibility
+        ↓
+Eligible population
+        ↓
+Weighted ranking
+        ↓
+Recommendation
+        ↓
+Presentation
+
+ML does not replace
+hard eligibility rules.
+end note
+
+note bottom of AI
+<b>LOCAL AI CAPABILITY</b>
+
+Infrastructure exists and
+GPU inference is validated.
+
+Not currently the production
+Real Estate matching model.
+end note
+
+note bottom of MinIO
+<b>RECOVERY VERIFIED</b>
+
+PostgreSQL backup
+→ External MinIO
+→ Isolated restore
+→ Integrity validation
+end note
+
+' ============================================================
+' CURRENT / FUTURE BOUNDARY
+' ============================================================
+
+legend bottom
+  |= <b>STATUS</b> |= <b>ARCHITECTURE</b> |
+  | <#DCFCE7> CURRENT | Deployed / implemented platform capability |
+  | <#FEF3C7> VERIFIED | Backup / recovery capability with runtime evidence |
+  | <#FFEDD5> AVAILABLE | Dedicated AI infrastructure, not production matching |
+  | <#F1F5F9> OUT OF CURRENT MAP | RAG · MCP · Qdrant · Keycloak · Vault integration · Kafka · Lakehouse · React frontend |
+endlegend
+
+@enduml

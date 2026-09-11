@@ -4,7 +4,7 @@
 **Compétence :** Concevoir les données, variables et mécanismes nécessaires à un modèle de matching IA  
 **Projet :** Real Estate Intelligence Platform  
 **Version :** 2.0  
-**Statut :** Baseline documentaire — implémentation ML prévue  
+**Statut :** Baseline et régression logistique implémentées — évaluation et intégration ML à consolider
 **Extension projet :** Entraînement, évaluation, versionnement et serving de modèles ML  
 
 ---
@@ -2113,6 +2113,24 @@ selon les exigences de disponibilité.
 
 # 122. Implementation Structure
 
+L'implémentation actuelle se trouve dans `src/ai/matching/`. Les répertoires `ml/` ci-dessous décrivent l'organisation cible initiale ; ils ne doivent pas masquer les modules réellement présents.
+
+```text
+src/ai/matching/
+├── repository.py
+├── features.py
+├── training_dataset.py
+├── dataset_split.py
+├── model_training.py
+├── evaluate.py
+├── model_comparison.py
+└── mlflow_tracking.py
+```
+
+L'API utilise `src/api/services/recommendation.py`. Les tests sont dans `tests/ai/` et `tests/backend/`.
+
+Organisation cible historique :
+
 ```text
 ml/
 ├── features/
@@ -2153,6 +2171,61 @@ fallback
 
 # 124. Evidence
 
+## Baseline actuellement utilisée
+
+Le repository sélectionne les biens actifs compatibles avec les critères obligatoires. Les features puis le score pondéré produisent le classement utilisé par l'API de recommandations.
+
+```text
+DemandeVersion
+      |
+      v
+Biens éligibles
+      |
+      v
+Features / score déterministe
+      |
+      v
+Classement
+      |
+      v
+Présentations / audit
+```
+
+Le rapport du 9 septembre 2026 documente une recommandation persistée et auditée. Ce résultat démontre le fonctionnement du baseline ; il ne correspond pas à une prédiction de régression logistique.
+
+## Dataset et apprentissage implémentés
+
+Le dataset actuel associe une version de demande à des candidats. Les labels proviennent de la traçabilité du générateur : `source_recherche_ref`, correspondance dans `staging.annonces` et référence du bien.
+
+Cette provenance sert à construire la cible et ne doit pas entrer dans les features ou la sélection des candidats.
+
+Les sept features du dataset d'entraînement portent sur :
+
+```text
+Localisation
+Budget
+Type de bien
+Surface
+Pièces
+Chambres
+DPE
+```
+
+Le split est réalisé par groupe `id_demande_version`. Le module d'entraînement utilise `LogisticRegression`, puis calcule les métriques sur les partitions séparées. Le module de comparaison confronte le modèle au baseline et l'intégration MLflow permet de journaliser les résultats.
+
+Les labels synthétiques démontrent le fonctionnement du programme. Ils ne prouvent pas que le modèle prédit l'intérêt de clients réels. La stratégie de feedback métier décrite plus haut reste une évolution distincte.
+
+## Sources et limites
+
+```text
+../../../50-AI/11-Matching-Baseline-Implementation.md
+../../../50-AI/12-Labelled-Dataset-Strategy.md
+../../../60-SECURITY/RECOMMENDATION-AUDIT-RUNTIME-EVIDENCE.md
+../../03-BC03/C6-Tests-Executes/script-review-2026-09-09/review-tests.xml
+```
+
+Les tests IA font partie de la campagne locale de 217 tests décrite dans la revue du 9 septembre. Aucun gain métier, modèle promu ni Random Forest entraîné n'est déduit de cette campagne. La revue de scripts conserve notamment une réserve sur la validation des labels fractionnaires lors du split ; cette réserve doit être traitée avant de déclarer le contrôle exhaustif.
+
 Les preuves finales devront inclure :
 
 ```text
@@ -2183,8 +2256,8 @@ src/api/
 Tests :
 
 ```text
-tests/unit/
-tests/integration/
+tests/ai/
+tests/backend/
 ```
 
 Documentation :
@@ -2250,24 +2323,24 @@ Cela évite de présenter une extension volontaire comme une contrainte imposée
 |---|---|
 | Matching problem | DEFINED |
 | Input model | V2 ALIGNED |
-| Structured features | DEFINED |
+| Structured features | IMPLEMENTED |
 | Preference features | DEFINED |
-| Hard filtering | DEFINED |
-| Rule baseline | DEFINED |
+| Hard filtering | IMPLEMENTED |
+| Rule baseline | IMPLEMENTED / TESTED |
 | Label strategy | DEFINED |
-| Logistic Regression | PLANNED |
+| Logistic Regression | IMPLEMENTED / UNIT TESTS AVAILABLE |
 | Random Forest | PLANNED |
-| Ranking metrics | DEFINED |
-| MLflow | PLANNED |
+| Ranking metrics | IMPLEMENTED |
+| MLflow | TRACKING CODE IMPLEMENTED / RUNS TO LINK |
 | Model Registry | PLANNED |
 | Model Card | DEFINED |
-| FastAPI serving | PLANNED |
-| Monitoring | DEFINED |
+| FastAPI serving | DETERMINISTIC BASELINE IMPLEMENTED / ML SERVING PENDING |
+| Monitoring | RECOMMENDATION METRICS IMPLEMENTED |
 | Semantic enrichment | FUTURE / EXPERIMENTAL |
 | pgvector/Qdrant comparison | FUTURE |
 | Runtime training | PENDING |
 | Runtime metrics | PENDING |
-| Runtime serving evidence | PENDING |
+| Runtime serving evidence | DETERMINISTIC RECOMMENDATION REPORT AVAILABLE |
 
 ---
 

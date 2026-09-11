@@ -1,0 +1,236 @@
+@startuml
+title BC01-C1 — Cartographie SI Actuel\nReal Estate Intelligence Platform
+
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam defaultTextAlignment center
+
+actor "Business User" as BusinessUser
+actor "Chasseur" as Hunter
+actor "Platform / DevOps Engineer" as PlatformEngineer
+actor "Data / AI Engineer" as DataEngineer
+
+rectangle "Developer Workstation\nWindows 11 / VS Code" as Workstation
+
+cloud "Internal DNS\n*.lab.local" as DNS
+rectangle "NGINX Ingress\n+ cert-manager" as Ingress
+
+package "Git / Delivery" {
+  component "GitLab CE\nSource Repositories" as GitLab
+  component "GitLab CI\nBuild / Test / Publish" as GitLabCI
+  component "Container Registry\nGitLab Registry" as Registry
+  component "GitOps Repository\nlab-gitops" as GitOpsRepo
+  component "Argo CD\nContinuous Reconciliation" as ArgoCD
+}
+
+package "Kubernetes Platform\nkubeadm HA v1.30.14" {
+
+  package "Real Estate Application\nnamespace: real-estate" {
+    component "FastAPI Backend\n/api/v1" as API
+
+    component "Authentication\nreal_estate.utilisateur\nArgon2id + JWT" as Auth
+
+    component "Role-Based RBAC\nADMIN / CLIENT /\nCHASSEUR / SERVICE" as RBAC
+
+    component "Business APIs\nclients\nmandats\ndemandes\nbiens\npresentations\nrecommendations\nvisites" as BusinessAPIs
+
+    component "Deterministic Matching\nHard Eligibility\n+ Weighted Ranking" as Matching
+
+    component "Application Audit\nreal_estate.audit_log" as Audit
+
+    database "PostgreSQL\nreal_estate-postgresql" as PostgreSQL
+  }
+
+  package "Data Platform" {
+    component "Airflow\nKubernetesExecutor" as Airflow
+    component "dbt\nTransformations / Tests" as DBT
+    component "OpenMetadata\nMetadata / Lineage /\nProfiling / Governance" as OpenMetadata
+    component "MLflow\nExperiments / Tracking" as MLflow
+  }
+
+  package "Observability" {
+    component "Prometheus" as Prometheus
+    component "Alertmanager" as Alertmanager
+    component "Grafana" as Grafana
+    component "Loki" as Loki
+    component "Tempo" as Tempo
+    component "OpenTelemetry Collector" as OTEL
+    component "Pushgateway" as Pushgateway
+  }
+}
+
+package "PostgreSQL Logical Data Layers" {
+  database "raw\nBronze" as Raw
+  database "staging\nSilver" as Staging
+  database "real_estate\nOLTP / Business" as OLTP
+  database "warehouse\nGold" as Warehouse
+  database "analytics\nMarts / Curated" as Analytics
+  database "migration_control" as MigrationControl
+}
+
+cloud "External / Dedicated Storage" {
+  component "MinIO\nBackup + ML Artifacts" as MinIO
+}
+
+node "Dedicated AI Host" as AIHost {
+  component "NVIDIA GTX 1080\n8 GB VRAM" as GPU
+  component "Ollama" as Ollama
+  component "Qwen3 8B\nQuantized" as Qwen
+}
+
+note right of AIHost
+Current capability:
+local / experimental AI inference.
+
+Not currently the production
+Real Estate recommendation path.
+end note
+
+note right of Matching
+Production recommendation path:
+
+1. Deterministic hard eligibility
+2. Eligible population
+3. Weighted ranking
+4. Recommendation
+5. Presentation
+
+ML does not silently replace
+business eligibility rules.
+end note
+
+note bottom of OpenMetadata
+Current:
+metadata, lineage, profiling,
+ownership, governance.
+
+Not a lakehouse.
+end note
+
+note bottom of Auth
+Current authentication is internal.
+
+Keycloak / OIDC central IAM
+remain target-state capabilities.
+end note
+
+note bottom of MinIO
+Current verified recovery path:
+
+PostgreSQL
+  ->
+logical backup
+  ->
+MinIO
+  ->
+isolated restore
+  ->
+integrity validation
+end note
+
+BusinessUser --> DNS
+Hunter --> DNS
+DNS --> Ingress
+Ingress --> API
+
+API --> Auth
+Auth --> RBAC
+RBAC --> BusinessAPIs
+
+BusinessAPIs --> Matching
+BusinessAPIs --> Audit
+BusinessAPIs --> PostgreSQL
+Matching --> PostgreSQL
+Audit --> PostgreSQL
+
+Workstation --> GitLab
+PlatformEngineer --> GitLab
+DataEngineer --> GitLab
+
+GitLab --> GitLabCI
+GitLabCI --> Registry
+GitLabCI --> GitOpsRepo
+GitOpsRepo --> ArgoCD
+ArgoCD --> API
+ArgoCD --> Airflow
+ArgoCD --> OpenMetadata
+ArgoCD --> MLflow
+
+Airflow --> Raw
+Airflow --> Staging
+Airflow --> OLTP
+Airflow --> DBT
+
+DBT --> Staging
+DBT --> Warehouse
+DBT --> Analytics
+
+PostgreSQL --> Raw
+PostgreSQL --> Staging
+PostgreSQL --> OLTP
+PostgreSQL --> Warehouse
+PostgreSQL --> Analytics
+PostgreSQL --> MigrationControl
+
+OpenMetadata --> PostgreSQL
+OpenMetadata --> Airflow
+OpenMetadata --> DBT
+
+MLflow --> MinIO
+
+PostgreSQL --> MinIO : scheduled backup
+
+API --> Prometheus : /metrics
+Airflow --> Prometheus
+OpenMetadata --> Prometheus
+
+API --> OTEL
+OTEL --> Tempo
+
+API --> Loki
+Airflow --> Loki
+
+Prometheus --> Alertmanager
+Prometheus --> Grafana
+Loki --> Grafana
+Tempo --> Grafana
+Pushgateway --> Prometheus
+
+Ollama --> Qwen
+Qwen --> GPU
+
+DataEngineer --> MLflow
+DataEngineer --> Ollama
+
+note bottom
+CURRENT-STATE CARTOGRAPHY
+
+Included:
+- Proxmox-backed Kubernetes platform
+- GitLab CI / GitOps / Argo CD
+- FastAPI business application
+- internal JWT authentication + role RBAC
+- deterministic recommendation path
+- PostgreSQL OLTP + analytical layers
+- Airflow + dbt
+- OpenMetadata
+- MLflow
+- observability stack
+- MinIO backup/artifact storage
+- dedicated GTX 1080 / Ollama AI host
+
+Not represented as current production capability:
+- RAG
+- MCP
+- Qdrant
+- Keycloak
+- Vault workload integration
+- Kafka
+- Spark / Iceberg / Trino
+- Databricks-style lakehouse
+- React production frontend
+- AI Gateway
+- production GPU-trained Real Estate ranking model
+end note
+
+@enduml

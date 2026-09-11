@@ -61,7 +61,7 @@ Le registre principal reste :
 REGISTRE-RGPD.md
 ```
 
-Ce dossier ne remplace pas le registre.
+Le fichier autonome n'est pas présent dans la copie locale consultée. Son rattachement et sa validation restent à compléter. Ce dossier ne remplace pas le registre.
 
 Il relie les traitements RGPD :
 
@@ -1392,6 +1392,30 @@ Vérifier qu'un rôle non autorisé ne peut pas accéder aux paiements ou barèm
 
 # 88. Evidence Runtime
 
+## Contrôles déjà reliés à l'implémentation
+
+| Traitement / donnée | Contrôle actuel | Limite |
+|---|---|---|
+| Identités applicatives | Mot de passe haché, JWT, compte actif et rôles | Ne démontre pas tous les droits par propriétaire |
+| Recommandations / présentations | Acteur et contexte dans `audit_log` | Rétention et accès au journal à documenter |
+| Visites | Snapshots et acteur dans l'audit des mutations | Persistance runtime propre à Visite à consolider |
+| Dataset ML | Features explicites et labels issus de la provenance synthétique | Traçabilité synthétique différente d'un feedback client réel |
+| Sauvegardes | Stockage MinIO externe avec identité dédiée et test de restauration | Rétention / ILM et traitement des suppressions à formaliser |
+
+Sources :
+
+```text
+../../../60-SECURITY/SECURITY-RBAC-AUDIT-IMPLEMENTATION-EVIDENCE.md
+../../../60-SECURITY/RECOMMENDATION-AUDIT-RUNTIME-EVIDENCE.md
+../../../PCA PRA/PCA-PRA-POSTGRESQL.md
+../../03-BC03/C6-Tests-Executes/visite-audit-2026-09-09/README.md
+../../../../src/ai/matching/training_dataset.py
+```
+
+L'email de l'acteur et les snapshots d'audit sont eux-mêmes des données à gouverner. Les preuves de soutenance doivent utiliser des données de test et masquer les secrets.
+
+La présence de contrôles techniques n'établit pas à elle seule la conformité globale. Le registre final, les durées de conservation et l'exécution des droits restent à justifier dans leur périmètre. Les contrôles RAG restent associés à une extension future.
+
 Les futures preuves peuvent inclure :
 
 ```text
@@ -1463,7 +1487,7 @@ RAG authorization test
 
 | Élément | Statut |
 |---|---|
-| RGPD register | EXISTANT |
+| RGPD register | RÉFÉRENCÉ / FICHIER AUTONOME À RATTACHER |
 | V2 personal-data mapping | UPDATED |
 | Payment/commission privacy | ADDED |
 | Data minimization | UPDATED |
@@ -1475,7 +1499,7 @@ RAG authorization test
 | Local AI | DEFINED |
 | Rights workflow | DEFINED |
 | Retention principles | DEFINED |
-| Runtime tests | PENDING |
+| Runtime tests | AUTH / AUDIT PARTIELLEMENT DOCUMENTÉS ; DROITS ET RÉTENTION À VALIDER |
 
 ---
 

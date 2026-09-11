@@ -1018,6 +1018,73 @@ Un processus doit éviter :
 
 # 44. Preuves attendues
 
+## Processus de recommandation réalisé
+
+Le cas métier actuel utilise une version précise de demande.
+
+```text
+Utilisateur authentifié
+        |
+        v
+Contrôle ADMIN / CHASSEUR / SERVICE
+        |
+        v
+DemandeVersion + biens actifs
+        |
+        v
+Features / score déterministe
+        |
+        v
+Classement / sélection
+        |
+        v
+Création ou réutilisation des présentations
+        |
+        v
+Audit des créations / métriques
+```
+
+La requête réelle est :
+
+```text
+POST /api/v1/demande-versions/{id_demande_version}/recommendations
+```
+
+Le rapport runtime du 9 septembre documente une requête sur la version 56 avec `limit=1`, suivie de la vérification SQL de la présentation et de son audit. Les présentations déjà existantes sont réutilisées ; les tests vérifient l'absence d'un nouvel audit INSERT pour une simple réutilisation.
+
+## Processus de visite réalisé
+
+Les routes Visite sont réservées aux rôles ADMIN et CHASSEUR. Les mutations propagent l'email de l'acteur au service.
+
+```text
+Présentation existante
+        |
+        v
+Création / modification / suppression de visite
+        |
+        v
+État précédent / nouvel état
+        |
+        v
+Audit dans la même session
+        |
+        v
+Commit ou rollback
+```
+
+Le dossier Visite contient les tests locaux des snapshots, de l'acteur, de l'ordre des opérations et du rollback. La preuve PostgreSQL de ce parcours reste distincte de celle déjà disponible pour les recommandations.
+
+Sources :
+
+```text
+../../../60-SECURITY/RECOMMENDATION-AUDIT-RUNTIME-EVIDENCE.md
+../C6-Tests-Executes/visite-audit-2026-09-09/README.md
+../../../../src/api/services/recommendation.py
+../../../../src/api/services/visite.py
+```
+
+Le parcours complet jusqu'à rémunération reste à consolider. Les flux documentaires et RAG décrits précédemment ne sont pas présentés comme des fonctionnalités de l'API déjà réalisées.
+
 Les preuves peuvent comprendre :
 
 ```text
@@ -1087,16 +1154,16 @@ Validation
 | Élément | Statut |
 |---|---|
 | Process model | DOCUMENTÉ |
-| Search flow | BASELINE |
+| Search flow | RECOMMANDATION DÉTERMINISTE IMPLÉMENTÉE |
 | Detail flow | BASELINE |
 | Analytics flow | BASELINE |
 | AI flow | BASELINE |
 | RAG flow | TARGET DOCUMENTÉ |
 | Deployment flow | DOCUMENTÉ |
 | Error flow | DOCUMENTÉ |
-| Security flow | DOCUMENTÉ |
+| Security flow | AUTHENTIFICATION / RBAC / AUDIT IMPLÉMENTÉS |
 | Final business BPMN | À ALIGNER SUR MVP |
-| Runtime application proof | À CONSOLIDER |
+| Runtime application proof | RECOMMANDATION AUDITÉE DOCUMENTÉE / VISITE TESTÉE LOCALEMENT |
 
 ---
 

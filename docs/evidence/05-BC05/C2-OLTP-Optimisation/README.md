@@ -1028,6 +1028,39 @@ Capture result
 
 # 53. Evidence files
 
+## Scripts disponibles
+
+Les requêtes et le protocole EXPLAIN existent déjà dans le dépôt :
+
+```text
+../../../../database/oltp/001_operational_queries.sql
+../../../../database/oltp/002_explain_analyze.sql
+../../../../database/tests/003_oltp_constraints.sql
+../../../../database/tests/006_oltp_data_quality.sql
+```
+
+Les cas couverts comprennent :
+
+- mandats actifs par chasseur ;
+- version active d'une demande ;
+- secteurs associés au mandat ;
+- biens candidats ;
+- historique de présentations ;
+- commentaires et suivi des paiements.
+
+Le script de mesure utilise `EXPLAIN (ANALYZE, BUFFERS, VERBOSE, FORMAT TEXT)` et actualise les statistiques avec `ANALYZE`. Il prépare une mesure réelle ; il ne contient pas un résultat de benchmark déjà obtenu.
+
+## État de la preuve
+
+Les migrations et l'API matérialisent le modèle transactionnel. Le rapport des recommandations documente une présentation persistée et son audit, et le rapport PRA documente des volumes métier restaurés.
+
+```text
+../../../60-SECURITY/RECOMMENDATION-AUDIT-RUNTIME-EVIDENCE.md
+../../../PCA PRA/PCA-PRA-POSTGRESQL.md
+```
+
+Aucun temps avant/après index ni gain de performance n'est déduit de ces preuves fonctionnelles. Les plans, volumes du benchmark et conditions de mesure restent à conserver pour démontrer l'optimisation.
+
 Le dossier final pourra contenir :
 
 ```text
@@ -1042,7 +1075,7 @@ C2-OLTP-Optimisation/
 └── benchmark-report.md
 ```
 
-Ces fichiers seront produits pendant la phase d'implémentation.
+Les sources SQL existantes doivent être référencées sans duplication. Seuls les résultats manquants de mesure restent à produire lors d'une exécution réelle.
 
 ---
 
@@ -1305,11 +1338,11 @@ La base transactionnelle constitue une source importante pour les traitements an
 | OLTP architecture | DOCUMENTÉE |
 | Transaction model | DOCUMENTÉ |
 | ACID principles | DOCUMENTÉS |
-| Query candidates | DÉFINIS |
+| Query candidates | REQUÊTES SQL PRÉSENTES |
 | Index candidates | IDENTIFIÉS |
 | Optimization methodology | DÉFINIE |
 | Benchmark methodology | DÉFINIE |
-| PostgreSQL runtime | À IMPLÉMENTER / VALIDER |
+| PostgreSQL runtime | PERSISTANCE MÉTIER DOCUMENTÉE / BENCHMARK À COMPLÉTER |
 | Benchmark dataset | À PRODUIRE |
 | EXPLAIN before | À PRODUIRE |
 | Optimization | À TESTER |

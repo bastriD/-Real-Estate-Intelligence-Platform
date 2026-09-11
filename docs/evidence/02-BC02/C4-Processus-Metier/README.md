@@ -1147,7 +1147,53 @@ Les diagrammes déjà disponibles fournissent plusieurs vues des processus.
 
 # 38. Processus à détailler pendant l'implémentation métier
 
-Les processus spécifiques au cas d'usage doivent être détaillés avec des données réelles lorsque l'application est consolidée.
+## Parcours immobilier actuellement soutenu
+
+```text
+Client
+  |
+  v
+Demande / DemandeVersion
+  |
+  v
+Mandat lorsque nécessaire
+  |
+  v
+Recherche de biens actifs
+  |
+  v
+Matching déterministe
+  |
+  v
+Présentation
+  |
+  v
+Visite / compte rendu
+```
+
+La demande peut précéder la signature du mandat. La migration 005 rend `demande.id_mandat` facultatif ; elle ne démontre pas à elle seule un workflow complet de rattachement ultérieur.
+
+| Étape | Acteur / déclencheur | Donnée produite | Contrôle |
+|---|---|---|---|
+| Formaliser le besoin | Utilisateur autorisé de l'API | Demande et version des critères | Schémas et validations du service |
+| Recommander | ADMIN, CHASSEUR ou SERVICE | Présentation liée à une version et un bien | Candidats actifs, score, gestion des présentations existantes |
+| Suivre la visite | ADMIN ou CHASSEUR | Visite et compte rendu | Présentation existante, validations et audit |
+| Auditer | Mutation métier | `audit_log` | Acteur authentifié et contexte de l'opération |
+
+## Preuve métier disponible
+
+Le rapport du 9 septembre 2026 décrit une recommandation sur la version 56 : 200 candidats éligibles, un candidat sélectionné, une présentation créée et une ligne d'audit correspondante. Il relie la requête API, la présentation 31 et l'audit 7.
+
+```text
+../../../60-SECURITY/RECOMMENDATION-AUDIT-RUNTIME-EVIDENCE.md
+../../03-BC03/C6-Tests-Executes/visite-audit-2026-09-09/README.md
+```
+
+## Processus restant à consolider
+
+La rémunération, la validité/renouvellement des mandats et la recette intégrée restent des travaux métier identifiés dans la revue StarterPack du 9 septembre. Les processus AI/RAG décrits plus haut conservent leur statut de cible lorsqu'ils ne correspondent pas au matching actuellement exécuté.
+
+Exemples complémentaires :
 
 Exemples :
 
@@ -1273,9 +1319,9 @@ et comprendre comment la solution informatique soutient le processus métier.
 | Processus Incident | DOCUMENTÉS |
 | Processus Backup/Restore | DOCUMENTÉS |
 | Governance process | DOCUMENTÉ |
-| Processus immobilier détaillé | À CONSOLIDER |
+| Processus immobilier détaillé | PARCOURS ACTUEL DOCUMENTÉ / SUITE COMMERCIALE À COMPLÉTER |
 | BPMN métier spécifique | À PRODUIRE SI REQUIS |
-| Preuves application métier | À CONSOLIDER |
+| Preuves application métier | RECOMMANDATION AUDITÉE DOCUMENTÉE / RECETTE GLOBALE À CONSOLIDER |
 
 ---
 

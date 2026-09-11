@@ -61,7 +61,7 @@ CAHIER-DES-CHARGES-TECHNIQUE.md
 REGISTRE-RGPD.md
 ```
 
-Ces documents appartiennent aux livrables du projet Fil Rouge.
+Ces intitulés désignent les livrables du projet Fil Rouge. Leurs fichiers autonomes ne sont pas présents dans la copie locale consultée ; leur emplacement final reste à rattacher.
 
 Ils doivent rester les sources de vérité correspondantes.
 
@@ -988,6 +988,28 @@ Evidence
 
 # 43. Preuves existantes
 
+## Traçabilité vers les réalisations
+
+| Exigence | Réponse actuelle | Preuve |
+|---|---|---|
+| Identifier l'acteur | Compte `utilisateur`, JWT et vérification du compte actif | Documentation sécurité applicative |
+| Contrôler les rôles | Dépendances `require_roles` dans les routes métier | `src/api/core/dependencies.py` et tests RBAC |
+| Tracer les opérations | Audit des présentations, recommandations et visites | Rapport runtime des recommandations et tests Visite |
+| Maintenir la qualité Data | Contrôles SQL par couche et tests dbt | Architecture Data implémentée |
+| Permettre la reprise | Sauvegarde externe et restauration isolée | Rapport PRA PostgreSQL |
+
+Références :
+
+```text
+../../../60-SECURITY/SECURITY-RBAC-AUDIT-IMPLEMENTATION-EVIDENCE.md
+../../../60-SECURITY/RECOMMENDATION-AUDIT-RUNTIME-EVIDENCE.md
+../../../40-DATA/ARCHITECTURE-DATA-IMPLEMENTEE.md
+../../../PCA PRA/PCA-PRA-POSTGRESQL.md
+../../03-BC03/C6-Tests-Executes/visite-audit-2026-09-09/README.md
+```
+
+L'accès par rôle ne couvre pas encore tous les contrôles de propriété des ressources. Les droits des personnes, la rétention et l'accessibilité restent à démontrer pour leur périmètre propre.
+
 Les preuves documentaires comprennent :
 
 ```text
@@ -1069,20 +1091,20 @@ Evidenced
 
 | Domaine | Statut |
 |---|---|
-| Cahier des charges technique | EXISTANT |
+| Cahier des charges technique | EXIGENCES DOCUMENTÉES / FICHIER AUTONOME À RATTACHER |
 | Architecture requirements | DOCUMENTÉS |
 | Data requirements | DOCUMENTÉS |
 | AI requirements | DOCUMENTÉS |
 | Security requirements | DOCUMENTÉS |
 | Observability requirements | DOCUMENTÉS |
-| RGPD register | EXISTANT |
+| RGPD register | RÉFÉRENCÉ / FICHIER AUTONOME À RATTACHER |
 | Data security | DOCUMENTÉE |
 | AI sovereignty | DOCUMENTÉE |
 | Accessibility requirements | BASELINE DOCUMENTÉE |
 | Accessibility implementation | À ÉVALUER SUR L'APPLICATION |
 | Accessibility tests | À EXÉCUTER |
 | RGPD runtime evidence | À CONSOLIDER |
-| Requirement → Test traceability | À CONSOLIDER |
+| Requirement → Test traceability | PARTIELLE — SÉCURITÉ, AUDIT ET DATA RÉFÉRENCÉS |
 
 ---
 

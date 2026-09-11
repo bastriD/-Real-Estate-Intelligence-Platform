@@ -1753,6 +1753,48 @@ Ce dossier reste l'index documentaire.
 
 # 100. Future Evidence
 
+## Mesures déjà documentées
+
+Le rapport PRA fournit une photographie réelle des volumes du projet lors du test de sauvegarde/restauration :
+
+| Élément | Valeur observée dans le rapport |
+|---|---|
+| Base `real_estate` | 49 462 295 octets |
+| Biens | 14 000 |
+| Clients | 18 |
+| Demandes / versions | 87 / 88 |
+| Mandats | 17 |
+| Présentations / visites | 12 / 1 |
+
+```text
+../../../PCA PRA/PCA-PRA-POSTGRESQL.md
+```
+
+Ces valeurs caractérisent l'environnement du test. Elles ne valident pas la projection de plusieurs milliers de mandats par semaine.
+
+## Lecture des trois dimensions
+
+| Dimension | Ce que le projet permet déjà d'observer | Complément nécessaire |
+|---|---|---|
+| Volume | Taille PostgreSQL et volumes métier documentés | Évolution dans le temps et budget de stockage |
+| Vélocité | DAG de traitement et instrumentation des recommandations | Débit mesuré, latences, concurrence et fenêtre d'ingestion |
+| Variété | Sources générées, critères de recherche, données métier, JSONB et métadonnées | Validation de nouvelles sources et de nouveaux formats |
+
+Les durées du test de restauration ne sont pas des mesures du débit d'ingestion ou de la latence du matching.
+
+Sources d'instrumentation depuis la racine :
+
+```text
+observability/metrics/collect_metrics.py
+src/api/observability/metrics.py
+pipelines/airflow/real_estate_ingestion_dag.py
+database/seeds/generer_annonces.py
+```
+
+Les seuils de changement de technologie restent conditionnés à des mesures de charge. La stratégie SI C2 diffère Kafka, Spark et les plateformes supplémentaires tant qu'une limite du système actuel n'est pas démontrée.
+
+Preuves complémentaires possibles :
+
 Exemples :
 
 ```text
@@ -1930,7 +1972,7 @@ en plus de la capacité technique.
 | Vector strategy | DEFINED |
 | Scaling thresholds | DEFINED |
 | Retention strategy | DEFINED |
-| Real measurements | PENDING |
+| Real measurements | VOLUMES DU TEST PRA DOCUMENTÉS / SÉRIE TEMPORELLE À COMPLÉTER |
 | Ingestion benchmark | PENDING |
 | Matching benchmark | PENDING |
 | Final capacity thresholds | PENDING |
