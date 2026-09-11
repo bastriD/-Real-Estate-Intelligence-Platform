@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from enum import StrEnum
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -23,6 +23,11 @@ class MandatStatut(StrEnum):
     TERMINE = "TERMINE"
     EXPIRE = "EXPIRE"
     ANNULE = "ANNULE"
+
+
+class MandatPeriodeType(StrEnum):
+    INITIAL = "INITIAL"
+    RENOUVELLEMENT = "RENOUVELLEMENT"
 
 
 class MandatBase(BaseModel):
@@ -72,3 +77,28 @@ class MandatRead(MandatBase):
     model_config = ConfigDict(from_attributes=True)
 
     id_mandat: int
+
+
+class MandatPeriodeRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id_mandat_periode: int
+    id_mandat: int
+    numero_periode: int
+    type_periode: MandatPeriodeType
+    date_debut: date
+    date_fin: date
+    date_renouvellement: date | None
+    commentaire: str | None
+    est_historique_legacy: bool
+    created_at: datetime
+
+
+class MandatRenew(BaseModel):
+    date_renouvellement: date
+    commentaire: str | None = None
+
+
+class MandatRenewResponse(BaseModel):
+    mandat: MandatRead
+    periode: MandatPeriodeRead

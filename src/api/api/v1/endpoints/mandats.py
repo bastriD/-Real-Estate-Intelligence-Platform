@@ -7,7 +7,10 @@ from src.api.db.session import get_db
 from src.api.schemas.auth import AuthenticatedUser
 from src.api.schemas.mandat import (
     MandatCreate,
+    MandatPeriodeRead,
     MandatRead,
+    MandatRenew,
+    MandatRenewResponse,
     MandatUpdate,
 )
 from src.api.services.mandat import (
@@ -57,12 +60,17 @@ def list_mandats(
                 )
 
             if client_id is not None:
-                mandats = service.list_by_client(client_id)
+                mandats = service.list_by_client(
+                    client_id
+                )
 
                 return [
                     mandat
                     for mandat in mandats
-                    if mandat.id_chasseur == own_chasseur_id
+                    if (
+                        mandat.id_chasseur
+                        == own_chasseur_id
+                    )
                 ]
 
             return service.list_by_chasseur(
@@ -70,10 +78,14 @@ def list_mandats(
             )
 
         if client_id is not None:
-            return service.list_by_client(client_id)
+            return service.list_by_client(
+                client_id
+            )
 
         if chasseur_id is not None:
-            return service.list_by_chasseur(chasseur_id)
+            return service.list_by_chasseur(
+                chasseur_id
+            )
 
         return service.list_mandats()
 
@@ -101,7 +113,9 @@ def get_mandat(
     service = MandatService(db)
 
     try:
-        mandat = service.get_mandat(mandat_id)
+        mandat = service.get_mandat(
+            mandat_id
+        )
 
         enforce_chasseur_ownership(
             current_user,
@@ -109,6 +123,40 @@ def get_mandat(
         )
 
         return mandat
+
+    except MandatNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
+        ) from exc
+
+
+@router.get(
+    "/{mandat_id}/periodes",
+    response_model=list[MandatPeriodeRead],
+)
+def list_mandat_periods(
+    mandat_id: int,
+    db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR")
+    ),
+) -> list[MandatPeriodeRead]:
+    service = MandatService(db)
+
+    try:
+        mandat = service.get_mandat(
+            mandat_id
+        )
+
+        enforce_chasseur_ownership(
+            current_user,
+            mandat.id_chasseur,
+        )
+
+        return service.list_periods(
+            mandat_id
+        )
 
     except MandatNotFoundError as exc:
         raise HTTPException(
@@ -164,6 +212,57 @@ def create_mandat(
         ) from exc
 
 
+@router.post(
+    "/{mandat_id}/renew",
+    response_model=MandatRenewResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+def renew_mandat(
+    mandat_id: int,
+    payload: MandatRenew,
+    db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR")
+    ),
+) -> MandatRenewResponse:
+    service = MandatService(db)
+
+    try:
+        mandat = service.get_mandat(
+            mandat_id
+        )
+
+        enforce_chasseur_ownership(
+            current_user,
+            mandat.id_chasseur,
+        )
+
+        renewed_mandat, periode = (
+            service.renew_mandat(
+                mandat_id,
+                payload,
+                utilisateur=current_user.email,
+            )
+        )
+
+        return MandatRenewResponse(
+            mandat=renewed_mandat,
+            periode=periode,
+        )
+
+    except MandatNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
+        ) from exc
+
+    except MandatValidationError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(exc),
+        ) from exc
+
+
 @router.patch(
     "/{mandat_id}",
     response_model=MandatRead,
@@ -179,8 +278,10 @@ def update_mandat(
     service = MandatService(db)
 
     try:
-        existing_mandat = service.get_mandat(
-            mandat_id
+        existing_mandat = (
+            service.get_mandat(
+                mandat_id
+            )
         )
 
         enforce_chasseur_ownership(
@@ -237,8 +338,10 @@ def delete_mandat(
     service = MandatService(db)
 
     try:
-        existing_mandat = service.get_mandat(
-            mandat_id
+        existing_mandat = (
+            service.get_mandat(
+                mandat_id
+            )
         )
 
         enforce_chasseur_ownership(

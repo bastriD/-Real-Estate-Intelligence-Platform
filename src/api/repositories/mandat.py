@@ -2,11 +2,16 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from src.api.db.models.mandat import Mandat
+from src.api.db.models.mandat_periode import MandatPeriode
 
 
 class MandatRepository:
     def __init__(self, session: Session) -> None:
         self.session = session
+
+    # =========================================================================
+    # MANDAT
+    # =========================================================================
 
     def list_all(self) -> list[Mandat]:
         statement = (
@@ -75,3 +80,67 @@ class MandatRepository:
     def delete(self, mandat: Mandat) -> None:
         self.session.delete(mandat)
         self.session.flush()
+
+    # =========================================================================
+    # MANDAT CONTRACTUAL PERIODS
+    # =========================================================================
+
+    def list_periods(
+        self,
+        mandat_id: int,
+    ) -> list[MandatPeriode]:
+        statement = (
+            select(MandatPeriode)
+            .where(
+                MandatPeriode.id_mandat == mandat_id
+            )
+            .order_by(
+                MandatPeriode.numero_periode
+            )
+        )
+
+        return list(
+            self.session.scalars(statement).all()
+        )
+
+    def get_period_by_number(
+        self,
+        mandat_id: int,
+        numero_periode: int,
+    ) -> MandatPeriode | None:
+        statement = (
+            select(MandatPeriode)
+            .where(
+                MandatPeriode.id_mandat == mandat_id,
+                MandatPeriode.numero_periode == numero_periode,
+            )
+        )
+
+        return self.session.scalar(statement)
+
+    def get_latest_period(
+        self,
+        mandat_id: int,
+    ) -> MandatPeriode | None:
+        statement = (
+            select(MandatPeriode)
+            .where(
+                MandatPeriode.id_mandat == mandat_id
+            )
+            .order_by(
+                MandatPeriode.numero_periode.desc()
+            )
+            .limit(1)
+        )
+
+        return self.session.scalar(statement)
+
+    def create_period(
+        self,
+        periode: MandatPeriode,
+    ) -> MandatPeriode:
+        self.session.add(periode)
+        self.session.flush()
+        self.session.refresh(periode)
+
+        return periode
