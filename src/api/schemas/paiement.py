@@ -19,6 +19,9 @@ class PaiementRead(BaseModel):
     montant_honoraires: Decimal
     montant_chasseur: Decimal
 
+    date_reception_honoraires: date | None
+    date_paiement_chasseur: date | None
+
     statut: str
 
     id_vente: int | None

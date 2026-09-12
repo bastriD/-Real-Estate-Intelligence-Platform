@@ -47,6 +47,8 @@ def make_paiement(
         montant_achat="420000.00",
         montant_honoraires="13500.00",
         montant_chasseur="6231.60",
+        date_reception_honoraires=None,
+        date_paiement_chasseur=None,
         statut="ATTENDU",
         id_vente=vente_id,
         id_chasseur_beneficiaire=1,
@@ -174,6 +176,9 @@ def test_admin_can_calculate_remuneration(
     assert body["taux_final"] == "0.4616"
     assert body["montant_chasseur"] == "6231.60"
 
+    assert body["date_reception_honoraires"] is None
+    assert body["date_paiement_chasseur"] is None
+
 
 def test_duplicate_calculation_returns_409(
     monkeypatch,
@@ -287,7 +292,12 @@ def test_admin_can_get_by_vente(
     )
 
     assert response.status_code == 200
-    assert response.json()["id_vente"] == 100
+
+    body = response.json()
+
+    assert body["id_vente"] == 100
+    assert body["date_reception_honoraires"] is None
+    assert body["date_paiement_chasseur"] is None
 
 
 def test_missing_remuneration_returns_404(
@@ -363,6 +373,11 @@ def test_chasseur_can_get_own_remuneration(
     )
 
     assert response.status_code == 200
+
+    body = response.json()
+
+    assert body["date_reception_honoraires"] is None
+    assert body["date_paiement_chasseur"] is None
 
 
 def test_cross_owner_hidden_as_404(
@@ -469,4 +484,9 @@ def test_admin_can_get_paiement_by_id(
     )
 
     assert response.status_code == 200
-    assert response.json()["id_paiement"] == 77
+
+    body = response.json()
+
+    assert body["id_paiement"] == 77
+    assert body["date_reception_honoraires"] is None
+    assert body["date_paiement_chasseur"] is None
