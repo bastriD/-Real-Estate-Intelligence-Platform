@@ -96,39 +96,21 @@ $$;
 
 DO $$
 DECLARE
-    v_id BIGINT;
+    v_default_approved_count INTEGER;
 BEGIN
-    INSERT INTO real_estate.bareme_commission (
-        montant_min,
-        montant_max,
-        taux_commission,
-        montant_fixe,
-        date_debut_validite,
-        date_fin_validite,
-        actif,
-        id_chasseur,
-        statut_usage
-    )
-    VALUES (
-        0,
-        200000,
-        0.30,
-        0,
-        DATE '2026-01-01',
-        NULL,
-        TRUE,
-        NULL,
-        'APPROUVE'
-    )
-    RETURNING id_bareme INTO v_id;
+    SELECT COUNT(*)
+    INTO v_default_approved_count
+    FROM real_estate.bareme_commission
+    WHERE id_chasseur IS NULL
+      AND actif = TRUE
+      AND statut_usage = 'APPROUVE';
 
-    IF v_id IS NULL THEN
+    IF v_default_approved_count = 0 THEN
         RAISE EXCEPTION
-            'Default commission grid could not be inserted';
+            'At least one active approved default commission grid must exist';
     END IF;
 END;
 $$;
-
 
 -- =============================================================================
 -- 5. Hunter-specific grid is supported alongside default grid
