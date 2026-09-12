@@ -4,52 +4,20 @@
 #
 # RESPONSIBILITY
 #
-# This job is the mandatory behavioral regression gate for the Backend/API.
+# Mandatory behavioral regression gate for the Backend/API.
 #
-# It validates:
-#
+# Validates:
 # - Backend/API behavior
-# - Authentication
-# - Role-based access control
-# - Mandat ownership
+# - Authentication / RBAC / ownership
 # - Demande assignment lifecycle
-# - Demande ownership
-# - Presentation ownership
-# - Visite ownership
+# - Presentation / Visite lifecycle
 # - Vente transaction lifecycle
-# - Vente ownership / RBAC
-# - Presentation -> DemandeVersion -> Demande -> Mandat integrity
-# - Vente beneficiary / remuneration entitlement foundation
-# - Remuneration persistence layer
-# - Remuneration business service
-# - Remuneration API / RBAC
-# - Deterministic remuneration calculation
+# - Remuneration calculation and persistence
+# - Payment lifecycle
 # - Audit actor propagation
 # - Existing data tests
 # - Candidate availability integration logic
 # - API code coverage >= 80 %
-#
-#
-# CI/CD RELATIONSHIP
-#
-#   backend:validate
-#          |
-#          +--------------------+
-#                               |
-#   backend:tests --------------+
-#                               |
-#                               v
-#                      backend:build-image
-#
-#
-# IMPORTANT
-#
-# - This job is defined separately from backend.yml.
-# - backend.yml MUST NOT redefine backend:tests.
-# - backend:build-image declares backend:tests as a dependency.
-# - The job uses rules:changes and is created whenever Backend/API,
-#   ownership, audit, transaction, remuneration, data or relevant
-#   matching repository code changes.
 #
 # =============================================================================
 
@@ -67,21 +35,8 @@ backend:tests:
     JWT_SECRET_KEY: "ci-test-jwt-secret-only"
 
   before_script:
-
-    # -------------------------------------------------------------------------
-    # 1. Runtime diagnostics
-    # -------------------------------------------------------------------------
-
     - python --version
     - pip --version
-
-
-    # -------------------------------------------------------------------------
-    # 2. Install Backend test dependencies
-    #
-    # requirements-backend-test.txt remains the authoritative dependency
-    # definition for Backend/API tests.
-    # -------------------------------------------------------------------------
 
     - |
       pip install \
@@ -92,103 +47,81 @@ backend:tests:
   script:
 
     # -------------------------------------------------------------------------
-    # 1. Validate key Backend / ownership / transaction / remuneration files
+    # 1. Validate implementation files
     # -------------------------------------------------------------------------
 
     - test -f src/api/core/authorization.py
 
-
-    # -------------------------------------------------------------------------
     # Models
-    # -------------------------------------------------------------------------
-
     - test -f src/api/db/models/demande_affectation.py
     - test -f src/api/db/models/presentation.py
     - test -f src/api/db/models/visite.py
     - test -f src/api/db/models/vente.py
-
     - test -f src/api/db/models/paiement.py
     - test -f src/api/db/models/bareme_commission.py
     - test -f src/api/db/models/parametres_honoraires.py
     - test -f src/api/db/models/parametres_remuneration.py
     - test -f src/api/db/models/palier_performance.py
 
-
-    # -------------------------------------------------------------------------
     # Repositories
-    # -------------------------------------------------------------------------
-
     - test -f src/api/repositories/demande.py
     - test -f src/api/repositories/demande_affectation.py
     - test -f src/api/repositories/presentation.py
     - test -f src/api/repositories/visite.py
     - test -f src/api/repositories/vente.py
-
     - test -f src/api/repositories/paiement.py
     - test -f src/api/repositories/bareme_commission.py
     - test -f src/api/repositories/parametres_honoraires.py
     - test -f src/api/repositories/parametres_remuneration.py
     - test -f src/api/repositories/palier_performance.py
 
-
-    # -------------------------------------------------------------------------
     # Services
-    # -------------------------------------------------------------------------
-
     - test -f src/api/services/demande.py
     - test -f src/api/services/demande_affectation.py
     - test -f src/api/services/presentation.py
     - test -f src/api/services/visite.py
     - test -f src/api/services/vente.py
-
     - test -f src/api/services/remuneration_calculator.py
     - test -f src/api/services/remuneration.py
+    - test -f src/api/services/paiement.py
 
-
-    # -------------------------------------------------------------------------
     # Schemas
-    # -------------------------------------------------------------------------
-
     - test -f src/api/schemas/demande_affectation.py
     - test -f src/api/schemas/vente.py
     - test -f src/api/schemas/paiement.py
+    - test -f src/api/schemas/paiement_transition.py
 
-
-    # -------------------------------------------------------------------------
-    # API endpoints
-    # -------------------------------------------------------------------------
-
+    # Endpoints
     - test -f src/api/api/v1/endpoints/mandats.py
     - test -f src/api/api/v1/endpoints/demandes.py
     - test -f src/api/api/v1/endpoints/presentations.py
     - test -f src/api/api/v1/endpoints/visites.py
     - test -f src/api/api/v1/endpoints/ventes.py
     - test -f src/api/api/v1/endpoints/remunerations.py
+    - test -f src/api/api/v1/endpoints/paiements.py
 
 
     # -------------------------------------------------------------------------
-    # 2. Validate ownership / assignment / transaction / remuneration tests
+    # 2. Validate regression tests
     # -------------------------------------------------------------------------
 
     - test -f tests/backend/test_demande_affectation_api.py
     - test -f tests/backend/test_demande_affectation_service.py
     - test -f tests/backend/test_demande_ownership_api.py
-
     - test -f tests/backend/test_presentation_ownership_api.py
-
     - test -f tests/backend/test_visite_ownership_api.py
     - test -f tests/backend/test_visite_audit_api.py
-
     - test -f tests/backend/test_vente_service.py
     - test -f tests/backend/test_vente_api.py
-
     - test -f tests/backend/test_remuneration_calculator.py
     - test -f tests/backend/test_remuneration_service.py
     - test -f tests/backend/test_remuneration_api.py
+    - test -f tests/backend/test_paiement_service.py
+    - test -f tests/backend/test_paiement_api.py
 
 
     # -------------------------------------------------------------------------
-    # 3. Validate Vente / remuneration imports before test execution
+    # 3. Validate transaction / remuneration / payment imports
     # -------------------------------------------------------------------------
 
     - |
@@ -201,6 +134,10 @@ backend:tests:
 
       from src.api.schemas.paiement import (
           PaiementRead,
+      )
+
+      from src.api.schemas.paiement_transition import (
+          PaiementTransitionRequest,
       )
 
       from src.api.services.vente import (
@@ -231,6 +168,13 @@ backend:tests:
           RemunerationService,
       )
 
+      from src.api.services.paiement import (
+          PaiementNotFoundError,
+          PaiementService,
+          PaiementTransitionError,
+          PaiementValidationError,
+      )
+
       from src.api.db.models.paiement import Paiement
       from src.api.db.models.bareme_commission import BaremeCommission
       from src.api.db.models.parametres_honoraires import ParametresHonoraires
@@ -249,59 +193,77 @@ backend:tests:
           PalierPerformanceRepository,
       )
 
-      print(
-          "Vente service/schema imports successful."
-      )
-
-      print(
-          "Remuneration calculator imports successful."
-      )
-
-      print(
-          "Remuneration persistence/service/schema imports successful."
-      )
+      print("Vente service/schema imports successful.")
+      print("Remuneration calculator imports successful.")
+      print("Remuneration persistence/service/schema imports successful.")
+      print("Payment lifecycle service/schema imports successful.")
       PY
 
 
     # -------------------------------------------------------------------------
-    # 4. Validate Vente and remuneration routes are registered in FastAPI
+    # 4. Validate transaction / remuneration / payment OpenAPI routes
     # -------------------------------------------------------------------------
 
     - |
       python - <<'PY'
       from src.api.main import app
 
-      paths = set(
-          app.openapi()
-          .get(
-              "paths",
-              {},
-          )
-          .keys()
+      openapi_paths = app.openapi().get(
+          "paths",
+          {},
       )
 
-      required_paths = {
-          "/api/v1/ventes",
-          "/api/v1/remunerations/ventes/{vente_id}/calcul",
-          "/api/v1/remunerations/ventes/{vente_id}",
-          "/api/v1/remunerations/{paiement_id}",
+      required_methods = {
+          "/api/v1/ventes": {
+              "get",
+              "post",
+          },
+          "/api/v1/remunerations/ventes/{vente_id}/calcul": {
+              "post",
+          },
+          "/api/v1/remunerations/ventes/{vente_id}": {
+              "get",
+          },
+          "/api/v1/remunerations/{paiement_id}": {
+              "get",
+          },
+          "/api/v1/paiements/{paiement_id}/statut": {
+              "patch",
+          },
       }
 
-      missing_paths = (
-          required_paths - paths
-      )
+      for path, methods in required_methods.items():
+          assert path in openapi_paths, (
+              f"Missing required API route: {path}"
+          )
 
-      assert not missing_paths, (
-          "Missing required API routes: "
-          + ", ".join(
-              sorted(
-                  missing_paths
+          available_methods = {
+              method.lower()
+              for method in openapi_paths[path]
+              if method.lower()
+              in {
+                  "get",
+                  "post",
+                  "put",
+                  "patch",
+                  "delete",
+              }
+          }
+
+          missing_methods = (
+              methods - available_methods
+          )
+
+          assert not missing_methods, (
+              f"Missing methods for {path}: "
+              + ", ".join(
+                  sorted(missing_methods)
               )
           )
-      )
 
       print(
-          "Required Vente and remuneration OpenAPI routes registered."
+          "Required Vente, remuneration and payment "
+          "OpenAPI routes registered."
       )
       PY
 
@@ -313,7 +275,7 @@ backend:tests:
     - |
       echo
       echo "============================================================"
-      echo "RUNNING BACKEND / DATA / OWNERSHIP / TRANSACTION REGRESSION"
+      echo "RUNNING BACKEND / DATA / TRANSACTION REGRESSION"
       echo "============================================================"
 
       python -m pytest \
@@ -340,43 +302,57 @@ backend:tests:
       echo
       echo "Validated:"
       echo "- Backend/API regression suite"
-      echo "- Authentication"
-      echo "- Role-based authorization"
-      echo "- Mandat ownership"
+      echo "- Authentication and role-based authorization"
+      echo "- Mandat / Demande / Presentation / Visite ownership"
       echo "- Demande assignment lifecycle"
-      echo "- Demande ownership"
-      echo "- Presentation ownership"
-      echo "- Visite ownership"
-      echo "- Vente transaction lifecycle"
-      echo "- Vente ownership / RBAC"
-      echo "- Presentation-to-Mandat integrity"
+      echo "- Vente transaction lifecycle and RBAC"
       echo "- Contractual period resolution"
       echo "- Exclusive / non-exclusive beneficiary rules"
       echo "- Expired Mandat remuneration entitlement behavior"
       echo "- Duplicate Presentation sale protection"
 
+      echo
       echo "- Remuneration persistence models"
       echo "- Remuneration repositories"
       echo "- Remuneration business service"
-      echo "- Remuneration API endpoints"
-      echo "- Remuneration ownership / RBAC"
+      echo "- Remuneration API / RBAC"
       echo "- Duplicate remuneration calculation protection"
       echo "- Missing remuneration configuration handling"
+      echo "- Frozen remuneration calculation snapshot"
 
+      echo
       echo "- Deterministic remuneration calculator"
       echo "- Company fee calculation"
       echo "- Performance score calculation"
       echo "- Seniority modulation"
       echo "- Performance modulation"
       echo "- Final remuneration rate calculation"
-      echo "- Frozen remuneration calculation snapshot"
-      echo "- Reference calculation:"
+
+      echo
+      echo "- Payment lifecycle service"
+      echo "- Payment lifecycle API"
+      echo "- ADMIN-only payment lifecycle mutation"
+      echo "- ATTENDU -> RECU"
+      echo "- RECU -> VERIFIE"
+      echo "- VERIFIE -> PROGRAMME"
+      echo "- PROGRAMME -> PAYE"
+      echo "- Controlled cancellation"
+      echo "- Terminal PAYE / ANNULE states"
+      echo "- Required reception and payment dates"
+      echo "- Payment date consistency"
+      echo "- Concurrent transition row locking"
+      echo "- Idempotent same-state transition"
+      echo "- Payment transition audit trail"
+
+      echo
+      echo "- Reference remuneration calculation:"
       echo "  420000 EUR purchase"
       echo "  13500 EUR company fees"
       echo "  73.5 performance score"
       echo "  46.16 percent hunter rate"
       echo "  6231.60 EUR hunter remuneration"
 
+      echo
       echo "- Audit actor propagation"
       echo "- Existing data validation tests"
       echo "- Candidate availability"
@@ -398,60 +374,25 @@ backend:tests:
 
 
   rules:
-
-    # -------------------------------------------------------------------------
-    # Backend / API implementation
-    # -------------------------------------------------------------------------
-
     - changes:
         - src/api/**/*
-
-
-    # -------------------------------------------------------------------------
-    # Backend regression tests
-    # -------------------------------------------------------------------------
 
     - changes:
         - tests/backend/**/*
 
-
-    # -------------------------------------------------------------------------
-    # Data tests used by this job
-    # -------------------------------------------------------------------------
-
     - changes:
         - tests/data/**/*
-
-
-    # -------------------------------------------------------------------------
-    # Candidate availability test and implementation
-    # -------------------------------------------------------------------------
 
     - changes:
         - tests/ai/test_candidate_availability.py
         - src/ai/matching/repository.py
 
-
-    # -------------------------------------------------------------------------
-    # Data staging dependency used by the selected tests
-    # -------------------------------------------------------------------------
-
     - changes:
         - database/seeds/transform_raw_to_staging.py
-
-
-    # -------------------------------------------------------------------------
-    # Dependency definitions
-    # -------------------------------------------------------------------------
 
     - changes:
         - requirements-backend.txt
         - requirements-backend-test.txt
-
-
-    # -------------------------------------------------------------------------
-    # CI definition itself
-    # -------------------------------------------------------------------------
 
     - changes:
         - .gitlab/ci/backend-tests.yml

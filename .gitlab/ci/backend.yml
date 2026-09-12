@@ -75,6 +75,7 @@
 #       Demande assignment module imports
 #       Vente transaction module imports
 #       Remuneration persistence/service/API imports
+#       Payment lifecycle service/API imports
 #       Matching runtime import compatibility
 #       FastAPI/OpenAPI contract
 #
@@ -97,6 +98,8 @@
 #       - Vente ownership
 #       - remuneration business rules
 #       - remuneration API / RBAC
+#       - payment lifecycle
+#       - payment transition audit
 #       - audit compatibility
 #
 #   ai:validate
@@ -155,23 +158,6 @@ backend:validate:
     - python --version
     - pip --version
 
-    # -------------------------------------------------------------------------
-    # Install Backend + lightweight AI matching runtime dependencies.
-    #
-    # requirements-ai.txt contains:
-    #
-    #   -r requirements-backend.txt
-    #
-    # Therefore this installs:
-    #
-    #   Backend dependencies
-    #   + NumPy
-    #   + Pandas
-    #
-    # Training-only dependencies such as scikit-learn, MLflow and PyTorch
-    # are intentionally NOT installed here.
-    # -------------------------------------------------------------------------
-
     - |
       pip install \
         --no-cache-dir \
@@ -220,7 +206,8 @@ backend:validate:
 
 
     # -------------------------------------------------------------------------
-    # 4. Validate ownership / assignment / transaction / remuneration models
+    # 4. Validate ownership / assignment / transaction / remuneration /
+    #    payment lifecycle models and modules
     # -------------------------------------------------------------------------
 
     - test -f src/api/db/models/demande.py
@@ -259,11 +246,13 @@ backend:validate:
 
     - test -f src/api/services/remuneration_calculator.py
     - test -f src/api/services/remuneration.py
+    - test -f src/api/services/paiement.py
 
     - test -f src/api/schemas/demande_affectation.py
     - test -f src/api/schemas/mandat.py
     - test -f src/api/schemas/vente.py
     - test -f src/api/schemas/paiement.py
+    - test -f src/api/schemas/paiement_transition.py
 
 
     # -------------------------------------------------------------------------
@@ -281,6 +270,7 @@ backend:validate:
     - test -f src/api/api/v1/endpoints/visites.py
     - test -f src/api/api/v1/endpoints/ventes.py
     - test -f src/api/api/v1/endpoints/remunerations.py
+    - test -f src/api/api/v1/endpoints/paiements.py
 
 
     # -------------------------------------------------------------------------
@@ -354,11 +344,13 @@ backend:validate:
         src/api/services/vente.py \
         src/api/services/remuneration_calculator.py \
         src/api/services/remuneration.py \
+        src/api/services/paiement.py \
         src/api/schemas/auth.py \
         src/api/schemas/demande_affectation.py \
         src/api/schemas/mandat.py \
         src/api/schemas/vente.py \
         src/api/schemas/paiement.py \
+        src/api/schemas/paiement_transition.py \
         src/api/api/v1/router.py \
         src/api/api/v1/endpoints/health.py \
         src/api/api/v1/endpoints/auth.py \
@@ -368,6 +360,7 @@ backend:validate:
         src/api/api/v1/endpoints/visites.py \
         src/api/api/v1/endpoints/ventes.py \
         src/api/api/v1/endpoints/remunerations.py \
+        src/api/api/v1/endpoints/paiements.py \
         src/ai/matching/features.py \
         src/ai/matching/repository.py \
         src/ai/matching/evaluate.py
@@ -484,7 +477,8 @@ backend:validate:
 
 
     # -------------------------------------------------------------------------
-    # 12. Validate authorization / transaction / remuneration compatibility
+    # 12. Validate authorization / transaction / remuneration /
+    #     payment lifecycle compatibility
     # -------------------------------------------------------------------------
 
     - |
@@ -529,8 +523,19 @@ backend:validate:
           calculate_seniority_bonus,
       )
 
+      from src.api.services.paiement import (
+          PaiementNotFoundError,
+          PaiementService,
+          PaiementTransitionError,
+          PaiementValidationError,
+      )
+
       from src.api.schemas.paiement import (
           PaiementRead,
+      )
+
+      from src.api.schemas.paiement_transition import (
+          PaiementTransitionRequest,
       )
 
       print(
@@ -552,11 +557,16 @@ backend:validate:
           "Remuneration calculator/service/schema "
           "imports successful."
       )
+
+      print(
+          "Payment lifecycle service/schema "
+          "imports successful."
+      )
       PY
 
 
     # -------------------------------------------------------------------------
-    # 13. Validate remuneration persistence compatibility
+    # 13. Validate remuneration / payment persistence compatibility
     # -------------------------------------------------------------------------
 
     - |
@@ -602,12 +612,12 @@ backend:validate:
       )
 
       print(
-          "Remuneration persistence models "
+          "Remuneration / payment persistence models "
           "imported successfully."
       )
 
       print(
-          "Remuneration repositories "
+          "Remuneration / payment repositories "
           "imported successfully."
       )
       PY
@@ -648,6 +658,7 @@ backend:validate:
           "/api/v1/remunerations/ventes/{vente_id}/calcul",
           "/api/v1/remunerations/ventes/{vente_id}",
           "/api/v1/remunerations/{paiement_id}",
+          "/api/v1/paiements/{paiement_id}/statut",
       }
 
       missing_routes = (
@@ -698,6 +709,10 @@ backend:validate:
       echo "- Remuneration schema imports"
       echo "- Remuneration API endpoint syntax"
 
+      echo "- Payment lifecycle service imports"
+      echo "- Payment transition schema imports"
+      echo "- Payment API endpoint syntax"
+
       echo "- Ownership endpoint syntax"
       echo "- AI matching runtime import compatibility"
       echo "- Backend deployment structure"
@@ -708,6 +723,10 @@ backend:validate:
       echo "- POST /api/v1/remunerations/ventes/{vente_id}/calcul"
       echo "- GET  /api/v1/remunerations/ventes/{vente_id}"
       echo "- GET  /api/v1/remunerations/{paiement_id}"
+
+      echo
+      echo "Required payment lifecycle route:"
+      echo "- PATCH /api/v1/paiements/{paiement_id}/statut"
 
       echo
       echo "Behavioral validation is performed by backend:tests:"
@@ -727,6 +746,9 @@ backend:validate:
       echo "- Remuneration API / ownership / RBAC"
       echo "- Duplicate remuneration protection"
       echo "- Remuneration configuration error handling"
+      echo "- Payment lifecycle transitions"
+      echo "- Payment transition authorization"
+      echo "- Payment transition audit"
       echo "- Audit compatibility"
       echo "- Data tests"
       echo "- Candidate availability"
@@ -764,7 +786,7 @@ backend:validate:
 #     --cov-report=xml \
 #     --cov-fail-under=80
 #
-# Ownership / transaction / remuneration changes under src/api/**/*
+# Ownership / transaction / remuneration / payment changes under src/api/**/*
 # and tests/backend/**/* trigger that job.
 #
 # =============================================================================
@@ -779,18 +801,6 @@ backend:build-image:
 
   tags:
     - docker
-
-  # ---------------------------------------------------------------------------
-  # backend:validate always exists for main/MR Backend pipelines.
-  #
-  # backend:tests is defined in backend-tests.yml and uses rules:changes.
-  #
-  # optional:true is required because GitLab must still be able to create a
-  # pipeline where backend:tests is legitimately absent.
-  #
-  # When backend:tests IS present, backend:build-image waits for it and cannot
-  # start if the test job fails.
-  # ---------------------------------------------------------------------------
 
   needs:
     - job: backend:validate
@@ -877,7 +887,8 @@ backend:build-image:
 
 
     # -------------------------------------------------------------------------
-    # 5. Validate ownership / transaction / remuneration modules inside image
+    # 5. Validate ownership / transaction / remuneration /
+    #    payment lifecycle modules inside image
     # -------------------------------------------------------------------------
 
     - |
@@ -887,11 +898,11 @@ backend:build-image:
         -e JWT_SECRET_KEY=ci-image-validation-jwt-secret-only \
         "$IMAGE_NAME:$IMAGE_TAG" \
         python -c \
-        "from src.api.core.authorization import enforce_chasseur_ownership, enforce_demande_access, enforce_demande_ownership, require_chasseur_identity; from src.api.services.demande_affectation import DemandeAffectationService; from src.api.services.vente import VenteService; from src.api.services.remuneration import RemunerationService; from src.api.services.remuneration_calculator import calculate_remuneration; from src.api.schemas.paiement import PaiementRead; print('Authorization + ownership + transaction + remuneration modules OK')"
+        "from src.api.core.authorization import enforce_chasseur_ownership, enforce_demande_access, enforce_demande_ownership, require_chasseur_identity; from src.api.services.demande_affectation import DemandeAffectationService; from src.api.services.vente import VenteService; from src.api.services.remuneration import RemunerationService; from src.api.services.remuneration_calculator import calculate_remuneration; from src.api.services.paiement import PaiementService, PaiementNotFoundError, PaiementTransitionError, PaiementValidationError; from src.api.schemas.paiement import PaiementRead; from src.api.schemas.paiement_transition import PaiementTransitionRequest; print('Authorization + ownership + transaction + remuneration + payment lifecycle modules OK')"
 
 
     # -------------------------------------------------------------------------
-    # 6. Validate remuneration persistence modules inside final image
+    # 6. Validate remuneration / payment persistence modules inside final image
     # -------------------------------------------------------------------------
 
     - |
@@ -901,7 +912,7 @@ backend:build-image:
         -e JWT_SECRET_KEY=ci-image-validation-jwt-secret-only \
         "$IMAGE_NAME:$IMAGE_TAG" \
         python -c \
-        "from src.api.db.models.paiement import Paiement; from src.api.db.models.bareme_commission import BaremeCommission; from src.api.db.models.parametres_honoraires import ParametresHonoraires; from src.api.db.models.parametres_remuneration import ParametresRemuneration; from src.api.db.models.palier_performance import PalierPerformance; from src.api.repositories.paiement import PaiementRepository; from src.api.repositories.bareme_commission import BaremeCommissionRepository; from src.api.repositories.parametres_honoraires import ParametresHonorairesRepository; from src.api.repositories.parametres_remuneration import ParametresRemunerationRepository; from src.api.repositories.palier_performance import PalierPerformanceRepository; print('Remuneration persistence modules OK')"
+        "from src.api.db.models.paiement import Paiement; from src.api.db.models.bareme_commission import BaremeCommission; from src.api.db.models.parametres_honoraires import ParametresHonoraires; from src.api.db.models.parametres_remuneration import ParametresRemuneration; from src.api.db.models.palier_performance import PalierPerformance; from src.api.repositories.paiement import PaiementRepository; from src.api.repositories.bareme_commission import BaremeCommissionRepository; from src.api.repositories.parametres_honoraires import ParametresHonorairesRepository; from src.api.repositories.parametres_remuneration import ParametresRemunerationRepository; from src.api.repositories.palier_performance import PalierPerformanceRepository; print('Remuneration + payment persistence modules OK')"
 
 
     # -------------------------------------------------------------------------
@@ -929,7 +940,7 @@ backend:build-image:
         -e JWT_SECRET_KEY=ci-image-validation-jwt-secret-only \
         "$IMAGE_NAME:$IMAGE_TAG" \
         python -c \
-        "from src.api.main import app; paths=set(app.openapi().get('paths', {}).keys()); required={'/health','/ready','/api/v1/health','/api/v1/ready','/api/v1/auth/login','/api/v1/ventes','/api/v1/remunerations/ventes/{vente_id}/calcul','/api/v1/remunerations/ventes/{vente_id}','/api/v1/remunerations/{paiement_id}'}; missing=required-paths; print('OpenAPI paths:', sorted(paths)); assert not missing, f'Missing routes: {sorted(missing)}'; print('Vente + remuneration OpenAPI routes OK')"
+        "from src.api.main import app; paths=set(app.openapi().get('paths', {}).keys()); required={'/health','/ready','/api/v1/health','/api/v1/ready','/api/v1/auth/login','/api/v1/ventes','/api/v1/remunerations/ventes/{vente_id}/calcul','/api/v1/remunerations/ventes/{vente_id}','/api/v1/remunerations/{paiement_id}','/api/v1/paiements/{paiement_id}/statut'}; missing=required-paths; print('OpenAPI paths:', sorted(paths)); assert not missing, f'Missing routes: {sorted(missing)}'; print('Vente + remuneration + payment OpenAPI routes OK')"
 
 
     # -------------------------------------------------------------------------
@@ -980,6 +991,8 @@ backend:build-image:
       echo "- Remuneration persistence"
       echo "- Remuneration calculation service"
       echo "- Remuneration API"
+      echo "- Payment lifecycle"
+      echo "- Payment transition API"
       echo "- Deterministic AI matching"
 
 
@@ -1652,6 +1665,8 @@ backend:publish-gitops:
       echo "- Vente transaction lifecycle"
       echo "- Remuneration calculation and persistence"
       echo "- Remuneration API"
+      echo "- Payment lifecycle"
+      echo "- Payment transition API"
 
       echo
       echo "AI runtime:"
