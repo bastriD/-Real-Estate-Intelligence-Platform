@@ -68,21 +68,23 @@ $$;
 
 DO $$
 DECLARE
-    v_total INTEGER;
-    v_historical INTEGER;
+    v_legacy_total INTEGER;
+    v_legacy_historical INTEGER;
 BEGIN
     SELECT COUNT(*)
-    INTO v_total
-    FROM real_estate.bareme_commission;
+    INTO v_legacy_total
+    FROM real_estate.bareme_commission
+    WHERE id_chasseur IS NOT NULL;
 
     SELECT COUNT(*)
-    INTO v_historical
+    INTO v_legacy_historical
     FROM real_estate.bareme_commission
-    WHERE statut_usage = 'HISTORIQUE';
+    WHERE id_chasseur IS NOT NULL
+      AND statut_usage = 'HISTORIQUE';
 
-    IF v_total <> v_historical THEN
+    IF v_legacy_total <> v_legacy_historical THEN
         RAISE EXCEPTION
-            'All existing commission grids must remain HISTORIQUE after migration 010';
+            'All hunter-specific legacy commission grids must remain HISTORIQUE';
     END IF;
 END;
 $$;
