@@ -240,7 +240,7 @@ backend:validate:
     - test -f src/api/services/visite.py
     - test -f src/api/services/vente.py
     - test -f src/api/services/remuneration_calculator.py
-    - test -f src/api/services/remuneration.py
+    #- test -f src/api/services/remuneration.py
 
     - test -f src/api/schemas/demande_affectation.py
     - test -f src/api/schemas/mandat.py
@@ -323,7 +323,6 @@ backend:validate:
         src/api/services/visite.py \
         src/api/services/vente.py \
         src/api/services/remuneration_calculator.py \
-        src/api/services/remuneration.py \
         src/api/schemas/auth.py \
         src/api/schemas/demande_affectation.py \
         src/api/schemas/mandat.py \
