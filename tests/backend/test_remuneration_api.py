@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from src.api.api.v1.endpoints import remunerations
-from src.api.core.dependencies import require_roles
+from src.api.core.dependencies import get_current_user
 from src.api.db.session import get_db
 from src.api.schemas.auth import AuthenticatedUser
 from src.api.services.remuneration import (
@@ -78,9 +78,6 @@ def override_db():
     yield db
 
 
-app.dependency_overrides[get_db] = override_db
-
-
 def override_admin():
     return make_user(
         role="ADMIN",
@@ -102,33 +99,21 @@ def override_other_chasseur():
 
 
 def _override_auth(user_factory):
-    for route in app.routes:
-        if not hasattr(route, "dependant"):
-            continue
-
-        for dependency in route.dependant.dependencies:
-            call = dependency.call
-
-            if getattr(call, "__name__", "") == "dependency":
-                app.dependency_overrides[call] = user_factory
-
-
-def reset_auth_overrides():
-    keys = list(
-        app.dependency_overrides.keys()
-    )
-
-    for key in keys:
-        if key is not get_db:
-            del app.dependency_overrides[key]
+    app.dependency_overrides[
+        get_current_user
+    ] = user_factory
 
 
 def setup_function():
-    reset_auth_overrides()
+    app.dependency_overrides.clear()
+
+    app.dependency_overrides[
+        get_db
+    ] = override_db
 
 
 def teardown_function():
-    reset_auth_overrides()
+    app.dependency_overrides.clear()
 
 
 def test_admin_can_calculate_remuneration(
@@ -158,6 +143,7 @@ def test_admin_can_calculate_remuneration(
     )
 
     mandat_repository = MagicMock()
+
     mandat_repository.get_by_id.return_value = (
         SimpleNamespace(
             id_mandat=20,
