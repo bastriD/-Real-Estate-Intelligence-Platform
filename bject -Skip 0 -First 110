@@ -1,0 +1,248 @@
+[35mdocs/40-DATA/01-Data-Architecture.md[m[36m:[m[32m267[m[36m:[m[1;31mbareme[m_[1;31mcommission[m
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m112[m[36m:[m[1;31mcommission[m directly attached to user
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m146[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m183[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m232[m[36m:[m[1;31mCommission[m rules are deliberately not stored directly on this entity.
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m237[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m924[m[36m:[m# 40. [1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m926[m[36m:[mThe [1;31mcommission[m model is separated from `CHASSEUR`.
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m928[m[36m:[mA [1;31mcommission[m scale can vary:
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m938[m[36m:[m# 41. [1;31mBAREME[m_[1;31mCOMMISSION[m Attributes
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m941[m[36m:[mid_[1;31mbareme[m
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m947[m[36m:[mtaux_[1;31mcommission[m
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m958[m[36m:[m# 42. Why [1;31mcommission[m history matters
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m963[m[36m:[mWhich [1;31mcommission[m rule applied
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m967[m[36m:[mTherefore old [1;31mcommission[m scales are preserved instead of overwritten.
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m971[m[36m:[m# 43. [1;31mCommission[m Percentage
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m973[m[36m:[mPhysically, the [1;31mcommission[m is stored as a ratio.
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m994[m[36m:[mid_[1;31mbareme[m
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m996[m[36m:[mdate_[1;31macte_authentique[m
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m999[m[36m:[mmontant_[1;31mhonoraires[m
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m1002[m[36m:[mdate_reception_[1;31mhonoraires[m
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m1025[m[36m:[m# 46. [1;31mCommission[m Traceability
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m1030[m[36m:[mid_[1;31mbareme[m
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m1035[m[36m:[mThis prevents later [1;31mbarème[m changes from destroying historical traceability.
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m1188[m[36m:[m[1;31mcommission[m
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m1423[m[36m:[m# 66. Legacy [1;31mCommission[m Migration
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m1428[m[36m:[mutilisateurs.taux_[1;31mcommission[m
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m1434[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m1649[m[36m:[m[1;31mbareme[m_[1;31mcommission[m
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m1749[m[36m:[m| [1;31mCommission[m model | COMPLETE |
+[35mdocs/40-DATA/02-Data-Model.md[m[36m:[m[32m1788[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/40-DATA/ARCHITECTURE-DATA-IMPLEMENTEE.md[m[36m:[m[32m828[m[36m:[m[1;31mhonoraires[m
+[35mdocs/40-DATA/ARCHITECTURE-DATA-IMPLEMENTEE.md[m[36m:[m[32m829[m[36m:[m[1;31mcommission[m_chasseur
+[35mdocs/40-DATA/ARCHITECTURE-DATA-IMPLEMENTEE.md[m[36m:[m[32m1650[m[36m:[m[1;31mcommission[ms
+[35mdocs/95-GOVERNANCE/11-Risk-Register.md[m[36m:[m[32m157[m[36m:[m| RISK-BUS-002   | Hunter [1;31mremuneration[m requirements incomplete         | Business       |  16 High |    12 High | Open                  |
+[35mdocs/95-GOVERNANCE/11-Risk-Register.md[m[36m:[m[32m881[m[36m:[m## RISK-BUS-002 — Hunter [1;31mRemuneration[m Requirements Incomplete
+[35mdocs/95-GOVERNANCE/11-Risk-Register.md[m[36m:[m[32m890[m[36m:[mThe updated business requirements introduce hunter [1;31mremuneration[m rules that are not yet completely represented by the current application and data model.
+[35mdocs/95-GOVERNANCE/11-Risk-Register.md[m[36m:[m[32m892[m[36m:[mThis may lead to incorrect or non-reproducible [1;31mremuneration[m calculations.
+[35mdocs/95-GOVERNANCE/11-Risk-Register.md[m[36m:[m[32m907[m[36m:[m* `[1;31mbareme[m_[1;31mcommission[m`;
+[35mdocs/95-GOVERNANCE/11-Risk-Register.md[m[36m:[m[32m915[m[36m:[m* [1;31mremuneration[m calculation service;
+[35mdocs/95-GOVERNANCE/11-Risk-Register.md[m[36m:[m[32m917[m[36m:[m* [1;31mcommission[m-grid validity/overlap rules;
+[35mdocs/95-GOVERNANCE/11-Risk-Register.md[m[36m:[m[32m926[m[36m:[m* [1;31mremuneration[m-specific access control;
+[35mdocs/95-GOVERNANCE/11-Risk-Register.md[m[36m:[m[32m1257[m[36m:[m| RISK-BUS-002   | [1;31mcommission[m/payment foundations                | [1;31mremuneration[m workflow                    |
+[35mdocs/95-GOVERNANCE/11-Risk-Register.md[m[36m:[m[32m1274[m[36m:[mRISK-BUS-002   Hunter [1;31mremuneration[m requirements
+[35mdocs/95-GOVERNANCE/ALL-SIX-BLOCKS-GAP-REVIEW-2026-09-11.md[m[36m:[m[32m9[m[36m:[mThe project has substantial backend, data, matching, delivery, and observability implementation. It is not yet a complete business delivery or a defensible evidence package for all six blocks. The largest implementation gap is the commercial/[1;31mremuneration[m workflow. The largest additional competency gap is BC04 security assessment and incident investigation. BC02 and the cross-cutting deliverables need consolidation into actual reviewable documents.
+[35mdocs/95-GOVERNANCE/ALL-SIX-BLOCKS-GAP-REVIEW-2026-09-11.md[m[36m:[m[32m29[m[36m:[m| BC05 — Data and AI | Strongest implementation area; remaining model and evidence gaps | Migrations 001–006, conceptual/logical/physical models, loaders, dbt, DQ, governance, deterministic matching, training/comparison modules | Reconcile models with migrations and [1;31mremuneration[m extensions, demonstrate migration and constraint behavior, produce measured EXPLAIN before/after results, benchmark growth assumptions, consolidate warehouse/ML runs and privacy controls, and prepare a Data/AI REX. |
+[35mdocs/95-GOVERNANCE/ALL-SIX-BLOCKS-GAP-REVIEW-2026-09-11.md[m[36m:[m[32m36[m[36m:[m### 1. [1;31mRemuneration[m and payment workflow — highest business priority
+[35mdocs/95-GOVERNANCE/ALL-SIX-BLOCKS-GAP-REVIEW-2026-09-11.md[m[36m:[m[32m38[m[36m:[mThe existing [September 9 [1;31mremuneration[m gap review](STARTERPACK-GAP-REVIEW-2026-09-09.md) examines the same StarterPack commit verified today. Its central finding remains current: SQL tables exist for [1;31mcommission[m grids and payments, but no corresponding calculation/payment service, router, or test suite is present in the inspected source tree.
+[35mdocs/95-GOVERNANCE/ALL-SIX-BLOCKS-GAP-REVIEW-2026-09-11.md[m[36m:[m[32m48[m[36m:[mThe [[1;31mremuneration[m specification](https://github.com/DiginamicFormation/Fil-Rouge-EISI-Data-IA-26-D04-StarterPack/blob/902207e3c72fe5c806f639020e00558d0f592a26/documents%20utiles/REGLES-CALCUL-[1;31mREMUNERATION[m.md) and associated scenarios should be the acceptance input. Proposed teaching example parameters must remain distinguished from project decisions. The earlier review also identifies an expired-mandate worked-example ambiguity; it should not silently become a passing business case.
+[35mdocs/95-GOVERNANCE/ALL-SIX-BLOCKS-GAP-REVIEW-2026-09-11.md[m[36m:[m[32m54[m[36m:[mCreate acceptance scenarios covering initial validity, renewal history, expiry, and their consequences for [1;31mremuneration[m. Complete or explicitly disposition the remaining journey: hunter assignment/acceptance, client feedback/comments, offer/deed handling, invoices/payments, and notifications. A database table does not establish an exposed, usable business workflow. Mockups can demonstrate integration with the existing client applications without replacing them.
+[35mdocs/95-GOVERNANCE/ALL-SIX-BLOCKS-GAP-REVIEW-2026-09-11.md[m[36m:[m[32m80[m[36m:[m| Inherited-SI audit | Current BC01 audit focuses heavily on the new platform; a clearly consolidated fixture-anomaly register was not established | Original-model diagram, concrete problematic records/rules, severity, migration disposition, and legacy [1;31mcommission[m interpretation |
+[35mdocs/95-GOVERNANCE/ALL-SIX-BLOCKS-GAP-REVIEW-2026-09-11.md[m[36m:[m[32m98[m[36m:[m| 1 | Six-block acceptance matrix and business decisions | Every required outcome has an owner, artifact path, status, and acceptance check; [1;31mremuneration[m ambiguities and frontend scope are explicit |
+[35mdocs/95-GOVERNANCE/SCRIPT-REVIEW-2026-09-09.md[m[36m:[m[32m75[m[36m:[mThe schema explicitly defers the rule and `MandatService._validate_dates` only checks ordering. Arbitrary durations can be accepted, with no explicit renewal history. This predates the new [1;31mremuneration[m calculation but directly affects eligibility.
+[35mdocs/95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md[m[36m:[m[32m9[m[36m:[mThe substantive addition is commit [069bb50](https://github.com/DiginamicFormation/Fil-Rouge-EISI-Data-IA-26-D04-StarterPack/commit/069bb507ebb08da062d410c4caf01b7a5b0bfd59): a [1;31mremuneration[m specification, associated Gherkin scenarios, and updated indexes. The subsequent commit formats tables. The preceding functional addition was the Gherkin/course material on 25 August. The September change does not replace the overall assignment or introduce a new infrastructure requirement.
+[35mdocs/95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md[m[36m:[m[32m13[m[36m:[m- [[1;31mRemuneration[m rules and reference Python implementation](https://github.com/DiginamicFormation/Fil-Rouge-EISI-Data-IA-26-D04-StarterPack/blob/902207e3c72fe5c806f639020e00558d0f592a26/documents%20utiles/REGLES-CALCUL-[1;31mREMUNERATION[m.md).
+[35mdocs/95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md[m[36m:[m[32m14[m[36m:[m- [[1;31mRemuneration[m scenarios](https://github.com/DiginamicFormation/Fil-Rouge-EISI-Data-IA-26-D04-StarterPack/blob/902207e3c72fe5c806f639020e00558d0f592a26/user-stories/10_calcul_[1;31mremuneration[m_chasseur.feature).
+[35mdocs/95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md[m[36m:[m[32m20[m[36m:[mThe new [1;31mremuneration[m requirements are only partially represented in our data model and are not implemented as a business workflow. Existing matching, MLOps, and infrastructure work does not cover this gap. Extend the current application and model rather than rebuild the platform.
+[35mdocs/95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md[m[36m:[m[32m30[m[36m:[m| Calculation service | No [1;31mremuneration[m-related Python service or tests found under `src/` and `tests/` | Deterministic eligibility, fee base, performance, rate selection, modulation, and rounding workflow | P1 |
+[35mdocs/95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md[m[36m:[m[32m31[m[36m:[m| Fee parameters | `[1;31mbareme[m_[1;31mcommission[m.montant_fixe` and stored `paiement.montant_[1;31mhonoraires[m` | A separately dated company-fee parameter model; the hunter [1;31mcommission[m rate is not the company fee percentage | P1 |
+[35mdocs/95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md[m[36m:[m[32m32[m[36m:[m| [1;31mCommission[m grids | Price bounds, validity dates, hunter FK, and ratio constraints in migration 001 | `id_chasseur NOT NULL` prevents the proposed default grid; no applicable-grid selection service or overlap protection. Decide default/override and interval semantics | P1 |
+[35mdocs/95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md[m[36m:[m[32m35[m[36m:[m| Performance inputs | Hunter entry date, mandates, visits, and some payment dates/amounts exist | Reliable completed-sale identity and attribution, relevant-visit counting, historical aggregates, and the five-factor [1;31mremuneration[m score. `mart_mandat_performance.sql` only aggregates mandate counts and durations | P1 |
+[35mdocs/95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md[m[36m:[m[32m38[m[36m:[m| Restricted access | Identity roles and admin protection for clients | [1;31mRemuneration[m access for the concerned hunter and authorized manager, including cross-owner tests. Manager authority needs an explicit model or documented mapping | P1 |
+[35mdocs/95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md[m[36m:[m[32m39[m[36m:[m| Acceptance tests | Backend and AI suites exist | No [1;31mremuneration[m suite. Add rule cases, rounding boundaries, historical-rate changes, duplicate calculation/payment, expiry, and unauthorized access | P1 |
+[35mdocs/95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md[m[36m:[m[32m44[m[36m:[m- `database/migrations/001_initial_schema.sql`: chasseur at line 60, mandat at 164, [1;31mcommission[m grid at 755, payment at 813.
+[35mdocs/95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md[m[36m:[m[32m46[m[36m:[m- `src/api/api/v1/router.py`: no [1;31mremuneration[m, payment, or [1;31mcommission[m-grid router.
+[35mdocs/95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md[m[36m:[m[32m53[m[36m:[m`database/migrations/002_migrate_legacy_data.sql`, lines 627–670, assumes legacy [1;31mcommission[m values are percentages, divides them by 100, and creates active, unbounded hunter grids. `database/tests/002_legacy_migration.sql` verifies this numerical conversion.
+[35mdocs/95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md[m[36m:[m[32m55[m[36m:[mThe new teaching material explicitly calls out ambiguity in the legacy rate's meaning. Numerical conversion preserves a number; it does not validate its business interpretation. Preserve the source data and document this anomaly. Before using these rows for [1;31mremuneration[m, distinguish migrated historical values from approved operational grids. Use a new migration and an explicit decision rather than rewriting applied migration history or silently replacing old rates with the professor's examples.
+[35mdocs/95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md[m[36m:[m[32m66[m[36m:[mUnder the professor's example parameters and an explicitly valid/renewed mandate, the worked case expects company fees of EUR 13,500, a score of 73.5, a final rate of 46.16%, and hunter [1;31mremuneration[m of EUR 6,231.60. This is a future acceptance target, not a test passed by our project.
+[35mdocs/95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md[m[36m:[m[32m70[m[36m:[m1. Add a concise [1;31mremuneration[m decision record and requirement-to-test mapping; identify unresolved source ambiguities separately.
+[35mdocs/95-GOVERNANCE/STARTERPACK-GAP-REVIEW-2026-09-09.md[m[36m:[m[32m79[m[36m:[mThe official assignment prioritizes BC05 with BC01/BC02/BC03. Model training is not required, and the existing website and business client are outside implementation scope; backend/API work, design mockups, and accessibility recommendations remain relevant. More MLOps or a new frontend should therefore not displace [1;31mremuneration[m and the required concise deliverables. See the pinned assignment and evaluation grid above.
+[35mdocs/evidence/01-BC01/C1-Audit-SI/README-v1.md[m[36m:[m[32m918[m[36m:[m- [1;31mrémunération[m chasseur incomplète ;
+[35mdocs/evidence/01-BC01/C3-Architecture-OLTP-OLAP/C3-Architecture-OLTP-OLAP/README.md[m[36m:[m[32m128[m[36m:[mcommentaire, document, piece_jointe, [1;31mbareme[m_[1;31mcommission[m,
+[35mdocs/evidence/02-BC02/C2-Backlog-Priorise/README.md[m[36m:[m[32m483[m[36m:[m- [ ] Réaliser le calcul de [1;31mrémunération[m et ses règles d'éligibilité
+[35mdocs/evidence/02-BC02/C2-Backlog-Priorise/README.md[m[36m:[m[32m741[m[36m:[mLes modules d'entraînement et de comparaison ML existent dans `src/ai/matching/`. Leur intégration éventuelle au classement de l'API reste distincte du matching déterministe actuellement utilisé. Les extensions ML ne remplacent pas les travaux métier de [1;31mrémunération[m identifiés dans la revue StarterPack.
+[35mdocs/evidence/02-BC02/C4-Processus-Metier/README.md[m[36m:[m[32m1194[m[36m:[mLa [1;31mrémunération[m, la validité/renouvellement des mandats et la recette intégrée restent des travaux métier identifiés dans la revue StarterPack du 9 septembre. Les processus AI/RAG décrits plus haut conservent leur statut de cible lorsqu'ils ne correspondent pas au matching actuellement exécuté.
+[35mdocs/evidence/02-BC02/C5-Note-Cadrage/README.md[m[36m:[m[32m1068[m[36m:[m| [1;31mRémunération[m | Écart identifié dans la revue du StarterPack | Implémentation métier restante |
+[35mdocs/evidence/02-BC02/C6-Planning-Jalons/README.md[m[36m:[m[32m1126[m[36m:[mLe prochain jalon porte sur la consolidation des preuves et de la recette : parcours métier PostgreSQL, [1;31mrémunération[m, contrôle d'accès fin et exploitation permanente du PRA.
+[35mdocs/evidence/03-BC03/C2-Processus-Metier/README.md[m[36m:[m[32m1086[m[36m:[mLe parcours complet jusqu'à [1;31mrémunération[m reste à consolider. Les flux documentaires et RAG décrits précédemment ne sont pas présentés comme des fonctionnalités de l'API déjà réalisées.
+[35mdocs/evidence/03-BC03/C3-Environnement-Eco-Conception/README.md[m[36m:[m[32m44[m[36m:[mDe[1;31mcommission[ming
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m79[m[36m:[mtaux_[1;31mcommission[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m111[m[36m:[m[1;31mBarème[ms de [1;31mcommission[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m160[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m232[m[36m:[m- les [1;31mcommission[ms ne doivent plus être stockées directement dans cette entité.
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m234[m[36m:[mLes [1;31mcommission[ms sont historisées via :
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m237[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m708[m[36m:[m# 22. Entité [1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m712[m[36m:[mReprésente les règles de [1;31mrémunération[m d'un chasseur.
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m714[m[36m:[mLes [1;31mcommission[ms peuvent varier :
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m725[m[36m:[mid_[1;31mbareme[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m732[m[36m:[m| id_[1;31mbareme[m | Identifiant |
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m736[m[36m:[m| taux_[1;31mcommission[m | Taux |
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m744[m[36m:[m# 23. Historisation des [1;31mcommission[ms
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m746[m[36m:[mUne modification de [1;31mcommission[m ne doit pas écraser les anciennes règles.
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m751[m[36m:[m   +--> [1;31mBAREME[m 2025
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m753[m[36m:[m   +--> [1;31mBAREME[m 2026
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m756[m[36m:[mCela permet de recalculer correctement une [1;31mrémunération[m historique.
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m772[m[36m:[m| date_[1;31macte_authentique[m | Date de signature finale |
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m774[m[36m:[m| montant_[1;31mhonoraires[m | [1;31mHonoraires[m entreprise |
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m775[m[36m:[m| montant_chasseur | [1;31mRémunération[m chasseur |
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m776[m[36m:[m| date_reception_[1;31mhonoraires[m | Réception entreprise |
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m784[m[36m:[mLes règles de [1;31mcommission[m utilisent notamment :
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m790[m[36m:[mLe paiement doit donc permettre de conserver la valeur utilisée pour calculer les [1;31mhonoraires[m et la [1;31mrémunération[m.
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m794[m[36m:[m# 26. Relation [1;31mBAREME[m_[1;31mCOMMISSION[m — PAIEMENT
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m802[m[36m:[m[1;31mBAREME[m applicable à la date
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m808[m[36m:[m[1;31mRémunération[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m899[m[36m:[m| REMUNERE | CHASSEUR | 1,N | [1;31mBAREME[m_[1;31mCOMMISSION[m | 1,1 |
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m933[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m967[m[36m:[m    CHASSEUR ||--|{ [1;31mBAREME[m_[1;31mCOMMISSION[m : dispose
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m1194[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m1233[m[36m:[m| [1;31mCommission[m scale | COMPLETE |
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m1259[m[36m:[mStatic [1;31mcommission[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MCD-MERISE-PROJET.md[m[36m:[m[32m1262[m[36m:[mHISTORICAL [1;31mCOMMISSION[m SCALE
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m78[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m143[m[36m:[mutilisateurs.taux_[1;31mcommission[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m151[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m776[m[36m:[m# 28. [1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m779[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m(
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m780[m[36m:[m    #id_[1;31mbareme[m,
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m785[m[36m:[m    taux_[1;31mcommission[m,
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m800[m[36m:[mPK #id_[1;31mbareme[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m808[m[36m:[m# 29. Pourquoi [1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m813[m[36m:[mtaux_[1;31mcommission[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m831[m[36m:[m   +--> [1;31mBAREME[m A
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m832[m[36m:[m   +--> [1;31mBAREME[m B
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m833[m[36m:[m   +--> [1;31mBAREME[m C
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m840[m[36m:[mUn [1;31mbarème[m peut s'appliquer à :
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m858[m[36m:[m# 31. Temporalité [1;31mbarème[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m860[m[36m:[mLe [1;31mbarème[m doit conserver :
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m877[m[36m:[m    date_[1;31macte_authentique[m,
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m880[m[36m:[m    montant_[1;31mhonoraires[m,
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m883[m[36m:[m    date_reception_[1;31mhonoraires[m,
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m889[m[36m:[m    id_[1;31mbareme[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m901[m[36m:[mFK id_[1;31mbareme[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m902[m[36m:[m   -> [1;31mBAREME[m_[1;31mCOMMISSION[m.id_[1;31mbareme[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m907[m[36m:[m# 33. Pourquoi id_[1;31mbareme[m dans PAIEMENT
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m912[m[36m:[mWhich [1;31mcommission[m scale was used?
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m915[m[36m:[mSans cette relation, une modification future du [1;31mbarème[m rendrait le calcul historique moins traçable.
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m939[m[36m:[m[1;31mActe authentique[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m942[m[36m:[m[1;31mHonoraires[m entreprise
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m948[m[36m:[m[1;31mBarème[m applicable
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m951[m[36m:[m[1;31mRémunération[m chasseur
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1143[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m(
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1144[m[36m:[m    #id_[1;31mbareme[m,
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1149[m[36m:[m    taux_[1;31mcommission[m,
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1164[m[36m:[m    date_[1;31macte_authentique[m,
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1167[m[36m:[m    montant_[1;31mhonoraires[m,
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1170[m[36m:[m    date_reception_[1;31mhonoraires[m,
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1176[m[36m:[m    id_[1;31mbareme[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1245[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m.id_chasseur
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1255[m[36m:[mPAIEMENT.id_[1;31mbareme[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1256[m[36m:[m    -> [1;31mBAREME[m_[1;31mCOMMISSION[m.id_[1;31mbareme[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1332[m[36m:[mtaux_[1;31mcommission[m >= 0
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1337[m[36m:[mmontant_[1;31mhonoraires[m >= 0
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1471[m[36m:[m# 46. Migration taux [1;31mcommission[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1474[m[36m:[mutilisateurs.taux_[1;31mcommission[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1477[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1482[m[36m:[mLe [1;31mbarème[m hérité ne contient pas nécessairement l'historique complet ; cette limitation devra être documentée.
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1717[m[36m:[m13. [1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1751[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1775[m[36m:[m| [1;31mBAREME[m_[1;31mCOMMISSION[m | [1;31mBAREME[m_[1;31mCOMMISSION[m |
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1789[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1838[m[36m:[m# 64. [1;31mCommission[m corrigée
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1840[m[36m:[mLa [1;31mrémunération[m n'est plus un simple attribut du chasseur.
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1846[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1947[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1964[m[36m:[m[1;31mcommission[m range enforcement
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m1984[m[36m:[m| [1;31mCommission[m model | COMPLETE |
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MLD-PROJET.md[m[36m:[m[32m2021[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m102[m[36m:[mreal_estate.[1;31mbareme[m_[1;31mcommission[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1079[m[36m:[m# 28. Table [1;31mbareme[m_[1;31mcommission[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1082[m[36m:[mCREATE TABLE real_estate.[1;31mbareme[m_[1;31mcommission[m (
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1083[m[36m:[m    id_[1;31mbareme[m BIGINT GENERATED ALWAYS AS IDENTITY,
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1088[m[36m:[m    taux_[1;31mcommission[m NUMERIC(7,4) NOT NULL,
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1099[m[36m:[m    CONSTRAINT pk_[1;31mbareme[m_[1;31mcommission[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1100[m[36m:[m        PRIMARY KEY (id_[1;31mbareme[m),
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1102[m[36m:[m    CONSTRAINT fk_[1;31mbareme[m_[1;31mcommission[m_chasseur
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1107[m[36m:[m    CONSTRAINT ck_[1;31mbareme[m_montant_min
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1112[m[36m:[m    CONSTRAINT ck_[1;31mbareme[m_montant_max
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1118[m[36m:[m    CONSTRAINT ck_[1;31mbareme[m_taux
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1120[m[36m:[m            taux_[1;31mcommission[m >= 0
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1121[m[36m:[m            AND taux_[1;31mcommission[m <= 1
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1124[m[36m:[m    CONSTRAINT ck_[1;31mbareme[m_montant_fixe
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1129[m[36m:[m    CONSTRAINT ck_[1;31mbareme[m_dates
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1139[m[36m:[m# 29. Stockage taux [1;31mcommission[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1183[m[36m:[m# 31. Chevauchement de [1;31mbarème[ms
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1203[m[36m:[m    date_[1;31macte_authentique[m DATE,
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1207[m[36m:[m    montant_[1;31mhonoraires[m NUMERIC(12,2),
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1211[m[36m:[m    date_reception_[1;31mhonoraires[m DATE,
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1218[m[36m:[m    id_[1;31mbareme[m BIGINT,
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1228[m[36m:[m    CONSTRAINT fk_paiement_[1;31mbareme[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1229[m[36m:[m        FOREIGN KEY (id_[1;31mbareme[m)
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1230[m[36m:[m        REFERENCES real_estate.[1;31mbareme[m_[1;31mcommission[m(id_[1;31mbareme[m)
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1239[m[36m:[m    CONSTRAINT ck_paiement_[1;31mhonoraires[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1241[m[36m:[m            montant_[1;31mhonoraires[m IS NULL
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1242[m[36m:[m            OR montant_[1;31mhonoraires[m >= 0
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1266[m[36m:[m            OR date_reception_[1;31mhonoraires[m IS NULL
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1267[m[36m:[m            OR date_paiement_chasseur >= date_reception_[1;31mhonoraires[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1274[m[36m:[m# 33. Pourquoi id_[1;31mbareme[m est conservé
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1276[m[36m:[mMême si le [1;31mbarème[m peut être retrouvé par date, le paiement conserve explicitement :
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1279[m[36m:[mid_[1;31mbareme[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1322[m[36m:[mCREATE INDEX idx_[1;31mbareme[m_id_chasseur
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1323[m[36m:[mON real_estate.[1;31mbareme[m_[1;31mcommission[m(id_chasseur);
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1405[m[36m:[m14. [1;31mbareme[m_[1;31mcommission[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1691[m[36m:[m# 54. Migration taux [1;31mcommission[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1696[m[36m:[mutilisateurs.taux_[1;31mcommission[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1699[m[36m:[mpeut créer un [1;31mbarème[m initial.
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m1706[m[36m:[mtaux_[1;31mcommission[m = legacy rate
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m2018[m[36m:[m[1;31mbareme[m_[1;31mcommission[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m2112[m[36m:[m# 81. Test [1;31mcommission[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m2115[m[36m:[mtaux_[1;31mcommission[m > 1
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m2326[m[36m:[m| [1;31mCommission[m scale | DEFINED |
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/MPD-POSTGRESQL.md[m[36m:[m[32m2366[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C1-MCD-Migration-SQL/README.md[m[36m:[m[32m946[m[36m:[mLa recette exhaustive de migration, les contraintes et la concordance finale MCD / SQL restent à consolider. La présence de tables de paiement ne prouve pas l'implémentation du calcul de [1;31mrémunération[m.
+[35mdocs/evidence/05-BC05/C3-OLAP-Alimentation/README.md[m[36m:[m[32m96[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C3-OLAP-Alimentation/README.md[m[36m:[m[32m303[m[36m:[mstaging.[1;31mbareme[m_[1;31mcommission[m
+[35mdocs/evidence/05-BC05/C3-OLAP-Alimentation/README.md[m[36m:[m[32m696[m[36m:[m# 35. Historique des [1;31mcommission[ms
+[35mdocs/evidence/05-BC05/C3-OLAP-Alimentation/README.md[m[36m:[m[32m701[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C3-OLAP-Alimentation/README.md[m[36m:[m[32m837[m[36m:[mdate_reception_[1;31mhonoraires[m
+[35mdocs/evidence/05-BC05/C3-OLAP-Alimentation/README.md[m[36m:[m[32m1015[m[36m:[mreal_estate.paiement.montant_[1;31mhonoraires[m
+[35mdocs/evidence/05-BC05/C3-OLAP-Alimentation/README.md[m[36m:[m[32m1501[m[36m:[mLes preuves de peuplement, de qualité et de lineage des faits métier étendus restent à rattacher à leur exécution. Le modèle de [1;31mrémunération[m ne devient pas opérationnel du seul fait que `fact_paiement` existe.
+[35mdocs/evidence/05-BC05/C7-RGPD/README.md[m[36m:[m[32m102[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C7-RGPD/README.md[m[36m:[m[32m229[m[36m:[mmontant_[1;31mhonoraires[m
+[35mdocs/evidence/05-BC05/C7-RGPD/README.md[m[36m:[m[32m238[m[36m:[m# 12. [1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C7-RGPD/README.md[m[36m:[m[32m240[m[36m:[m`[1;31mBAREME[m_[1;31mCOMMISSION[m` est lié à :
+[35mdocs/evidence/05-BC05/C7-RGPD/README.md[m[36m:[m[32m246[m[36m:[met contient des données de [1;31mrémunération[m.
+[35mdocs/evidence/05-BC05/C7-RGPD/README.md[m[36m:[m[32m333[m[36m:[mcalculate [1;31mcommission[ms
+[35mdocs/evidence/05-BC05/C7-RGPD/README.md[m[36m:[m[32m1132[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C7-RGPD/README.md[m[36m:[m[32m1222[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C7-RGPD/README.md[m[36m:[m[32m1389[m[36m:[mVérifier qu'un rôle non autorisé ne peut pas accéder aux paiements ou [1;31mbarème[ms de [1;31mcommission[m.
+[35mdocs/evidence/05-BC05/C7-RGPD/README.md[m[36m:[m[32m1446[m[36m:[m| [1;31mBAREME[m_[1;31mCOMMISSION[m | Chasseur | Élevée |
+[35mdocs/evidence/05-BC05/C7-RGPD/README.md[m[36m:[m[32m1460[m[36m:[m| Financial management | PAIEMENT + [1;31mBAREME[m |
+[35mdocs/evidence/05-BC05/C7-RGPD/README.md[m[36m:[m[32m1492[m[36m:[m| Payment/[1;31mcommission[m privacy | ADDED |
+[35mdocs/evidence/05-BC05/C7-RGPD/README.md[m[36m:[m[32m1531[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mdocs/evidence/05-BC05/C8-Souverainete-Securite-IA/README.md[m[36m:[m[32m1022[m[36m:[m[1;31mbareme[m_[1;31mcommission[m
+[35mdocs/evidence/05-BC05/C8-Souverainete-Securite-IA/README.md[m[36m:[m[32m1033[m[36m:[m[1;31mBAREME[m_[1;31mCOMMISSION[m
+[35mgovernance/README.md[m[36m:[m[32m86[m[36m:[m[1;31mHonoraires[m
+[35mgovernance/README.md[m[36m:[m[32m87[m[36m:[m[1;31mCommission[m
+[35mgovernance/README.md[m[36m:[m[32m511[m[36m:[m[1;31mHonoraires[m
+[35mgovernance/README.md[m[36m:[m[32m512[m[36m:[m[1;31mCommission[m
+[35mgovernance/README.md[m[36m:[m[32m513[m[36m:[m[1;31mBareme[m[1;31mCommission[m
+[35mpipelines/dbt/models/staging/sources.yml[m[36m:[m[32m268[m[36m:[m          Financial records containing purchase amounts, fees and hunter [1;31mremuneration[m
+[35mpipelines/dbt/models/staging/sources.yml[m[36m:[m[32m275[m[36m:[m          - name: date_[1;31macte_authentique[m
+[35mpipelines/dbt/models/staging/sources.yml[m[36m:[m[32m281[m[36m:[m          - name: montant_[1;31mhonoraires[m
+[35mpipelines/dbt/models/staging/sources.yml[m[36m:[m[32m287[m[36m:[m          - name: date_reception_[1;31mhonoraires[m
+[35mpipelines/dbt/models/staging/sources.yml[m[36m:[m[32m299[m[36m:[m          - name: id_[1;31mbareme[m
+[35mpipelines/dbt/models/staging/sources.yml[m[36m:[m[32m300[m[36m:[m            description: Foreign key referencing the [1;31mcommission[m scale applied.
+[35mpipelines/dbt/models/staging/sources.yml[m[36m:[m[32m346[m[36m:[m      - name: [1;31mbareme[m_[1;31mcommission[m
+[35mpipelines/dbt/models/staging/sources.yml[m[36m:[m[32m348[m[36m:[m          [1;31mCommission[m scale defining hunter [1;31mremuneration[m rules.

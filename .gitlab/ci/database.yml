@@ -19,6 +19,7 @@ database:validate:
     - test -f database/migrations/007_demande_chasseur_affectation.sql
     - test -f database/migrations/008_mandat_lifecycle.sql
     - test -f database/migrations/009_mandat_lifecycle_warehouse.sql
+    - test -f database/migrations/010_transaction_remuneration.sql
 
     # -------------------------------------------------------------------------
     # Database tests
@@ -32,6 +33,7 @@ database:validate:
     - test -f database/tests/010_demande_affectation.sql
     - test -f database/tests/011_mandat_lifecycle.sql
     - test -f database/tests/012_mandat_lifecycle_warehouse.sql
+    - test -f database/tests/013_transaction_remuneration.sql
 
     # -------------------------------------------------------------------------
     # Legacy / OLTP / seed files
@@ -203,6 +205,40 @@ database:validate:
     - grep -q "^COMMIT;" database/migrations/009_mandat_lifecycle_warehouse.sql
 
     # -------------------------------------------------------------------------
+    # Migration 010 validation
+    #
+    # Transaction and remuneration foundation:
+    #
+    #   MANDAT
+    #      -> VENTE
+    #      -> REMUNERATION CALCULATION
+    #      -> PAIEMENT
+    # -------------------------------------------------------------------------
+
+    - grep -q "CREATE TABLE real_estate.vente" database/migrations/010_transaction_remuneration.sql
+    - grep -q "CREATE TABLE real_estate.parametres_honoraires" database/migrations/010_transaction_remuneration.sql
+    - grep -q "CREATE TABLE real_estate.parametres_remuneration" database/migrations/010_transaction_remuneration.sql
+    - grep -q "CREATE TABLE real_estate.palier_performance" database/migrations/010_transaction_remuneration.sql
+    - grep -q "id_chasseur_beneficiaire" database/migrations/010_transaction_remuneration.sql
+    - grep -q "origine_vente" database/migrations/010_transaction_remuneration.sql
+    - grep -q "date_acte_authentique" database/migrations/010_transaction_remuneration.sql
+    - grep -q "montant_achat" database/migrations/010_transaction_remuneration.sql
+    - grep -q "statut_usage" database/migrations/010_transaction_remuneration.sql
+    - grep -q "'HISTORIQUE'" database/migrations/010_transaction_remuneration.sql
+    - grep -q "'APPROUVE'" database/migrations/010_transaction_remuneration.sql
+    - grep -q "prevent_parametres_honoraires_overlap" database/migrations/010_transaction_remuneration.sql
+    - grep -q "prevent_parametres_remuneration_overlap" database/migrations/010_transaction_remuneration.sql
+    - grep -q "prevent_bareme_commission_overlap" database/migrations/010_transaction_remuneration.sql
+    - grep -q "score_performance" database/migrations/010_transaction_remuneration.sql
+    - grep -q "taux_base" database/migrations/010_transaction_remuneration.sql
+    - grep -q "majoration_anciennete" database/migrations/010_transaction_remuneration.sql
+    - grep -q "modulation_performance" database/migrations/010_transaction_remuneration.sql
+    - grep -q "taux_final" database/migrations/010_transaction_remuneration.sql
+    - grep -q "'010'" database/migrations/010_transaction_remuneration.sql
+    - grep -q "migration_control.schema_version" database/migrations/010_transaction_remuneration.sql
+    - grep -q "^COMMIT;" database/migrations/010_transaction_remuneration.sql
+
+    # -------------------------------------------------------------------------
     # Legacy fixture validation
     # -------------------------------------------------------------------------
 
@@ -232,6 +268,15 @@ database:validate:
     - grep -q "id_mandat_periode_source" database/tests/012_mandat_lifecycle_warehouse.sql
     - grep -q "RENOUVELLEMENT" database/tests/012_mandat_lifecycle_warehouse.sql
     - grep -q "ROLLBACK;" database/tests/012_mandat_lifecycle_warehouse.sql
+
+    - grep -q "real_estate.vente" database/tests/013_transaction_remuneration.sql
+    - grep -q "real_estate.parametres_honoraires" database/tests/013_transaction_remuneration.sql
+    - grep -q "real_estate.parametres_remuneration" database/tests/013_transaction_remuneration.sql
+    - grep -q "real_estate.palier_performance" database/tests/013_transaction_remuneration.sql
+    - grep -q "statut_usage" database/tests/013_transaction_remuneration.sql
+    - grep -q "droit_remuneration" database/tests/013_transaction_remuneration.sql
+    - grep -q "score_performance" database/tests/013_transaction_remuneration.sql
+    - grep -q "ROLLBACK;" database/tests/013_transaction_remuneration.sql
 
     # -------------------------------------------------------------------------
     # OLTP validation
@@ -1640,6 +1685,252 @@ database:migrate-009:
 
 
 # =============================================================================
+# MIGRATION 010 - TRANSACTION AND REMUNERATION FOUNDATION
+#
+# Adds the missing business foundation between:
+#
+#   MANDAT
+#      -> completed sale / authentic deed
+#      -> remuneration calculation
+#      -> payment lifecycle
+#
+# Existing paiement and legacy commission data are preserved.
+# Migrated commission rows remain HISTORIQUE.
+#
+# This migration remains manually triggered.
+# =============================================================================
+
+database:migrate-010:
+  stage: database
+
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl version --client
+    - kubectl -n real-estate get deploy real-estate-postgresql
+
+    # -------------------------------------------------------------------------
+    # Migration prerequisites
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Checking migration 010 prerequisites..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              to_regclass('real_estate.mandat') AS mandat,
+              to_regclass('real_estate.mandat_periode') AS mandat_periode,
+              to_regclass('real_estate.presentation') AS presentation,
+              to_regclass('real_estate.bien') AS bien,
+              to_regclass('real_estate.chasseur') AS chasseur,
+              to_regclass('real_estate.paiement') AS paiement,
+              to_regclass('real_estate.bareme_commission') AS bareme_commission,
+              to_regclass('migration_control.schema_version') AS schema_version;
+          "
+
+    # -------------------------------------------------------------------------
+    # Migration dependency
+    # -------------------------------------------------------------------------
+
+    - |
+      MIGRATION_009_APPLIED="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT CASE
+               WHEN EXISTS (
+                 SELECT 1
+                 FROM migration_control.schema_version
+                 WHERE version = '009'
+               )
+               THEN 'yes'
+               ELSE 'no'
+             END;" 2>/dev/null || true
+      )"
+
+      if [ "$MIGRATION_009_APPLIED" != "yes" ]; then
+        echo "ERROR: migration 009 must be applied before migration 010."
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # Check migration registry
+    # -------------------------------------------------------------------------
+
+    - |
+      MIGRATION_010_APPLIED="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT CASE
+               WHEN EXISTS (
+                 SELECT 1
+                 FROM migration_control.schema_version
+                 WHERE version = '010'
+               )
+               THEN 'yes'
+               ELSE 'no'
+             END;" 2>/dev/null || true
+      )"
+
+      if [ "$MIGRATION_010_APPLIED" = "yes" ]; then
+        echo "Migration 010 already applied - skipping safely."
+        exit 0
+      fi
+
+    # -------------------------------------------------------------------------
+    # Apply migration
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Applying migration 010..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/migrations/010_transaction_remuneration.sql
+
+    # -------------------------------------------------------------------------
+    # Verify new business tables
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Verifying transaction/remuneration schema..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              to_regclass('real_estate.vente') AS vente,
+              to_regclass('real_estate.parametres_honoraires') AS parametres_honoraires,
+              to_regclass('real_estate.parametres_remuneration') AS parametres_remuneration,
+              to_regclass('real_estate.palier_performance') AS palier_performance;
+          "
+
+    # -------------------------------------------------------------------------
+    # Verify legacy commission preservation
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Checking legacy commission-grid classification..."
+
+      NON_HISTORICAL_LEGACY_COUNT="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT COUNT(*)
+             FROM real_estate.bareme_commission
+             WHERE statut_usage <> 'HISTORIQUE';"
+      )"
+
+      echo "Existing non-historical commission rows: ${NON_HISTORICAL_LEGACY_COUNT}"
+
+      if [ "${NON_HISTORICAL_LEGACY_COUNT}" != "0" ]; then
+        echo "ERROR: existing legacy commission rows were not preserved as HISTORIQUE."
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # Verify paiement calculation columns
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Verifying frozen remuneration calculation columns..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              column_name,
+              data_type,
+              is_nullable
+            FROM information_schema.columns
+            WHERE table_schema = 'real_estate'
+              AND table_name = 'paiement'
+              AND column_name IN (
+                'id_vente',
+                'id_chasseur_beneficiaire',
+                'id_parametres_honoraires',
+                'id_parametres_remuneration',
+                'date_calcul',
+                'droit_remuneration',
+                'motif_refus',
+                'semaines_mandat_acte',
+                'nb_visites_calcul',
+                'annees_anciennete_calcul',
+                'nb_ventes_fenetre',
+                'nb_mandats_fenetre',
+                'note_delai',
+                'note_exclusivite',
+                'note_ventes',
+                'note_mandats',
+                'note_visites',
+                'score_performance',
+                'taux_base',
+                'majoration_anciennete',
+                'modulation_performance',
+                'taux_final'
+              )
+            ORDER BY ordinal_position;
+          "
+
+    # -------------------------------------------------------------------------
+    # Verify migration registry
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Verifying migration registry..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              version,
+              description,
+              applied_at
+            FROM migration_control.schema_version
+            WHERE version = '010';
+          "
+
+    - |
+      echo "============================================================"
+      echo "MIGRATION 010 SUCCESSFULLY APPLIED"
+      echo "============================================================"
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
+
+
+# =============================================================================
 # TEST BASE SCHEMA
 # =============================================================================
 
@@ -1949,6 +2240,67 @@ database:test-mandat-lifecycle-warehouse:
           -d real_estate \
           -v ON_ERROR_STOP=1 \
           < database/tests/012_mandat_lifecycle_warehouse.sql
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
+
+
+# =============================================================================
+# TEST TRANSACTION AND REMUNERATION FOUNDATION
+# =============================================================================
+
+database:test-transaction-remuneration:
+  stage: database
+
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl -n real-estate get deploy real-estate-postgresql
+
+    - |
+      MIGRATION_010_APPLIED="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT CASE
+               WHEN EXISTS (
+                 SELECT 1
+                 FROM migration_control.schema_version
+                 WHERE version = '010'
+               )
+               THEN 'yes'
+               ELSE 'no'
+             END;" 2>/dev/null || true
+      )"
+
+      if [ "$MIGRATION_010_APPLIED" != "yes" ]; then
+        echo "ERROR: migration 010 must be applied before running transaction/remuneration tests."
+        exit 1
+      fi
+
+    - |
+      echo "Running transaction and remuneration foundation tests..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/tests/013_transaction_remuneration.sql
+
+    - |
+      echo "============================================================"
+      echo "TRANSACTION / REMUNERATION TESTS SUCCESSFUL"
+      echo "============================================================"
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
