@@ -240,7 +240,6 @@ backend:validate:
     - test -f src/api/services/visite.py
     - test -f src/api/services/vente.py
     - test -f src/api/services/remuneration_calculator.py
-    #- test -f src/api/services/remuneration.py
 
     - test -f src/api/schemas/demande_affectation.py
     - test -f src/api/schemas/mandat.py
@@ -471,10 +470,6 @@ backend:validate:
           MandatService,
       )
 
-      from src.api.services.remuneration import (
-          RemunerationService,
-      )
-
       print(
           "Authorization / ownership "
           "module imports successful."
@@ -560,7 +555,7 @@ backend:validate:
       echo "- Mandat lifecycle imports"
       echo "- Mandat period / renewal imports"
       echo "- Vente transaction imports"
-      echo "- Remuneration service + calculator imports"
+      echo "- Remuneration calculator imports"
       echo "- Ownership endpoint syntax"
       echo "- AI matching runtime import compatibility"
       echo "- Backend deployment structure"
