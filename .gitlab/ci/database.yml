@@ -20,7 +20,7 @@ database:validate:
     - test -f database/migrations/008_mandat_lifecycle.sql
     - test -f database/migrations/009_mandat_lifecycle_warehouse.sql
     - test -f database/migrations/010_transaction_remuneration.sql
-
+    - test -f database/migrations/011_initial_remuneration_configuration.sql
     # -------------------------------------------------------------------------
     # Database tests
     # -------------------------------------------------------------------------
@@ -34,6 +34,7 @@ database:validate:
     - test -f database/tests/011_mandat_lifecycle.sql
     - test -f database/tests/012_mandat_lifecycle_warehouse.sql
     - test -f database/tests/013_transaction_remuneration.sql
+    - test -f database/tests/014_remuneration_configuration.sql
 
     # -------------------------------------------------------------------------
     # Legacy / OLTP / seed files
@@ -237,7 +238,26 @@ database:validate:
     - grep -q "'010'" database/migrations/010_transaction_remuneration.sql
     - grep -q "migration_control.schema_version" database/migrations/010_transaction_remuneration.sql
     - grep -q "^COMMIT;" database/migrations/010_transaction_remuneration.sql
+    # -------------------------------------------------------------------------
+    # Migration 011 validation
+    #
+    # Initial approved remuneration configuration:
+    #
+    #   - company fees: 3000 EUR + 2.5%
+    #   - five-factor performance configuration
+    #   - seniority/performance modulation
+    #   - approved default remuneration grid
+    # -------------------------------------------------------------------------
 
+    - grep -q "Migration 011" database/migrations/011_initial_remuneration_configuration.sql
+    - grep -q "3000.00" database/migrations/011_initial_remuneration_configuration.sql
+    - grep -q "0.025000" database/migrations/011_initial_remuneration_configuration.sql
+    - grep -q "DELAI_SEMAINES" database/migrations/011_initial_remuneration_configuration.sql
+    - grep -q "VISITES" database/migrations/011_initial_remuneration_configuration.sql
+    - grep -q "'APPROUVE'" database/migrations/011_initial_remuneration_configuration.sql
+    - grep -q "'011'" database/migrations/011_initial_remuneration_configuration.sql
+    - grep -q "migration_control.schema_version" database/migrations/011_initial_remuneration_configuration.sql
+    - grep -q "^COMMIT;" database/migrations/011_initial_remuneration_configuration.sql
     # -------------------------------------------------------------------------
     # Legacy fixture validation
     # -------------------------------------------------------------------------
@@ -277,7 +297,12 @@ database:validate:
     - grep -q "droit_remuneration" database/tests/013_transaction_remuneration.sql
     - grep -q "score_performance" database/tests/013_transaction_remuneration.sql
     - grep -q "ROLLBACK;" database/tests/013_transaction_remuneration.sql
-
+    - grep -q "Migration 011" database/tests/014_remuneration_configuration.sql
+    - grep -q "real_estate.parametres_honoraires" database/tests/014_remuneration_configuration.sql
+    - grep -q "real_estate.parametres_remuneration" database/tests/014_remuneration_configuration.sql
+    - grep -q "real_estate.palier_performance" database/tests/014_remuneration_configuration.sql
+    - grep -q "13500.00" database/tests/014_remuneration_configuration.sql
+    - grep -q "ROLLBACK;" database/tests/014_remuneration_configuration.sql
     # -------------------------------------------------------------------------
     # OLTP validation
     # -------------------------------------------------------------------------
@@ -1929,6 +1954,197 @@ database:migrate-010:
       when: manual
       allow_failure: false
 
+# =============================================================================
+# MIGRATION 011 - INITIAL APPROVED REMUNERATION CONFIGURATION
+#
+# Promotes the validated remuneration parameters into the first operational
+# project configuration:
+#
+#   - company fees: 3000 EUR + 2.5% of purchase price;
+#   - five-factor performance scoring;
+#   - seniority/performance modulation;
+#   - approved default remuneration grid.
+#
+# Migration 010 must already be applied.
+# Existing hunter-specific commission rows remain HISTORIQUE.
+#
+# This migration remains manually triggered.
+# =============================================================================
+
+database:migrate-011:
+  stage: database
+
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl version --client
+    - kubectl -n real-estate get deploy real-estate-postgresql
+
+    # -------------------------------------------------------------------------
+    # Migration dependency
+    # -------------------------------------------------------------------------
+
+    - |
+      MIGRATION_010_APPLIED="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT CASE
+               WHEN EXISTS (
+                 SELECT 1
+                 FROM migration_control.schema_version
+                 WHERE version = '010'
+               )
+               THEN 'yes'
+               ELSE 'no'
+             END;" 2>/dev/null || true
+      )"
+
+      if [ "$MIGRATION_010_APPLIED" != "yes" ]; then
+        echo "ERROR: migration 010 must be applied before migration 011."
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # Check migration registry
+    # -------------------------------------------------------------------------
+
+    - |
+      MIGRATION_011_APPLIED="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT CASE
+               WHEN EXISTS (
+                 SELECT 1
+                 FROM migration_control.schema_version
+                 WHERE version = '011'
+               )
+               THEN 'yes'
+               ELSE 'no'
+             END;" 2>/dev/null || true
+      )"
+
+      if [ "$MIGRATION_011_APPLIED" = "yes" ]; then
+        echo "Migration 011 already applied - skipping safely."
+        exit 0
+      fi
+
+    # -------------------------------------------------------------------------
+    # Apply migration
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Applying migration 011..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/migrations/011_initial_remuneration_configuration.sql
+
+    # -------------------------------------------------------------------------
+    # Verify migration registry
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              version,
+              description,
+              applied_at
+            FROM migration_control.schema_version
+            WHERE version = '011';
+          "
+
+    # -------------------------------------------------------------------------
+    # Verify operational configuration
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Verifying approved remuneration configuration..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              'parametres_honoraires' AS configuration,
+              COUNT(*) AS total,
+              COUNT(*) FILTER (WHERE actif = TRUE) AS actifs
+            FROM real_estate.parametres_honoraires
+
+            UNION ALL
+
+            SELECT
+              'parametres_remuneration',
+              COUNT(*),
+              COUNT(*) FILTER (WHERE actif = TRUE)
+            FROM real_estate.parametres_remuneration
+
+            UNION ALL
+
+            SELECT
+              'bareme_approved_default',
+              COUNT(*),
+              COUNT(*) FILTER (
+                WHERE actif = TRUE
+                  AND statut_usage = 'APPROUVE'
+                  AND id_chasseur IS NULL
+              )
+            FROM real_estate.bareme_commission;
+          "
+
+    # -------------------------------------------------------------------------
+    # Verify legacy commission preservation
+    # -------------------------------------------------------------------------
+
+    - |
+      INVALID_LEGACY_ROWS="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT COUNT(*)
+             FROM real_estate.bareme_commission
+             WHERE id_chasseur IS NOT NULL
+               AND statut_usage <> 'HISTORIQUE';"
+      )"
+
+      echo "Invalid legacy commission rows: ${INVALID_LEGACY_ROWS}"
+
+      if [ "${INVALID_LEGACY_ROWS}" != "0" ]; then
+        echo "ERROR: hunter-specific legacy commission rows changed operational status."
+        exit 1
+      fi
+
+    - |
+      echo "============================================================"
+      echo "MIGRATION 011 SUCCESSFULLY APPLIED"
+      echo "============================================================"
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
 
 # =============================================================================
 # TEST BASE SCHEMA
