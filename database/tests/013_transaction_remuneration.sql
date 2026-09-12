@@ -213,16 +213,29 @@ $$;
 -- =============================================================================
 -- 7. Adjacent commission ranges are accepted
 --
--- Existing test range:
+-- Existing hunter-specific test range:
 --   [0, 200000)
 --
--- This one starts exactly at 200000 and therefore must NOT overlap.
+-- This hunter-specific range starts exactly at 200000 and therefore
+-- must NOT overlap.
 -- =============================================================================
 
 DO $$
 DECLARE
+    v_chasseur BIGINT;
     v_id BIGINT;
 BEGIN
+    SELECT id_chasseur
+    INTO v_chasseur
+    FROM real_estate.chasseur
+    ORDER BY id_chasseur
+    LIMIT 1;
+
+    IF v_chasseur IS NULL THEN
+        RAISE EXCEPTION
+            'No chasseur available for adjacent commission-grid test';
+    END IF;
+
     INSERT INTO real_estate.bareme_commission (
         montant_min,
         montant_max,
@@ -242,14 +255,14 @@ BEGIN
         DATE '2026-01-01',
         NULL,
         TRUE,
-        NULL,
+        v_chasseur,
         'APPROUVE'
     )
     RETURNING id_bareme INTO v_id;
 
     IF v_id IS NULL THEN
         RAISE EXCEPTION
-            'Adjacent approved commission range was incorrectly rejected';
+            'Adjacent hunter-specific commission range was incorrectly rejected';
     END IF;
 END;
 $$;
