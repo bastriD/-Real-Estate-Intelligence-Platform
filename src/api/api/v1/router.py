@@ -10,6 +10,7 @@ from src.api.api.v1.endpoints.presentations import router as presentations_route
 from src.api.api.v1.endpoints.recommendations import (
     router as recommendations_router,
 )
+from src.api.api.v1.endpoints.ventes import router as ventes_router
 from src.api.api.v1.endpoints.visites import router as visites_router
 
 
@@ -24,3 +25,4 @@ api_router.include_router(biens_router)
 api_router.include_router(presentations_router)
 api_router.include_router(recommendations_router)
 api_router.include_router(visites_router)
+api_router.include_router(ventes_router)

@@ -220,20 +220,31 @@ backend:validate:
 
     - test -f src/api/db/models/demande.py
     - test -f src/api/db/models/demande_affectation.py
+    - test -f src/api/db/models/mandat.py
+    - test -f src/api/db/models/mandat_periode.py
     - test -f src/api/db/models/presentation.py
     - test -f src/api/db/models/visite.py
+    - test -f src/api/db/models/vente.py
 
     - test -f src/api/repositories/demande.py
     - test -f src/api/repositories/demande_affectation.py
+    - test -f src/api/repositories/mandat.py
     - test -f src/api/repositories/presentation.py
     - test -f src/api/repositories/visite.py
+    - test -f src/api/repositories/vente.py
 
     - test -f src/api/services/demande.py
     - test -f src/api/services/demande_affectation.py
+    - test -f src/api/services/mandat.py
     - test -f src/api/services/presentation.py
     - test -f src/api/services/visite.py
+    - test -f src/api/services/vente.py
+    - test -f src/api/services/remuneration_calculator.py
+    - test -f src/api/services/remuneration.py
 
     - test -f src/api/schemas/demande_affectation.py
+    - test -f src/api/schemas/mandat.py
+    - test -f src/api/schemas/vente.py
 
 
     # -------------------------------------------------------------------------
@@ -249,6 +260,7 @@ backend:validate:
     - test -f src/api/api/v1/endpoints/demandes.py
     - test -f src/api/api/v1/endpoints/presentations.py
     - test -f src/api/api/v1/endpoints/visites.py
+    - test -f src/api/api/v1/endpoints/ventes.py
 
 
     # -------------------------------------------------------------------------
@@ -289,22 +301,33 @@ backend:validate:
         src/api/db/models/audit_log.py \
         src/api/db/models/demande.py \
         src/api/db/models/demande_affectation.py \
+        src/api/db/models/mandat.py \
+        src/api/db/models/mandat_periode.py \
         src/api/db/models/presentation.py \
         src/api/db/models/visite.py \
+        src/api/db/models/vente.py \
         src/api/repositories/utilisateur.py \
         src/api/repositories/audit_log.py \
         src/api/repositories/demande.py \
         src/api/repositories/demande_affectation.py \
+        src/api/repositories/mandat.py \
         src/api/repositories/presentation.py \
         src/api/repositories/visite.py \
+        src/api/repositories/vente.py \
         src/api/services/auth.py \
         src/api/services/audit_log.py \
         src/api/services/demande.py \
         src/api/services/demande_affectation.py \
+        src/api/services/mandat.py \
         src/api/services/presentation.py \
         src/api/services/visite.py \
+        src/api/services/vente.py \
+        src/api/services/remuneration_calculator.py \
+        src/api/services/remuneration.py \
         src/api/schemas/auth.py \
         src/api/schemas/demande_affectation.py \
+        src/api/schemas/mandat.py \
+        src/api/schemas/vente.py \
         src/api/api/v1/router.py \
         src/api/api/v1/endpoints/health.py \
         src/api/api/v1/endpoints/auth.py \
@@ -312,6 +335,7 @@ backend:validate:
         src/api/api/v1/endpoints/demandes.py \
         src/api/api/v1/endpoints/presentations.py \
         src/api/api/v1/endpoints/visites.py \
+        src/api/api/v1/endpoints/ventes.py \
         src/ai/matching/features.py \
         src/ai/matching/repository.py \
         src/ai/matching/evaluate.py
@@ -444,6 +468,14 @@ backend:validate:
           DemandeAffectationService,
       )
 
+      from src.api.services.mandat import (
+          MandatService,
+      )
+
+      from src.api.services.remuneration import (
+          RemunerationService,
+      )
+
       print(
           "Authorization / ownership "
           "module imports successful."
@@ -487,6 +519,7 @@ backend:validate:
           "/api/v1/health",
           "/api/v1/ready",
           "/api/v1/auth/login",
+          "/api/v1/ventes",
       }
 
       missing_routes = (
@@ -525,6 +558,10 @@ backend:validate:
       echo "- JWT encode/decode primitives"
       echo "- Authorization / ownership imports"
       echo "- Demande assignment imports"
+      echo "- Mandat lifecycle imports"
+      echo "- Mandat period / renewal imports"
+      echo "- Vente transaction imports"
+      echo "- Remuneration service + calculator imports"
       echo "- Ownership endpoint syntax"
       echo "- AI matching runtime import compatibility"
       echo "- Backend deployment structure"
@@ -536,6 +573,8 @@ backend:validate:
       echo "- Authentication"
       echo "- RBAC"
       echo "- Mandat ownership"
+      echo "- Mandat lifecycle"
+      echo "- Mandat renewal periods"
       echo "- Demande assignment lifecycle"
       echo "- Demande ownership"
       echo "- Presentation ownership"
@@ -728,7 +767,7 @@ backend:build-image:
         -e JWT_SECRET_KEY=ci-image-validation-jwt-secret-only \
         "$IMAGE_NAME:$IMAGE_TAG" \
         python -c \
-        "from src.api.main import app; paths=set(app.openapi().get('paths', {}).keys()); required={'/health','/ready','/api/v1/health','/api/v1/ready','/api/v1/auth/login'}; missing=required-paths; print('OpenAPI paths:', sorted(paths)); assert not missing, f'Missing routes: {sorted(missing)}'"
+        "from src.api.main import app; paths=set(app.openapi().get('paths', {}).keys()); required={'/health','/ready','/api/v1/health','/api/v1/ready','/api/v1/auth/login','/api/v1/ventes'}; missing=required-paths; print('OpenAPI paths:', sorted(paths)); assert not missing, f'Missing routes: {sorted(missing)}'"
 
 
     # -------------------------------------------------------------------------
