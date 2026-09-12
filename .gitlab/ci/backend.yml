@@ -73,6 +73,8 @@
 #       Authentication primitives
 #       Authorization / ownership module imports
 #       Demande assignment module imports
+#       Vente transaction module imports
+#       Remuneration persistence/service/API imports
 #       Matching runtime import compatibility
 #       FastAPI/OpenAPI contract
 #
@@ -92,6 +94,9 @@
 #       - Demande ownership
 #       - Presentation ownership
 #       - Visite ownership
+#       - Vente ownership
+#       - remuneration business rules
+#       - remuneration API / RBAC
 #       - audit compatibility
 #
 #   ai:validate
@@ -215,7 +220,7 @@ backend:validate:
 
 
     # -------------------------------------------------------------------------
-    # 4. Validate ownership / assignment models
+    # 4. Validate ownership / assignment / transaction / remuneration models
     # -------------------------------------------------------------------------
 
     - test -f src/api/db/models/demande.py
@@ -226,6 +231,12 @@ backend:validate:
     - test -f src/api/db/models/visite.py
     - test -f src/api/db/models/vente.py
 
+    - test -f src/api/db/models/paiement.py
+    - test -f src/api/db/models/bareme_commission.py
+    - test -f src/api/db/models/parametres_honoraires.py
+    - test -f src/api/db/models/parametres_remuneration.py
+    - test -f src/api/db/models/palier_performance.py
+
     - test -f src/api/repositories/demande.py
     - test -f src/api/repositories/demande_affectation.py
     - test -f src/api/repositories/mandat.py
@@ -233,17 +244,26 @@ backend:validate:
     - test -f src/api/repositories/visite.py
     - test -f src/api/repositories/vente.py
 
+    - test -f src/api/repositories/paiement.py
+    - test -f src/api/repositories/bareme_commission.py
+    - test -f src/api/repositories/parametres_honoraires.py
+    - test -f src/api/repositories/parametres_remuneration.py
+    - test -f src/api/repositories/palier_performance.py
+
     - test -f src/api/services/demande.py
     - test -f src/api/services/demande_affectation.py
     - test -f src/api/services/mandat.py
     - test -f src/api/services/presentation.py
     - test -f src/api/services/visite.py
     - test -f src/api/services/vente.py
+
     - test -f src/api/services/remuneration_calculator.py
+    - test -f src/api/services/remuneration.py
 
     - test -f src/api/schemas/demande_affectation.py
     - test -f src/api/schemas/mandat.py
     - test -f src/api/schemas/vente.py
+    - test -f src/api/schemas/paiement.py
 
 
     # -------------------------------------------------------------------------
@@ -260,6 +280,7 @@ backend:validate:
     - test -f src/api/api/v1/endpoints/presentations.py
     - test -f src/api/api/v1/endpoints/visites.py
     - test -f src/api/api/v1/endpoints/ventes.py
+    - test -f src/api/api/v1/endpoints/remunerations.py
 
 
     # -------------------------------------------------------------------------
@@ -305,6 +326,11 @@ backend:validate:
         src/api/db/models/presentation.py \
         src/api/db/models/visite.py \
         src/api/db/models/vente.py \
+        src/api/db/models/paiement.py \
+        src/api/db/models/bareme_commission.py \
+        src/api/db/models/parametres_honoraires.py \
+        src/api/db/models/parametres_remuneration.py \
+        src/api/db/models/palier_performance.py \
         src/api/repositories/utilisateur.py \
         src/api/repositories/audit_log.py \
         src/api/repositories/demande.py \
@@ -313,6 +339,11 @@ backend:validate:
         src/api/repositories/presentation.py \
         src/api/repositories/visite.py \
         src/api/repositories/vente.py \
+        src/api/repositories/paiement.py \
+        src/api/repositories/bareme_commission.py \
+        src/api/repositories/parametres_honoraires.py \
+        src/api/repositories/parametres_remuneration.py \
+        src/api/repositories/palier_performance.py \
         src/api/services/auth.py \
         src/api/services/audit_log.py \
         src/api/services/demande.py \
@@ -322,10 +353,12 @@ backend:validate:
         src/api/services/visite.py \
         src/api/services/vente.py \
         src/api/services/remuneration_calculator.py \
+        src/api/services/remuneration.py \
         src/api/schemas/auth.py \
         src/api/schemas/demande_affectation.py \
         src/api/schemas/mandat.py \
         src/api/schemas/vente.py \
+        src/api/schemas/paiement.py \
         src/api/api/v1/router.py \
         src/api/api/v1/endpoints/health.py \
         src/api/api/v1/endpoints/auth.py \
@@ -334,6 +367,7 @@ backend:validate:
         src/api/api/v1/endpoints/presentations.py \
         src/api/api/v1/endpoints/visites.py \
         src/api/api/v1/endpoints/ventes.py \
+        src/api/api/v1/endpoints/remunerations.py \
         src/ai/matching/features.py \
         src/ai/matching/repository.py \
         src/ai/matching/evaluate.py
@@ -450,7 +484,7 @@ backend:validate:
 
 
     # -------------------------------------------------------------------------
-    # 12. Validate authorization / assignment module compatibility
+    # 12. Validate authorization / transaction / remuneration compatibility
     # -------------------------------------------------------------------------
 
     - |
@@ -470,6 +504,35 @@ backend:validate:
           MandatService,
       )
 
+      from src.api.services.vente import (
+          VenteService,
+      )
+
+      from src.api.services.remuneration import (
+          RemunerationAlreadyCalculatedError,
+          RemunerationConfigurationError,
+          RemunerationDataError,
+          RemunerationNotFoundError,
+          RemunerationService,
+      )
+
+      from src.api.services.remuneration_calculator import (
+          PerformanceScores,
+          PerformanceWeights,
+          RemunerationCalculationInput,
+          RemunerationCalculationResult,
+          calculate_company_fees,
+          calculate_final_rate,
+          calculate_performance_modulation,
+          calculate_performance_score,
+          calculate_remuneration,
+          calculate_seniority_bonus,
+      )
+
+      from src.api.schemas.paiement import (
+          PaiementRead,
+      )
+
       print(
           "Authorization / ownership "
           "module imports successful."
@@ -479,11 +542,79 @@ backend:validate:
           "Demande assignment service "
           "import successful."
       )
+
+      print(
+          "Vente transaction service "
+          "import successful."
+      )
+
+      print(
+          "Remuneration calculator/service/schema "
+          "imports successful."
+      )
       PY
 
 
     # -------------------------------------------------------------------------
-    # 13. Validate FastAPI/OpenAPI
+    # 13. Validate remuneration persistence compatibility
+    # -------------------------------------------------------------------------
+
+    - |
+      python - <<'PY'
+      from src.api.db.models.paiement import (
+          Paiement,
+      )
+
+      from src.api.db.models.bareme_commission import (
+          BaremeCommission,
+      )
+
+      from src.api.db.models.parametres_honoraires import (
+          ParametresHonoraires,
+      )
+
+      from src.api.db.models.parametres_remuneration import (
+          ParametresRemuneration,
+      )
+
+      from src.api.db.models.palier_performance import (
+          PalierPerformance,
+      )
+
+      from src.api.repositories.paiement import (
+          PaiementRepository,
+      )
+
+      from src.api.repositories.bareme_commission import (
+          BaremeCommissionRepository,
+      )
+
+      from src.api.repositories.parametres_honoraires import (
+          ParametresHonorairesRepository,
+      )
+
+      from src.api.repositories.parametres_remuneration import (
+          ParametresRemunerationRepository,
+      )
+
+      from src.api.repositories.palier_performance import (
+          PalierPerformanceRepository,
+      )
+
+      print(
+          "Remuneration persistence models "
+          "imported successfully."
+      )
+
+      print(
+          "Remuneration repositories "
+          "imported successfully."
+      )
+      PY
+
+
+    # -------------------------------------------------------------------------
+    # 14. Validate FastAPI/OpenAPI
     # -------------------------------------------------------------------------
 
     - |
@@ -514,6 +645,9 @@ backend:validate:
           "/api/v1/ready",
           "/api/v1/auth/login",
           "/api/v1/ventes",
+          "/api/v1/remunerations/ventes/{vente_id}/calcul",
+          "/api/v1/remunerations/ventes/{vente_id}",
+          "/api/v1/remunerations/{paiement_id}",
       }
 
       missing_routes = (
@@ -534,7 +668,7 @@ backend:validate:
 
 
     # -------------------------------------------------------------------------
-    # 14. Validation responsibility summary
+    # 15. Validation responsibility summary
     # -------------------------------------------------------------------------
 
     - |
@@ -554,12 +688,26 @@ backend:validate:
       echo "- Demande assignment imports"
       echo "- Mandat lifecycle imports"
       echo "- Mandat period / renewal imports"
+
       echo "- Vente transaction imports"
+
+      echo "- Remuneration persistence model imports"
+      echo "- Remuneration repository imports"
       echo "- Remuneration calculator imports"
+      echo "- Remuneration business service imports"
+      echo "- Remuneration schema imports"
+      echo "- Remuneration API endpoint syntax"
+
       echo "- Ownership endpoint syntax"
       echo "- AI matching runtime import compatibility"
       echo "- Backend deployment structure"
       echo "- FastAPI/OpenAPI contract"
+
+      echo
+      echo "Required remuneration routes:"
+      echo "- POST /api/v1/remunerations/ventes/{vente_id}/calcul"
+      echo "- GET  /api/v1/remunerations/ventes/{vente_id}"
+      echo "- GET  /api/v1/remunerations/{paiement_id}"
 
       echo
       echo "Behavioral validation is performed by backend:tests:"
@@ -573,6 +721,12 @@ backend:validate:
       echo "- Demande ownership"
       echo "- Presentation ownership"
       echo "- Visite ownership"
+      echo "- Vente ownership / transaction lifecycle"
+      echo "- Remuneration deterministic calculation"
+      echo "- Remuneration persistence/service behavior"
+      echo "- Remuneration API / ownership / RBAC"
+      echo "- Duplicate remuneration protection"
+      echo "- Remuneration configuration error handling"
       echo "- Audit compatibility"
       echo "- Data tests"
       echo "- Candidate availability"
@@ -610,8 +764,8 @@ backend:validate:
 #     --cov-report=xml \
 #     --cov-fail-under=80
 #
-# Ownership changes under src/api/**/* and tests/backend/**/*
-# trigger that job.
+# Ownership / transaction / remuneration changes under src/api/**/*
+# and tests/backend/**/* trigger that job.
 #
 # =============================================================================
 
@@ -723,7 +877,7 @@ backend:build-image:
 
 
     # -------------------------------------------------------------------------
-    # 5. Validate ownership modules inside final image
+    # 5. Validate ownership / transaction / remuneration modules inside image
     # -------------------------------------------------------------------------
 
     - |
@@ -733,11 +887,25 @@ backend:build-image:
         -e JWT_SECRET_KEY=ci-image-validation-jwt-secret-only \
         "$IMAGE_NAME:$IMAGE_TAG" \
         python -c \
-        "from src.api.core.authorization import enforce_chasseur_ownership, enforce_demande_access, enforce_demande_ownership, require_chasseur_identity; from src.api.services.demande_affectation import DemandeAffectationService; print('Authorization + ownership modules OK')"
+        "from src.api.core.authorization import enforce_chasseur_ownership, enforce_demande_access, enforce_demande_ownership, require_chasseur_identity; from src.api.services.demande_affectation import DemandeAffectationService; from src.api.services.vente import VenteService; from src.api.services.remuneration import RemunerationService; from src.api.services.remuneration_calculator import calculate_remuneration; from src.api.schemas.paiement import PaiementRead; print('Authorization + ownership + transaction + remuneration modules OK')"
 
 
     # -------------------------------------------------------------------------
-    # 6. Validate FastAPI import inside final image
+    # 6. Validate remuneration persistence modules inside final image
+    # -------------------------------------------------------------------------
+
+    - |
+      docker run \
+        --rm \
+        -e POSTGRES_PASSWORD=ci-image-validation-only \
+        -e JWT_SECRET_KEY=ci-image-validation-jwt-secret-only \
+        "$IMAGE_NAME:$IMAGE_TAG" \
+        python -c \
+        "from src.api.db.models.paiement import Paiement; from src.api.db.models.bareme_commission import BaremeCommission; from src.api.db.models.parametres_honoraires import ParametresHonoraires; from src.api.db.models.parametres_remuneration import ParametresRemuneration; from src.api.db.models.palier_performance import PalierPerformance; from src.api.repositories.paiement import PaiementRepository; from src.api.repositories.bareme_commission import BaremeCommissionRepository; from src.api.repositories.parametres_honoraires import ParametresHonorairesRepository; from src.api.repositories.parametres_remuneration import ParametresRemunerationRepository; from src.api.repositories.palier_performance import PalierPerformanceRepository; print('Remuneration persistence modules OK')"
+
+
+    # -------------------------------------------------------------------------
+    # 7. Validate FastAPI import inside final image
     # -------------------------------------------------------------------------
 
     - |
@@ -751,7 +919,7 @@ backend:build-image:
 
 
     # -------------------------------------------------------------------------
-    # 7. Validate required OpenAPI routes inside image
+    # 8. Validate required OpenAPI routes inside image
     # -------------------------------------------------------------------------
 
     - |
@@ -761,11 +929,11 @@ backend:build-image:
         -e JWT_SECRET_KEY=ci-image-validation-jwt-secret-only \
         "$IMAGE_NAME:$IMAGE_TAG" \
         python -c \
-        "from src.api.main import app; paths=set(app.openapi().get('paths', {}).keys()); required={'/health','/ready','/api/v1/health','/api/v1/ready','/api/v1/auth/login','/api/v1/ventes'}; missing=required-paths; print('OpenAPI paths:', sorted(paths)); assert not missing, f'Missing routes: {sorted(missing)}'"
+        "from src.api.main import app; paths=set(app.openapi().get('paths', {}).keys()); required={'/health','/ready','/api/v1/health','/api/v1/ready','/api/v1/auth/login','/api/v1/ventes','/api/v1/remunerations/ventes/{vente_id}/calcul','/api/v1/remunerations/ventes/{vente_id}','/api/v1/remunerations/{paiement_id}'}; missing=required-paths; print('OpenAPI paths:', sorted(paths)); assert not missing, f'Missing routes: {sorted(missing)}'; print('Vente + remuneration OpenAPI routes OK')"
 
 
     # -------------------------------------------------------------------------
-    # 8. Push immutable commit tag
+    # 9. Push immutable commit tag
     # -------------------------------------------------------------------------
 
     - |
@@ -778,7 +946,7 @@ backend:build-image:
 
 
     # -------------------------------------------------------------------------
-    # 9. Push latest convenience tag
+    # 10. Push latest convenience tag
     # -------------------------------------------------------------------------
 
     - |
@@ -787,7 +955,7 @@ backend:build-image:
 
 
     # -------------------------------------------------------------------------
-    # 10. Build summary
+    # 11. Build summary
     # -------------------------------------------------------------------------
 
     - |
@@ -803,6 +971,17 @@ backend:build-image:
       echo
       echo "Latest image:"
       echo "$IMAGE_NAME:latest"
+
+      echo
+      echo "Validated application capabilities:"
+      echo "- Authentication / RBAC"
+      echo "- Ownership controls"
+      echo "- Vente transaction lifecycle"
+      echo "- Remuneration persistence"
+      echo "- Remuneration calculation service"
+      echo "- Remuneration API"
+      echo "- Deterministic AI matching"
+
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
@@ -1464,6 +1643,15 @@ backend:publish-gitops:
       echo
       echo "Container image:"
       echo "${CI_REGISTRY_IMAGE}/backend:${CI_COMMIT_SHORT_SHA}"
+
+      echo
+      echo "Backend capabilities:"
+      echo "- Authentication / RBAC"
+      echo "- Ownership enforcement"
+      echo "- Mandat lifecycle"
+      echo "- Vente transaction lifecycle"
+      echo "- Remuneration calculation and persistence"
+      echo "- Remuneration API"
 
       echo
       echo "AI runtime:"
