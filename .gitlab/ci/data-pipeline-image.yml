@@ -127,7 +127,7 @@ data-pipeline:build-image:
           echo
           echo "Checking Python runtime dependencies..."
 
-          python -c "import boto3; import psycopg; import prometheus_client; print('PASS: Python runtime dependencies import correctly.')"
+          python -c "import boto3; import psycopg; import prometheus_client; print(\"PASS: Python runtime dependencies import correctly.\")"
 
           echo
           echo "Checking dbt runtime..."
