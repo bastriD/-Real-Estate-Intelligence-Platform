@@ -175,7 +175,29 @@ paiements_total = Gauge(
     "Total number of Real Estate payments",
     registry=registry,
 )
+paiements_payes_total = Gauge(
+    "real_estate_paiements_payes_total",
+    "Total number of Real Estate payments in PAYE status",
+    registry=registry,
+)
 
+honoraires_total_euros = Gauge(
+    "real_estate_honoraires_total_euros",
+    "Total Real Estate company fees for paid payments in euros",
+    registry=registry,
+)
+
+remunerations_chasseur_total_euros = Gauge(
+    "real_estate_remunerations_chasseur_total_euros",
+    "Total hunter remuneration for paid payments in euros",
+    registry=registry,
+)
+
+taux_remuneration_moyen = Gauge(
+    "real_estate_taux_remuneration_moyen",
+    "Average final hunter remuneration rate for paid payments",
+    registry=registry,
+)
 
 # =============================================================================
 # MARKET / ANALYTICS KPI METRICS
@@ -336,6 +358,10 @@ def set_business_metrics(
     presentations: int | None = None,
     visites: int | None = None,
     paiements: int | None = None,
+    paiements_payes: int | None = None,
+    honoraires_total: float | None = None,
+    remunerations_chasseur_total: float | None = None,
+    taux_remuneration_moyen_value: float | None = None,
 ) -> None:
 
     if clients is not None:
@@ -377,7 +403,25 @@ def set_business_metrics(
         paiements_total.set(
             paiements
         )
+    if paiements_payes is not None:
+        paiements_payes_total.set(
+            paiements_payes
+        )
 
+    if honoraires_total is not None:
+        honoraires_total_euros.set(
+            honoraires_total
+        )
+
+    if remunerations_chasseur_total is not None:
+        remunerations_chasseur_total_euros.set(
+            remunerations_chasseur_total
+        )
+
+    if taux_remuneration_moyen_value is not None:
+        taux_remuneration_moyen.set(
+            taux_remuneration_moyen_value
+        )
 
 # =============================================================================
 # MARKET KPI HELPERS

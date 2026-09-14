@@ -211,6 +211,41 @@ def collect_business_metrics(cur) -> None:
         cur,
         "SELECT COUNT(*) FROM real_estate.paiement;",
     )
+    paiements_payes = fetch_scalar(
+        cur,
+        """
+        SELECT COUNT(*)
+        FROM real_estate.paiement
+        WHERE statut = 'PAYE';
+        """,
+    )
+
+    honoraires_total = fetch_scalar(
+        cur,
+        """
+        SELECT COALESCE(SUM(montant_honoraires), 0)
+        FROM real_estate.paiement
+        WHERE statut = 'PAYE';
+        """,
+    )
+
+    remunerations_chasseur_total = fetch_scalar(
+        cur,
+        """
+        SELECT COALESCE(SUM(montant_chasseur), 0)
+        FROM real_estate.paiement
+        WHERE statut = 'PAYE';
+        """,
+    )
+
+    taux_remuneration_moyen = fetch_scalar(
+        cur,
+        """
+        SELECT COALESCE(AVG(taux_final), 0)
+        FROM real_estate.paiement
+        WHERE statut = 'PAYE';
+        """,
+    )
 
     set_business_metrics(
         clients=int(clients or 0),
@@ -221,6 +256,14 @@ def collect_business_metrics(cur) -> None:
         presentations=int(presentations or 0),
         visites=int(visites or 0),
         paiements=int(paiements or 0),
+        paiements_payes=int(paiements_payes or 0),
+        honoraires_total=float(honoraires_total or 0),
+        remunerations_chasseur_total=float(
+            remunerations_chasseur_total or 0
+        ),
+        taux_remuneration_moyen_value=float(
+            taux_remuneration_moyen or 0
+        ),
     )
 
 

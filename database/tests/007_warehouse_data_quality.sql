@@ -301,7 +301,157 @@ BEGIN
 END
 $$;
 
+-- =====================================================================
+-- 9.1 PAYMENT FACT FINANCIAL RECONCILIATION
+--
+-- Validate that financial measures and lifecycle status loaded into the
+-- warehouse remain identical to their OLTP source values.
+-- =====================================================================
 
+DO $$
+DECLARE
+    v_mismatches bigint;
+BEGIN
+    SELECT COUNT(*)
+    INTO v_mismatches
+    FROM real_estate.paiement p
+    JOIN warehouse.fact_paiement fp
+      ON fp.id_paiement_source = p.id_paiement
+    WHERE
+        fp.montant_achat IS DISTINCT FROM p.montant_achat
+        OR fp.montant_honoraires IS DISTINCT FROM p.montant_honoraires
+        OR fp.montant_chasseur IS DISTINCT FROM p.montant_chasseur
+        OR fp.statut IS DISTINCT FROM p.statut;
+
+    IF v_mismatches <> 0 THEN
+        RAISE EXCEPTION
+            'FAIL: paiement financial reconciliation mismatches=%',
+            v_mismatches;
+    END IF;
+
+    RAISE NOTICE
+        'PASS: paiement financial reconciliation mismatches=%',
+        v_mismatches;
+END
+$$;
+
+
+-- =====================================================================
+-- 9.2 PAYMENT FACT BUSINESS AMOUNT CONSISTENCY
+--
+-- Hunter remuneration cannot exceed company fees.
+-- =====================================================================
+
+DO $$
+DECLARE
+    v_invalid bigint;
+BEGIN
+    SELECT COUNT(*)
+    INTO v_invalid
+    FROM warehouse.fact_paiement
+    WHERE montant_chasseur IS NOT NULL
+      AND montant_honoraires IS NOT NULL
+      AND montant_chasseur > montant_honoraires;
+
+    IF v_invalid <> 0 THEN
+        RAISE EXCEPTION
+            'FAIL: paiement hunter remuneration exceeds company fees rows=%',
+            v_invalid;
+    END IF;
+
+    RAISE NOTICE
+        'PASS: paiement hunter remuneration does not exceed company fees';
+END
+$$;
+
+
+-- =====================================================================
+-- 9.3 PAID PAYMENT DATE COMPLETENESS
+--
+-- A payment in PAYE status must have both company-fee reception and
+-- hunter-payment dates materialized in the warehouse.
+-- =====================================================================
+
+DO $$
+DECLARE
+    v_invalid bigint;
+BEGIN
+    SELECT COUNT(*)
+    INTO v_invalid
+    FROM warehouse.fact_paiement
+    WHERE statut = 'PAYE'
+      AND (
+          date_reception_honoraires_key IS NULL
+          OR date_paiement_chasseur_key IS NULL
+      );
+
+    IF v_invalid <> 0 THEN
+        RAISE EXCEPTION
+            'FAIL: PAYE paiement missing lifecycle date rows=%',
+            v_invalid;
+    END IF;
+
+    RAISE NOTICE
+        'PASS: PAYE paiements contain reception and hunter payment dates';
+END
+$$;
+
+
+-- =====================================================================
+-- 9.4 PAYMENT FACT DATE RECONCILIATION
+--
+-- Validate warehouse date keys against OLTP business dates.
+-- YYYYMMDD integer keys are compared directly with OLTP dates.
+-- =====================================================================
+
+DO $$
+DECLARE
+    v_mismatches bigint;
+BEGIN
+    SELECT COUNT(*)
+    INTO v_mismatches
+    FROM real_estate.paiement p
+    JOIN warehouse.fact_paiement fp
+      ON fp.id_paiement_source = p.id_paiement
+    WHERE
+        fp.date_acte_authentique_key IS DISTINCT FROM
+            CASE
+                WHEN p.date_acte_authentique IS NULL THEN NULL
+                ELSE TO_CHAR(
+                    p.date_acte_authentique,
+                    'YYYYMMDD'
+                )::integer
+            END
+
+        OR fp.date_reception_honoraires_key IS DISTINCT FROM
+            CASE
+                WHEN p.date_reception_honoraires IS NULL THEN NULL
+                ELSE TO_CHAR(
+                    p.date_reception_honoraires,
+                    'YYYYMMDD'
+                )::integer
+            END
+
+        OR fp.date_paiement_chasseur_key IS DISTINCT FROM
+            CASE
+                WHEN p.date_paiement_chasseur IS NULL THEN NULL
+                ELSE TO_CHAR(
+                    p.date_paiement_chasseur,
+                    'YYYYMMDD'
+                )::integer
+            END;
+
+    IF v_mismatches <> 0 THEN
+        RAISE EXCEPTION
+            'FAIL: paiement date reconciliation mismatches=%',
+            v_mismatches;
+    END IF;
+
+    RAISE NOTICE
+        'PASS: paiement date reconciliation mismatches=%',
+        v_mismatches;
+END
+$$;
 -- =====================================================================
 -- 10. CURRENT PROPERTY DIMENSION RECONCILIATION
 --

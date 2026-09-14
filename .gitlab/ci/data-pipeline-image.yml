@@ -44,6 +44,12 @@ data-pipeline:build-image:
 
     # =========================================================================
     # VALIDATE IMAGE CONTENT
+    #
+    # This prevents Airflow from starting a KubernetesPodOperator with an image
+    # that does not contain one of the scripts/files referenced by the DAG.
+    #
+    # It also validates that the image runtime can import the Python
+    # dependencies used by the pipeline and that dbt is actually executable.
     # =========================================================================
 
     - |
@@ -121,7 +127,12 @@ data-pipeline:build-image:
           echo
           echo "Checking Python runtime dependencies..."
 
-          python -c "import boto3, psycopg, prometheus_client; print(\"PASS: Python runtime dependencies import correctly.\")"
+          python -c "
+            import boto3
+            import psycopg
+            import prometheus_client
+            print(\"PASS: Python runtime dependencies import correctly.\")
+          "
 
           echo
           echo "Checking dbt runtime..."
