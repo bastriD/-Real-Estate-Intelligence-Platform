@@ -8,6 +8,7 @@ from src.api.schemas.visite import VisiteCreate
 
 def test_demande_create_accepts_exactly_one_client_author() -> None:
     payload = DemandeCreate(
+        id_client=1,
         id_mandat=1,
         motif_modification="Initial request",
         auteur_client_id=1,
@@ -16,10 +17,10 @@ def test_demande_create_accepts_exactly_one_client_author() -> None:
         budget_max=300000,
     )
 
+    assert payload.id_client == 1
     assert payload.auteur_client_id == 1
     assert payload.auteur_chasseur_id is None
     assert payload.auteur_systeme is False
-
 
 def test_demande_create_rejects_missing_author() -> None:
     with pytest.raises(
@@ -27,10 +28,10 @@ def test_demande_create_rejects_missing_author() -> None:
         match="exactly one author must be provided",
     ):
         DemandeCreate(
+            id_client=1,
             id_mandat=1,
             motif_modification="Initial request",
         )
-
 
 def test_demande_create_rejects_multiple_authors() -> None:
     with pytest.raises(
@@ -38,12 +39,12 @@ def test_demande_create_rejects_multiple_authors() -> None:
         match="exactly one author must be provided",
     ):
         DemandeCreate(
+            id_client=1,
             id_mandat=1,
             motif_modification="Initial request",
             auteur_client_id=1,
             auteur_chasseur_id=1,
         )
-
 
 def test_demande_revision_rejects_invalid_budget_range() -> None:
     with pytest.raises(

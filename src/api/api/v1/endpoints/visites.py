@@ -20,6 +20,7 @@ from src.api.schemas.visite import (
     VisiteRead,
     VisiteUpdate,
 )
+from src.api.services.demande import DemandeService
 from src.api.services.demande_affectation import (
     DemandeAffectationService,
 )
@@ -97,6 +98,9 @@ def get_visite(
                 affectation_service=DemandeAffectationService(
                     service.session
                 ),
+                demande_service=DemandeService(
+                    service.session
+                )
             )
 
         return service.get_visite(visite_id)
@@ -134,6 +138,9 @@ def create_visite(
                 affectation_service=DemandeAffectationService(
                     service.session
                 ),
+                demande_service=DemandeService(
+                    service.session
+                )
             )
 
         return service.create_visite(
@@ -180,6 +187,9 @@ def update_visite(
                 affectation_service=DemandeAffectationService(
                     service.session
                 ),
+                demande_service=DemandeService(
+                    service.session
+                )
             )
 
         return service.update_visite(
@@ -226,6 +236,9 @@ def delete_visite(
                 affectation_service=DemandeAffectationService(
                     service.session
                 ),
+                demande_service=DemandeService(
+                    service.session
+                )
             )
 
         service.delete_visite(

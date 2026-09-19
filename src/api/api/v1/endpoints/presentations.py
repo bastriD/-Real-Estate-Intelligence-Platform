@@ -13,9 +13,11 @@ from src.api.schemas.presentation import (
     PresentationRead,
     PresentationUpdate,
 )
+from src.api.services.demande import DemandeService
 from src.api.services.demande_affectation import (
     DemandeAffectationService,
 )
+
 from src.api.services.presentation import (
     BienNotFoundForPresentationError,
     DemandeVersionNotFoundForPresentationError,
@@ -98,6 +100,9 @@ def get_presentation(
                 affectation_service=DemandeAffectationService(
                     service.session
                 ),
+                demande_service=DemandeService(
+                    service.session
+                )
             )
 
         return service.get_presentation(
@@ -137,6 +142,9 @@ def create_presentation(
                 affectation_service=DemandeAffectationService(
                     service.session
                 ),
+                demande_service=DemandeService(
+                    service.session
+                )
             )
 
         return service.create_presentation(
@@ -198,6 +206,9 @@ def update_presentation(
                 affectation_service=DemandeAffectationService(
                     service.session
                 ),
+                demande_service=DemandeService(
+                    service.session
+                )
             )
 
         return service.update_presentation(
@@ -244,6 +255,9 @@ def delete_presentation(
                 affectation_service=DemandeAffectationService(
                     service.session
                 ),
+                demande_service=DemandeService(
+                    service.session
+                )
             )
 
         service.delete_presentation(
