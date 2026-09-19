@@ -22,6 +22,7 @@ database:validate:
     - test -f database/migrations/010_transaction_remuneration.sql
     - test -f database/migrations/011_initial_remuneration_configuration.sql
     - test -f database/migrations/012_chasseur_entry_date_backfill.sql
+    - test -f database/migrations/013_demande_client_ownership.sql
     # -------------------------------------------------------------------------
     # Database tests
     # -------------------------------------------------------------------------
@@ -37,6 +38,7 @@ database:validate:
     - test -f database/tests/013_transaction_remuneration.sql
     - test -f database/tests/014_remuneration_configuration.sql
     - test -f database/tests/015_chasseur_entry_date_backfill.sql
+    - test -f database/tests/016_demande_client_ownership.sql
 
     # -------------------------------------------------------------------------
     # Legacy / OLTP / seed files
@@ -282,7 +284,30 @@ database:validate:
     - grep -q "'012'" database/migrations/012_chasseur_entry_date_backfill.sql
     - grep -q "migration_control.schema_version" database/migrations/012_chasseur_entry_date_backfill.sql
     - grep -q "^COMMIT;" database/migrations/012_chasseur_entry_date_backfill.sql
-    
+
+    # -------------------------------------------------------------------------
+    # Migration 013 validation
+    #
+    # Explicit DEMANDE client ownership:
+    #
+    #   - demande.id_client is the stable business owner;
+    #   - legacy ownership is recovered from mandat.id_client;
+    #   - generated synthetic demandes may remain ownerless;
+    #   - mandate-linked demandes must match mandate client ownership.
+    # -------------------------------------------------------------------------
+
+    - grep -q "ADD COLUMN id_client BIGINT" database/migrations/013_demande_client_ownership.sql
+    - grep -q "fk_demande_client" database/migrations/013_demande_client_ownership.sql
+    - grep -q "ck_demande_client_owner" database/migrations/013_demande_client_ownership.sql
+    - grep -q "idx_demande_client" database/migrations/013_demande_client_ownership.sql
+    - grep -q "validate_demande_mandat_client" database/migrations/013_demande_client_ownership.sql
+    - grep -q "trg_demande_mandat_client" database/migrations/013_demande_client_ownership.sql
+    - grep -q "d.origine = 'LEGACY'" database/migrations/013_demande_client_ownership.sql
+    - grep -q "'GENERATED'" database/migrations/013_demande_client_ownership.sql
+    - grep -q "'013'" database/migrations/013_demande_client_ownership.sql
+    - grep -q "migration_control.schema_version" database/migrations/013_demande_client_ownership.sql
+    - grep -q "^COMMIT;" database/migrations/013_demande_client_ownership.sql
+
     # -------------------------------------------------------------------------
     # Legacy fixture validation
     # -------------------------------------------------------------------------
@@ -334,6 +359,13 @@ database:validate:
     - grep -q "migration_012" database/tests/015_chasseur_entry_date_backfill.sql
     - grep -q "certified_hr_entry_date" database/tests/015_chasseur_entry_date_backfill.sql
     - grep -q "PASS:" database/tests/015_chasseur_entry_date_backfill.sql
+    - grep -q "Test 016" database/tests/016_demande_client_ownership.sql
+    - grep -q "migration 013" database/tests/016_demande_client_ownership.sql
+    - grep -q "fk_demande_client" database/tests/016_demande_client_ownership.sql
+    - grep -q "ck_demande_client_owner" database/tests/016_demande_client_ownership.sql
+    - grep -q "trg_demande_mandat_client" database/tests/016_demande_client_ownership.sql
+    - grep -q "idx_demande_client" database/tests/016_demande_client_ownership.sql
+    - grep -q "PASS:" database/tests/016_demande_client_ownership.sql
     # -------------------------------------------------------------------------
     # OLTP validation
     # -------------------------------------------------------------------------
@@ -2455,6 +2487,285 @@ database:migrate-012:
       when: manual
       allow_failure: false
 # =============================================================================
+# MIGRATION 013 - DEMANDE CLIENT OWNERSHIP
+#
+# Introduces explicit business ownership for DEMANDE:
+#
+#   DEMANDE.id_client
+#       -> stable business owner
+#
+#   DEMANDE_VERSION.auteur_client_id
+#       -> author of an individual criteria version
+#
+# Historical rules:
+#   - LEGACY ownership is recovered from MANDAT.id_client;
+#   - GENERATED synthetic demandes remain ownerless;
+#   - mandate-linked demandes must belong to the same client as the mandate.
+#
+# Migration 012 must already be applied.
+# =============================================================================
+
+database:migrate-013:
+  stage: database
+
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl version --client
+    - kubectl -n real-estate get deploy real-estate-postgresql
+
+    # -------------------------------------------------------------------------
+    # Migration dependency
+    # -------------------------------------------------------------------------
+
+    - |
+      MIGRATION_012_APPLIED="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT CASE
+               WHEN EXISTS (
+                 SELECT 1
+                 FROM migration_control.schema_version
+                 WHERE version = '012'
+               )
+               THEN 'yes'
+               ELSE 'no'
+             END;" 2>/dev/null || true
+      )"
+
+      if [ "$MIGRATION_012_APPLIED" != "yes" ]; then
+        echo "ERROR: migration 012 must be applied before migration 013."
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # Check migration registry
+    # -------------------------------------------------------------------------
+
+    - |
+      MIGRATION_013_APPLIED="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT CASE
+               WHEN EXISTS (
+                 SELECT 1
+                 FROM migration_control.schema_version
+                 WHERE version = '013'
+               )
+               THEN 'yes'
+               ELSE 'no'
+             END;" 2>/dev/null || true
+      )"
+
+      if [ "$MIGRATION_013_APPLIED" = "yes" ]; then
+        echo "Migration 013 already applied - skipping safely."
+        exit 0
+      fi
+
+    # -------------------------------------------------------------------------
+    # Runtime preflight
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Checking migration 013 runtime prerequisites..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              origine,
+              COUNT(*) AS total,
+              COUNT(*) FILTER (WHERE id_mandat IS NOT NULL) AS avec_mandat,
+              COUNT(*) FILTER (WHERE id_mandat IS NULL) AS sans_mandat
+            FROM real_estate.demande
+            GROUP BY origine
+            ORDER BY origine;
+          "
+
+    - |
+      LEGACY_COUNT="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql -U real_estate_user -d real_estate -tAc \
+            "SELECT COUNT(*)
+             FROM real_estate.demande
+             WHERE origine = 'LEGACY';"
+      )"
+
+      echo "Legacy demandes before migration: ${LEGACY_COUNT}"
+
+      if [ "${LEGACY_COUNT}" != "17" ]; then
+        echo "ERROR: migration 013 expects exactly 17 legacy demandes."
+        exit 1
+      fi
+
+    - |
+      LEGACY_CLIENT_SOURCE_ERRORS="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql -U real_estate_user -d real_estate -tAc \
+            "SELECT COUNT(*)
+             FROM real_estate.demande d
+             LEFT JOIN real_estate.mandat m
+               ON m.id_mandat = d.id_mandat
+             WHERE d.origine = 'LEGACY'
+               AND (
+                 d.id_mandat IS NULL
+                 OR m.id_mandat IS NULL
+                 OR m.id_client IS NULL
+               );"
+      )"
+
+      echo "Legacy ownership-source errors: ${LEGACY_CLIENT_SOURCE_ERRORS}"
+
+      if [ "${LEGACY_CLIENT_SOURCE_ERRORS}" != "0" ]; then
+        echo "ERROR: legacy ownership cannot be reconstructed safely."
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # Apply migration
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Applying migration 013..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/migrations/013_demande_client_ownership.sql
+
+    # -------------------------------------------------------------------------
+    # Verify ownership state
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Verifying DEMANDE client ownership..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              origine,
+              COUNT(*) AS total,
+              COUNT(id_client) AS avec_client,
+              COUNT(*) - COUNT(id_client) AS sans_client,
+              COUNT(id_mandat) AS avec_mandat
+            FROM real_estate.demande
+            GROUP BY origine
+            ORDER BY origine;
+          "
+
+    - |
+      OWNERSHIP_ERRORS="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql -U real_estate_user -d real_estate -tAc \
+            "SELECT COUNT(*)
+             FROM real_estate.demande d
+             LEFT JOIN real_estate.mandat m
+               ON m.id_mandat = d.id_mandat
+             WHERE
+               (d.origine <> 'GENERATED' AND d.id_client IS NULL)
+               OR
+               (
+                 d.id_mandat IS NOT NULL
+                 AND d.id_client IS DISTINCT FROM m.id_client
+               );"
+      )"
+
+      echo "Ownership consistency errors: ${OWNERSHIP_ERRORS}"
+
+      if [ "${OWNERSHIP_ERRORS}" != "0" ]; then
+        echo "ERROR: DEMANDE client ownership verification failed."
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # Verify database objects
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Verifying migration 013 database objects..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              to_regclass('real_estate.idx_demande_client') AS client_index;
+
+            SELECT
+              conname,
+              contype,
+              condeferrable,
+              condeferred
+            FROM pg_constraint
+            WHERE conrelid = 'real_estate.demande'::regclass
+              AND conname IN (
+                'fk_demande_client',
+                'ck_demande_client_owner'
+              )
+            ORDER BY conname;
+
+            SELECT
+              tgname,
+              tgdeferrable,
+              tginitdeferred
+            FROM pg_trigger
+            WHERE tgrelid = 'real_estate.demande'::regclass
+              AND tgname = 'trg_demande_mandat_client'
+              AND NOT tgisinternal;
+          "
+
+    # -------------------------------------------------------------------------
+    # Verify migration registry
+    # -------------------------------------------------------------------------
+
+    - |
+      kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          -c "
+            SELECT
+              version,
+              description,
+              applied_at
+            FROM migration_control.schema_version
+            WHERE version = '013';
+          "
+
+    - |
+      echo "============================================================"
+      echo "MIGRATION 013 SUCCESSFULLY APPLIED"
+      echo "============================================================"
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
+
+# =============================================================================
 # TEST BASE SCHEMA
 # =============================================================================
 
@@ -2906,6 +3217,83 @@ database:test-remuneration-configuration:
       when: manual
       allow_failure: false
 
+# =============================================================================
+# TEST DEMANDE CLIENT OWNERSHIP
+#
+# Validates migration 013:
+#
+#   - explicit DEMANDE client ownership;
+#   - deterministic LEGACY ownership backfill;
+#   - GENERATED ownerless demandes remain valid;
+#   - business demandes require an owner;
+#   - mandate/client consistency is enforced;
+#   - FK, CHECK, index and constraint trigger exist;
+#   - invalid mutations are rejected by PostgreSQL.
+# =============================================================================
+
+database:test-demande-client-ownership:
+  stage: database
+
+  tags:
+    - shell
+
+  needs:
+    - database:validate
+
+  script:
+    - kubectl -n real-estate get deploy real-estate-postgresql
+
+    # -------------------------------------------------------------------------
+    # Migration dependency
+    # -------------------------------------------------------------------------
+
+    - |
+      MIGRATION_013_APPLIED="$(
+        kubectl -n real-estate exec deploy/real-estate-postgresql -- \
+          psql \
+            -U real_estate_user \
+            -d real_estate \
+            -tAc \
+            "SELECT CASE
+               WHEN EXISTS (
+                 SELECT 1
+                 FROM migration_control.schema_version
+                 WHERE version = '013'
+               )
+               THEN 'yes'
+               ELSE 'no'
+             END;" 2>/dev/null || true
+      )"
+
+      if [ "$MIGRATION_013_APPLIED" != "yes" ]; then
+        echo "ERROR: migration 013 must be applied before running DEMANDE client ownership tests."
+        exit 1
+      fi
+
+    # -------------------------------------------------------------------------
+    # Run database validation
+    # -------------------------------------------------------------------------
+
+    - |
+      echo "Running DEMANDE client ownership tests..."
+
+      kubectl -n real-estate exec deploy/real-estate-postgresql \
+        -i -- \
+        psql \
+          -U real_estate_user \
+          -d real_estate \
+          -v ON_ERROR_STOP=1 \
+          < database/tests/016_demande_client_ownership.sql
+
+    - |
+      echo "============================================================"
+      echo "DEMANDE CLIENT OWNERSHIP TESTS SUCCESSFUL"
+      echo "============================================================"
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: false
 
 # =============================================================================
 # TEST OPERATIONAL QUERIES

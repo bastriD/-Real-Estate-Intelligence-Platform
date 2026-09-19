@@ -8,6 +8,7 @@ from src.api.schemas.auth import AuthenticatedUser
 from src.api.schemas.demande import (
     DemandeCreate,
     DemandeHistory,
+    DemandeMandatLink,
     DemandeRead,
     DemandeRevision,
     DemandeStatusUpdate,
@@ -50,7 +51,7 @@ router = APIRouter(
 def list_demandes(
     db: Session = Depends(get_db),
     current_user: AuthenticatedUser = Depends(
-        require_roles("ADMIN", "CHASSEUR", "SERVICE")
+        require_roles("ADMIN", "CHASSEUR","CLIENT", "SERVICE")
     ),
 ) -> list[DemandeRead]:
     service = DemandeService(db)
@@ -65,7 +66,16 @@ def list_demandes(
         return service.list_demandes_for_chasseur(
             current_user.id_chasseur
         )
+    if current_user.role == "CLIENT":
+        if current_user.id_client is None:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Client identity is not available",
+            )
 
+        return service.list_demandes_for_client(
+            current_user.id_client
+        )
     return service.list_demandes()
 
 
@@ -77,7 +87,7 @@ def get_demande(
     demande_id: int,
     db: Session = Depends(get_db),
     current_user: AuthenticatedUser = Depends(
-        require_roles("ADMIN", "CHASSEUR", "SERVICE")
+        require_roles("ADMIN", "CHASSEUR","CLIENT", "SERVICE")
     ),
 ) -> DemandeWithCurrentVersion:
     service = DemandeService(db)
@@ -88,6 +98,7 @@ def get_demande(
             current_user=current_user,
             demande_id=demande_id,
             affectation_service=affectation_service,
+            demande_service=service,
         )
 
         demande = service.get_demande(demande_id)
@@ -98,6 +109,7 @@ def get_demande(
             reference_demande=demande.reference_demande,
             date_creation=demande.date_creation,
             statut=demande.statut,
+            id_client=demande.id_client,
             id_mandat=demande.id_mandat,
             current_version=current_version,
         )
@@ -123,7 +135,7 @@ def get_demande_history(
     demande_id: int,
     db: Session = Depends(get_db),
     current_user: AuthenticatedUser = Depends(
-        require_roles("ADMIN", "CHASSEUR", "SERVICE")
+        require_roles("ADMIN", "CHASSEUR","CLIENT", "SERVICE")
     ),
 ) -> DemandeHistory:
     service = DemandeService(db)
@@ -134,6 +146,7 @@ def get_demande_history(
             current_user=current_user,
             demande_id=demande_id,
             affectation_service=affectation_service,
+            demande_service=service,
         )
 
         demande, versions = service.get_history(demande_id)
@@ -143,6 +156,7 @@ def get_demande_history(
             reference_demande=demande.reference_demande,
             date_creation=demande.date_creation,
             statut=demande.statut,
+            id_client=demande.id_client,
             id_mandat=demande.id_mandat,
             versions=versions,
         )
@@ -163,11 +177,32 @@ def create_demande(
     payload: DemandeCreate,
     db: Session = Depends(get_db),
     current_user: AuthenticatedUser = Depends(
-        require_roles("ADMIN", "CHASSEUR", "SERVICE")
+        require_roles("ADMIN", "CHASSEUR","CLIENT", "SERVICE")
     ),
 ) -> DemandeWithCurrentVersion:
     service = DemandeService(db)
 
+    if current_user.role == "CLIENT":
+        if current_user.id_client is None:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Client identity is not available",
+            )
+
+        if payload.id_client != current_user.id_client:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Resource not found",
+            )
+
+        if (
+            payload.auteur_client_id
+            != current_user.id_client
+        ):
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Resource not found",
+            )
     try:
         demande, version = service.create_demande(payload)
 
@@ -176,6 +211,7 @@ def create_demande(
             reference_demande=demande.reference_demande,
             date_creation=demande.date_creation,
             statut=demande.statut,
+            id_client=demande.id_client,
             id_mandat=demande.id_mandat,
             current_version=version,
         )
@@ -213,17 +249,33 @@ def create_revision(
     payload: DemandeRevision,
     db: Session = Depends(get_db),
     current_user: AuthenticatedUser = Depends(
-        require_roles("ADMIN", "CHASSEUR", "SERVICE")
+        require_roles("ADMIN", "CHASSEUR","CLIENT", "SERVICE")
     ),
 ) -> DemandeVersionRead:
     service = DemandeService(db)
     affectation_service = DemandeAffectationService(db)
+    
+    if current_user.role == "CLIENT":
+        if current_user.id_client is None:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Client identity is not available",
+            )
 
+        if (
+            payload.auteur_client_id
+            != current_user.id_client
+        ):
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Resource not found",
+            )
     try:
         enforce_demande_access(
             current_user=current_user,
             demande_id=demande_id,
             affectation_service=affectation_service,
+            demande_service=service,
         )
 
         return service.create_revision(demande_id, payload)
@@ -270,6 +322,7 @@ def update_demande_status(
             current_user=current_user,
             demande_id=demande_id,
             affectation_service=affectation_service,
+            demande_service=service,
         )
 
         return service.update_status(demande_id, payload)
@@ -285,7 +338,48 @@ def update_demande_status(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(exc),
         ) from exc
+@router.patch(
+    "/{demande_id}/mandat",
+    response_model=DemandeRead,
+)
+def link_demande_mandat(
+    demande_id: int,
+    payload: DemandeMandatLink,
+    db: Session = Depends(get_db),
+    current_user: AuthenticatedUser = Depends(
+        require_roles("ADMIN", "CHASSEUR", "SERVICE")
+    ),
+) -> DemandeRead:
+    service = DemandeService(db)
+    affectation_service = DemandeAffectationService(db)
 
+    try:
+        enforce_demande_access(
+            current_user=current_user,
+            demande_id=demande_id,
+            affectation_service=affectation_service,
+            demande_service=service,
+        )
+
+        return service.link_mandat(
+            demande_id=demande_id,
+            mandat_id=payload.id_mandat,
+        )
+
+    except (
+        DemandeNotFoundError,
+        MandatNotFoundForDemandeError,
+    ) as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
+        ) from exc
+
+    except DemandeValidationError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(exc),
+        ) from exc
 
 @router.post(
     "/{demande_id}/affectations",

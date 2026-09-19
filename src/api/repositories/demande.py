@@ -45,7 +45,21 @@ class DemandeRepository:
         return list(
             self.session.scalars(statement).all()
         )
+    def list_owned_by_client(
+        self,
+        client_id: int,
+    ) -> list[Demande]:
+        statement = (
+            select(Demande)
+            .where(
+                Demande.id_client == client_id
+            )
+            .order_by(Demande.id_demande)
+        )
 
+        return list(
+            self.session.scalars(statement).all()
+        )
     def get_by_id(
         self,
         demande_id: int,

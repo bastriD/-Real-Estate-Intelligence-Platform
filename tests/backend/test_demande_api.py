@@ -40,8 +40,19 @@ def build_admin_user() -> AuthenticatedUser:
         role="ADMIN",
     )
 
+def build_client_user(
+    id_client: int | None = 4,
+) -> AuthenticatedUser:
+    return AuthenticatedUser(
+        id_utilisateur=20,
+        email="client@example.com",
+        role="CLIENT",
+        id_client=id_client,
+    )
 
-def build_demande():
+def build_demande(
+    id_client: int | None = 4,
+):
     return SimpleNamespace(
         id_demande=4,
         reference_demande="DEM-API-TEST",
@@ -54,6 +65,7 @@ def build_demande():
             tzinfo=timezone.utc,
         ),
         statut="ACTIVE",
+        id_client=id_client,
         id_mandat=1,
     )
 
@@ -99,6 +111,7 @@ def build_create_payload() -> DemandeCreate:
     return DemandeCreate(
         reference_demande="DEM-API-TEST",
         statut="ACTIVE",
+        id_client=4,
         id_mandat=1,
         motif_modification="Initial creation",
         ville="Nantes",
@@ -712,3 +725,382 @@ def test_update_demande_status_returns_422() -> None:
     assert exc.value.detail == (
         "Status update violates constraint"
     )
+
+def test_client_can_create_own_demande() -> None:
+    db = MagicMock()
+    service = MagicMock()
+
+    payload = DemandeCreate(
+        reference_demande="CLIENT-DEM-001",
+        statut="ACTIVE",
+        id_client=4,
+        id_mandat=None,
+        motif_modification="Created by client",
+        ville="Montpellier",
+        code_postal="34000",
+        type_bien="APPARTEMENT",
+        budget_min=Decimal("250000"),
+        budget_max=Decimal("350000"),
+        surface_min=Decimal("60"),
+        nb_pieces_min=3,
+        nb_chambres_min=2,
+        dpe_max="D",
+        criteres_souhaites=["balcon"],
+        auteur_client_id=4,
+    )
+
+    demande = build_demande(id_client=4)
+    demande.id_mandat = None
+
+    version = DemandeVersionRead(
+        id_demande_version=100,
+        numero_version=1,
+        date_version=datetime(
+            2026,
+            9,
+            19,
+            12,
+            0,
+            tzinfo=timezone.utc,
+        ),
+        motif_modification="Created by client",
+        ville="Montpellier",
+        code_postal="34000",
+        type_bien="APPARTEMENT",
+        budget_min=Decimal("250000"),
+        budget_max=Decimal("350000"),
+        surface_min=Decimal("60"),
+        nb_pieces_min=3,
+        nb_chambres_min=2,
+        dpe_max="D",
+        criteres_souhaites=["balcon"],
+        active=True,
+        id_demande=4,
+        auteur_client_id=4,
+        auteur_chasseur_id=None,
+        auteur_systeme=False,
+    )
+
+    service.create_demande.return_value = (
+        demande,
+        version,
+    )
+
+    with patch(
+        "src.api.api.v1.endpoints.demandes.DemandeService",
+        return_value=service,
+    ):
+        result = create_demande(
+            payload=payload,
+            db=db,
+            current_user=build_client_user(4),
+        )
+
+    assert result.id_demande == 4
+    assert result.id_client == 4
+    assert result.current_version.auteur_client_id == 4
+
+    service.create_demande.assert_called_once_with(payload)
+
+def test_client_cannot_create_demande_for_other_client() -> None:
+    db = MagicMock()
+    service = MagicMock()
+
+    payload = DemandeCreate(
+        reference_demande="CLIENT-FORGED-OWNER",
+        statut="ACTIVE",
+        id_client=5,
+        id_mandat=None,
+        motif_modification="Attempted forged ownership",
+        ville="Montpellier",
+        code_postal="34000",
+        type_bien="APPARTEMENT",
+        budget_min=Decimal("250000"),
+        budget_max=Decimal("350000"),
+        surface_min=Decimal("60"),
+        nb_pieces_min=3,
+        nb_chambres_min=2,
+        dpe_max="D",
+        criteres_souhaites=["balcon"],
+        auteur_client_id=4,
+    )
+
+    with patch(
+        "src.api.api.v1.endpoints.demandes.DemandeService",
+        return_value=service,
+    ):
+        with pytest.raises(HTTPException) as exc:
+            create_demande(
+                payload=payload,
+                db=db,
+                # Authenticated identity is client 4,
+                # but payload attempts ownership by client 5.
+                current_user=build_client_user(4),
+            )
+
+    assert exc.value.status_code == 404
+    assert exc.value.detail == "Resource not found"
+
+    service.create_demande.assert_not_called()
+
+def test_client_cannot_create_demande_with_other_client_as_author() -> None:
+    db = MagicMock()
+    service = MagicMock()
+
+    payload = DemandeCreate(
+        reference_demande="CLIENT-FORGED-AUTHOR",
+        statut="ACTIVE",
+        id_client=4,
+        id_mandat=None,
+        motif_modification="Attempted forged authorship",
+        ville="Montpellier",
+        code_postal="34000",
+        type_bien="APPARTEMENT",
+        budget_min=Decimal("250000"),
+        budget_max=Decimal("350000"),
+        surface_min=Decimal("60"),
+        nb_pieces_min=3,
+        nb_chambres_min=2,
+        dpe_max="D",
+        criteres_souhaites=["balcon"],
+        # Owner is correctly client 4,
+        # but authorship is forged as client 5.
+        auteur_client_id=5,
+    )
+
+    with patch(
+        "src.api.api.v1.endpoints.demandes.DemandeService",
+        return_value=service,
+    ):
+        with pytest.raises(HTTPException) as exc:
+            create_demande(
+                payload=payload,
+                db=db,
+                current_user=build_client_user(4),
+            )
+
+    assert exc.value.status_code == 404
+    assert exc.value.detail == "Resource not found"
+
+    service.create_demande.assert_not_called()
+
+def test_client_can_create_revision_for_own_demande() -> None:
+    db = MagicMock()
+    service = MagicMock()
+    affectation_service = MagicMock()
+
+    payload = DemandeRevision(
+        motif_modification="Updated by client",
+        ville="Montpellier",
+        code_postal="34000",
+        type_bien="APPARTEMENT",
+        budget_min=Decimal("260000"),
+        budget_max=Decimal("360000"),
+        surface_min=Decimal("65"),
+        nb_pieces_min=3,
+        nb_chambres_min=2,
+        dpe_max="D",
+        criteres_souhaites=["balcon", "parking"],
+        auteur_client_id=4,
+    )
+
+    service.get_demande.return_value = build_demande(
+        id_client=4
+    )
+
+    version = DemandeVersionRead(
+        id_demande_version=101,
+        numero_version=2,
+        date_version=datetime(
+            2026,
+            9,
+            19,
+            12,
+            30,
+            tzinfo=timezone.utc,
+        ),
+        motif_modification="Updated by client",
+        ville="Montpellier",
+        code_postal="34000",
+        type_bien="APPARTEMENT",
+        budget_min=Decimal("260000"),
+        budget_max=Decimal("360000"),
+        surface_min=Decimal("65"),
+        nb_pieces_min=3,
+        nb_chambres_min=2,
+        dpe_max="D",
+        criteres_souhaites=["balcon", "parking"],
+        active=True,
+        id_demande=4,
+        auteur_client_id=4,
+        auteur_chasseur_id=None,
+        auteur_systeme=False,
+    )
+
+    service.create_revision.return_value = version
+
+    with (
+        patch(
+            "src.api.api.v1.endpoints.demandes.DemandeService",
+            return_value=service,
+        ),
+        patch(
+            "src.api.api.v1.endpoints.demandes.DemandeAffectationService",
+            return_value=affectation_service,
+        ),
+    ):
+        result = create_revision(
+            demande_id=4,
+            payload=payload,
+            db=db,
+            current_user=build_client_user(4),
+        )
+
+    assert result.id_demande_version == 101
+    assert result.numero_version == 2
+    assert result.auteur_client_id == 4
+
+    service.create_revision.assert_called_once_with(
+        4,
+        payload,
+    )
+
+    affectation_service.hunter_can_access_demande.assert_not_called()
+
+def test_client_cannot_create_revision_for_other_client_demande() -> None:
+    db = MagicMock()
+    service = MagicMock()
+    affectation_service = MagicMock()
+
+    payload = DemandeRevision(
+        motif_modification="Unauthorized revision",
+        ville="Montpellier",
+        code_postal="34000",
+        type_bien="APPARTEMENT",
+        budget_min=Decimal("260000"),
+        budget_max=Decimal("360000"),
+        surface_min=Decimal("65"),
+        nb_pieces_min=3,
+        nb_chambres_min=2,
+        dpe_max="D",
+        criteres_souhaites=["balcon"],
+        auteur_client_id=5,
+    )
+
+    # Demand belongs to client 4.
+    service.get_demande.return_value = build_demande(
+        id_client=4
+    )
+
+    with (
+        patch(
+            "src.api.api.v1.endpoints.demandes.DemandeService",
+            return_value=service,
+        ),
+        patch(
+            "src.api.api.v1.endpoints.demandes.DemandeAffectationService",
+            return_value=affectation_service,
+        ),
+    ):
+        with pytest.raises(HTTPException) as exc:
+            create_revision(
+                demande_id=4,
+                payload=payload,
+                db=db,
+                current_user=build_client_user(5),
+            )
+
+    assert exc.value.status_code == 404
+    assert exc.value.detail == "Resource not found"
+
+    service.create_revision.assert_not_called()
+    affectation_service.hunter_can_access_demande.assert_not_called()
+
+def test_client_cannot_create_revision_with_other_client_as_author() -> None:
+    db = MagicMock()
+    service = MagicMock()
+    affectation_service = MagicMock()
+
+    payload = DemandeRevision(
+        motif_modification="Forged revision author",
+        ville="Montpellier",
+        code_postal="34000",
+        type_bien="APPARTEMENT",
+        budget_min=Decimal("260000"),
+        budget_max=Decimal("360000"),
+        surface_min=Decimal("65"),
+        nb_pieces_min=3,
+        nb_chambres_min=2,
+        dpe_max="D",
+        criteres_souhaites=["balcon"],
+        # Authenticated client will be 4.
+        auteur_client_id=5,
+    )
+
+    # Client 4 legitimately owns the demand.
+    service.get_demande.return_value = build_demande(
+        id_client=4
+    )
+
+    with (
+        patch(
+            "src.api.api.v1.endpoints.demandes.DemandeService",
+            return_value=service,
+        ),
+        patch(
+            "src.api.api.v1.endpoints.demandes.DemandeAffectationService",
+            return_value=affectation_service,
+        ),
+    ):
+        with pytest.raises(HTTPException) as exc:
+            create_revision(
+                demande_id=4,
+                payload=payload,
+                db=db,
+                current_user=build_client_user(4),
+            )
+
+    assert exc.value.status_code == 404
+    assert exc.value.detail == "Resource not found"
+
+    service.create_revision.assert_not_called()
+    affectation_service.hunter_can_access_demande.assert_not_called()
+
+def test_client_without_identity_cannot_create_demande() -> None:
+    db = MagicMock()
+    service = MagicMock()
+
+    payload = DemandeCreate(
+        reference_demande="CLIENT-NO-IDENTITY",
+        statut="ACTIVE",
+        id_client=4,
+        id_mandat=None,
+        motif_modification="Missing authenticated client identity",
+        ville="Montpellier",
+        code_postal="34000",
+        type_bien="APPARTEMENT",
+        budget_min=Decimal("250000"),
+        budget_max=Decimal("350000"),
+        surface_min=Decimal("60"),
+        nb_pieces_min=3,
+        nb_chambres_min=2,
+        dpe_max="D",
+        criteres_souhaites=["balcon"],
+        auteur_client_id=4,
+    )
+
+    with patch(
+        "src.api.api.v1.endpoints.demandes.DemandeService",
+        return_value=service,
+    ):
+        with pytest.raises(HTTPException) as exc:
+            create_demande(
+                payload=payload,
+                db=db,
+                current_user=build_client_user(None),
+            )
+
+    assert exc.value.status_code == 403
+    assert exc.value.detail == "Client identity is not available"
+
+    service.create_demande.assert_not_called()

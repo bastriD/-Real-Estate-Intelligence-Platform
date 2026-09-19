@@ -1,947 +1,1483 @@
 # MCD MERISE — Real Estate Intelligence Platform
 
-**Projet :** Real Estate Intelligence Platform  
-**Domaine :** Chasse immobilière  
-**Méthode :** MERISE  
-**Version :** 2.0  
-**Statut :** Baseline conceptuelle corrigée selon le StarterPack  
-**Date de référence métier :** 25 juillet 2026
+**Projet :** PROJECT_FIL_ROUGE / CHASSE_IMMOBILIERE
+**Méthode :** MERISE
+**Version :** 3.0
+**Statut :** Modèle conceptuel aligné avec l’implémentation
+**Périmètre vérifié :** migrations 001 à 012
+**Dernière mise à jour :** 2026-09-15
 
 ---
 
 # 1. Objectif
 
-Ce document définit le Modèle Conceptuel de Données cible du projet.
+Ce document décrit le **Modèle Conceptuel de Données (MCD)** de la plateforme Real Estate Intelligence.
 
-Il est construit à partir :
+Il représente les concepts métier, leurs responsabilités, leurs relations et leurs cardinalités, indépendamment des choix physiques PostgreSQL.
 
-1. du SI hérité fourni dans les fixtures ;
-2. des besoins métier décrits dans le StarterPack ;
-3. des besoins futurs Data et IA ;
-4. des exigences de traçabilité, RGPD et croissance.
-
-La chaîne de conception est :
+La chaîne documentaire est :
 
 ```text
-SI hérité
-   |
-   v
-Audit
-   |
-   v
-MCD cible
-   |
-   v
+Besoins métier
+      |
+      v
+MCD
+      |
+      v
 MLD
-   |
-   v
+      |
+      v
 MPD PostgreSQL
-   |
-   v
-migration.sql
+      |
+      v
+Migrations SQL
+      |
+      v
+Tests
+      |
+      v
+Runtime PostgreSQL
 ```
+
+Cette version remplace l’ancien MCD V2 et reflète les évolutions réellement implémentées jusqu’à la migration `012_chasseur_entry_date_backfill.sql`.
 
 ---
 
-# 2. SI hérité
+# 2. Périmètre métier
 
-Le SI existant contient uniquement :
-
-```text
-SECTEURS
-UTILISATEURS
-MANDATS
-```
-
-Il constitue la source de migration.
-
-Il ne doit pas être modifié directement.
-
----
-
-# 3. Principales anomalies du modèle hérité
-
-Le modèle existant présente notamment :
-
-```text
-UTILISATEURS
-    |
-    +--> clients
-    |
-    +--> chasseurs
-```
-
-dans une seule table.
-
-Cela produit des colonnes dépendantes du rôle :
-
-```text
-taux_commission
-budget_max
-```
-
-qui n'ont pas de sens pour tous les utilisateurs.
-
-Les critères de recherche sont également stockés sous forme de texte libre :
-
-```text
-mandats.description_recherche
-```
-
-alors qu'ils doivent devenir structurés et historisables.
-
----
-
-# 4. Exigences métier du modèle cible
-
-Le modèle cible doit permettre de gérer :
-
-```text
-Clients
-Chasseurs
-Secteurs
-Mandats
-Demandes structurées
-Historique des demandes
-Biens
-Sources d'annonces
-Commentaires
-Présentations / matching
-Documents
-Barèmes de commission
-Paiements
-```
-
----
-
-# 5. Vue globale
+La plateforme couvre désormais le parcours :
 
 ```text
 CLIENT
    |
-   | signe
-   v
-MANDAT
-   ^
-   |
-   | géré par
-   |
-CHASSEUR
-
-MANDAT
-   |
-   | définit
    v
 DEMANDE
    |
-   | possède
-   v
-DEMANDE_VERSION
-
-DEMANDE_VERSION
-   |
-   +-----------------------------+
-   |                             |
-   v                             v
-PRESENTATION                 COMMENTAIRE
-   |                             |
-   v                             v
-BIEN <---------------------------+
-
-BIEN
-   |
-   +--> SOURCE
-   |
-   +--> DOCUMENT
-
-CHASSEUR
+   +--> AFFECTATION CHASSEUR
    |
    v
-BAREME_COMMISSION
-
-MANDAT
+DEMANDE_VERSION
+   |
+   v
+MATCHING
+   |
+   v
+PRESENTATION
+   |
+   v
+VISITE
+   |
+   v
+VENTE
+   |
+   v
+CALCUL DE REMUNERATION
    |
    v
 PAIEMENT
 ```
 
----
-
-# 6. Entité CLIENT
-
-## Définition
-
-Représente un particulier utilisant le service de chasse immobilière.
-
-## Identifiant
+Le processus contractuel associé est :
 
 ```text
-id_client
+CLIENT
+   |
+   v
+MANDAT
+   |
+   v
+MANDAT_PERIODE
+   |
+   +--> INITIAL
+   |
+   +--> RENOUVELLEMENT
 ```
 
-## Attributs
+La plateforme couvre également :
 
-| Attribut | Description |
-|---|---|
-| id_client | Identifiant |
-| nom | Nom |
-| prenom | Prénom |
-| email | Email |
-| telephone | Téléphone |
-| ville | Ville |
-| date_creation | Date de création |
-| statut | Statut |
-| consentement_contact | Consentement de contact |
-
-## Règles
-
-- un client peut posséder plusieurs mandats ;
-- un mandat appartient à un seul client ;
-- les données personnelles sont soumises au RGPD.
+* l’authentification et les identités applicatives ;
+* l’affectation des demandes aux chasseurs ;
+* l’historisation des critères de recherche ;
+* l’ingestion et la normalisation des biens ;
+* le matching ;
+* les présentations ;
+* les visites ;
+* les ventes ;
+* les honoraires ;
+* la rémunération des chasseurs ;
+* le cycle de paiement ;
+* l’audit métier.
 
 ---
 
-# 7. Entité CHASSEUR
+# 3. Principes de modélisation
 
-## Définition
+Le modèle respecte les principes suivants.
 
-Représente le professionnel chargé d'accompagner le client.
-
-## Identifiant
+## 3.1 Séparation contrat / besoin
 
 ```text
-id_chasseur
+MANDAT != DEMANDE
 ```
 
-## Attributs
+Le mandat représente une relation contractuelle.
 
-| Attribut | Description |
-|---|---|
-| id_chasseur | Identifiant |
-| nom | Nom |
-| prenom | Prénom |
-| email | Email professionnel |
-| telephone | Téléphone |
-| date_entree | Date d'entrée |
-| statut | Actif / inactif |
+La demande représente un besoin de recherche immobilière.
 
-## Règles
+Une demande peut désormais être créée **avant la signature d’un mandat**.
 
-- un chasseur peut gérer plusieurs mandats ;
-- un mandat possède un chasseur référent ;
-- les commissions ne doivent plus être stockées directement dans cette entité.
+---
 
-Les commissions sont historisées via :
+## 3.2 Historisation des critères
+
+Les critères d’une demande ne sont jamais écrasés.
 
 ```text
-BAREME_COMMISSION
+DEMANDE
+   |
+   +--> DEMANDE_VERSION 1
+   +--> DEMANDE_VERSION 2
+   +--> DEMANDE_VERSION 3
+```
+
+Chaque modification produit une nouvelle version traçable.
+
+---
+
+## 3.3 Affectation indépendante
+
+L’affectation d’un chasseur à une demande est distincte du mandat.
+
+```text
+DEMANDE
+   |
+   v
+DEMANDE_AFFECTATION
+   |
+   v
+CHASSEUR
+```
+
+Cela permet de traiter une demande avant contractualisation.
+
+---
+
+## 3.4 Historisation contractuelle
+
+Un renouvellement de mandat ne remplace pas l’historique précédent.
+
+```text
+MANDAT
+   |
+   +--> PERIODE 1 — INITIAL
+   |
+   +--> PERIODE 2 — RENOUVELLEMENT
+   |
+   +--> PERIODE 3 — RENOUVELLEMENT
+```
+
+Chaque période contractuelle est conservée.
+
+---
+
+## 3.5 Séparation transaction / calcul / paiement
+
+Trois concepts sont distingués :
+
+```text
+VENTE
+=
+transaction immobilière aboutie
+```
+
+```text
+REMUNERATION
+=
+calcul métier déterministe
+```
+
+```text
+PAIEMENT
+=
+résultat de calcul figé
++
+cycle financier
+```
+
+Cette séparation garantit la reproductibilité et l’auditabilité du calcul.
+
+---
+
+# 4. Vue conceptuelle globale
+
+```text
+                         SECTEUR
+                            ^
+                            |
+                    MANDAT_SECTEUR
+                            |
+                            v
+
+CLIENT ---------------> MANDAT <---------------- CHASSEUR
+  |                       |
+  |                       +----> MANDAT_PERIODE
+  |
+  v
+DEMANDE
+  |
+  +----> DEMANDE_AFFECTATION <------------------ CHASSEUR
+  |
+  v
+DEMANDE_VERSION
+  |
+  +------------------+
+  |                  |
+  v                  v
+PRESENTATION      COMMENTAIRE
+  |                  |
+  v                  |
+ BIEN <---------------+
+  |
+  +----> SOURCE
+  |
+  +----> DOCUMENT
+  ^
+  |
+PRESENTATION
+  |
+  v
+VISITE
+
+MANDAT
+  |
+  +----------+
+  |          |
+  v          v
+VENTE <--- PRESENTATION
+  |
+  +--------> BIEN
+  |
+  +--------> MANDAT_PERIODE
+  |
+  +--------> CHASSEUR bénéficiaire
+  |
+  v
+CALCUL REMUNERATION
+  |
+  v
+PAIEMENT
+  |
+  +--------> BAREME_COMMISSION
+  |
+  +--------> PARAMETRES_HONORAIRES
+  |
+  +--------> PARAMETRES_REMUNERATION
+                         |
+                         v
+                 PALIER_PERFORMANCE
+```
+
+Deux concepts transverses complètent ce modèle :
+
+```text
+UTILISATEUR
+    |
+    +--> identité / authentification / rôle
+
+AUDIT_LOG
+    |
+    +--> traçabilité des opérations métier
 ```
 
 ---
 
-# 8. Entité SECTEUR
+# 5. CLIENT
 
 ## Définition
 
-Représente une zone géographique couverte par le service.
+Le client représente la personne pour laquelle une recherche immobilière est réalisée.
 
-Cette entité est conservée car elle existe déjà dans le SI hérité.
+Il porte notamment :
 
-## Identifiant
+* identité ;
+* coordonnées ;
+* ville ;
+* statut ;
+* consentement de contact.
+
+## Relations
+
+Un client peut avoir :
 
 ```text
-id_secteur
+0,N DEMANDE
+0,N MANDAT
 ```
 
-## Attributs
+Un mandat appartient à exactement un client.
 
-| Attribut | Description |
-|---|---|
-| id_secteur | Identifiant |
-| pays | Pays |
-| ville | Ville |
-| quartier | Quartier éventuel |
-| code_postal | Code postal |
-| actif | Secteur actif |
+---
 
-## Évolution
+# 6. CHASSEUR
 
-Le modèle doit pouvoir évoluer au-delà de Montpellier vers :
+## Définition
+
+Le chasseur représente le professionnel chargé du traitement des recherches immobilières.
+
+Il possède notamment :
+
+* identité ;
+* coordonnées ;
+* date d’entrée ;
+* statut.
+
+La date d’entrée intervient dans le calcul d’ancienneté utilisé par la rémunération.
+
+Lorsque l’information RH historique n’était pas disponible, les données héritées ont été complétées à partir de la première activité métier connue avec une provenance explicitement documentée.
+
+## Relations
+
+Un chasseur peut :
 
 ```text
-France
-DROM
-Espagne
-Allemagne
-Royaume-Uni
-Irlande
-BeNeLux
-Italie
-Suisse
+gérer plusieurs mandats
+recevoir plusieurs affectations de demandes
+être bénéficiaire de plusieurs ventes
+disposer de barèmes historiques
 ```
 
 ---
 
-# 9. Entité MANDAT
+# 7. UTILISATEUR
 
 ## Définition
 
-Représente le contrat de recherche signé entre le client et l'entreprise.
+`UTILISATEUR` représente l’identité applicative utilisée pour l’authentification et l’autorisation.
 
-## Identifiant
+Il ne remplace pas les concepts métier `CLIENT` et `CHASSEUR`.
+
+Les rôles applicatifs sont :
 
 ```text
-id_mandat
+ADMIN
+CLIENT
+CHASSEUR
+SERVICE
 ```
 
-## Attributs
+Un utilisateur `CLIENT` référence une identité métier client.
 
-| Attribut | Description |
-|---|---|
-| id_mandat | Identifiant |
-| reference_mandat | Référence |
-| type_mandat | Exclusif / non-exclusif |
-| date_signature | Date de signature |
-| mode_signature | Papier / électronique / autre |
-| date_debut | Début du mandat |
-| date_fin | Fin de validité |
-| statut | Statut |
-| commentaire | Commentaire |
+Un utilisateur `CHASSEUR` référence une identité métier chasseur.
+
+Les comptes `ADMIN` et `SERVICE` ne nécessitent pas d’identité client ou chasseur.
+
+## Principe
+
+```text
+Identité métier
+!=
+Identité d'authentification
+```
+
+Cette séparation permet de conserver un modèle métier propre tout en supportant le RBAC applicatif.
+
+---
+
+# 8. SECTEUR
+
+## Définition
+
+Le secteur représente une zone géographique couverte par l’activité.
+
+Il peut contenir :
+
+```text
+pays
+ville
+quartier
+code postal
+```
+
+Le modèle n’est pas limité conceptuellement à la France.
+
+## Relation avec MANDAT
+
+Un mandat peut cibler plusieurs secteurs.
+
+Un secteur peut être ciblé par plusieurs mandats.
+
+La relation est donc :
+
+```text
+MANDAT N,N SECTEUR
+```
+
+conceptuellement matérialisée par l’association :
+
+```text
+MANDAT_SECTEUR
+```
+
+---
+
+# 9. MANDAT
+
+## Définition
+
+Le mandat représente le contrat de recherche conclu avec le client.
+
+Il définit notamment :
+
+```text
+référence
+type
+signature
+mode de signature
+période contractuelle courante
+statut
+client
+chasseur référent
+```
+
+Les types sont :
+
+```text
+EXCLUSIF
+NON_EXCLUSIF
+```
 
 ## Relations
 
 ```text
-CLIENT      0,N ---- SIGNE ---- 1,1 MANDAT
-CHASSEUR    0,N ---- GERE ----- 1,1 MANDAT
-SECTEUR     0,N ---- CIBLE ---- 0,N MANDAT
+CLIENT    0,N ---- SIGNE ---- 1,1 MANDAT
+CHASSEUR  0,N ---- GERE ----- 1,1 MANDAT
+MANDAT    0,N ---- CIBLE ---- 0,N SECTEUR
 ```
 
-## Règle de validité
+---
 
-Le mandat est valable six mois.
+# 10. MANDAT_PERIODE
+
+## Définition
+
+`MANDAT_PERIODE` représente une période contractuelle historisée d’un mandat.
+
+Elle permet de distinguer :
+
+```text
+INITIAL
+RENOUVELLEMENT
+```
+
+## Règle métier
+
+Une période contractuelle standard dure :
+
+```text
+6 mois calendaires
+```
 
 Conceptuellement :
 
 ```text
-date_fin = date_signature + 6 mois
+date_fin = date_debut + 6 mois
 ```
 
-Le renouvellement doit être historisé plutôt que d'effacer l'état précédent.
+Les données historiques héritées peuvent être identifiées explicitement lorsqu’elles ne permettent pas de garantir cette règle avec la même précision.
 
----
+## Renouvellement
 
-# 10. Pourquoi séparer MANDAT et DEMANDE
-
-Le mandat représente :
-
-```text
-le contrat
-```
-
-La demande représente :
-
-```text
-le besoin immobilier
-```
-
-Ces deux concepts ne doivent pas être confondus.
+Un renouvellement ne modifie pas la période précédente.
 
 Exemple :
 
 ```text
 MANDAT
-6 mois
-exclusif
-signé électroniquement
+ |
+ +-- PERIODE 1
+ |     INITIAL
+ |     2026-01-05 -> 2026-07-05
+ |
+ +-- PERIODE 2
+       RENOUVELLEMENT
+       2026-07-05 -> 2027-01-05
 ```
 
-et :
+La nouvelle période commence à la frontière de la période précédente.
+
+## Cardinalité
 
 ```text
-DEMANDE
-Appartement
-Montpellier
-350 000 €
-70 m²
+MANDAT 1,1 ---- POSSEDE ---- 1,N MANDAT_PERIODE
 ```
 
 ---
 
-# 11. Entité DEMANDE
+# 11. DEMANDE
 
 ## Définition
 
-Représente la recherche immobilière associée à un mandat.
+La demande représente le besoin immobilier exprimé par le client.
 
-## Identifiant
+Elle existe indépendamment de la contractualisation.
 
-```text
-id_demande
-```
-
-## Attributs
-
-| Attribut | Description |
-|---|---|
-| id_demande | Identifiant |
-| date_creation | Création |
-| statut | Active / clôturée |
-| id_mandat | Mandat concerné |
-
-## Relations
+Une demande peut donc être :
 
 ```text
-MANDAT 1,1 ---- POSSEDE ---- 1,N DEMANDE
+créée
+qualifiée
+affectée
+versionnée
 ```
 
-Dans le MVP, un mandat peut généralement correspondre à une demande principale, mais le modèle autorise l'évolution.
+avant qu’un mandat soit signé.
+
+## Relation avec MANDAT
+
+La relation est désormais optionnelle côté demande :
+
+```text
+MANDAT 0,N ---- CONTRACTUALISE ---- 0,1 DEMANDE
+```
+
+Une demande héritée provenant d’un ancien mandat conserve obligatoirement son mandat d’origine.
+
+## Provenance
+
+La demande conserve également sa provenance conceptuelle :
+
+```text
+LEGACY
+GENERATED
+API
+MANUEL
+```
 
 ---
 
-# 12. Entité DEMANDE_VERSION
+# 12. DEMANDE_AFFECTATION
 
 ## Définition
 
-Représente une version historique des critères structurés d'une demande.
+Cette association représente l’affectation d’une demande à un chasseur.
 
-## Identifiant
+Elle permet de séparer :
 
 ```text
-id_demande_version
+traitement opérationnel
 ```
 
-## Attributs
+de :
 
-| Attribut | Description |
-|---|---|
-| id_demande_version | Identifiant |
-| numero_version | Numéro |
-| date_version | Date du changement |
-| auteur_type | Client / chasseur / système |
-| auteur_id | Identifiant de l'auteur selon contexte |
-| motif_modification | Pourquoi la demande a changé |
-| ville | Ville recherchée |
-| code_postal | Code postal |
-| type_bien | Type |
-| budget_min | Budget minimum |
-| budget_max | Budget maximum |
-| surface_min | Surface minimale |
-| nb_pieces_min | Pièces minimum |
-| nb_chambres_min | Chambres minimum |
-| dpe_max | DPE maximum éventuel |
-| criteres_souhaites | Critères supplémentaires |
-| active | Version courante |
+```text
+relation contractuelle
+```
+
+## Cycle métier
+
+Une affectation peut être :
+
+```text
+ASSIGNEE
+ACCEPTEE
+REFUSEE
+```
+
+Elle conserve notamment :
+
+* date d’affectation ;
+* date de décision ;
+* acteur ayant effectué l’affectation ;
+* acteur ayant pris la décision ;
+* motif de refus éventuel.
+
+## Cardinalités
+
+```text
+DEMANDE  1,1 ---- POSSEDE ---- 0,N DEMANDE_AFFECTATION
+
+CHASSEUR 1,1 ---- RECOIT ----- 0,N DEMANDE_AFFECTATION
+```
+
+Une règle métier garantit qu’une demande ne possède pas plusieurs affectations courantes simultanées.
 
 ---
 
-# 13. Historisation obligatoire
+# 13. DEMANDE_VERSION
 
-Une demande ne doit jamais être écrasée.
+## Définition
+
+Une version représente l’état des critères de recherche à un instant donné.
+
+Elle contient notamment :
+
+```text
+ville
+code postal
+type de bien
+budget minimum
+budget maximum
+surface minimale
+nombre de pièces
+nombre de chambres
+DPE
+critères souhaités
+```
+
+Elle peut également conserver la description historique héritée.
+
+## Historisation
 
 ```text
 DEMANDE
    |
    +--> VERSION 1
-   |
    +--> VERSION 2
-   |
    +--> VERSION 3
 ```
 
-Chaque changement doit conserver au minimum :
+Une seule version est courante à un instant donné.
+
+## Auteur
+
+L’auteur d’une version est exactement l’un des acteurs suivants :
 
 ```text
-date
-auteur
-motif
+CLIENT
+CHASSEUR
+SYSTEME
 ```
+
+Le modèle conceptuel ne permet pas plusieurs auteurs simultanés.
+
+## Lineage d’ingestion
+
+Une version peut également conserver la référence de la recherche source et le lot d’ingestion afin de préserver la traçabilité entre les données générées et le modèle opérationnel.
 
 ---
 
-# 14. Correspondance avec le générateur StarterPack
-
-Le générateur fournit des critères structurés contenant notamment :
-
-```text
-reference
-date_creation
-ville
-code_postal
-type_bien
-budget_max
-surface_min
-nb_pieces_min
-nb_chambres_min
-dpe_max
-criteres_souhaites
-```
-
-Ces données alimenteront le modèle :
-
-```text
-DEMANDE
-+
-DEMANDE_VERSION
-```
-
----
-
-# 15. Entité SOURCE
+# 14. SOURCE
 
 ## Définition
 
-Représente la provenance d'une annonce immobilière.
+Une source représente la provenance d’un bien immobilier.
 
-## Exemples
+Exemples :
 
 ```text
-Agence
-Particulier
-Plateforme
+AGENCE
+PARTICULIER
+PLATEFORME
 API
-Open Data
+OPEN_DATA
+MANUEL
+AUTRE
 ```
 
-## Attributs
+Une source peut également disposer d’un niveau de confiance.
 
-| Attribut | Description |
-|---|---|
-| id_source | Identifiant |
-| nom | Source |
-| type_source | Type |
-| url_base | URL |
-| actif | Statut |
-| niveau_confiance | Niveau de confiance |
+## Cardinalité
+
+```text
+SOURCE 1,1 ---- FOURNIT ---- 0,N BIEN
+```
+
+Un bien normalisé provient d’une source.
 
 ---
 
-# 16. Entité BIEN
+# 15. BIEN
 
 ## Définition
 
-Représente un bien immobilier normalisé dans le SI cible.
+Le bien représente une annonce immobilière normalisée dans le modèle canonique.
 
-## Identifiant
-
-```text
-id_bien
-```
-
-## Attributs principaux
-
-| Attribut | Description |
-|---|---|
-| id_bien | Identifiant |
-| reference_externe | Référence source |
-| type_bien | Type |
-| titre | Titre |
-| adresse | Adresse |
-| code_postal | Code postal |
-| ville | Ville |
-| latitude | Latitude |
-| longitude | Longitude |
-| prix | Prix |
-| surface | Surface |
-| nb_pieces | Pièces |
-| nb_chambres | Chambres |
-| dpe | DPE |
-| description | Description |
-| date_publication | Publication |
-| date_collecte | Collecte |
-| statut | Statut |
-
----
-
-# 17. Données d'annonces hétérogènes
-
-Les données sources peuvent être volontairement :
+Il peut contenir :
 
 ```text
-incomplètes
-mal nommées
-dans différents formats
-semi-structurées
+référence externe
+type
+titre
+adresse
+code postal
+ville
+coordonnées
+prix
+surface
+pièces
+chambres
+DPE
+description
+dates
+statut
 ```
 
-Le modèle `BIEN` représente donc la version normalisée après ingestion.
+## Origine
 
-Flux :
+Les données externes ne sont pas directement considérées comme des biens canoniques.
+
+Le flux est :
 
 ```text
 CSV / JSON / API
-      |
-      v
-RAW
-      |
-      v
-STAGING
-      |
-      v
-NORMALISATION
-      |
-      v
-BIEN
-```
-
----
-
-# 18. Entité PRESENTATION
-
-## Définition
-
-Représente le fait qu'un bien a été sélectionné ou proposé pour une version de demande.
-
-## Attributs
-
-| Attribut | Description |
-|---|---|
-| id_presentation | Identifiant |
-| date_selection | Date |
-| date_presentation | Date client |
-| score_matching | Score |
-| statut | Identifié / qualifié / présenté / rejeté / visité / retenu |
-
-## Relation
-
-```text
-DEMANDE_VERSION 0,N
         |
         v
-PRESENTATION
-        ^
+       RAW
         |
-BIEN 0,N
+        v
+     STAGING
+        |
+        v
+   NORMALISATION
+        |
+        v
+       BIEN
 ```
 
 ---
 
-# 19. Entité COMMENTAIRE
+# 16. PRESENTATION
 
 ## Définition
 
-Représente un commentaire sur un bien dans le contexte d'une demande.
+Une présentation représente la sélection d’un bien pour une version précise de demande.
 
-Le commentaire peut être produit par :
+Elle matérialise le résultat opérationnel du matching.
 
 ```text
-client
-chasseur
+DEMANDE_VERSION
+       |
+       v
+   MATCHING
+       |
+       v
+ PRESENTATION
+       |
+       v
+      BIEN
 ```
 
-## Attributs
+Elle porte notamment :
 
-| Attribut | Description |
-|---|---|
-| id_commentaire | Identifiant |
-| date_commentaire | Date |
-| auteur_type | CLIENT / CHASSEUR |
-| auteur_id | Auteur |
-| contenu | Texte |
-| priorite | Priorité éventuelle |
-| decision | Retenir / écarter / visiter / autre |
+```text
+score de matching
+date de sélection
+date de présentation
+statut
+```
+
+## Cardinalités
+
+```text
+DEMANDE_VERSION 1,1 ---- GENERE ---- 0,N PRESENTATION
+
+BIEN            1,1 ---- CONCERNE -- 0,N PRESENTATION
+```
+
+Un même bien ne doit être présenté qu’une seule fois pour une même version de demande.
+
+---
+
+# 17. COMMENTAIRE
+
+## Définition
+
+Le commentaire représente une interaction humaine sur un bien dans le contexte d’une version de demande.
+
+Il est distinct de la présentation.
+
+```text
+PRESENTATION
+=
+sélection du bien
+```
+
+```text
+COMMENTAIRE
+=
+avis / interaction humaine
+```
+
+## Auteur
+
+Un commentaire possède exactement un auteur :
+
+```text
+CLIENT
+ou
+CHASSEUR
+```
+
+## Décisions possibles
+
+Le commentaire peut notamment exprimer :
+
+```text
+RETENIR
+ECARTER
+VISITER
+REQUALIFIER
+INFORMATION
+```
 
 ## Relations
 
 ```text
-COMMENTAIRE
-   |
-   +--> DEMANDE_VERSION
-   |
-   +--> BIEN
+DEMANDE_VERSION 1,1 ---- CONTEXTUALISE ---- 0,N COMMENTAIRE
+BIEN            1,1 ---- CONCERNE --------- 0,N COMMENTAIRE
 ```
 
 ---
 
-# 20. Pourquoi COMMENTAIRE et PRESENTATION sont distincts
-
-`PRESENTATION` représente :
-
-```text
-la relation de sélection / matching
-```
-
-`COMMENTAIRE` représente :
-
-```text
-l'interaction humaine sur le bien
-```
-
-Un même bien présenté peut recevoir plusieurs commentaires.
-
----
-
-# 21. Entité DOCUMENT
+# 18. DOCUMENT
 
 ## Définition
 
-Représente un document associé à un bien.
+Un document représente un artefact associé à un bien.
 
 Exemples :
 
 ```text
 photo
-PDF
-diagnostic
 plan
+diagnostic
 brochure
+PDF
 vidéo
-audio
 ```
 
-## Attributs
+Le document possède des propriétés de :
 
 ```text
-id_document
-id_bien
-nom_fichier
-type_document
-mime_type
-chemin_stockage
+stockage
 checksum
 classification
-indexable_ia
-date_ajout
+indexabilité IA
+```
+
+## Classification
+
+Les niveaux conceptuels sont :
+
+```text
+PUBLIC
+INTERNE
+CONFIDENTIEL
+RESTREINT
+```
+
+## Cardinalité
+
+```text
+BIEN 1,1 ---- POSSEDE ---- 0,N DOCUMENT
 ```
 
 ---
 
-# 22. Entité BAREME_COMMISSION
+# 19. VISITE
 
 ## Définition
 
-Représente les règles de rémunération d'un chasseur.
+La visite représente une visite réelle ou planifiée d’un bien présenté.
 
-Les commissions peuvent varier :
+Elle n’est plus une extension future : elle fait partie du modèle opérationnel.
 
-```text
-par chasseur
-par période
-par tranche de montant
-```
+## Relation
 
-## Identifiant
+Une visite est rattachée à une `PRESENTATION`.
+
+Cela garantit que le contexte de la visite conserve :
 
 ```text
-id_bareme
+la demande versionnée
++
+le bien
++
+le résultat de matching
 ```
 
-## Attributs
+sans dupliquer ces relations.
 
-| Attribut | Description |
-|---|---|
-| id_bareme | Identifiant |
-| id_chasseur | Chasseur |
-| montant_min | Début de tranche |
-| montant_max | Fin de tranche |
-| taux_commission | Taux |
-| montant_fixe | Montant fixe éventuel |
-| date_debut_validite | Début |
-| date_fin_validite | Fin |
-| actif | Statut |
+## Cycle
+
+Une visite peut être :
+
+```text
+PLANIFIEE
+REALISEE
+ANNULEE
+REPORTEE
+```
+
+Elle peut également contenir :
+
+```text
+compte rendu
+note
+photos
+```
+
+## Cardinalité
+
+```text
+PRESENTATION 1,1 ---- DONNE_LIEU_A ---- 0,N VISITE
+```
 
 ---
 
-# 23. Historisation des commissions
-
-Une modification de commission ne doit pas écraser les anciennes règles.
-
-```text
-CHASSEUR
-   |
-   +--> BAREME 2025
-   |
-   +--> BAREME 2026
-```
-
-Cela permet de recalculer correctement une rémunération historique.
-
----
-
-# 24. Entité PAIEMENT
+# 20. VENTE
 
 ## Définition
 
-Représente les flux financiers liés à l'aboutissement d'un mandat.
+La vente représente l’aboutissement transactionnel d’un parcours immobilier.
 
-## Attributs
+Elle matérialise l’acte authentique et le montant réellement acheté.
 
-| Attribut | Description |
-|---|---|
-| id_paiement | Identifiant |
-| id_mandat | Mandat |
-| date_acte_authentique | Date de signature finale |
-| montant_achat | Montant du bien |
-| montant_honoraires | Honoraires entreprise |
-| montant_chasseur | Rémunération chasseur |
-| date_reception_honoraires | Réception entreprise |
-| date_paiement_chasseur | Paiement chasseur |
-| statut | Prévu / vérifié / programmé / payé |
+Elle ne doit pas être confondue avec le paiement de la rémunération.
 
----
+## Informations métier
 
-# 25. Pourquoi conserver le montant d'achat
-
-Les règles de commission utilisent notamment :
+Une vente conserve notamment :
 
 ```text
-montant du projet
+mandat
+période contractuelle
+présentation
+bien
+chasseur bénéficiaire
+origine de la vente
+date de l'acte authentique
+montant d'achat
 ```
 
-Le paiement doit donc permettre de conserver la valeur utilisée pour calculer les honoraires et la rémunération.
+## Origine
 
----
-
-# 26. Relation BAREME_COMMISSION — PAIEMENT
-
-Au moment du calcul :
+Une vente peut provenir de :
 
 ```text
 CHASSEUR
+CLIENT_SEUL
+AUTRE_AGENCE
+```
+
+Cette distinction intervient dans l’éligibilité à la rémunération.
+
+## Relations
+
+```text
+MANDAT          1,1 ---- ABOUTIT_A ---- 0,N VENTE
+MANDAT_PERIODE  0,1 ---- COUVRE ------- 0,N VENTE
+PRESENTATION    0,1 ---- ABOUTIT_A ---- 0,N VENTE
+BIEN            0,1 ---- EST_VENDU ---- 0,N VENTE
+CHASSEUR        0,1 ---- BENEFICIE ---- 0,N VENTE
+```
+
+---
+
+# 21. Honoraires entreprise
+
+Les honoraires de l’entreprise sont déterminés à partir d’une configuration historisée.
+
+Le modèle conceptuel utilise :
+
+```text
+PARAMETRES_HONORAIRES
+```
+
+Une configuration définit notamment :
+
+```text
+montant fixe
++
+taux proportionnel
++
+période de validité
+```
+
+La formule métier actuellement retenue est :
+
+```text
+H = F + t × P
+```
+
+avec :
+
+```text
+H = honoraires entreprise
+F = montant fixe
+t = taux proportionnel
+P = montant d'achat
+```
+
+Les paramètres sont historisés afin qu’une évolution future ne modifie pas les calculs historiques.
+
+---
+
+# 22. PARAMETRES_REMUNERATION
+
+## Définition
+
+Cette entité représente la configuration versionnée du calcul de performance et de rémunération.
+
+Elle contient les règles relatives notamment à :
+
+```text
+fenêtre d'analyse
+poids des critères
+notes d'exclusivité
+points par vente
+points par mandat
+ancienneté
+pivot de performance
+amplitude
+taux plancher
+taux plafond
+```
+
+Les cinq critères de performance sont :
+
+```text
+1. délai mandat -> acte
+2. exclusivité
+3. ventes réussies
+4. mandats signés
+5. visites avant achat
+```
+
+Leur somme pondérée représente le score de performance.
+
+---
+
+# 23. PALIER_PERFORMANCE
+
+## Définition
+
+Un palier de performance permet de configurer les règles discrètes utilisées pour certains critères.
+
+Les critères actuellement modélisés par paliers sont notamment :
+
+```text
+DELAI_SEMAINES
+VISITES
+```
+
+Chaque palier possède :
+
+```text
+ordre
+borne maximale
+note
+```
+
+## Cardinalité
+
+```text
+PARAMETRES_REMUNERATION
+        1,1
+         |
+         | définit
+         v
+        0,N
+PALIER_PERFORMANCE
+```
+
+---
+
+# 24. BAREME_COMMISSION
+
+## Définition
+
+Le barème de commission représente les tranches de rémunération de base.
+
+Il peut être :
+
+```text
+historique
+ou
+approuvé
+```
+
+et possède une période de validité.
+
+Le modèle permet de conserver les anciens barèmes nécessaires à la traçabilité des données héritées tout en distinguant les barèmes approuvés utilisés par le calcul courant.
+
+## Relation
+
+Un barème peut historiquement être associé à un chasseur.
+
+```text
+CHASSEUR 0,1 ---- DISPOSE ---- 0,N BAREME_COMMISSION
+```
+
+---
+
+# 25. Calcul de performance
+
+Le score de performance est calculé à partir de cinq composantes.
+
+```text
+Score =
+  délai
++ exclusivité
++ ventes
++ mandats
++ visites
+```
+
+avec pondérations configurées.
+
+La configuration courante utilise :
+
+```text
+délai        25 %
+exclusivité  10 %
+ventes       25 %
+mandats      15 %
+visites      25 %
+```
+
+La fenêtre d’analyse est configurable et actuellement fondée sur une période de douze mois.
+
+---
+
+# 26. Ancienneté
+
+L’ancienneté du chasseur intervient dans le calcul final.
+
+Conceptuellement :
+
+```text
+date_entree CHASSEUR
+       |
+       v
+années complètes
+       |
+       v
+majoration ancienneté
+```
+
+La configuration métier définit :
+
+```text
+majoration par année
++
+plafond
+```
+
+---
+
+# 27. Rémunération
+
+La rémunération n’est pas une simple commission statique enregistrée sur le chasseur.
+
+Le calcul suit :
+
+```text
+VENTE
+  |
+  v
+Eligibilité
+  |
+  v
+Honoraires entreprise
+  |
+  v
+Taux de base
+  |
+  +--> Ancienneté
+  |
+  +--> Performance
+  |
+  v
+Taux final
+  |
+  v
+Rémunération chasseur
+```
+
+Le taux final est borné par :
+
+```text
+taux plancher
+taux plafond
+```
+
+La rémunération du chasseur est calculée sur les **honoraires de l’entreprise**, et non directement sur le prix d’achat.
+
+---
+
+# 28. PAIEMENT
+
+## Définition
+
+`PAIEMENT` constitue à la fois :
+
+1. la trace figée du calcul de rémunération ;
+2. le suivi du cycle financier correspondant.
+
+Une fois le calcul effectué, les données nécessaires à sa justification sont conservées.
+
+Cela permet de répondre ultérieurement à :
+
+```text
+Pourquoi ce chasseur a-t-il reçu ce montant ?
+```
+
+sans dépendre de paramètres qui auraient changé depuis.
+
+## Snapshot de calcul
+
+Le paiement conserve conceptuellement :
+
+```text
+vente
+mandat
+chasseur bénéficiaire
+barème utilisé
+paramètres honoraires
+paramètres rémunération
+date du calcul
+
+éligibilité
+motif éventuel de refus
+
+délai mandat -> acte
+nombre de visites
+ancienneté
+nombre de ventes
+nombre de mandats
+
+notes individuelles
+score de performance
+
+taux de base
+majoration ancienneté
+modulation performance
+taux final
+
+montant achat
+honoraires entreprise
+rémunération chasseur
+```
+
+---
+
+# 29. Cycle de paiement
+
+Le cycle financier est :
+
+```text
+ATTENDU
    |
    v
-BAREME applicable à la date
+RECU
    |
    v
+VERIFIE
+   |
+   v
+PROGRAMME
+   |
+   v
+PAYE
+```
+
+Le paiement peut également être :
+
+```text
+ANNULE
+```
+
+Les dates de réception des honoraires et de paiement du chasseur sont conservées.
+
+---
+
+# 30. Traçabilité financière
+
+Le modèle permet de reconstruire :
+
+```text
+VENTE
+  |
+  v
 Montant achat
-   |
-   v
-Rémunération
-```
-
-Le résultat financier doit rester traçable.
-
----
-
-# 27. Performance chasseur
-
-Les indicateurs métier décrits comprennent notamment :
-
-```text
-délai mandat -> achat
-exclusivité
-nombre de ventes réussies
-nombre de mandats signés
-nombre de visites avant achat
-```
-
-Ces indicateurs ne doivent pas nécessairement être stockés définitivement.
-
-Ils peuvent être calculés à partir des données opérationnelles et analytiques.
-
----
-
-# 28. Future extension — VISITE
-
-Le processus métier comporte explicitement des visites.
-
-Une future entité :
-
-```text
-VISITE
-```
-
-sera probablement nécessaire.
-
-Elle pourra contenir :
-
-```text
-id_visite
-id_demande
-id_bien
-id_chasseur
-date_visite
-type_visite
-compte_rendu
-```
-
-Cette entité sera ajoutée lorsque le parcours applicatif correspondant sera implémenté.
-
----
-
-# 29. Future extension — OFFRE
-
-Le processus métier comporte également des offres d'achat.
-
-Une future entité :
-
-```text
-OFFRE
-```
-
-pourra contenir :
-
-```text
-montant
-date
-statut
-signature
-```
-
-Elle n'est pas indispensable au premier MPD BC05 si le périmètre retenu reste centré sur Data + matching.
-
----
-
-# 30. Cardinalités principales
-
-| Association | A | Card. | B | Card. |
-|---|---|---:|---|---:|
-| SIGNE | CLIENT | 0,N | MANDAT | 1,1 |
-| GERE | CHASSEUR | 0,N | MANDAT | 1,1 |
-| CIBLE | SECTEUR | 0,N | MANDAT | 0,N |
-| DEFINIT | MANDAT | 1,1 | DEMANDE | 1,N |
-| VERSIONNE | DEMANDE | 1,1 | DEMANDE_VERSION | 1,N |
-| FOURNIT | SOURCE | 0,N | BIEN | 1,1 |
-| MATCH | DEMANDE_VERSION | 0,N | PRESENTATION | 1,1 |
-| CONCERNE | BIEN | 0,N | PRESENTATION | 1,1 |
-| COMMENTE | DEMANDE_VERSION | 0,N | COMMENTAIRE | 1,1 |
-| SUR | BIEN | 0,N | COMMENTAIRE | 1,1 |
-| DOCUMENTE | BIEN | 0,N | DOCUMENT | 1,1 |
-| REMUNERE | CHASSEUR | 1,N | BAREME_COMMISSION | 1,1 |
-| REGLE | MANDAT | 0,N | PAIEMENT | 1,1 |
-
----
-
-# 31. MCD simplifié
-
-```text
-                     SECTEUR
-                        |
-                        |
-CLIENT --------> MANDAT <-------- CHASSEUR
-                  |
-                  |
-                  v
-               DEMANDE
-                  |
-                  v
-           DEMANDE_VERSION
-              /       \
-             /         \
-            v           v
-    PRESENTATION    COMMENTAIRE
-          |             |
-          +------ BIEN -+
-                    |
-                    +--> SOURCE
-                    |
-                    +--> DOCUMENT
-
-
-CHASSEUR
-   |
-   v
+  |
+  v
+PARAMETRES_HONORAIRES
+  |
+  v
+Honoraires entreprise
+  |
+  v
 BAREME_COMMISSION
-
-
-MANDAT
-   |
-   v
++
+PARAMETRES_REMUNERATION
++
+PALIER_PERFORMANCE
++
+Ancienneté CHASSEUR
++
+Performance
+  |
+  v
+Taux final
+  |
+  v
+Montant chasseur
+  |
+  v
 PAIEMENT
 ```
 
+Cette traçabilité est indispensable pour :
+
+* audit ;
+* contrôle ;
+* explicabilité ;
+* reproductibilité ;
+* analytics.
+
 ---
 
-# 32. Mermaid ER
+# 31. AUDIT_LOG
+
+## Définition
+
+`AUDIT_LOG` représente la traçabilité transverse des opérations sensibles.
+
+Il peut enregistrer :
+
+```text
+INSERT
+UPDATE
+DELETE
+```
+
+ainsi que :
+
+```text
+date
+table concernée
+identifiant
+utilisateur
+ancienne valeur
+nouvelle valeur
+contexte
+```
+
+L’audit est notamment utilisé pour les opérations métier sensibles telles que :
+
+```text
+présentations
+visites
+ventes
+calculs de rémunération
+changements de statut de paiement
+renouvellements de mandat
+```
+
+`AUDIT_LOG` est un concept transverse et non une étape du parcours immobilier.
+
+---
+
+# 32. Parcours métier complet
+
+Le parcours désormais implémenté peut être résumé ainsi :
+
+```text
+CLIENT
+  |
+  v
+DEMANDE
+  |
+  v
+DEMANDE_AFFECTATION
+  |
+  v
+CHASSEUR
+  |
+  v
+DEMANDE_VERSION
+  |
+  v
+MATCHING
+  |
+  v
+PRESENTATION
+  |
+  v
+VISITE
+  |
+  v
+VENTE
+  |
+  v
+ELIGIBILITE
+  |
+  v
+HONORAIRES
+  |
+  v
+PERFORMANCE
+  |
+  v
+REMUNERATION
+  |
+  v
+PAIEMENT
+```
+
+En parallèle :
+
+```text
+CLIENT
+  |
+  v
+MANDAT
+  |
+  v
+MANDAT_PERIODE
+  |
+  +--> INITIAL
+  |
+  +--> RENOUVELLEMENT
+```
+
+---
+
+# 33. Cardinalités principales
+
+| Association          | Entité A                | Cardinalité A | Entité B                | Cardinalité B |
+| -------------------- | ----------------------- | ------------: | ----------------------- | ------------: |
+| SIGNE                | CLIENT                  |           0,N | MANDAT                  |           1,1 |
+| GERE                 | CHASSEUR                |           0,N | MANDAT                  |           1,1 |
+| CIBLE                | MANDAT                  |           0,N | SECTEUR                 |           0,N |
+| HISTORISE            | MANDAT                  |           1,1 | MANDAT_PERIODE          |           1,N |
+| CONTRACTUALISE       | MANDAT                  |           0,N | DEMANDE                 |           0,1 |
+| VERSIONNE            | DEMANDE                 |           1,1 | DEMANDE_VERSION         |           1,N |
+| POSSEDE_AFFECTATION  | DEMANDE                 |           1,1 | DEMANDE_AFFECTATION     |           0,N |
+| AFFECTE              | CHASSEUR                |           1,1 | DEMANDE_AFFECTATION     |           0,N |
+| FOURNIT              | SOURCE                  |           1,1 | BIEN                    |           0,N |
+| MATCH                | DEMANDE_VERSION         |           1,1 | PRESENTATION            |           0,N |
+| CONCERNE             | BIEN                    |           1,1 | PRESENTATION            |           0,N |
+| COMMENTE             | DEMANDE_VERSION         |           1,1 | COMMENTAIRE             |           0,N |
+| SUR                  | BIEN                    |           1,1 | COMMENTAIRE             |           0,N |
+| DOCUMENTE            | BIEN                    |           1,1 | DOCUMENT                |           0,N |
+| DONNE_LIEU           | PRESENTATION            |           1,1 | VISITE                  |           0,N |
+| ABOUTIT              | MANDAT                  |           1,1 | VENTE                   |           0,N |
+| COUVRE               | MANDAT_PERIODE          |           0,1 | VENTE                   |           0,N |
+| ISSUE_DE             | PRESENTATION            |           0,1 | VENTE                   |           0,N |
+| CONCERNE_VENTE       | BIEN                    |           0,1 | VENTE                   |           0,N |
+| BENEFICIE            | CHASSEUR                |           0,1 | VENTE                   |           0,N |
+| GENERE               | VENTE                   |           0,1 | PAIEMENT                |           0,N |
+| UTILISE              | PAIEMENT                |           0,N | BAREME_COMMISSION       |           0,1 |
+| UTILISE_HONORAIRES   | PAIEMENT                |           0,N | PARAMETRES_HONORAIRES   |           0,1 |
+| UTILISE_REMUNERATION | PAIEMENT                |           0,N | PARAMETRES_REMUNERATION |           0,1 |
+| DEFINIT              | PARAMETRES_REMUNERATION |           1,1 | PALIER_PERFORMANCE      |           0,N |
+
+---
+
+# 34. Mermaid ER conceptuel
 
 ```mermaid
 erDiagram
@@ -950,9 +1486,13 @@ erDiagram
     CHASSEUR ||--o{ MANDAT : gere
 
     MANDAT }o--o{ SECTEUR : cible
+    MANDAT ||--|{ MANDAT_PERIODE : historise
 
-    MANDAT ||--|{ DEMANDE : definit
+    MANDAT o|--o{ DEMANDE : contractualise
+
     DEMANDE ||--|{ DEMANDE_VERSION : versionne
+    DEMANDE ||--o{ DEMANDE_AFFECTATION : possede
+    CHASSEUR ||--o{ DEMANDE_AFFECTATION : recoit
 
     SOURCE ||--o{ BIEN : fournit
 
@@ -964,125 +1504,96 @@ erDiagram
 
     BIEN ||--o{ DOCUMENT : possede
 
-    CHASSEUR ||--|{ BAREME_COMMISSION : dispose
+    PRESENTATION ||--o{ VISITE : donne_lieu
 
-    MANDAT ||--o{ PAIEMENT : genere
+    MANDAT ||--o{ VENTE : aboutit
+    MANDAT_PERIODE o|--o{ VENTE : couvre
+    PRESENTATION o|--o{ VENTE : origine
+    BIEN o|--o{ VENTE : concerne
+    CHASSEUR o|--o{ VENTE : beneficiaire
+
+    VENTE o|--o{ PAIEMENT : genere
+    MANDAT ||--o{ PAIEMENT : rattache
+
+    CHASSEUR o|--o{ BAREME_COMMISSION : dispose
+    BAREME_COMMISSION o|--o{ PAIEMENT : utilise
+
+    PARAMETRES_HONORAIRES o|--o{ PAIEMENT : calcule
+    PARAMETRES_REMUNERATION o|--o{ PAIEMENT : configure
+
+    PARAMETRES_REMUNERATION ||--o{ PALIER_PERFORMANCE : definit
 ```
 
 ---
 
-# 33. Mapping héritage → cible
+# 35. Mapping héritage → modèle actuel
+
+Le système hérité contenait principalement :
 
 ```text
 UTILISATEURS
-    |
-    +--> CLIENT
-    |
-    +--> CHASSEUR
-```
-
-selon :
-
-```text
-role
-```
-
----
-
-```text
 SECTEURS
-    |
-    v
-SECTEUR
-```
-
-avec évolution pour l'international.
-
----
-
-```text
 MANDATS
-    |
-    +--> MANDAT
-    |
-    +--> DEMANDE
-    |
-    +--> DEMANDE_VERSION
 ```
 
-Le champ :
+La migration a séparé les responsabilités.
+
+## Utilisateurs hérités
 
 ```text
-description_recherche
+UTILISATEURS
+   |
+   +--> CLIENT
+   |
+   +--> CHASSEUR
 ```
 
-doit être transformé progressivement en critères structurés.
+Les identités applicatives modernes sont gérées séparément dans :
+
+```text
+UTILISATEUR
+```
 
 ---
 
-# 34. Migration de description_recherche
-
-Le texte libre existant ne doit pas être détruit.
-
-Une stratégie possible :
+## Mandats hérités
 
 ```text
-Legacy description_recherche
-        |
-        v
-Preserve raw text
-        |
-        v
-Structured extraction
-        |
-        v
-DEMANDE_VERSION
+MANDATS legacy
+   |
+   +--> MANDAT
+   |
+   +--> MANDAT_PERIODE
+   |
+   +--> DEMANDE
+   |
+   +--> DEMANDE_VERSION
+   |
+   +--> DEMANDE_AFFECTATION
 ```
-
-La migration automatique devra être prudente car toutes les informations ne sont pas forcément extractibles avec certitude.
 
 ---
 
-# 35. Données générées
+# 36. Données synthétiques
 
-Le nouveau générateur du StarterPack produit :
+Les données du générateur StarterPack ne doivent pas être confondues avec les données historiques.
 
-```text
-recherches.csv
-annonces.csv
-JSON annonces
-```
-
-Ces données ne représentent pas le SI hérité.
-
-Elles constituent des données synthétiques destinées aux phases :
+Elles servent notamment à :
 
 ```text
 ingestion
 normalisation
 matching
-3V
+tests
+data quality
 OLAP
-IA
+ML / AI
 ```
 
----
-
-# 36. Data Architecture
-
-La trajectoire cible devient :
+Le lineage conceptuel est :
 
 ```text
-Legacy Fixtures
-      |
-      v
-Migration
-      |
-      v
-Operational Model
-
-
-Generated Announcements
+Generated data
       |
       v
 RAW
@@ -1091,14 +1602,14 @@ RAW
 STAGING
       |
       v
-Normalized BIEN
+Operational model
 ```
 
 ---
 
-# 37. Matching
+# 37. Matching et IA
 
-Le modèle de matching consomme principalement :
+Le matching consomme principalement :
 
 ```text
 DEMANDE_VERSION
@@ -1116,184 +1627,302 @@ avec :
 
 ```text
 score
-ranking
-status
+rang
+statut
+```
+
+Le matching n’a pas besoin d’exposer directement les données personnelles du client.
+
+Cela permet de respecter un principe de minimisation :
+
+```text
+besoin immobilier
+!=
+identité personnelle complète
 ```
 
 ---
 
-# 38. Feedback
+# 38. RGPD et sécurité
 
-Les interactions :
-
-```text
-COMMENTAIRE
-```
-
-peuvent ensuite servir à :
-
-```text
-requalification de demande
-analytics
-future AI feedback
-```
-
----
-
-# 39. RGPD
-
-Les données personnelles principales résident notamment dans :
+Les principales entités comportant des données personnelles ou sensibles sont notamment :
 
 ```text
 CLIENT
 CHASSEUR
+UTILISATEUR
 COMMENTAIRE
 DOCUMENT
 PAIEMENT
+AUDIT_LOG
 ```
 
-Le modèle doit donc être relié au registre RGPD.
+Les mots de passe ne sont pas stockés en clair.
+
+Le modèle d’authentification est séparé du modèle métier.
+
+Le Data Warehouse ne doit pas recopier automatiquement toutes les informations personnelles de l’OLTP.
 
 ---
 
-# 40. AI Privacy
+# 39. Concepts analytiques associés
 
-Les informations transmises au matching ou à un LLM doivent être minimisées.
+Le MCD décrit prioritairement le domaine opérationnel.
 
-Exemple :
+Le modèle analytique dérive ensuite notamment :
 
 ```text
-DEMANDE_VERSION
+MANDAT
+        -> fact_mandat
+
+MANDAT_PERIODE
+        -> fact_mandat_periode
+
+PAIEMENT
+        -> fact_paiement
+
+PRESENTATION
+        -> fact_presentation
+
+DEMANDE
+        -> fact_demande
+
+MATCHING
+        -> fact_matching
 ```
 
-peut être utilisée sans transmettre :
+Le Data Warehouse ne remplace pas le modèle opérationnel.
+
+---
+
+# 40. Évolutions depuis le MCD V2
+
+Les principales évolutions sont :
 
 ```text
-CLIENT.email
-CLIENT.telephone
+DEMANDE avant mandat
+        -> implémenté
+
+DEMANDE_AFFECTATION
+        -> ajouté
+
+MANDAT_PERIODE
+        -> ajouté
+
+renouvellement six mois
+        -> implémenté
+
+UTILISATEUR / identité applicative
+        -> ajouté
+
+VISITE
+        -> implémenté
+
+VENTE
+        -> implémenté
+
+PARAMETRES_HONORAIRES
+        -> ajouté
+
+PARAMETRES_REMUNERATION
+        -> ajouté
+
+PALIER_PERFORMANCE
+        -> ajouté
+
+calcul de rémunération
+        -> implémenté
+
+snapshot financier dans PAIEMENT
+        -> implémenté
+
+cycle ATTENDU -> PAYE
+        -> implémenté
+
+AUDIT_LOG
+        -> implémenté
 ```
 
 ---
 
-# 41. Modèle cible minimum
+# 41. Concepts non implémentés
 
-Le modèle cible retenu avant passage au MLD est donc :
+Les concepts suivants peuvent appartenir à une évolution future mais ne doivent pas être présentés comme implémentés :
+
+```text
+OFFRE
+FACTURE
+NOTAIRE
+```
+
+Ils ne font pas partie du modèle opérationnel actuellement vérifié.
+
+Un concept séparé `ACTE` n’est pas nécessaire actuellement : la vente conserve directement la date de l’acte authentique.
+
+Un concept séparé `RENOUVELLEMENT_MANDAT` n’est plus nécessaire : le renouvellement est représenté par :
+
+```text
+MANDAT_PERIODE.type_periode = RENOUVELLEMENT
+```
+
+---
+
+# 42. Modèle conceptuel actuellement implémenté
+
+Le cœur du modèle est :
 
 ```text
 CLIENT
 CHASSEUR
 SECTEUR
+
 MANDAT
+MANDAT_SECTEUR
+MANDAT_PERIODE
+
 DEMANDE
+DEMANDE_AFFECTATION
 DEMANDE_VERSION
+
 SOURCE
 BIEN
 PRESENTATION
 COMMENTAIRE
 DOCUMENT
-BAREME_COMMISSION
-PAIEMENT
-```
-
----
-
-# 42. Évolutions applicatives futures
-
-Entités pouvant être ajoutées pendant l'implémentation applicative :
-
-```text
 VISITE
-OFFRE
-FACTURE
-ACTE
-NOTAIRE
-RENOUVELLEMENT_MANDAT
-```
 
-Elles ne doivent être ajoutées que lorsque leur besoin technique est réellement implémenté.
+VENTE
+
+BAREME_COMMISSION
+PARAMETRES_HONORAIRES
+PARAMETRES_REMUNERATION
+PALIER_PERFORMANCE
+PAIEMENT
+
+UTILISATEUR
+AUDIT_LOG
+```
 
 ---
 
-# 43. Statut
+# 43. Statut de validation
 
-| Élément | Statut |
-|---|---|
-| Legacy model identified | COMPLETE |
-| Client / chasseur split | COMPLETE |
-| Secteur preserved | COMPLETE |
-| Mandat corrected | COMPLETE |
-| Structured demand | COMPLETE |
-| Demand versioning | COMPLETE |
-| Author + modification reason | COMPLETE |
-| Bien | COMPLETE |
-| Source | COMPLETE |
-| Presentation | COMPLETE |
-| Commentaire | COMPLETE |
-| Document | COMPLETE |
-| Commission scale | COMPLETE |
-| Payment | COMPLETE |
-| Generator mapping | COMPLETE |
-| MLD V2 | NEXT |
-| MPD V2 | AFTER MLD |
-| migration.sql | AFTER MPD |
+| Élément                          | Statut                     |
+| -------------------------------- | -------------------------- |
+| Legacy model identified          | COMPLETE                   |
+| Client / chasseur split          | IMPLEMENTED                |
+| Authentication identity          | IMPLEMENTED                |
+| Sector model                     | IMPLEMENTED                |
+| Mandate model                    | IMPLEMENTED                |
+| Six-month mandate lifecycle      | RUNTIME VERIFIED           |
+| Mandate renewal history          | RUNTIME VERIFIED           |
+| Pre-mandate demand               | IMPLEMENTED                |
+| Hunter assignment                | RUNTIME VERIFIED           |
+| Demand versioning                | IMPLEMENTED                |
+| Explicit author relationships    | IMPLEMENTED                |
+| Property canonical model         | IMPLEMENTED                |
+| Matching / presentation          | RUNTIME VERIFIED           |
+| Visit                            | RUNTIME VERIFIED           |
+| Sale                             | RUNTIME VERIFIED           |
+| Company fee configuration        | IMPLEMENTED                |
+| Remuneration configuration       | IMPLEMENTED                |
+| Performance tiers                | IMPLEMENTED                |
+| Remuneration calculation         | RUNTIME VERIFIED           |
+| Payment lifecycle                | RUNTIME VERIFIED           |
+| Audit trail                      | RUNTIME VERIFIED           |
+| OLTP → fact_paiement propagation | RUNTIME VERIFIED           |
+| Financial observability          | RUNTIME VERIFIED           |
+| MCD synchronization              | COMPLETE WITH THIS VERSION |
+| MLD synchronization              | NEXT                       |
+| MPD synchronization              | AFTER MLD                  |
 
 ---
 
 # 44. Conclusion
 
-Le modèle cible corrige les principales limites du SI hérité :
+Le modèle conceptuel n’est plus limité à un MVP centré sur l’ingestion et le matching.
+
+La plateforme représente désormais un parcours immobilier cohérent :
 
 ```text
-Mixed users
-        |
-        v
-CLIENT + CHASSEUR
-
-
-Free-text search
-        |
-        v
-DEMANDE + VERSIONING
-
-
-Static commission
-        |
-        v
-HISTORICAL COMMISSION SCALE
-
-
-Missing real-estate model
-        |
-        v
-BIEN + SOURCE
-
-
-Missing interaction context
-        |
-        v
-PRESENTATION + COMMENTAIRE
-
-
-Missing payment lifecycle
-        |
-        v
-PAIEMENT
+Besoin client
+      |
+      v
+Affectation
+      |
+      v
+Versionnement
+      |
+      v
+Contractualisation
+      |
+      v
+Matching
+      |
+      v
+Présentation
+      |
+      v
+Visite
+      |
+      v
+Vente
+      |
+      v
+Honoraires
+      |
+      v
+Performance
+      |
+      v
+Rémunération
+      |
+      v
+Paiement
+      |
+      v
+Audit / Analytics / Observabilité
 ```
 
-Le modèle est désormais aligné à la fois avec :
+Les choix structurants sont :
 
 ```text
-Legacy system
-+
-StarterPack requirements
-+
-Future growth
-+
-OLTP / OLAP
-+
-Matching / AI
+contrat != demande
+
+demande != version
+
+demande != affectation
+
+mandat != période contractuelle
+
+présentation != visite
+
+visite != vente
+
+vente != paiement
+
+honoraires entreprise != rémunération chasseur
+
+calcul courant != preuve historique figée
+
+identité métier != identité d'authentification
+
+OLTP != OLAP
 ```
+
+Cette séparation rend le système :
+
+* historisable ;
+* auditable ;
+* explicable ;
+* testable ;
+* sécurisé ;
+* compatible avec l’analytics ;
+* compatible avec le matching et les évolutions IA ;
+* cohérent avec le parcours métier réellement implémenté.
 
 ---
 
-**MCD MERISE V2 — READY FOR MLD V2**
+**MCD MERISE V3 — ALIGNED WITH IMPLEMENTED MODEL THROUGH MIGRATION 012**
+
+**Next:** synchronize `MLD-PROJET.md` from this MCD, then rebuild the real `MPD-POSTGRESQL.md` from the runtime PostgreSQL schema.

@@ -1,0 +1,55 @@
+SELECT tablename, indexname, indexdef
+FROM pg_indexes
+WHERE schemaname = 'real_estate'
+ORDER BY tablename, indexname;
+
+SELECT
+    c.relname AS table_name,
+    t.tgname AS trigger_name,
+    t.tgenabled AS enabled,
+    pg_get_triggerdef(t.oid) AS definition
+FROM pg_trigger t
+JOIN pg_class c ON c.oid = t.tgrelid
+JOIN pg_namespace n ON n.oid = c.relnamespace
+WHERE n.nspname = 'real_estate'
+  AND NOT t.tgisinternal
+ORDER BY c.relname, t.tgname;
+
+
+kubectl -n real-estate exec deploy/real-estate-postgresql --   psql     -U real_estate_user     -d real_estate     -P pager=off     -c "
+SELECT tablename, indexname, indexdef
+FROM pg_indexes
+WHERE schemaname = 'real_estate'
+ORDER BY tablename, indexname;
+
+SELECT
+    c.relname AS table_name,
+    t.tgname AS trigger_name,
+    t.tgenabled AS enabled,
+    pg_get_triggerdef(t.oid) AS definition
+FROM pg_trigger t
+JOIN pg_class c ON c.oid = t.tgrelid
+JOIN pg_namespace n ON n.oid = c.relnamespace
+WHERE n.nspname = 'real_estate'
+  AND NOT t.tgisinternal
+ORDER BY c.relname, t.tgname;
+
+
+root@k8s-cp-01:~# kubectl -n real-estate exec deploy/real-estate-postgresql --   psql     -U real_estate_user     -d real_estate     -P pager=off     -c "
+SELECT tablename, indexname, indexdef
+FROM pg_indexes
+WHERE schemaname = 'real_estate'
+ORDER BY tablename, indexname;
+
+SELECT
+    c.relname AS table_name,
+    t.tgname AS trigger_name,
+    t.tgenabled AS enabled,
+    pg_get_triggerdef(t.oid) AS definition
+FROM pg_trigger t
+JOIN pg_class c ON c.oid = t.tgrelid
+JOIN pg_namespace n ON n.oid = c.relnamespace
+WHERE n.nspname = 'real_estate'
+  AND NOT t.tgisinternal
+ORDER BY c.relname, t.tgname;
+"

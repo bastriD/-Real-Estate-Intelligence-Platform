@@ -144,3 +144,47 @@ def test_clients_returns_403_for_client_role(monkeypatch) -> None:
         }
     finally:
         app.dependency_overrides.clear()
+
+def test_demande_mandat_link_returns_403_for_client_role(
+    monkeypatch,
+) -> None:
+    client_user = build_user(
+        utilisateur_id=2,
+        email="client@example.com",
+        role="CLIENT",
+        id_client=4,
+    )
+
+    monkeypatch.setattr(
+        UtilisateurRepository,
+        "get_by_id",
+        lambda self, utilisateur_id: client_user,
+    )
+
+    token = build_token(
+        utilisateur_id=2,
+        email="client@example.com",
+        role="CLIENT",
+    )
+
+    app.dependency_overrides[get_db] = override_db
+
+    client = TestClient(app)
+
+    try:
+        response = client.patch(
+            "/api/v1/demandes/4/mandat",
+            json={
+                "id_mandat": 18,
+            },
+            headers={
+                "Authorization": f"Bearer {token}",
+            },
+        )
+
+        assert response.status_code == 403
+        assert response.json() == {
+            "detail": "Insufficient permissions"
+        }
+    finally:
+        app.dependency_overrides.clear()

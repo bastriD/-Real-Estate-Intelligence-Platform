@@ -17,7 +17,20 @@ from src.api.schemas.demande import (
     DemandeStatusUpdate,
     DemandeVersionRead,
 )
+from src.api.api.v1.endpoints.demandes import (
+    create_revision,
+    get_demande,
+    get_demande_history,
+    link_demande_mandat,
+    update_demande_status,
+)
 
+from src.api.schemas.demande import (
+    DemandeMandatLink,
+    DemandeRevision,
+    DemandeStatusUpdate,
+    DemandeVersionRead,
+)
 
 def build_chasseur_user(
     id_chasseur: int | None = 4,
@@ -29,8 +42,20 @@ def build_chasseur_user(
         id_chasseur=id_chasseur,
     )
 
+def build_client_user(
+    id_client: int | None = 4,
+) -> AuthenticatedUser:
+    return AuthenticatedUser(
+        id_utilisateur=20,
+        email="client@example.com",
+        role="CLIENT",
+        id_client=id_client,
+    )
 
-def build_demande():
+
+def build_demande(
+    id_client: int | None = 4,
+):
     return SimpleNamespace(
         id_demande=4,
         reference_demande="DEM-OWNERSHIP",
@@ -43,9 +68,9 @@ def build_demande():
             tzinfo=timezone.utc,
         ),
         statut="ACTIVE",
+        id_client=id_client,
         id_mandat=None,
     )
-
 
 def build_version() -> DemandeVersionRead:
     return DemandeVersionRead(
@@ -446,3 +471,273 @@ def test_admin_list_remains_unrestricted() -> None:
 
     demande_service.list_demandes.assert_called_once()
     demande_service.list_demandes_for_chasseur.assert_not_called()
+
+def test_client_can_get_own_demande() -> None:
+    db = MagicMock()
+    demande_service = MagicMock()
+    affectation_service = MagicMock()
+
+    demande_service.get_demande.return_value = build_demande(
+        id_client=4
+    )
+    demande_service.get_current_version.return_value = build_version()
+
+    with (
+        patch(
+            "src.api.api.v1.endpoints.demandes.DemandeService",
+            return_value=demande_service,
+        ),
+        patch(
+            "src.api.api.v1.endpoints.demandes.DemandeAffectationService",
+            return_value=affectation_service,
+        ),
+    ):
+        result = get_demande(
+            demande_id=4,
+            db=db,
+            current_user=build_client_user(4),
+        )
+
+    assert result.id_demande == 4
+    assert result.id_client == 4
+
+    demande_service.get_demande.assert_called()
+    affectation_service.hunter_can_access_demande.assert_not_called()
+
+def test_client_cannot_get_other_client_demande() -> None:
+    db = MagicMock()
+    demande_service = MagicMock()
+    affectation_service = MagicMock()
+
+    # Demand belongs to client 4.
+    demande_service.get_demande.return_value = build_demande(
+        id_client=4
+    )
+
+    with (
+        patch(
+            "src.api.api.v1.endpoints.demandes.DemandeService",
+            return_value=demande_service,
+        ),
+        patch(
+            "src.api.api.v1.endpoints.demandes.DemandeAffectationService",
+            return_value=affectation_service,
+        ),
+    ):
+        with pytest.raises(HTTPException) as exc:
+            get_demande(
+                demande_id=4,
+                db=db,
+                # Authenticated client 5 attempts to access client 4's demand.
+                current_user=build_client_user(5),
+            )
+
+    assert exc.value.status_code == 404
+    assert exc.value.detail == "Resource not found"
+
+    demande_service.get_current_version.assert_not_called()
+    affectation_service.hunter_can_access_demande.assert_not_called()
+
+def test_client_can_read_own_demande_history() -> None:
+    db = MagicMock()
+    demande_service = MagicMock()
+    affectation_service = MagicMock()
+
+    demande_service.get_demande.return_value = build_demande(
+        id_client=4
+    )
+    demande_service.get_history.return_value = (
+        build_demande(id_client=4),
+        [build_version()],
+    )
+
+    with (
+        patch(
+            "src.api.api.v1.endpoints.demandes.DemandeService",
+            return_value=demande_service,
+        ),
+        patch(
+            "src.api.api.v1.endpoints.demandes.DemandeAffectationService",
+            return_value=affectation_service,
+        ),
+    ):
+        result = get_demande_history(
+            demande_id=4,
+            db=db,
+            current_user=build_client_user(4),
+        )
+
+    assert result.id_demande == 4
+    assert result.id_client == 4
+    assert len(result.versions) == 1
+
+    demande_service.get_history.assert_called_once_with(4)
+    affectation_service.hunter_can_access_demande.assert_not_called()
+
+
+def test_client_cannot_read_other_client_demande_history() -> None:
+    db = MagicMock()
+    demande_service = MagicMock()
+    affectation_service = MagicMock()
+
+    # Demand 4 belongs to client 4.
+    demande_service.get_demande.return_value = build_demande(
+        id_client=4
+    )
+
+    with (
+        patch(
+            "src.api.api.v1.endpoints.demandes.DemandeService",
+            return_value=demande_service,
+        ),
+        patch(
+            "src.api.api.v1.endpoints.demandes.DemandeAffectationService",
+            return_value=affectation_service,
+        ),
+    ):
+        with pytest.raises(HTTPException) as exc:
+            get_demande_history(
+                demande_id=4,
+                db=db,
+                current_user=build_client_user(5),
+            )
+
+    assert exc.value.status_code == 404
+    assert exc.value.detail == "Resource not found"
+
+    demande_service.get_history.assert_not_called()
+    affectation_service.hunter_can_access_demande.assert_not_called()
+
+def test_client_list_is_scoped_to_owned_demandes() -> None:
+    db = MagicMock()
+    demande_service = MagicMock()
+
+    demande_service.list_demandes_for_client.return_value = [
+        build_demande(id_client=4)
+    ]
+
+    with patch(
+        "src.api.api.v1.endpoints.demandes.DemandeService",
+        return_value=demande_service,
+    ):
+        from src.api.api.v1.endpoints.demandes import list_demandes
+
+        result = list_demandes(
+            db=db,
+            current_user=build_client_user(4),
+        )
+
+    assert len(result) == 1
+    assert result[0].id_demande == 4
+    assert result[0].id_client == 4
+
+    demande_service.list_demandes_for_client.assert_called_once_with(4)
+    demande_service.list_demandes.assert_not_called()
+    demande_service.list_demandes_for_chasseur.assert_not_called()
+
+def test_client_without_identity_cannot_list_demandes() -> None:
+    db = MagicMock()
+    demande_service = MagicMock()
+
+    with patch(
+        "src.api.api.v1.endpoints.demandes.DemandeService",
+        return_value=demande_service,
+    ):
+        from src.api.api.v1.endpoints.demandes import list_demandes
+
+        with pytest.raises(HTTPException) as exc:
+            list_demandes(
+                db=db,
+                current_user=build_client_user(None),
+            )
+
+    assert exc.value.status_code == 403
+    assert exc.value.detail == "Client identity is not available"
+
+    demande_service.list_demandes.assert_not_called()
+    demande_service.list_demandes_for_client.assert_not_called()
+    demande_service.list_demandes_for_chasseur.assert_not_called()
+
+def test_chasseur_can_link_mandat_for_assigned_demande() -> None:
+    db = MagicMock()
+    demande_service = MagicMock()
+    affectation_service = MagicMock()
+
+    demande = build_demande(id_client=4)
+    demande.id_mandat = 18
+
+    demande_service.link_mandat.return_value = demande
+    affectation_service.hunter_can_access_demande.return_value = True
+
+    payload = DemandeMandatLink(
+        id_mandat=18,
+    )
+
+    with (
+        patch(
+            "src.api.api.v1.endpoints.demandes.DemandeService",
+            return_value=demande_service,
+        ),
+        patch(
+            "src.api.api.v1.endpoints.demandes.DemandeAffectationService",
+            return_value=affectation_service,
+        ),
+    ):
+        result = link_demande_mandat(
+            demande_id=4,
+            payload=payload,
+            db=db,
+            current_user=build_chasseur_user(4),
+        )
+
+    assert result.id_demande == 4
+    assert result.id_mandat == 18
+    assert result.id_client == 4
+
+    affectation_service.hunter_can_access_demande.assert_called_once_with(
+        demande_id=4,
+        chasseur_id=4,
+    )
+
+    demande_service.link_mandat.assert_called_once_with(
+        demande_id=4,
+        mandat_id=18,
+    )
+def test_chasseur_cannot_link_mandat_for_other_demande() -> None:
+    db = MagicMock()
+    demande_service = MagicMock()
+    affectation_service = MagicMock()
+
+    affectation_service.hunter_can_access_demande.return_value = False
+
+    payload = DemandeMandatLink(
+        id_mandat=18,
+    )
+
+    with (
+        patch(
+            "src.api.api.v1.endpoints.demandes.DemandeService",
+            return_value=demande_service,
+        ),
+        patch(
+            "src.api.api.v1.endpoints.demandes.DemandeAffectationService",
+            return_value=affectation_service,
+        ),
+    ):
+        with pytest.raises(HTTPException) as exc:
+            link_demande_mandat(
+                demande_id=4,
+                payload=payload,
+                db=db,
+                current_user=build_chasseur_user(5),
+            )
+
+    assert exc.value.status_code == 404
+    assert exc.value.detail == "Resource not found"
+
+    affectation_service.hunter_can_access_demande.assert_called_once_with(
+        demande_id=4,
+        chasseur_id=5,
+    )
+
+    demande_service.link_mandat.assert_not_called()

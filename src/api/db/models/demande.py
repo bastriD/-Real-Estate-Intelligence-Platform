@@ -29,7 +29,16 @@ class Demande(Base):
         ),
         {"schema": "real_estate"},
     )
-
+    id_client: Mapped[int | None] = mapped_column(
+        BigInteger,
+        ForeignKey(
+            "real_estate.client.id_client",
+            ondelete="RESTRICT",
+            name="fk_demande_client",
+        ),
+        nullable=True,
+        index=True,
+    )
     id_demande: Mapped[int] = mapped_column(
         BigInteger,
         primary_key=True,

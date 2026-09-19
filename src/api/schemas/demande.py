@@ -60,6 +60,8 @@ class DemandeCreate(DemandeVersionCriteria):
         max_length=80,
     )
     statut: DemandeStatut = DemandeStatut.ACTIVE
+
+    id_client: int = Field(gt=0)
     id_mandat: int | None = Field(default=None, gt=0)
 
     motif_modification: str = Field(min_length=1)
@@ -113,6 +115,10 @@ class DemandeStatusUpdate(BaseModel):
     statut: DemandeStatut
 
 
+class DemandeMandatLink(BaseModel):
+    id_mandat: int = Field(gt=0)
+
+
 class DemandeVersionRead(DemandeVersionCriteria):
     model_config = ConfigDict(from_attributes=True)
 
@@ -136,6 +142,8 @@ class DemandeRead(BaseModel):
     reference_demande: str | None
     date_creation: datetime
     statut: DemandeStatut
+
+    id_client: int | None
     id_mandat: int | None
 
 

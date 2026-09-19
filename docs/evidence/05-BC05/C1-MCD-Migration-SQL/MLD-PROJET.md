@@ -1,66 +1,49 @@
 # MLD — Real Estate Intelligence Platform
 
-**Projet :** Real Estate Intelligence Platform  
-**Méthode :** MERISE  
-**Version :** 2.0  
-**Statut :** Baseline logique corrigée  
-**Source :** `MCD-MERISE-PROJET.md` V2
+**Projet :** PROJECT_FIL_ROUGE / CHASSE_IMMOBILIERE
+**Méthode :** MERISE
+**Version :** 3.0
+**Statut :** Modèle logique aligné avec l’implémentation
+**Source conceptuelle :** `MCD-MERISE-PROJET.md` V3
+**Périmètre :** migrations 001 à 012
+**Dernière mise à jour :** 2026-09-15
 
 ---
 
 # 1. Objectif
 
-Le Modèle Logique de Données traduit le MCD cible en relations relationnelles indépendantes des détails physiques PostgreSQL.
+Le Modèle Logique de Données traduit le MCD V3 en relations relationnelles.
 
-Chaîne :
+La chaîne de conception est :
 
 ```text
-Legacy Model
-     |
-     v
-MCD V2
-     |
-     v
-MLD V2
-     |
-     v
-MPD PostgreSQL V2
-     |
-     v
-migration.sql
+Besoins métier
+      |
+      v
+MCD V3
+      |
+      v
+MLD V3
+      |
+      v
+MPD PostgreSQL
+      |
+      v
+Migrations 001 -> 012
+      |
+      v
+PostgreSQL runtime
 ```
 
-Le MLD définit :
+Cette version remplace le MLD V2 historique.
 
-- relations ;
-- clés primaires ;
-- clés étrangères ;
-- associations ;
-- contraintes d'unicité ;
-- historisation ;
-- dépendances logiques.
+Elle ne décrit plus un modèle futur à construire : elle représente le modèle relationnel actuellement implémenté.
 
 ---
 
-# 2. Modèle hérité
+# 2. Principales évolutions depuis le MLD V2
 
-Le système existant contient :
-
-```text
-SECTEURS
-UTILISATEURS
-MANDATS
-```
-
-Le modèle cible ne modifie pas directement ces relations.
-
-Il crée une nouvelle structure puis migre les données depuis l'existant.
-
----
-
-# 3. Relations cibles
-
-Le MLD V2 contient :
+Le MLD V2 contenait principalement :
 
 ```text
 CLIENT
@@ -77,6 +60,69 @@ COMMENTAIRE
 DOCUMENT
 BAREME_COMMISSION
 PAIEMENT
+```
+
+Le modèle courant ajoute notamment :
+
+```text
+MANDAT_PERIODE
+DEMANDE_AFFECTATION
+UTILISATEUR
+VISITE
+VENTE
+PARAMETRES_HONORAIRES
+PARAMETRES_REMUNERATION
+PALIER_PERFORMANCE
+AUDIT_LOG
+```
+
+Le modèle comporte donc actuellement **23 relations OLTP**.
+
+Plusieurs relations historiques ont également évolué :
+
+```text
+DEMANDE
+DEMANDE_VERSION
+CHASSEUR
+BAREME_COMMISSION
+PAIEMENT
+```
+
+---
+
+# 3. Relations du modèle logique
+
+```text
+CLIENT
+CHASSEUR
+UTILISATEUR
+
+SECTEUR
+
+MANDAT
+MANDAT_SECTEUR
+MANDAT_PERIODE
+
+DEMANDE
+DEMANDE_AFFECTATION
+DEMANDE_VERSION
+
+SOURCE
+BIEN
+PRESENTATION
+COMMENTAIRE
+DOCUMENT
+VISITE
+
+VENTE
+
+BAREME_COMMISSION
+PARAMETRES_HONORAIRES
+PARAMETRES_REMUNERATION
+PALIER_PERFORMANCE
+PAIEMENT
+
+AUDIT_LOG
 ```
 
 ---
@@ -100,13 +146,21 @@ CLIENT(
 Clé primaire :
 
 ```text
-#id_client
+PK(id_client)
 ```
 
 Contrainte candidate :
 
 ```text
 UNIQUE(email)
+```
+
+Statuts :
+
+```text
+ACTIF
+INACTIF
+ARCHIVE
 ```
 
 ---
@@ -128,7 +182,7 @@ CHASSEUR(
 Clé primaire :
 
 ```text
-#id_chasseur
+PK(id_chasseur)
 ```
 
 Contrainte :
@@ -137,23 +191,80 @@ Contrainte :
 UNIQUE(email)
 ```
 
-Le champ historique :
+Statuts :
 
 ```text
-utilisateurs.taux_commission
+ACTIF
+INACTIF
 ```
 
-n'est pas conservé directement ici.
+`date_entree` participe au calcul de l’ancienneté utilisé par la rémunération.
 
-Il est migré vers :
-
-```text
-BAREME_COMMISSION
-```
+Pour les données historiques ne disposant pas d’une source RH certifiée, cette date peut provenir de la première activité métier connue avec provenance documentée.
 
 ---
 
-# 6. SECTEUR
+# 6. UTILISATEUR
+
+```text
+UTILISATEUR(
+    #id_utilisateur,
+    email,
+    password_hash,
+    role,
+    actif,
+    id_client?,
+    id_chasseur?,
+    derniere_connexion,
+    date_creation,
+    date_modification
+)
+```
+
+Clés :
+
+```text
+PK(id_utilisateur)
+
+FK id_client
+    -> CLIENT.id_client
+
+FK id_chasseur
+    -> CHASSEUR.id_chasseur
+```
+
+Rôles :
+
+```text
+ADMIN
+CLIENT
+CHASSEUR
+SERVICE
+```
+
+Règle d’identité métier :
+
+```text
+role = CLIENT
+    => id_client NOT NULL
+       AND id_chasseur NULL
+
+role = CHASSEUR
+    => id_chasseur NOT NULL
+       AND id_client NULL
+
+role IN (ADMIN, SERVICE)
+    => id_client NULL
+       AND id_chasseur NULL
+```
+
+`UTILISATEUR` représente l’identité applicative.
+
+`CLIENT` et `CHASSEUR` restent les identités métier.
+
+---
+
+# 7. SECTEUR
 
 ```text
 SECTEUR(
@@ -166,23 +277,26 @@ SECTEUR(
 )
 ```
 
-Clé primaire :
+Clé :
 
 ```text
-#id_secteur
+PK(id_secteur)
 ```
 
-Cette relation est dérivée de la table héritée :
+Unicité logique :
 
 ```text
-secteurs
+UNIQUE(
+    pays,
+    ville,
+    quartier,
+    code_postal
+)
 ```
-
-avec extension pour l'internationalisation.
 
 ---
 
-# 7. MANDAT
+# 8. MANDAT
 
 ```text
 MANDAT(
@@ -195,7 +309,6 @@ MANDAT(
     date_fin,
     statut,
     commentaire,
-
     id_client,
     id_chasseur
 )
@@ -204,13 +317,13 @@ MANDAT(
 Clés :
 
 ```text
-PK #id_mandat
+PK(id_mandat)
 
 FK id_client
-   -> CLIENT.id_client
+    -> CLIENT.id_client
 
 FK id_chasseur
-   -> CHASSEUR.id_chasseur
+    -> CHASSEUR.id_chasseur
 ```
 
 Contrainte :
@@ -219,46 +332,46 @@ Contrainte :
 UNIQUE(reference_mandat)
 ```
 
----
-
-# 8. Règle durée mandat
-
-Le besoin métier impose une durée de six mois.
-
-Règle logique :
+Types :
 
 ```text
-date_fin = date_signature + 6 mois
+EXCLUSIF
+NON_EXCLUSIF
 ```
 
-ou équivalent selon le processus de renouvellement.
+Modes de signature :
 
-Le MPD devra préciser si cette règle est :
+```text
+PAPIER
+ELECTRONIQUE
+AUTRE
+INCONNU
+```
 
-- calculée ;
-- générée ;
-- vérifiée par CHECK ;
-- appliquée dans la couche applicative.
+Statuts :
+
+```text
+BROUILLON
+ACTIF
+SUSPENDU
+TERMINE
+EXPIRE
+ANNULE
+```
+
+Règle temporelle minimale :
+
+```text
+date_fin >= date_debut
+```
+
+La durée contractuelle détaillée est historisée dans `MANDAT_PERIODE`.
 
 ---
 
 # 9. MANDAT_SECTEUR
 
-Le MCD permet à un mandat de cibler plusieurs secteurs.
-
-Association N,N :
-
-```text
-MANDAT
-   |
-   v
-MANDAT_SECTEUR
-   ^
-   |
-SECTEUR
-```
-
-MLD :
+Association N,N entre mandat et secteur :
 
 ```text
 MANDAT_SECTEUR(
@@ -267,114 +380,282 @@ MANDAT_SECTEUR(
 )
 ```
 
-Clés :
+Clé primaire composée :
 
 ```text
 PK(
     id_mandat,
     id_secteur
 )
+```
 
+Clés étrangères :
+
+```text
 FK id_mandat
-   -> MANDAT.id_mandat
+    -> MANDAT.id_mandat
 
 FK id_secteur
-   -> SECTEUR.id_secteur
+    -> SECTEUR.id_secteur
 ```
 
 ---
 
-# 10. DEMANDE
+# 10. MANDAT_PERIODE
 
 ```text
-DEMANDE(
-    #id_demande,
-    date_creation,
-    statut,
-
-    id_mandat
+MANDAT_PERIODE(
+    #id_mandat_periode,
+    id_mandat,
+    numero_periode,
+    type_periode,
+    date_debut,
+    date_fin,
+    date_renouvellement,
+    commentaire,
+    est_historique_legacy,
+    created_at
 )
 ```
 
 Clés :
 
 ```text
-PK #id_demande
+PK(id_mandat_periode)
 
 FK id_mandat
-   -> MANDAT.id_mandat
+    -> MANDAT.id_mandat
 ```
+
+Unicité :
+
+```text
+UNIQUE(
+    id_mandat,
+    numero_periode
+)
+```
+
+Types :
+
+```text
+INITIAL
+RENOUVELLEMENT
+```
+
+Règle :
+
+```text
+numero_periode >= 1
+```
+
+Pour une période standard :
+
+```text
+date_fin = date_debut + 6 mois
+```
+
+Les périodes explicitement identifiées comme historiques legacy peuvent être exemptées de cette contrainte lorsque la donnée historique ne permet pas de garantir la durée contractuelle.
+
+Règle de renouvellement :
+
+```text
+INITIAL
+    => date_renouvellement IS NULL
+
+RENOUVELLEMENT
+    => date_renouvellement IS NOT NULL
+```
+
+Le renouvellement ne remplace pas une période précédente.
+
+Il crée une nouvelle relation `MANDAT_PERIODE`.
 
 ---
 
-# 11. Pourquoi DEMANDE
-
-`MANDAT` et `DEMANDE` représentent deux concepts différents.
+# 11. DEMANDE
 
 ```text
-MANDAT
-=
-Contractual relationship
+DEMANDE(
+    #id_demande,
+    reference_demande,
+    date_creation,
+    statut,
+    id_mandat?,
+    origine
+)
 ```
+
+Clés :
+
+```text
+PK(id_demande)
+
+FK id_mandat
+    -> MANDAT.id_mandat
+```
+
+`id_mandat` est **optionnel**.
+
+C’est une évolution importante par rapport au MLD V2 :
 
 ```text
 DEMANDE
-=
-Real-estate search
+peut exister
+AVANT
+MANDAT
 ```
 
-Cette séparation permet :
+Unicité :
 
-- renouvellement de mandat ;
-- historisation des critères ;
-- évolution métier ;
-- meilleure modélisation IA.
+```text
+UNIQUE(reference_demande)
+```
+
+Statuts :
+
+```text
+ACTIVE
+SUSPENDUE
+CLOTUREE
+ANNULEE
+```
+
+Origines :
+
+```text
+LEGACY
+GENERATED
+API
+MANUEL
+```
+
+Règle historique :
+
+```text
+origine = LEGACY
+    => id_mandat NOT NULL
+```
 
 ---
 
-# 12. DEMANDE_VERSION
+# 12. DEMANDE_AFFECTATION
+
+```text
+DEMANDE_AFFECTATION(
+    #id_affectation,
+    id_demande,
+    id_chasseur,
+    statut,
+    date_affectation,
+    date_decision,
+    id_utilisateur_affectation?,
+    id_utilisateur_decision?,
+    motif_refus
+)
+```
+
+Clés :
+
+```text
+PK(id_affectation)
+
+FK id_demande
+    -> DEMANDE.id_demande
+
+FK id_chasseur
+    -> CHASSEUR.id_chasseur
+
+FK id_utilisateur_affectation
+    -> UTILISATEUR.id_utilisateur
+
+FK id_utilisateur_decision
+    -> UTILISATEUR.id_utilisateur
+```
+
+Statuts :
+
+```text
+ASSIGNEE
+ACCEPTEE
+REFUSEE
+```
+
+Cycle logique :
+
+```text
+ASSIGNEE
+    => date_decision NULL
+
+ACCEPTEE
+    => date_decision NOT NULL
+
+REFUSEE
+    => date_decision NOT NULL
+```
+
+Règle temporelle :
+
+```text
+date_decision >= date_affectation
+```
+
+Le motif de refus n’est applicable qu’à une affectation refusée.
+
+Une règle d’unicité opérationnelle empêche plusieurs affectations courantes simultanées pour une même demande.
+
+---
+
+# 13. DEMANDE_VERSION
 
 ```text
 DEMANDE_VERSION(
     #id_demande_version,
-
     numero_version,
     date_version,
-
-    auteur_type,
-    auteur_id,
     motif_modification,
 
     ville,
     code_postal,
     type_bien,
-
     budget_min,
     budget_max,
     surface_min,
-
     nb_pieces_min,
     nb_chambres_min,
     dpe_max,
-
     criteres_souhaites,
 
+    description_recherche_legacy,
     active,
 
-    id_demande
+    id_demande,
+
+    auteur_client_id?,
+    auteur_chasseur_id?,
+    auteur_systeme,
+
+    source_recherche_ref,
+    ingestion_batch
 )
 ```
 
 Clés :
 
 ```text
-PK #id_demande_version
+PK(id_demande_version)
 
 FK id_demande
-   -> DEMANDE.id_demande
+    -> DEMANDE.id_demande
+
+FK auteur_client_id
+    -> CLIENT.id_client
+
+FK auteur_chasseur_id
+    -> CHASSEUR.id_chasseur
 ```
 
-Contrainte :
+Unicité :
 
 ```text
 UNIQUE(
@@ -383,106 +664,124 @@ UNIQUE(
 )
 ```
 
----
-
-# 13. Historisation demande
-
-Le système conserve :
+Règle :
 
 ```text
-DEMANDE
-    |
-    +--> VERSION 1
-    +--> VERSION 2
-    +--> VERSION 3
+numero_version > 0
 ```
 
-Chaque version doit conserver :
+---
+
+# 14. Auteur de DEMANDE_VERSION
+
+L’ancien modèle :
 
 ```text
-date_version
 auteur_type
++
 auteur_id
-motif_modification
 ```
 
----
+n’est plus utilisé.
 
-# 14. auteur_type
+La stratégie relationnelle retenue est :
 
-Valeurs candidates :
+```text
+auteur_client_id
+auteur_chasseur_id
+auteur_systeme
+```
+
+avec la règle :
+
+```text
+exactement un auteur logique
+```
+
+Donc :
 
 ```text
 CLIENT
+XOR
 CHASSEUR
+XOR
 SYSTEME
 ```
 
----
+Cette décision permet de conserver de vraies contraintes référentielles.
 
-# 15. auteur_id
-
-`auteur_id` est un identifiant logique dépendant de :
-
-```text
-auteur_type
-```
-
-Cette modélisation est volontairement flexible mais soulève une difficulté d'intégrité référentielle.
-
-Deux options seront évaluées au MPD :
-
-```text
-1. auteur_client_id + auteur_chasseur_id
-```
-
-ou :
-
-```text
-2. author abstraction / actor table
-```
-
-Le MPD devra choisir une approche qui permette une intégrité réelle.
+Elle n’est plus « à résoudre au MPD ».
 
 ---
 
-# 16. Critères structurés
+# 15. Critères de recherche
 
-Les critères tels que :
+Les critères structurés comprennent notamment :
 
 ```text
 ville
 code_postal
 type_bien
+budget_min
 budget_max
 surface_min
 nb_pieces_min
 nb_chambres_min
 dpe_max
-criteres_souhaites
 ```
 
-proviennent du besoin métier et du générateur de données StarterPack.
+Règles :
+
+```text
+budget_min >= 0
+budget_max >= 0
+
+budget_min <= budget_max
+
+surface_min >= 0
+
+nb_pieces_min >= 0
+nb_chambres_min >= 0
+```
+
+DPE :
+
+```text
+A
+B
+C
+D
+E
+F
+G
+```
 
 ---
 
-# 17. criteres_souhaites
-
-Au niveau logique, ce champ représente un ensemble de préférences.
-
-Possibilités physiques futures :
+# 16. Critères complémentaires
 
 ```text
-JSONB
+criteres_souhaites
 ```
 
-ou :
+représente les préférences complémentaires structurées.
+
+Au niveau logique, il s’agit d’une collection de critères supplémentaires.
+
+Le MPD PostgreSQL la matérialise en `JSONB`.
+
+---
+
+# 17. Lineage de DEMANDE_VERSION
+
+Deux attributs contribuent au lineage d’ingestion :
 
 ```text
-DEMANDE_CRITERE
+source_recherche_ref
+ingestion_batch
 ```
 
-Le choix sera effectué au MPD.
+Ils permettent de relier une version de demande à la source ou au lot ayant participé à sa génération.
 
 ---
 
@@ -495,14 +794,35 @@ SOURCE(
     type_source,
     url_base,
     actif,
-    niveau_confiance
+    niveau_confiance,
+    date_creation
 )
 ```
 
-Clé primaire :
+Clé :
 
 ```text
-#id_source
+PK(id_source)
+```
+
+Types :
+
+```text
+AGENCE
+PARTICULIER
+PLATEFORME
+API
+OPEN_DATA
+MANUEL
+AUTRE
+```
+
+Niveaux de confiance :
+
+```text
+FAIBLE
+MOYEN
+ELEVE
 ```
 
 ---
@@ -512,33 +832,23 @@ Clé primaire :
 ```text
 BIEN(
     #id_bien,
-
     reference_externe,
     type_bien,
     titre,
-
     adresse,
     code_postal,
     ville,
-
     latitude,
     longitude,
-
     prix,
     surface,
-
     nb_pieces,
     nb_chambres,
-
     dpe,
-
     description,
-
     date_publication,
     date_collecte,
-
     statut,
-
     id_source
 )
 ```
@@ -546,13 +856,13 @@ BIEN(
 Clés :
 
 ```text
-PK #id_bien
+PK(id_bien)
 
 FK id_source
-   -> SOURCE.id_source
+    -> SOURCE.id_source
 ```
 
-Contrainte logique :
+Unicité :
 
 ```text
 UNIQUE(
@@ -561,44 +871,48 @@ UNIQUE(
 )
 ```
 
----
-
-# 20. Données brutes et BIEN
-
-Les données générées et les futures sources ne doivent pas être insérées directement dans `BIEN` sans normalisation.
-
-Architecture :
+Statuts :
 
 ```text
-RAW
- |
- v
-STAGING
- |
- v
-VALIDATION
- |
- v
-BIEN
+ACTIF
+EXPIRE
+VENDU
+INDISPONIBLE
 ```
 
-`BIEN` représente le modèle canonique normalisé.
+Contraintes principales :
+
+```text
+prix >= 0
+
+surface >= 0
+
+nb_pieces >= 0
+
+nb_chambres >= 0
+
+-90 <= latitude <= 90
+
+-180 <= longitude <= 180
+```
+
+DPE :
+
+```text
+A..G
+```
 
 ---
 
-# 21. PRESENTATION
+# 20. PRESENTATION
 
 ```text
 PRESENTATION(
     #id_presentation,
-
     date_selection,
     date_presentation,
-
     score_matching,
-
     statut,
-
     id_demande_version,
     id_bien
 )
@@ -607,16 +921,16 @@ PRESENTATION(
 Clés :
 
 ```text
-PK #id_presentation
+PK(id_presentation)
 
 FK id_demande_version
-   -> DEMANDE_VERSION.id_demande_version
+    -> DEMANDE_VERSION.id_demande_version
 
 FK id_bien
-   -> BIEN.id_bien
+    -> BIEN.id_bien
 ```
 
-Contrainte :
+Unicité :
 
 ```text
 UNIQUE(
@@ -625,88 +939,76 @@ UNIQUE(
 )
 ```
 
----
-
-# 22. Rôle de PRESENTATION
-
-Cette relation représente :
+Score :
 
 ```text
-DEMANDE_VERSION
-       |
-       v
-Matching / Selection
-       |
-       v
-BIEN
+0 <= score_matching <= 100
 ```
 
-Elle porte les données propres au rapprochement :
+Statuts :
 
 ```text
-score
-status
-selection date
-presentation date
+IDENTIFIE
+QUALIFIE
+PRESENTE
+REJETE
+VISITE
+RETENU
 ```
+
+`PRESENTATION` matérialise le résultat du matching entre une version de demande et un bien.
 
 ---
 
-# 23. COMMENTAIRE
+# 21. COMMENTAIRE
 
 ```text
 COMMENTAIRE(
     #id_commentaire,
-
     date_commentaire,
-
-    auteur_type,
-    auteur_id,
-
     contenu,
     priorite,
     decision,
-
     id_demande_version,
-    id_bien
+    id_bien,
+    auteur_client_id?,
+    auteur_chasseur_id?
 )
 ```
 
 Clés :
 
 ```text
-PK #id_commentaire
+PK(id_commentaire)
 
 FK id_demande_version
-   -> DEMANDE_VERSION.id_demande_version
+    -> DEMANDE_VERSION.id_demande_version
 
 FK id_bien
-   -> BIEN.id_bien
+    -> BIEN.id_bien
+
+FK auteur_client_id
+    -> CLIENT.id_client
+
+FK auteur_chasseur_id
+    -> CHASSEUR.id_chasseur
 ```
 
----
-
-# 24. Auteur commentaire
-
-Un commentaire peut provenir d'un :
+Un commentaire possède exactement un auteur :
 
 ```text
 CLIENT
-```
-
-ou d'un :
-
-```text
+XOR
 CHASSEUR
 ```
 
-Comme pour `DEMANDE_VERSION`, le MPD doit résoudre proprement cette relation polymorphe.
+Priorité :
 
----
+```text
+1..5
+```
 
-# 25. Décisions commentaire
-
-Valeurs candidates :
+Décisions :
 
 ```text
 RETENIR
@@ -716,48 +1018,21 @@ REQUALIFIER
 INFORMATION
 ```
 
-Elles seront validées au MPD.
-
 ---
 
-# 26. PRESENTATION vs COMMENTAIRE
-
-`PRESENTATION` est une relation système/métier :
-
-```text
-this property was selected
-for this request version
-```
-
-`COMMENTAIRE` représente :
-
-```text
-a human interaction or opinion
-on this property
-within the context of the request
-```
-
-Plusieurs commentaires peuvent exister pour une même présentation.
-
----
-
-# 27. DOCUMENT
+# 22. DOCUMENT
 
 ```text
 DOCUMENT(
     #id_document,
-
     nom_fichier,
     type_document,
     mime_type,
     chemin_stockage,
     checksum,
-
     date_ajout,
-
     classification,
     indexable_ia,
-
     id_bien
 )
 ```
@@ -765,117 +1040,402 @@ DOCUMENT(
 Clés :
 
 ```text
-PK #id_document
+PK(id_document)
 
 FK id_bien
-   -> BIEN.id_bien
+    -> BIEN.id_bien
+```
+
+Classifications :
+
+```text
+PUBLIC
+INTERNE
+CONFIDENTIEL
+RESTREINT
 ```
 
 ---
 
-# 28. BAREME_COMMISSION
+# 23. VISITE
 
 ```text
-BAREME_COMMISSION(
-    #id_bareme,
-
-    montant_min,
-    montant_max,
-
-    taux_commission,
-    montant_fixe,
-
-    date_debut_validite,
-    date_fin_validite,
-
-    actif,
-
-    id_chasseur
+VISITE(
+    #id_visite,
+    date_visite,
+    statut,
+    compte_rendu,
+    note,
+    photos,
+    date_creation,
+    id_presentation
 )
 ```
 
 Clés :
 
 ```text
-PK #id_bareme
+PK(id_visite)
 
-FK id_chasseur
-   -> CHASSEUR.id_chasseur
+FK id_presentation
+    -> PRESENTATION.id_presentation
 ```
+
+Statuts :
+
+```text
+PLANIFIEE
+REALISEE
+ANNULEE
+REPORTEE
+```
+
+Note :
+
+```text
+0 <= note <= 5
+```
+
+`photos` représente une collection de références de photos.
+
+Le MPD la matérialise en tableau JSON.
+
+`VISITE` n’est plus une extension future.
 
 ---
 
-# 29. Pourquoi BAREME_COMMISSION
-
-Le SI hérité stocke :
+# 24. VENTE
 
 ```text
-taux_commission
+VENTE(
+    #id_vente,
+    id_mandat,
+    id_mandat_periode?,
+    id_presentation?,
+    id_bien?,
+    id_chasseur_beneficiaire?,
+    origine_vente,
+    date_acte_authentique,
+    montant_achat,
+    date_creation
+)
 ```
 
-directement dans `utilisateurs`.
-
-Cela ne permet pas correctement :
+Clés :
 
 ```text
-historisation
-different ranges
-different periods
+PK(id_vente)
+
+FK id_mandat
+    -> MANDAT.id_mandat
+
+FK id_mandat_periode
+    -> MANDAT_PERIODE.id_mandat_periode
+
+FK id_presentation
+    -> PRESENTATION.id_presentation
+
+FK id_bien
+    -> BIEN.id_bien
+
+FK id_chasseur_beneficiaire
+    -> CHASSEUR.id_chasseur
 ```
 
-Le modèle cible permet :
+Origines :
 
 ```text
 CHASSEUR
-   |
-   +--> BAREME A
-   +--> BAREME B
-   +--> BAREME C
+CLIENT_SEUL
+AUTRE_AGENCE
+```
+
+Règle :
+
+```text
+montant_achat > 0
+```
+
+La vente matérialise l’acte authentique.
+
+Elle est distincte du calcul de rémunération et du paiement.
+
+---
+
+# 25. PARAMETRES_HONORAIRES
+
+```text
+PARAMETRES_HONORAIRES(
+    #id_parametres_honoraires,
+    date_debut_validite,
+    date_fin_validite?,
+    montant_fixe,
+    taux_pourcentage,
+    actif,
+    date_creation
+)
+```
+
+Clé :
+
+```text
+PK(id_parametres_honoraires)
+```
+
+Contraintes :
+
+```text
+montant_fixe >= 0
+
+0 <= taux_pourcentage <= 1
+
+date_fin_validite IS NULL
+OR
+date_fin_validite >= date_debut_validite
+```
+
+Ces paramètres permettent d’historiser la formule :
+
+```text
+honoraires =
+montant_fixe
++
+taux_pourcentage * montant_achat
 ```
 
 ---
 
-# 30. Tranches de montant
-
-Un barème peut s'appliquer à :
+# 26. BAREME_COMMISSION
 
 ```text
-montant_min <= montant < montant_max
+BAREME_COMMISSION(
+    #id_bareme,
+    montant_min,
+    montant_max?,
+    taux_commission,
+    montant_fixe,
+    date_debut_validite,
+    date_fin_validite?,
+    actif,
+    id_chasseur?,
+    statut_usage
+)
 ```
 
-selon la règle physique retenue.
-
-Le MPD devra éviter :
+Clés :
 
 ```text
-overlapping active ranges
+PK(id_bareme)
+
+FK id_chasseur
+    -> CHASSEUR.id_chasseur
 ```
 
-pour un même chasseur et une même période lorsque nécessaire.
+Contraintes :
+
+```text
+montant_min >= 0
+
+montant_max IS NULL
+OR
+montant_max >= montant_min
+
+0 <= taux_commission <= 1
+
+montant_fixe >= 0
+```
+
+Statuts d’usage :
+
+```text
+HISTORIQUE
+APPROUVE
+```
+
+La relation facultative avec `CHASSEUR` permet de conserver les barèmes historiques issus du système hérité.
 
 ---
 
-# 31. Temporalité barème
-
-Le barème doit conserver :
+# 27. PARAMETRES_REMUNERATION
 
 ```text
-date_debut_validite
-date_fin_validite
+PARAMETRES_REMUNERATION(
+    #id_parametres_remuneration,
+
+    date_debut_validite,
+    date_fin_validite?,
+
+    fenetre_mois,
+
+    poids_delai,
+    poids_exclusivite,
+    poids_ventes,
+    poids_mandats,
+    poids_visites,
+
+    note_exclusif,
+    note_non_exclusif,
+
+    points_par_vente,
+    points_par_mandat,
+
+    taux_anciennete_par_annee,
+    plafond_anciennete,
+
+    score_pivot,
+    amplitude_performance,
+
+    taux_plancher,
+    taux_plafond,
+
+    actif,
+    date_creation
+)
 ```
 
-pour connaître la règle applicable historiquement.
+Clé :
+
+```text
+PK(id_parametres_remuneration)
+```
+
+Règle fondamentale :
+
+```text
+poids_delai
++ poids_exclusivite
++ poids_ventes
++ poids_mandats
++ poids_visites
+= 1
+```
+
+Autres contraintes :
+
+```text
+fenetre_mois > 0
+
+0 <= note_exclusif <= 100
+0 <= note_non_exclusif <= 100
+
+points_par_vente >= 0
+points_par_mandat >= 0
+
+taux_anciennete_par_annee >= 0
+
+0 <= plafond_anciennete <= 1
+
+0 <= score_pivot <= 100
+
+0 <= amplitude_performance <= 1
+
+0 <= taux_plancher <= taux_plafond <= 1
+```
 
 ---
 
-# 32. PAIEMENT
+# 28. PALIER_PERFORMANCE
+
+```text
+PALIER_PERFORMANCE(
+    #id_palier_performance,
+    id_parametres_remuneration,
+    critere,
+    ordre,
+    borne_max?,
+    note
+)
+```
+
+Clés :
+
+```text
+PK(id_palier_performance)
+
+FK id_parametres_remuneration
+    -> PARAMETRES_REMUNERATION.id_parametres_remuneration
+```
+
+Unicité :
+
+```text
+UNIQUE(
+    id_parametres_remuneration,
+    critere,
+    ordre
+)
+```
+
+Critères configurables :
+
+```text
+DELAI_SEMAINES
+VISITES
+```
+
+Contraintes :
+
+```text
+ordre >= 1
+
+borne_max >= 0
+
+0 <= note <= 100
+```
+
+---
+
+# 29. Calcul de rémunération
+
+Le calcul métier exploite :
+
+```text
+VENTE
+MANDAT
+MANDAT_PERIODE
+CHASSEUR
+VISITE
+BAREME_COMMISSION
+PARAMETRES_HONORAIRES
+PARAMETRES_REMUNERATION
+PALIER_PERFORMANCE
+```
+
+Le calcul produit notamment :
+
+```text
+éligibilité
+
+honoraires entreprise
+
+semaines mandat -> acte
+nombre de visites
+ancienneté
+ventes sur fenêtre
+mandats sur fenêtre
+
+notes de performance
+score global
+
+taux de base
+majoration ancienneté
+modulation performance
+taux final
+
+montant chasseur
+```
+
+Ces valeurs sont figées dans `PAIEMENT`.
+
+---
+
+# 30. PAIEMENT
 
 ```text
 PAIEMENT(
     #id_paiement,
 
     date_acte_authentique,
-
     montant_achat,
     montant_honoraires,
     montant_chasseur,
@@ -886,39 +1446,65 @@ PAIEMENT(
     statut,
 
     id_mandat,
-    id_bareme
+    id_bareme?,
+    id_vente?,
+    id_chasseur_beneficiaire?,
+    id_parametres_honoraires?,
+    id_parametres_remuneration?,
+
+    date_calcul,
+
+    droit_remuneration,
+    motif_refus,
+
+    semaines_mandat_acte,
+    nb_visites_calcul,
+    annees_anciennete_calcul,
+    nb_ventes_fenetre,
+    nb_mandats_fenetre,
+
+    note_delai,
+    note_exclusivite,
+    note_ventes,
+    note_mandats,
+    note_visites,
+
+    score_performance,
+
+    taux_base,
+    majoration_anciennete,
+    modulation_performance,
+    taux_final
 )
 ```
 
 Clés :
 
 ```text
-PK #id_paiement
+PK(id_paiement)
 
 FK id_mandat
-   -> MANDAT.id_mandat
+    -> MANDAT.id_mandat
 
 FK id_bareme
-   -> BAREME_COMMISSION.id_bareme
+    -> BAREME_COMMISSION.id_bareme
+
+FK id_vente
+    -> VENTE.id_vente
+
+FK id_chasseur_beneficiaire
+    -> CHASSEUR.id_chasseur
+
+FK id_parametres_honoraires
+    -> PARAMETRES_HONORAIRES.id_parametres_honoraires
+
+FK id_parametres_remuneration
+    -> PARAMETRES_REMUNERATION.id_parametres_remuneration
 ```
 
 ---
 
-# 33. Pourquoi id_bareme dans PAIEMENT
-
-Le paiement doit pouvoir répondre historiquement à :
-
-```text
-Which commission scale was used?
-```
-
-Sans cette relation, une modification future du barème rendrait le calcul historique moins traçable.
-
----
-
-# 34. Statuts paiement
-
-Valeurs candidates :
+# 31. Statuts de PAIEMENT
 
 ```text
 ATTENDU
@@ -929,31 +1515,192 @@ PAYE
 ANNULE
 ```
 
-Le MPD devra confirmer les valeurs retenues.
+Cycle nominal :
+
+```text
+ATTENDU
+   |
+   v
+RECU
+   |
+   v
+VERIFIE
+   |
+   v
+PROGRAMME
+   |
+   v
+PAYE
+```
+
+Règle temporelle :
+
+```text
+date_paiement_chasseur
+>=
+date_reception_honoraires
+```
+
+lorsque les deux dates sont renseignées.
 
 ---
 
-# 35. Flux financier
+# 32. Éligibilité de rémunération
 
 ```text
-Acte authentique
-       |
-       v
-Honoraires entreprise
-       |
-       v
-PAIEMENT
-       |
-       v
-Barème applicable
-       |
-       v
-Rémunération chasseur
+droit_remuneration
+```
+
+indique si le chasseur possède un droit à rémunération pour la vente.
+
+Règle :
+
+```text
+droit_remuneration = TRUE
+    => motif_refus NULL
+
+droit_remuneration = FALSE
+    => motif_refus NOT NULL
+```
+
+Motifs actuellement représentés :
+
+```text
+MANDAT_EXPIRE
+HORS_DISPOSITIF
 ```
 
 ---
 
-# 36. MLD complet
+# 33. Snapshot de calcul
+
+Contrairement au MLD V2, les indicateurs de performance utilisés pour une rémunération ne sont pas seulement considérés comme des données analytiques recalculables.
+
+`PAIEMENT` conserve le snapshot utilisé lors du calcul :
+
+```text
+semaines_mandat_acte
+
+nb_visites_calcul
+annees_anciennete_calcul
+nb_ventes_fenetre
+nb_mandats_fenetre
+
+note_delai
+note_exclusivite
+note_ventes
+note_mandats
+note_visites
+
+score_performance
+
+taux_base
+majoration_anciennete
+modulation_performance
+taux_final
+```
+
+Cela garantit :
+
+```text
+reproductibilité
+explicabilité
+auditabilité
+historisation
+```
+
+---
+
+# 34. Contraintes du snapshot
+
+Compteurs :
+
+```text
+>= 0
+```
+
+Notes :
+
+```text
+0 <= note <= 100
+```
+
+Score :
+
+```text
+0 <= score_performance <= 100
+```
+
+Taux :
+
+```text
+0 <= taux_base <= 1
+
+0 <= majoration_anciennete <= 1
+
+-1 <= modulation_performance <= 1
+
+0 <= taux_final <= 1
+```
+
+Montants :
+
+```text
+montant_achat >= 0
+montant_honoraires >= 0
+montant_chasseur >= 0
+```
+
+---
+
+# 35. AUDIT_LOG
+
+```text
+AUDIT_LOG(
+    #id_audit,
+    date_evenement,
+    schema_name,
+    table_name,
+    operation,
+    record_id,
+    utilisateur,
+    ancienne_valeur,
+    nouvelle_valeur,
+    contexte
+)
+```
+
+Clé :
+
+```text
+PK(id_audit)
+```
+
+Opérations :
+
+```text
+INSERT
+UPDATE
+DELETE
+```
+
+`AUDIT_LOG` est transverse.
+
+Il ne possède volontairement pas de FK métier polymorphe vers toutes les relations auditées.
+
+L’identification repose sur :
+
+```text
+schema_name
+table_name
+record_id
+```
+
+Les valeurs avant/après et le contexte permettent de conserver une preuve détaillée des opérations sensibles.
+
+---
+
+# 36. MLD relationnel complet
 
 ```text
 CLIENT(
@@ -968,7 +1715,6 @@ CLIENT(
     consentement_contact
 )
 
-
 CHASSEUR(
     #id_chasseur,
     nom,
@@ -979,6 +1725,18 @@ CHASSEUR(
     statut
 )
 
+UTILISATEUR(
+    #id_utilisateur,
+    email,
+    password_hash,
+    role,
+    actif,
+    id_client?,
+    id_chasseur?,
+    derniere_connexion,
+    date_creation,
+    date_modification
+)
 
 SECTEUR(
     #id_secteur,
@@ -988,7 +1746,6 @@ SECTEUR(
     code_postal,
     actif
 )
-
 
 MANDAT(
     #id_mandat,
@@ -1000,54 +1757,73 @@ MANDAT(
     date_fin,
     statut,
     commentaire,
-
     id_client,
     id_chasseur
 )
-
 
 MANDAT_SECTEUR(
     #id_mandat,
     #id_secteur
 )
 
+MANDAT_PERIODE(
+    #id_mandat_periode,
+    id_mandat,
+    numero_periode,
+    type_periode,
+    date_debut,
+    date_fin,
+    date_renouvellement,
+    commentaire,
+    est_historique_legacy,
+    created_at
+)
 
 DEMANDE(
     #id_demande,
+    reference_demande,
     date_creation,
     statut,
-
-    id_mandat
+    id_mandat?,
+    origine
 )
 
+DEMANDE_AFFECTATION(
+    #id_affectation,
+    id_demande,
+    id_chasseur,
+    statut,
+    date_affectation,
+    date_decision,
+    id_utilisateur_affectation?,
+    id_utilisateur_decision?,
+    motif_refus
+)
 
 DEMANDE_VERSION(
     #id_demande_version,
     numero_version,
     date_version,
-
-    auteur_type,
-    auteur_id,
     motif_modification,
-
     ville,
     code_postal,
     type_bien,
-
     budget_min,
     budget_max,
     surface_min,
-
     nb_pieces_min,
     nb_chambres_min,
     dpe_max,
-
     criteres_souhaites,
+    description_recherche_legacy,
     active,
-
-    id_demande
+    id_demande,
+    auteur_client_id?,
+    auteur_chasseur_id?,
+    auteur_systeme,
+    source_recherche_ref,
+    ingestion_batch
 )
-
 
 SOURCE(
     #id_source,
@@ -1055,386 +1831,670 @@ SOURCE(
     type_source,
     url_base,
     actif,
-    niveau_confiance
+    niveau_confiance,
+    date_creation
 )
-
 
 BIEN(
     #id_bien,
     reference_externe,
     type_bien,
     titre,
-
     adresse,
     code_postal,
     ville,
-
     latitude,
     longitude,
-
     prix,
     surface,
-
     nb_pieces,
     nb_chambres,
-
     dpe,
-
     description,
-
     date_publication,
     date_collecte,
-
     statut,
-
     id_source
 )
 
-
 PRESENTATION(
     #id_presentation,
-
     date_selection,
     date_presentation,
-
     score_matching,
     statut,
-
     id_demande_version,
     id_bien
 )
-
 
 COMMENTAIRE(
     #id_commentaire,
-
     date_commentaire,
-
-    auteur_type,
-    auteur_id,
-
     contenu,
     priorite,
     decision,
-
     id_demande_version,
-    id_bien
+    id_bien,
+    auteur_client_id?,
+    auteur_chasseur_id?
 )
-
 
 DOCUMENT(
     #id_document,
-
     nom_fichier,
     type_document,
     mime_type,
     chemin_stockage,
     checksum,
-
     date_ajout,
-
     classification,
     indexable_ia,
-
     id_bien
 )
 
+VISITE(
+    #id_visite,
+    date_visite,
+    statut,
+    compte_rendu,
+    note,
+    photos,
+    date_creation,
+    id_presentation
+)
+
+VENTE(
+    #id_vente,
+    id_mandat,
+    id_mandat_periode?,
+    id_presentation?,
+    id_bien?,
+    id_chasseur_beneficiaire?,
+    origine_vente,
+    date_acte_authentique,
+    montant_achat,
+    date_creation
+)
 
 BAREME_COMMISSION(
     #id_bareme,
-
     montant_min,
-    montant_max,
-
+    montant_max?,
     taux_commission,
     montant_fixe,
-
     date_debut_validite,
-    date_fin_validite,
-
+    date_fin_validite?,
     actif,
-
-    id_chasseur
+    id_chasseur?,
+    statut_usage
 )
 
+PARAMETRES_HONORAIRES(
+    #id_parametres_honoraires,
+    date_debut_validite,
+    date_fin_validite?,
+    montant_fixe,
+    taux_pourcentage,
+    actif,
+    date_creation
+)
+
+PARAMETRES_REMUNERATION(
+    #id_parametres_remuneration,
+    date_debut_validite,
+    date_fin_validite?,
+    fenetre_mois,
+    poids_delai,
+    poids_exclusivite,
+    poids_ventes,
+    poids_mandats,
+    poids_visites,
+    note_exclusif,
+    note_non_exclusif,
+    points_par_vente,
+    points_par_mandat,
+    taux_anciennete_par_annee,
+    plafond_anciennete,
+    score_pivot,
+    amplitude_performance,
+    taux_plancher,
+    taux_plafond,
+    actif,
+    date_creation
+)
+
+PALIER_PERFORMANCE(
+    #id_palier_performance,
+    id_parametres_remuneration,
+    critere,
+    ordre,
+    borne_max?,
+    note
+)
 
 PAIEMENT(
     #id_paiement,
-
     date_acte_authentique,
-
     montant_achat,
     montant_honoraires,
     montant_chasseur,
-
     date_reception_honoraires,
     date_paiement_chasseur,
-
     statut,
-
     id_mandat,
-    id_bareme
+    id_bareme?,
+    id_vente?,
+    id_chasseur_beneficiaire?,
+    id_parametres_honoraires?,
+    id_parametres_remuneration?,
+    date_calcul,
+    droit_remuneration,
+    motif_refus,
+    semaines_mandat_acte,
+    nb_visites_calcul,
+    annees_anciennete_calcul,
+    nb_ventes_fenetre,
+    nb_mandats_fenetre,
+    note_delai,
+    note_exclusivite,
+    note_ventes,
+    note_mandats,
+    note_visites,
+    score_performance,
+    taux_base,
+    majoration_anciennete,
+    modulation_performance,
+    taux_final
+)
+
+AUDIT_LOG(
+    #id_audit,
+    date_evenement,
+    schema_name,
+    table_name,
+    operation,
+    record_id,
+    utilisateur,
+    ancienne_valeur,
+    nouvelle_valeur,
+    contexte
 )
 ```
 
 ---
 
-# 37. Foreign Keys
+# 37. Graphe relationnel principal
 
 ```text
-MANDAT.id_client
-    -> CLIENT.id_client
+CLIENT
+  |
+  +----------------------+
+  |                      |
+  v                      v
+DEMANDE                MANDAT <---------------- CHASSEUR
+  |                      |                         ^
+  |                      +--> MANDAT_PERIODE       |
+  |                      |                         |
+  |                      +--> MANDAT_SECTEUR       |
+  |                               |                |
+  |                               v                |
+  |                            SECTEUR             |
+  |                                                |
+  +--> DEMANDE_AFFECTATION ------------------------+
+  |
+  v
+DEMANDE_VERSION
+  |
+  +-------------> PRESENTATION <------------- BIEN
+  |                    |                       |
+  |                    v                       +--> SOURCE
+  |                  VISITE                    |
+  |                                            +--> DOCUMENT
+  +-------------> COMMENTAIRE <----------------+
 ```
 
-```text
-MANDAT.id_chasseur
-    -> CHASSEUR.id_chasseur
-```
+Transaction :
 
 ```text
-MANDAT_SECTEUR.id_mandat
-    -> MANDAT.id_mandat
+MANDAT
+  |
+  +--> MANDAT_PERIODE
+  |
+  +----------------------+
+                         |
+PRESENTATION ------------+
+                         |
+BIEN --------------------+
+                         |
+CHASSEUR ----------------+
+                         |
+                         v
+                       VENTE
+                         |
+                         v
+                      PAIEMENT
 ```
 
-```text
-MANDAT_SECTEUR.id_secteur
-    -> SECTEUR.id_secteur
-```
+Configuration financière :
 
 ```text
-DEMANDE.id_mandat
-    -> MANDAT.id_mandat
-```
-
-```text
-DEMANDE_VERSION.id_demande
-    -> DEMANDE.id_demande
-```
-
-```text
-BIEN.id_source
-    -> SOURCE.id_source
-```
-
-```text
-PRESENTATION.id_demande_version
-    -> DEMANDE_VERSION.id_demande_version
-```
-
-```text
-PRESENTATION.id_bien
-    -> BIEN.id_bien
-```
-
-```text
-COMMENTAIRE.id_demande_version
-    -> DEMANDE_VERSION.id_demande_version
-```
-
-```text
-COMMENTAIRE.id_bien
-    -> BIEN.id_bien
-```
-
-```text
-DOCUMENT.id_bien
-    -> BIEN.id_bien
-```
-
-```text
-BAREME_COMMISSION.id_chasseur
-    -> CHASSEUR.id_chasseur
-```
-
-```text
-PAIEMENT.id_mandat
-    -> MANDAT.id_mandat
-```
-
-```text
-PAIEMENT.id_bareme
-    -> BAREME_COMMISSION.id_bareme
+PARAMETRES_HONORAIRES --------+
+                               |
+BAREME_COMMISSION -------------+
+                               |
+PARAMETRES_REMUNERATION -------+--> PAIEMENT
+          |
+          v
+PALIER_PERFORMANCE
 ```
 
 ---
 
-# 38. Contraintes d'unicité
+# 38. Foreign Keys principales
+
+```text
+UTILISATEUR.id_client
+    -> CLIENT.id_client
+
+UTILISATEUR.id_chasseur
+    -> CHASSEUR.id_chasseur
+
+MANDAT.id_client
+    -> CLIENT.id_client
+
+MANDAT.id_chasseur
+    -> CHASSEUR.id_chasseur
+
+MANDAT_SECTEUR.id_mandat
+    -> MANDAT.id_mandat
+
+MANDAT_SECTEUR.id_secteur
+    -> SECTEUR.id_secteur
+
+MANDAT_PERIODE.id_mandat
+    -> MANDAT.id_mandat
+
+DEMANDE.id_mandat
+    -> MANDAT.id_mandat
+
+DEMANDE_AFFECTATION.id_demande
+    -> DEMANDE.id_demande
+
+DEMANDE_AFFECTATION.id_chasseur
+    -> CHASSEUR.id_chasseur
+
+DEMANDE_AFFECTATION.id_utilisateur_affectation
+    -> UTILISATEUR.id_utilisateur
+
+DEMANDE_AFFECTATION.id_utilisateur_decision
+    -> UTILISATEUR.id_utilisateur
+
+DEMANDE_VERSION.id_demande
+    -> DEMANDE.id_demande
+
+DEMANDE_VERSION.auteur_client_id
+    -> CLIENT.id_client
+
+DEMANDE_VERSION.auteur_chasseur_id
+    -> CHASSEUR.id_chasseur
+
+BIEN.id_source
+    -> SOURCE.id_source
+
+PRESENTATION.id_demande_version
+    -> DEMANDE_VERSION.id_demande_version
+
+PRESENTATION.id_bien
+    -> BIEN.id_bien
+
+COMMENTAIRE.id_demande_version
+    -> DEMANDE_VERSION.id_demande_version
+
+COMMENTAIRE.id_bien
+    -> BIEN.id_bien
+
+COMMENTAIRE.auteur_client_id
+    -> CLIENT.id_client
+
+COMMENTAIRE.auteur_chasseur_id
+    -> CHASSEUR.id_chasseur
+
+DOCUMENT.id_bien
+    -> BIEN.id_bien
+
+VISITE.id_presentation
+    -> PRESENTATION.id_presentation
+
+VENTE.id_mandat
+    -> MANDAT.id_mandat
+
+VENTE.id_mandat_periode
+    -> MANDAT_PERIODE.id_mandat_periode
+
+VENTE.id_presentation
+    -> PRESENTATION.id_presentation
+
+VENTE.id_bien
+    -> BIEN.id_bien
+
+VENTE.id_chasseur_beneficiaire
+    -> CHASSEUR.id_chasseur
+
+BAREME_COMMISSION.id_chasseur
+    -> CHASSEUR.id_chasseur
+
+PALIER_PERFORMANCE.id_parametres_remuneration
+    -> PARAMETRES_REMUNERATION.id_parametres_remuneration
+
+PAIEMENT.id_mandat
+    -> MANDAT.id_mandat
+
+PAIEMENT.id_bareme
+    -> BAREME_COMMISSION.id_bareme
+
+PAIEMENT.id_vente
+    -> VENTE.id_vente
+
+PAIEMENT.id_chasseur_beneficiaire
+    -> CHASSEUR.id_chasseur
+
+PAIEMENT.id_parametres_honoraires
+    -> PARAMETRES_HONORAIRES.id_parametres_honoraires
+
+PAIEMENT.id_parametres_remuneration
+    -> PARAMETRES_REMUNERATION.id_parametres_remuneration
+```
+
+---
+
+# 39. Contraintes d’unicité principales
 
 ```text
 CLIENT.email
-```
 
-```text
 CHASSEUR.email
-```
 
-```text
 MANDAT.reference_mandat
-```
 
-```text
-DEMANDE_VERSION(
-    id_demande,
-    numero_version
-)
-```
-
-```text
-BIEN(
-    id_source,
-    reference_externe
-)
-```
-
-```text
-PRESENTATION(
-    id_demande_version,
-    id_bien
-)
-```
-
-```text
 MANDAT_SECTEUR(
     id_mandat,
     id_secteur
 )
+
+MANDAT_PERIODE(
+    id_mandat,
+    numero_periode
+)
+
+DEMANDE.reference_demande
+
+DEMANDE_VERSION(
+    id_demande,
+    numero_version
+)
+
+BIEN(
+    id_source,
+    reference_externe
+)
+
+PRESENTATION(
+    id_demande_version,
+    id_bien
+)
+
+SECTEUR(
+    pays,
+    ville,
+    quartier,
+    code_postal
+)
+
+PALIER_PERFORMANCE(
+    id_parametres_remuneration,
+    critere,
+    ordre
+)
 ```
+
+Des index partiels ou contraintes physiques complémentaires peuvent également implémenter des règles métier qui ne se traduisent pas par une contrainte `UNIQUE` classique.
 
 ---
 
-# 39. Contraintes numériques
+# 40. Suppression référentielle
+
+Le modèle utilise principalement :
 
 ```text
-budget_min >= 0
-budget_max >= 0
-budget_min <= budget_max
+ON DELETE RESTRICT
 ```
 
-```text
-surface_min >= 0
-```
+afin d’éviter la suppression de données référencées.
+
+Deux associations structurelles utilisent une suppression en cascade :
 
 ```text
-prix >= 0
-surface >= 0
+MANDAT
+    -> MANDAT_SECTEUR
+
+MANDAT
+    -> MANDAT_PERIODE
 ```
 
-```text
-score_matching BETWEEN 0 AND 100
-```
-
-```text
-montant_min >= 0
-montant_max >= montant_min
-```
-
-```text
-taux_commission >= 0
-```
-
-```text
-montant_achat >= 0
-montant_honoraires >= 0
-montant_chasseur >= 0
-```
+Cette stratégie reste limitée aux relations dont l’existence dépend structurellement du mandat.
 
 ---
 
-# 40. DPE
+# 41. Modèle transactionnel
 
-Valeurs candidates :
-
-```text
-A
-B
-C
-D
-E
-F
-G
-```
-
-et éventuellement :
+La chaîne transactionnelle est :
 
 ```text
-NULL
+MANDAT
+  |
+  v
+MANDAT_PERIODE
+  |
+  v
+PRESENTATION
+  |
+  v
+VISITE
+  |
+  v
+VENTE
+  |
+  v
+CALCUL REMUNERATION
+  |
+  v
+PAIEMENT
 ```
 
-lorsqu'absent.
+Il ne faut pas interpréter cette représentation comme une obligation que toutes les relations intermédiaires soient renseignées dans tous les cas.
+
+Par exemple, certaines origines de vente peuvent ne pas provenir directement d’une présentation du chasseur.
 
 ---
 
-# 41. Une version active
+# 42. Séparation des responsabilités
 
-La règle :
-
-```text
-one active version
-per DEMANDE
-```
-
-devra être matérialisée physiquement.
-
-PostgreSQL permet un :
+Le modèle applique notamment :
 
 ```text
-partial unique index
+CLIENT
+!=
+UTILISATEUR
+
+CHASSEUR
+!=
+UTILISATEUR
+
+MANDAT
+!=
+DEMANDE
+
+DEMANDE
+!=
+DEMANDE_VERSION
+
+DEMANDE
+!=
+DEMANDE_AFFECTATION
+
+MANDAT
+!=
+MANDAT_PERIODE
+
+PRESENTATION
+!=
+VISITE
+
+VISITE
+!=
+VENTE
+
+VENTE
+!=
+PAIEMENT
+
+PARAMETRES
+!=
+RESULTAT DE CALCUL
 ```
+
+Cette séparation est structurante pour l’auditabilité du SI.
 
 ---
 
-# 42. Relation auteur polymorphe
+# 43. OLTP et analytique
 
-Deux relations restent volontairement à résoudre au MPD :
+Les relations décrites ici appartiennent au modèle opérationnel `real_estate`.
 
-```text
-DEMANDE_VERSION.auteur_type / auteur_id
-COMMENTAIRE.auteur_type / auteur_id
-```
+Elles alimentent ensuite le modèle analytique.
 
-Une base relationnelle ne peut pas faire une FK classique vers deux tables différentes.
-
-Le MPD devra donc choisir entre :
+Exemples :
 
 ```text
-A. ACTEUR
+MANDAT
+    -> warehouse.fact_mandat
+
+MANDAT_PERIODE
+    -> warehouse.fact_mandat_periode
+
+PAIEMENT
+    -> warehouse.fact_paiement
+
+PRESENTATION
+    -> warehouse.fact_presentation
 ```
 
-ou :
-
-```text
-B. separate nullable foreign keys
-```
+Les grains OLTP et OLAP restent distincts.
 
 ---
 
-# 43. Option ACTEUR
+# 44. Concepts non implémentés
 
-Une possibilité :
-
-```text
-ACTEUR
-├── id_acteur
-├── type
-└── ...
-```
-
-puis :
+Les concepts suivants ne font pas partie du MLD opérationnel actuellement vérifié :
 
 ```text
-CLIENT -> ACTEUR
-CHASSEUR -> ACTEUR
+OFFRE
+FACTURE
+NOTAIRE
 ```
 
-Cependant cela réintroduit partiellement une abstraction proche de l'ancien `utilisateurs`.
+Ils peuvent être ajoutés ultérieurement si le besoin métier l’exige.
 
-Cette option n'est donc pas retenue automatiquement.
+`VISITE` ne doit plus être présenté comme futur.
+
+`RENOUVELLEMENT_MANDAT` ne nécessite pas de relation autonome car il est représenté par :
+
+```text
+MANDAT_PERIODE
++
+type_periode = RENOUVELLEMENT
+```
+
+La date de l’acte authentique est actuellement portée par `VENTE`.
 
 ---
 
-# 44. Option FK séparées
+# 45. Traçabilité MCD V3 → MLD V3
 
-Alternative :
+| Concept MCD                | Relation MLD            |
+| -------------------------- | ----------------------- |
+| Client                     | CLIENT                  |
+| Chasseur                   | CHASSEUR                |
+| Identité applicative       | UTILISATEUR             |
+| Secteur                    | SECTEUR                 |
+| Mandat                     | MANDAT                  |
+| Mandat ↔ secteur           | MANDAT_SECTEUR          |
+| Période contractuelle      | MANDAT_PERIODE          |
+| Demande                    | DEMANDE                 |
+| Affectation                | DEMANDE_AFFECTATION     |
+| Version de demande         | DEMANDE_VERSION         |
+| Source                     | SOURCE                  |
+| Bien                       | BIEN                    |
+| Matching / sélection       | PRESENTATION            |
+| Feedback                   | COMMENTAIRE             |
+| Document                   | DOCUMENT                |
+| Visite                     | VISITE                  |
+| Vente                      | VENTE                   |
+| Barème                     | BAREME_COMMISSION       |
+| Configuration honoraires   | PARAMETRES_HONORAIRES   |
+| Configuration rémunération | PARAMETRES_REMUNERATION |
+| Palier de performance      | PALIER_PERFORMANCE      |
+| Calcul figé / paiement     | PAIEMENT                |
+| Audit                      | AUDIT_LOG               |
+
+---
+
+# 46. Évolution MLD V2 → V3
+
+## Ajouts
+
+```text
+UTILISATEUR
+MANDAT_PERIODE
+DEMANDE_AFFECTATION
+VISITE
+VENTE
+PARAMETRES_HONORAIRES
+PARAMETRES_REMUNERATION
+PALIER_PERFORMANCE
+AUDIT_LOG
+```
+
+## DEMANDE corrigée
+
+Avant :
+
+```text
+DEMANDE
+    -> mandat obligatoire
+```
+
+Maintenant :
+
+```text
+DEMANDE
+    -> mandat optionnel
+```
+
+Cela supporte le besoin pré-mandat.
+
+---
+
+## DEMANDE_VERSION corrigée
+
+Avant :
+
+```text
+auteur_type
+auteur_id
+```
+
+Maintenant :
 
 ```text
 auteur_client_id
@@ -1442,595 +2502,194 @@ auteur_chasseur_id
 auteur_systeme
 ```
 
-avec contrainte garantissant qu'un seul auteur logique est défini.
-
-Cette approche sera probablement plus lisible pour le MVP.
+avec exclusivité logique de l’auteur.
 
 ---
 
-# 45. Migration héritée
+## MANDAT corrigé
 
-Mapping principal :
+La durée et les renouvellements ne sont plus implicitement représentés uniquement par les dates du mandat.
 
-```text
-utilisateurs.role = client
-        |
-        v
-CLIENT
-```
+Ils disposent de :
 
 ```text
-utilisateurs.role = chasseur
-        |
-        v
-CHASSEUR
+MANDAT_PERIODE
 ```
 
 ---
 
-# 46. Migration taux commission
+## VISITE corrigée
+
+Avant :
 
 ```text
-utilisateurs.taux_commission
-        |
-        v
-BAREME_COMMISSION
-```
-
-Une ligne initiale sera créée pour chaque chasseur disposant d'un taux.
-
-Le barème hérité ne contient pas nécessairement l'historique complet ; cette limitation devra être documentée.
-
----
-
-# 47. Migration budget_max
-
-Le champ hérité :
-
-```text
-utilisateurs.budget_max
-```
-
-associé aux clients est une anomalie de modélisation.
-
-La valeur doit être migrée vers la première demande structurée lorsqu'elle peut être reliée correctement.
-
----
-
-# 48. Migration mandat
-
-```text
-legacy mandats
-      |
-      v
-MANDAT
-```
-
-Les informations existantes telles que :
-
-```text
-client_id
-chasseur_id
-secteur_id
-exclusif
-date_debut
-statut
-```
-
-seront migrées.
-
----
-
-# 49. description_recherche
-
-```text
-legacy mandats.description_recherche
-```
-
-doit être conservé comme source de migration.
-
-La transformation vers :
-
-```text
-DEMANDE_VERSION
-```
-
-ne doit pas inventer des valeurs non déductibles.
-
----
-
-# 50. Première demande
-
-Pour chaque mandat hérité :
-
-```text
-MANDAT
-   |
-   v
-DEMANDE
-   |
-   v
-DEMANDE_VERSION 1
-```
-
-peut être créé.
-
-Les champs structurables sont alimentés lorsque l'information est disponible.
-
----
-
-# 51. StarterPack Generator
-
-Les données générées :
-
-```text
-recherches.csv
-annonces.csv
-json/*.json
-```
-
-ne sont pas des données héritées.
-
-Elles alimenteront les pipelines de test et d'ingestion.
-
----
-
-# 52. Mapping recherche générée
-
-```text
-recherches.reference
-      |
-      v
-DEMANDE / external reference if needed
-```
-
-```text
-recherches.ville
-      |
-      v
-DEMANDE_VERSION.ville
-```
-
-```text
-budget_max
-surface_min
-type_bien
-...
-      |
-      v
-DEMANDE_VERSION
-```
-
----
-
-# 53. Mapping annonce générée
-
-Les annonces passent d'abord par :
-
-```text
-RAW
-```
-
-puis :
-
-```text
-STAGING
-```
-
-avant d'alimenter :
-
-```text
-SOURCE
-BIEN
-```
-
----
-
-# 54. Internationalisation
-
-Le modèle logique évite de supposer que :
-
-```text
-code_postal
-```
-
-est toujours un code postal français.
-
-La conception physique devra éviter des types ou validations trop franco-françaises.
-
----
-
-# 55. Performance chasseur
-
-Les indicateurs de performance ne deviennent pas nécessairement une table OLTP.
-
-Ils peuvent être calculés dans :
-
-```text
-warehouse
-analytics
-```
-
-à partir de :
-
-```text
-MANDAT
-PRESENTATION
-PAIEMENT
 future VISITE
 ```
 
----
-
-# 56. Extensions futures
-
-Le parcours complet peut nécessiter :
+Maintenant :
 
 ```text
 VISITE
-OFFRE
-FACTURE
-ACTE
-RENOUVELLEMENT_MANDAT
+=
+relation implémentée
 ```
-
-Elles ne font pas partie du MLD V2 minimum.
 
 ---
 
-# 57. Pourquoi ne pas tout ajouter immédiatement
+## Transaction corrigée
 
-Le modèle doit satisfaire :
+Le MLD V2 ne possédait pas de relation explicite de vente.
+
+Le MLD V3 ajoute :
 
 ```text
-current required deliverables
+VENTE
+```
+
+pour représenter l’acte authentique.
+
+---
+
+## Rémunération corrigée
+
+Avant :
+
+```text
+BAREME_COMMISSION
 +
-future AI/data requirements
+PAIEMENT simplifié
 ```
 
-sans créer prématurément une application métier complète.
-
----
-
-# 58. Dépendances de création
-
-Ordre logique :
+Maintenant :
 
 ```text
-1. CLIENT
-2. CHASSEUR
-3. SECTEUR
-4. SOURCE
-
-5. MANDAT
-6. MANDAT_SECTEUR
-
-7. DEMANDE
-8. DEMANDE_VERSION
-
-9. BIEN
-
-10. PRESENTATION
-11. COMMENTAIRE
-12. DOCUMENT
-
-13. BAREME_COMMISSION
-14. PAIEMENT
-```
-
----
-
-# 59. Vue relationnelle
-
-```text
-CLIENT
-   |
-   v
-MANDAT <------- CHASSEUR
-   |
-   +--------> MANDAT_SECTEUR <------ SECTEUR
-   |
-   v
-DEMANDE
-   |
-   v
-DEMANDE_VERSION
-   |
-   +-----------> PRESENTATION <---------- BIEN
-   |
-   +-----------> COMMENTAIRE <-----------+
-                                            |
-                                            +--> SOURCE
-                                            |
-                                            +--> DOCUMENT
-
-
-CHASSEUR
-    |
-    v
 BAREME_COMMISSION
-    |
-    v
-PAIEMENT <--------- MANDAT
-```
 
----
+PARAMETRES_HONORAIRES
 
-# 60. Traçabilité MCD → MLD
-
-| MCD | MLD |
-|---|---|
-| CLIENT | CLIENT |
-| CHASSEUR | CHASSEUR |
-| SECTEUR | SECTEUR |
-| MANDAT | MANDAT |
-| MANDAT ↔ SECTEUR | MANDAT_SECTEUR |
-| DEMANDE | DEMANDE |
-| DEMANDE_VERSION | DEMANDE_VERSION |
-| SOURCE | SOURCE |
-| BIEN | BIEN |
-| PRESENTATION | PRESENTATION |
-| COMMENTAIRE | COMMENTAIRE |
-| DOCUMENT | DOCUMENT |
-| BAREME_COMMISSION | BAREME_COMMISSION |
-| PAIEMENT | PAIEMENT |
-
----
-
-# 61. Différence MLD V1 → V2
-
-Ajouts :
-
-```text
-SECTEUR
-MANDAT_SECTEUR
-DEMANDE
-COMMENTAIRE
-BAREME_COMMISSION
-PAIEMENT
-```
-
-Corrections :
-
-```text
-MANDAT
-DEMANDE_VERSION
-```
-
----
-
-# 62. DEMANDE_VERSION corrigée
-
-La version précédente ne conservait pas explicitement :
-
-```text
-author
-reason
-```
-
-La V2 ajoute :
-
-```text
-auteur_type
-auteur_id
-motif_modification
-```
-
-conformément au besoin d'historisation.
-
----
-
-# 63. MANDAT corrigé
-
-La V2 ajoute :
-
-```text
-type_mandat
-date_signature
-mode_signature
-date_fin
-```
-
-pour représenter correctement le mandat légal.
-
----
-
-# 64. Commission corrigée
-
-La rémunération n'est plus un simple attribut du chasseur.
-
-```text
-CHASSEUR
-      |
-      v
-BAREME_COMMISSION
-```
-
-permet :
-
-- tranches ;
-- historique ;
-- évolution temporelle.
-
----
-
-# 65. Matching
-
-Le matching conserve le modèle :
-
-```text
-DEMANDE_VERSION
+PARAMETRES_REMUNERATION
         |
         v
-PRESENTATION
-        ^
+PALIER_PERFORMANCE
+
+VENTE
         |
-       BIEN
+        v
+CALCUL
+        |
+        v
+PAIEMENT snapshot
 ```
-
-Cette partie de notre conception précédente reste pertinente.
 
 ---
 
-# 66. Feedback métier
+# 47. Statut
 
-Les commentaires sont désormais modélisés séparément :
-
-```text
-DEMANDE_VERSION
-      +
-BIEN
-      +
-AUTHOR
-      |
-      v
-COMMENTAIRE
-```
-
-Cela correspond mieux au parcours utilisateur officiel.
+| Élément                    | Statut                     |
+| -------------------------- | -------------------------- |
+| MCD V3                     | COMPLETE                   |
+| Relations OLTP             | RUNTIME VERIFIED           |
+| 23 tables OLTP             | RUNTIME VERIFIED           |
+| Physical columns           | RUNTIME VERIFIED           |
+| PK/FK/CHECK constraints    | RUNTIME VERIFIED           |
+| Pre-mandate demand         | IMPLEMENTED                |
+| Demand assignment          | RUNTIME VERIFIED           |
+| Mandate periods            | RUNTIME VERIFIED           |
+| Six-month lifecycle        | RUNTIME VERIFIED           |
+| Authentication identity    | IMPLEMENTED                |
+| Explicit authorship        | IMPLEMENTED                |
+| Matching / presentation    | RUNTIME VERIFIED           |
+| Visit                      | RUNTIME VERIFIED           |
+| Sale                       | RUNTIME VERIFIED           |
+| Remuneration configuration | IMPLEMENTED                |
+| Remuneration calculation   | RUNTIME VERIFIED           |
+| Payment lifecycle          | RUNTIME VERIFIED           |
+| Audit                      | RUNTIME VERIFIED           |
+| MLD synchronization        | COMPLETE WITH THIS VERSION |
+| MPD synchronization        | NEXT                       |
 
 ---
 
-# 67. RGPD
+# 48. Conclusion
 
-Les relations les plus sensibles sont notamment :
+Le MLD V3 traduit le MCD V3 dans un modèle relationnel cohérent avec le système actuellement implémenté.
+
+La chaîne principale devient :
 
 ```text
 CLIENT
-CHASSEUR
-COMMENTAIRE
-PAIEMENT
-DOCUMENT
-```
-
-Le Data Warehouse ne devra pas recopier automatiquement toutes leurs colonnes.
-
----
-
-# 68. IA
-
-Le matching doit pouvoir fonctionner à partir de :
-
-```text
-DEMANDE_VERSION
-+
-BIEN
-```
-
-sans exposer inutilement :
-
-```text
-CLIENT
-```
-
-au modèle.
-
----
-
-# 69. MLD minimum cible
-
-Le modèle logique adopté avant MPD est :
-
-```text
-CLIENT
-CHASSEUR
-SECTEUR
-MANDAT
-MANDAT_SECTEUR
+   |
+   v
 DEMANDE
+   |
+   +--> DEMANDE_AFFECTATION --> CHASSEUR
+   |
+   v
 DEMANDE_VERSION
-SOURCE
-BIEN
+   |
+   v
 PRESENTATION
-COMMENTAIRE
-DOCUMENT
-BAREME_COMMISSION
+   |
+   v
+VISITE
+   |
+   v
+VENTE
+   |
+   v
 PAIEMENT
 ```
 
----
-
-# 70. Questions MPD
-
-Le prochain document devra décider précisément :
+avec le contexte contractuel :
 
 ```text
-PostgreSQL types
-identity strategy
-enum/check strategy
-JSONB vs criterion relation
-author FK strategy
-date_fin enforcement
-commission range enforcement
-indexes
-schema naming
-migration strategy
-```
-
----
-
-# 71. Statut
-
-| Élément | Statut |
-|---|---|
-| Legacy mapping | COMPLETE |
-| Client / hunter split | COMPLETE |
-| Sector mapping | COMPLETE |
-| Mandate correction | COMPLETE |
-| Structured demand | COMPLETE |
-| Demand history | COMPLETE |
-| Matching model | COMPLETE |
-| Comments | COMPLETE |
-| Commission model | COMPLETE |
-| Payment model | COMPLETE |
-| Generator mapping | COMPLETE |
-| Logical constraints | COMPLETE |
-| Polymorphic author strategy | TO RESOLVE IN MPD |
-| PostgreSQL types | NEXT |
-| MPD V2 | NEXT |
-| migration.sql | AFTER MPD |
-
----
-
-# 72. Conclusion
-
-Le MLD V2 traduit désormais le modèle métier attendu en un schéma relationnel cohérent.
-
-La transformation principale est :
-
-```text
-LEGACY
-utilisateurs
-secteurs
-mandats
-
-      |
-      v
-
-TARGET
-
 CLIENT
-CHASSEUR
-SECTEUR
+   |
+   v
 MANDAT
-DEMANDE
-DEMANDE_VERSION
-BIEN
-COMMENTAIRE
-PRESENTATION
+   |
+   v
+MANDAT_PERIODE
+```
+
+et le moteur financier :
+
+```text
+PARAMETRES_HONORAIRES
+        +
 BAREME_COMMISSION
+        +
+PARAMETRES_REMUNERATION
+        |
+        v
+PALIER_PERFORMANCE
+        |
+        v
+CALCUL DETERMINISTE
+        |
+        v
 PAIEMENT
 ```
 
-avec des extensions utiles pour :
+Le modèle conserve ainsi les propriétés nécessaires à une plateforme Data & IA industrialisée :
 
 ```text
-SOURCE
-DOCUMENT
+historisation
+traçabilité
+intégrité référentielle
+explicabilité
+auditabilité
+sécurité
+lineage
+analytics
+observabilité
+évolution IA
 ```
 
-Le modèle est maintenant prêt pour une traduction physique PostgreSQL.
+Le MLD est désormais suffisamment stabilisé pour reconstruire le **MPD PostgreSQL V3** à partir du schéma réellement déployé.
 
 ---
 
-**MLD V2 — READY FOR MPD POSTGRESQL V2**
+**MLD V3 — ALIGNED WITH MCD V3 AND RUNTIME MODEL THROUGH MIGRATION 012**
+
+**NEXT: MPD PostgreSQL V3**

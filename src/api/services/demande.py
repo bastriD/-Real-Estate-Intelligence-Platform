@@ -53,7 +53,13 @@ class DemandeService:
         return self.repository.list_accessible_by_chasseur(
             chasseur_id
         )
-
+    def list_demandes_for_client(
+        self,
+        client_id: int,
+    ) -> list[Demande]:
+        return self.repository.list_owned_by_client(
+            client_id
+        )
     def get_demande(
         self,
         demande_id: int,
@@ -99,6 +105,19 @@ class DemandeService:
         self,
         payload: DemandeCreate,
     ) -> tuple[Demande, DemandeVersion]:
+        self._ensure_client_exists(payload.id_client)
+
+        if payload.id_mandat is not None:
+            self._ensure_mandat_matches_client(
+                mandat_id=payload.id_mandat,
+                client_id=payload.id_client,
+            )
+
+        self._validate_author(
+            payload.auteur_client_id,
+            payload.auteur_chasseur_id,
+        )
+
         if (
             payload.reference_demande is not None
             and self.repository.get_by_reference(
@@ -111,19 +130,10 @@ class DemandeService:
                 f"{payload.reference_demande} already exists"
             )
 
-        if payload.id_mandat is not None:
-            self._ensure_mandat_exists(
-                payload.id_mandat
-            )
-
-        self._validate_author(
-            payload.auteur_client_id,
-            payload.auteur_chasseur_id,
-        )
-
         demande = Demande(
             reference_demande=payload.reference_demande,
             statut=payload.statut.value,
+            id_client=payload.id_client,
             id_mandat=payload.id_mandat,
         )
 
@@ -296,19 +306,86 @@ class DemandeService:
                 "database constraint"
             ) from exc
 
-    def _ensure_mandat_exists(
+    def link_mandat(
         self,
+        demande_id: int,
         mandat_id: int,
+    ) -> Demande:
+        demande = self.get_demande(demande_id)
+
+        if demande.id_client is None:
+            raise DemandeValidationError(
+                "Demande has no client owner and "
+                "cannot be linked to a mandat"
+            )
+
+        if demande.id_mandat is not None:
+            if demande.id_mandat == mandat_id:
+                return demande
+
+            raise DemandeValidationError(
+                "Demande is already linked to another mandat"
+            )
+
+        self._ensure_mandat_matches_client(
+            mandat_id=mandat_id,
+            client_id=demande.id_client,
+        )
+
+        demande.id_mandat = mandat_id
+
+        try:
+            self.session.commit()
+            self.session.refresh(demande)
+
+            return demande
+
+        except IntegrityError as exc:
+            self.session.rollback()
+
+            raise DemandeValidationError(
+                "Mandat linking violates a "
+                "database constraint"
+            ) from exc
+
+
+    def _ensure_client_exists(
+        self,
+        client_id: int,
     ) -> None:
         statement = select(
-            Mandat.id_mandat
+            Client.id_client
+        ).where(
+            Client.id_client == client_id
+        )
+
+        if self.session.scalar(statement) is None:
+            raise ClientNotFoundForDemandeError(
+                f"Client {client_id} not found"
+            )
+
+    def _ensure_mandat_matches_client(
+        self,
+        mandat_id: int,
+        client_id: int,
+    ) -> None:
+        statement = select(
+            Mandat.id_client
         ).where(
             Mandat.id_mandat == mandat_id
         )
 
-        if self.session.scalar(statement) is None:
+        mandat_client_id = self.session.scalar(statement)
+
+        if mandat_client_id is None:
             raise MandatNotFoundForDemandeError(
                 f"Mandat {mandat_id} not found"
+            )
+
+        if mandat_client_id != client_id:
+            raise DemandeValidationError(
+                "Demande client does not match "
+                "mandat client"
             )
 
     def _validate_author(
