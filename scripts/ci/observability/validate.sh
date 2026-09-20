@@ -14,11 +14,11 @@ from pathlib import Path
 dashboards = {
     "observability/grafana/dashboards/real-estate-business-platform.json": {
         "uid": "real-estate-platform",
-        "title": "Real Estate â€” Business KPIs & Platform",
+        "title": "Real Estate \u2014 Business KPIs & Platform",
     },
     "observability/grafana/dashboards/real-estate-data-quality.json": {
         "uid": "real-estate-data-quality",
-        "title": "Real Estate â€” Data Quality",
+        "title": "Real Estate \u2014 Data Quality",
     },
 }
 

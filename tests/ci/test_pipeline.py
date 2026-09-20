@@ -6,11 +6,13 @@ No runner, cluster, registry, credentials, or network is needed.
 
 import ast
 import copy
+import json
 import os
 from pathlib import Path
 import re
 import shutil
 import subprocess
+import sys
 
 import pytest
 import yaml
@@ -248,6 +250,40 @@ def bash_executable():
         if candidate.exists():
             return str(candidate)
     return shutil.which("bash")
+
+
+@pytest.mark.parametrize("broken_dashboard", [None, "real-estate-business-platform.json", "real-estate-data-quality.json"])
+def test_observability_validation_executes_and_rejects_wrong_titles(tmp_path, broken_dashboard):
+    bash = bash_executable()
+    if not bash:
+        pytest.skip("Bash is not installed")
+    working_directory = ROOT
+    if broken_dashboard:
+        working_directory = tmp_path / "checkout"
+        shutil.copytree(ROOT / "observability", working_directory / "observability")
+        shutil.copytree(ROOT / "deploy/observability", working_directory / "deploy/observability")
+        dashboard_path = working_directory / "observability/grafana/dashboards" / broken_dashboard
+        dashboard = json.loads(dashboard_path.read_text(encoding="utf-8"))
+        dashboard["title"] = "Unexpected dashboard title"
+        dashboard_path.write_text(json.dumps(dashboard), encoding="utf-8")
+    # Use the test interpreter on Windows too; execute the actual sourced script
+    # with fail-fast runner semantics rather than only checking its shell syntax.
+    result = subprocess.run(
+        [bash, "-e", "-o", "pipefail", "-c",
+         'python() { "$CI_TEST_PYTHON" "$@"; }; . "$CI_PROJECT_DIR/scripts/ci/observability/validate.sh"'],
+        cwd=working_directory, capture_output=True, text=True, encoding="utf-8",
+        env={**os.environ, "CI_PROJECT_DIR": ROOT.as_posix(),
+             "CI_TEST_PYTHON": Path(sys.executable).as_posix(),
+             "PYTHONIOENCODING": "utf-8", "PYTHONPYCACHEPREFIX": str(tmp_path / "pycache")},
+    )
+    if broken_dashboard:
+        assert result.returncode != 0
+        assert f"{broken_dashboard}: unexpected Grafana dashboard title" in result.stderr
+        assert "Observability validation succeeded." not in result.stdout
+    else:
+        assert result.returncode == 0, result.stdout + result.stderr
+        assert "All Grafana dashboards validated successfully." in result.stdout
+        assert "Observability validation succeeded." in result.stdout
 
 
 @pytest.mark.parametrize("name", sorted(JOBS))
