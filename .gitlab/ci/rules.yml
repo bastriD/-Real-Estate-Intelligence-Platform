@@ -1,0 +1,42 @@
+# Shared selection rules keep required producers and consumers in the same pipeline.
+.ai-release:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      changes:
+        - src/**/*
+        - tests/ai/**/*
+        - requirements-backend.txt
+        - requirements-ai.txt
+        - requirements-ai-training.txt
+        - requirements-ai-mlops.txt
+        - deploy/docker/Dockerfile.ai-mlops
+        - deploy/mlops/**/*
+        - .gitlab/ci/ai.yml
+        - .gitlab/ci/ai-mlops.yml
+        - .gitlab/ci/ai-model-comparison.yml
+        - .gitlab/ci/rules.yml
+        - scripts/ci/**/*
+        - .gitlab-ci.yml
+
+.governance-validation:
+  rules:
+    - changes:
+        - governance/**/*
+        - deploy/openmetadata/**/*
+        - .gitlab/ci/governance.yml
+        - .gitlab/ci/openmetadata.yml
+        - .gitlab/ci/rules.yml
+        - scripts/ci/**/*
+        - .gitlab-ci.yml
+
+.governance-release:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      changes:
+        - governance/**/*
+        - deploy/openmetadata/**/*
+        - .gitlab/ci/governance.yml
+        - .gitlab/ci/openmetadata.yml
+        - .gitlab/ci/rules.yml
+        - scripts/ci/**/*
+        - .gitlab-ci.yml

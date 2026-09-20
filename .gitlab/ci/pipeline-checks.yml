@@ -1,0 +1,21 @@
+pipeline:validate:
+  stage: validate
+  tags:
+    - docker
+  image: python:3.12-slim
+  before_script:
+    - python -m pip install 'PyYAML>=6,<7' 'pytest>=8,<9'
+  script:
+    - python -m pytest tests/ci -q --junitxml=ci-tests.xml
+  artifacts:
+    when: always
+    reports:
+      junit: ci-tests.xml
+    expire_in: 14 days
+  rules:
+    - changes:
+        - .gitlab-ci.yml
+        - .gitlab/ci/**/*
+        - scripts/ci/**/*
+        - tests/ci/**/*
+        - pipelines/airflow/**/*

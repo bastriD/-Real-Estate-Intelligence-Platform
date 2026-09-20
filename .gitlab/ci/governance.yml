@@ -1,95 +1,37 @@
+# Job configuration only; implementation lives in scripts/ci/.
 governance:validate:
+  extends: .governance-validation
   stage: validate
-
   tags:
     - docker
-
   image: python:3.12-slim
-
   before_script:
     - python --version
     - pip install --no-cache-dir -r governance/requirements.txt
-
   script:
-    - echo "Validating Governance-as-Code files..."
-
-    # Python syntax
-    - python -m py_compile governance/scripts/main.py
-
-    # JSON syntax
-    - python -m json.tool governance/docs/governance-config.json > /dev/null
-    - python -m json.tool governance/glossary/real_estate_glossary.json > /dev/null
-    - python -m json.tool governance/ownership/real_estate_ownership.json > /dev/null
-    - python -m json.tool governance/quality/real_estate_quality.json > /dev/null
-    - python -m json.tool governance/tagging/real_estate_tags.json > /dev/null
-    - python -m json.tool governance/tagging/real_estate_data_layers.json > /dev/null
-    - python -m json.tool governance/metrics/real_estate_metrics.json > /dev/null
-    - python -m json.tool governance/descriptions/real_estate_descriptions.json > /dev/null
-    - echo "Governance-as-Code validation succeeded."
-
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-      changes:
-        - governance/**/*
-        - deploy/openmetadata/governance/**/*
-        - .gitlab/ci/governance.yml
-        - .gitlab/ci/openmetadata.yml
-        - .gitlab-ci.yml
-
+    - . "$CI_PROJECT_DIR/scripts/ci/governance/validate.sh"
 
 governance:build-image:
-  stage: deploy
-
+  resource_group: governance-build-image
+  extends: .governance-release
+  stage: build
   tags:
     - docker
-
   image: docker:27.5.1
-
   needs:
     - job: governance:validate
       artifacts: false
-
+    - job: pipeline:validate
+      artifacts: false
+      optional: true
   variables:
-    IMAGE_NAME: "$CI_REGISTRY_IMAGE/real-estate-governance"
-    IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
-
+    IMAGE_NAME: $CI_REGISTRY_IMAGE/real-estate-governance
+    IMAGE_TAG: $CI_COMMIT_SHORT_SHA
   before_script:
     - docker version
     - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
-
   script:
-    - echo "Building Real Estate Governance image..."
-    - echo "Governance image tag = $IMAGE_TAG"
-    - echo "Governance image = $IMAGE_NAME:$IMAGE_TAG"
-
-    - |
-      docker build \
-        -f governance/Dockerfile \
-        -t "$IMAGE_NAME:$IMAGE_TAG" \
-        -t "$IMAGE_NAME:latest" \
-        governance
-
-    - echo "Pushing immutable governance image..."
-    - docker push "$IMAGE_NAME:$IMAGE_TAG"
-
-    - echo "Pushing latest governance image..."
-    - docker push "$IMAGE_NAME:latest"
-
-    - docker image inspect "$IMAGE_NAME:$IMAGE_TAG" > /dev/null
-    - echo "Governance image published successfully."
-
-    - echo "GOVERNANCE_IMAGE_TAG=$CI_COMMIT_SHORT_SHA" > governance-image.env
-    - cat governance-image.env
-
+    - . "$CI_PROJECT_DIR/scripts/ci/governance/build-image.sh"
   artifacts:
     reports:
       dotenv: governance-image.env
-
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-      changes:
-        - governance/**/*
-        - deploy/openmetadata/governance/**/*
-        - .gitlab/ci/governance.yml
-        - .gitlab/ci/openmetadata.yml
-        - .gitlab-ci.yml
