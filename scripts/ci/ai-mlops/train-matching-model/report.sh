@@ -36,7 +36,7 @@ echo "Informative demande_version groups only"
 
 echo
 echo "Split:"
-echo "Frozen group-aware split V1"
+echo "Reproducible runtime-group-v2 split with dataset fingerprint"
 
 echo
 echo "Model:"

@@ -365,3 +365,23 @@ def test_ci_files_stay_small_and_jobs_reference_existing_scripts():
             commands = job.get(section, [])
             assert all(len(command.splitlines()) <= 10 for command in commands)
             expand_commands(commands)
+
+
+@pytest.mark.parametrize("script", sorted([
+    * (ROOT / "scripts/ci/ai-mlops").glob("*-after.sh"),
+    * (ROOT / "scripts/ci/ai-model-comparison").glob("*-after.sh"),
+]))
+def test_mlops_cleanup_runs_without_cluster_access(tmp_path, script):
+    bash = bash_executable()
+    if not bash:
+        pytest.skip("Bash is not installed")
+    # Diagnostics must tolerate an unavailable cluster. Only temporary test
+    # files can be removed, and no kubectl executable is invoked.
+    result = subprocess.run(
+        [bash, "-e", "-o", "pipefail", "-c",
+         'kubectl() { return 1; }; . "$CI_TEST_SCRIPT"'],
+        cwd=ROOT, capture_output=True, text=True,
+        env={**os.environ, "CI_PROJECT_DIR": tmp_path.as_posix(),
+             "CI_JOB_ID": "cleanup-test", "CI_TEST_SCRIPT": script.as_posix()},
+    )
+    assert result.returncode == 0, result.stdout + result.stderr

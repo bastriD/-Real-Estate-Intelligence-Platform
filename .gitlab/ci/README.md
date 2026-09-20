@@ -107,6 +107,10 @@ automatic, adding a disposable PostgreSQL migration suite and turning MLOps
 jobs into scheduled-only experiments are follow-up changes. They require a
 separate rollout because they change the current operational workflow. MLOps
 jobs still reconstruct their own datasets; they are not a new artifact chain.
+Training and comparison use `src/ai/matching/split_validation.py` to validate
+the current informative dataset and record dataset/split fingerprints under
+`runtime-group-v2`. The historical 11-group V1 benchmark no longer gates those
+live jobs. Check fingerprints before comparing results from separate runs.
 
 ## Verification
 

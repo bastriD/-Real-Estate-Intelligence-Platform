@@ -2,6 +2,11 @@
 
 Real-estate business API and Data & AI platform for versioned search requirements, property matching, analytics, and governance.
 
+**For the next agent:** start with [AGENTS.md](AGENTS.md) and the
+[current repository and CI map](docs/70-DEVOPS/REPOSITORY-AND-CI-MAP.md).
+CI configuration and extracted scripts are documented in the
+[CI guide](.gitlab/ci/README.md).
+
 **Implementation snapshot: 2026-09-11.** This repository contains an implemented FastAPI backend, PostgreSQL migrations, data pipelines, deterministic matching, ML experiment tooling, automated tests, and deployment configuration. Broader enterprise documents also describe future capabilities; documentation alone does not establish that a capability is deployed.
 
 ## Current architecture
@@ -41,6 +46,8 @@ Business services and deterministic matching are packaged in one backend applica
 | `observability/` | Metrics collectors, dashboards, alert rules |
 | `deploy/` | Dockerfiles, Kubernetes/Kustomize resources, OpenMetadata and MLOps jobs |
 | `.gitlab/ci/` | Validation, tests, image builds, database and GitOps workflows |
+| `scripts/ci/` | CI implementation scripts and named phases; YAML contains job configuration |
+| `tests/ci/` | Offline pipeline selection, dependency, script and helper regression checks |
 | `tests/backend/`, `tests/data/`, `tests/ai/` | Executable Python test suites |
 | `docs/`, `evidence/` | Architecture, implementation documentation, evidence |
 
@@ -62,6 +69,7 @@ This uses the backend CI test selection and coverage threshold. For all Python t
 
 ```powershell
 .venv/Scripts/python.exe -m pip install -r requirements-ai-training.txt
+.venv/Scripts/python.exe -m pip install 'PyYAML>=6,<7'
 .venv/Scripts/python.exe -m pytest tests -q
 ```
 

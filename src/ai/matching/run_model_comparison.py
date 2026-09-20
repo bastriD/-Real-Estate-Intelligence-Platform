@@ -20,12 +20,7 @@ from src.ai.matching.model_comparison import (
 from src.ai.matching.model_training import (
     train_and_evaluate_logistic_regression,
 )
-from src.ai.matching.run_model_training import (
-    validate_frozen_split,
-)
-from src.ai.matching.run_training_dataset_split import (
-    validate_split_against_source,
-)
+from src.ai.matching.split_validation import validate_runtime_split
 from src.ai.matching.run_training_dataset_validation import (
     DATABASE_HOST,
     DATABASE_NAME,
@@ -394,15 +389,6 @@ def main() -> None:
             ),
         )
 
-        source_group_ids = set(
-            training_dataset[
-                "id_demande_version"
-            ]
-            .astype(int)
-            .unique()
-            .tolist()
-        )
-
         print(
             "Informative groups: "
             f"{informative_summary['groups']}"
@@ -415,7 +401,7 @@ def main() -> None:
 
         print()
         print(
-            "Recreating frozen group-aware split..."
+            "Creating reproducible group-aware split for the current dataset..."
         )
 
         split = create_group_aware_split(
@@ -432,23 +418,14 @@ def main() -> None:
         )
 
         split_validation = (
-            validate_split_against_source(
+            validate_runtime_split(
                 split=split,
-                source_group_ids=(
-                    source_group_ids
-                ),
-                source_row_count=(
-                    len(training_dataset)
-                ),
+                source_dataset=training_dataset,
             )
         )
 
-        validate_frozen_split(
-            split_details=split_summary(split),
-        )
-
         print(
-            "Frozen split validation: PASSED"
+            "Runtime split validation: PASSED"
         )
 
         split_information = (
@@ -456,6 +433,10 @@ def main() -> None:
                 split
             )
         )
+
+        split_information.update(split_validation)
+        print(f"Dataset fingerprint: {split_information['dataset_fingerprint']}")
+        print(f"Split fingerprint: {split_information['split_fingerprint']}")
 
         print(
             "TRAIN groups: "

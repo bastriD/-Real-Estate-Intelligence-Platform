@@ -299,7 +299,9 @@ def log_supervised_training(
         "split_strategy": (
             "group-aware-id-demande-version"
         ),
-        "split_version": "frozen-v1",
+        "split_version": split_summary.get("split_version", "frozen-v1"),
+        "dataset_fingerprint": split_summary.get("dataset_fingerprint", "unrecorded"),
+        "split_fingerprint": split_summary.get("split_fingerprint", "unrecorded"),
         "data_source": (
             "postgresql-runtime-reconstruction"
         ),
@@ -354,7 +356,7 @@ def log_supervised_training(
             )
         ),
         "random_state": 42,
-        "split_version": "frozen-v1",
+        "split_version": split_summary.get("split_version", "frozen-v1"),
     }
 
     for split_name in (

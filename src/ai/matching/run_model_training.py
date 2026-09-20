@@ -9,6 +9,8 @@ from typing import Any
 
 import psycopg
 
+from src.ai.matching.split_validation import validate_runtime_split
+
 from src.ai.matching.dataset_split import (
     DEFAULT_RANDOM_STATE,
     DEFAULT_TEST_FRACTION,
@@ -95,8 +97,9 @@ def validate_frozen_split(
     """
     Validate the expected reproducible V1 group-aware split.
 
-    These group assignments were previously validated against the real
-    PostgreSQL dataset and are intentionally frozen for fair comparisons.
+    Historical benchmark compatibility only. Live training and comparison use
+    validate_runtime_split so new generated groups receive their own versioned
+    split rather than being mistaken for this fixed 11-group benchmark.
     """
 
     expected_train_groups = {
@@ -491,7 +494,7 @@ def print_training_summary(
     print()
 
     print(
-        "FROZEN GROUP-AWARE SPLIT V1"
+        "REPRODUCIBLE GROUP-AWARE SPLIT"
     )
     print(
         "----------------------------------------------"
@@ -774,7 +777,7 @@ def main() -> None:
 
         print()
         print(
-            "Creating frozen group-aware split..."
+            "Creating reproducible group-aware split for the current dataset..."
         )
 
         split = create_group_aware_split(
@@ -795,15 +798,18 @@ def main() -> None:
         )
 
         frozen_split_validation = (
-            validate_frozen_split(
-                split_details=(
-                    split_details
-                )
+            validate_runtime_split(
+                split=split,
+                source_dataset=informative_dataset,
             )
         )
 
+        split_details.update(frozen_split_validation)
+        print(f"Dataset fingerprint: {split_details['dataset_fingerprint']}")
+        print(f"Split fingerprint: {split_details['split_fingerprint']}")
+
         print(
-            "Frozen split validation: PASSED"
+            "Runtime split validation: PASSED"
         )
 
         print()

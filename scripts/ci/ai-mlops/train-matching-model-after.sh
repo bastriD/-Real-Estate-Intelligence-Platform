@@ -24,4 +24,3 @@ kubectl \
   job/real-estate-matching-model-training \
   --all-containers=true || true
 rm -f ${CI_PROJECT_DIR}/.ci-tmp/${CI_JOB_ID}/real-estate-matching-model-training.yaml
-- .gitlab-ci.yml
