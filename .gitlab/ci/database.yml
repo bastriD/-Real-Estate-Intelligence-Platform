@@ -91,6 +91,10 @@ database:migrate-013:
   script:
     - . "$CI_PROJECT_DIR/scripts/ci/database/migrate-013.sh"
 
+database:migrate-014:
+  extends: .database-operation
+  script:
+    - . "$CI_PROJECT_DIR/scripts/ci/database/migrate-014.sh"
 database:test-schema:
   extends: .database-operation
   script:
@@ -146,6 +150,11 @@ database:test-demande-client-ownership:
   script:
     - . "$CI_PROJECT_DIR/scripts/ci/database/test-demande-client-ownership.sh"
 
+database:test-offre-workflow:
+  extends: .database-operation
+  script:
+    - . "$CI_PROJECT_DIR/scripts/ci/database/test-offre-workflow.sh"
+    
 database:test-oltp-queries:
   extends: .database-operation
   script:

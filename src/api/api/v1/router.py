@@ -33,6 +33,9 @@ from src.api.api.v1.endpoints.remunerations import (
 from src.api.api.v1.endpoints.ventes import (
     router as ventes_router,
 )
+from src.api.api.v1.endpoints.offres import (
+    router as offres_router,
+)
 from src.api.api.v1.endpoints.visites import (
     router as visites_router,
 )
@@ -66,6 +69,9 @@ api_router.include_router(
 )
 api_router.include_router(
     visites_router
+)
+api_router.include_router(
+    offres_router
 )
 api_router.include_router(
     ventes_router
