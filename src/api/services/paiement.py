@@ -306,13 +306,13 @@ class PaiementService:
             paiement.droit_remuneration
             is False
             and statut_cible
-            != "ANNULE"
+            not in {"RECU", "ANNULE"}
         ):
             raise PaiementTransitionError(
                 (
                     "A payment without "
                     "remuneration entitlement "
-                    "can only be cancelled"
+                    "can only record company-fee receipt or be cancelled"
                 )
             )
 

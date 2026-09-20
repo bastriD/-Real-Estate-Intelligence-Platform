@@ -13,6 +13,13 @@ test -f database/migrations/010_transaction_remuneration.sql
 test -f database/migrations/011_initial_remuneration_configuration.sql
 test -f database/migrations/012_chasseur_entry_date_backfill.sql
 test -f database/migrations/013_demande_client_ownership.sql
+test -f database/migrations/014_offre_workflow.sql
+test -f database/migrations/015_facture_client.sql
+test -f database/tests/017_offre_workflow.sql
+test -f database/tests/018_facture_client.sql
+grep -q 'CREATE TABLE real_estate.facture_client' database/migrations/015_facture_client.sql
+grep -q '^COMMIT;' database/migrations/015_facture_client.sql
+grep -q '^ROLLBACK;' database/tests/018_facture_client.sql
 test -f database/tests/001_schema_structure.sql
 test -f database/tests/002_legacy_migration.sql
 test -f database/tests/003_oltp_constraints.sql

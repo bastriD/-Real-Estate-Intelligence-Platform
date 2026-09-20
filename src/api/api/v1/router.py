@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from src.api.api.v1.endpoints.factures_clients import router as factures_clients_router
 
 from src.api.api.v1.endpoints.auth import (
     router as auth_router,
@@ -42,6 +43,7 @@ from src.api.api.v1.endpoints.visites import (
 
 
 api_router = APIRouter()
+api_router.include_router(factures_clients_router)
 
 api_router.include_router(
     health_router

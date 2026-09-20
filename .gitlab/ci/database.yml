@@ -95,6 +95,17 @@ database:migrate-014:
   extends: .database-operation
   script:
     - . "$CI_PROJECT_DIR/scripts/ci/database/migrate-014.sh"
+
+database:migrate-015:
+  extends: .database-operation
+  script:
+    - . "$CI_PROJECT_DIR/scripts/ci/database/migrate-015.sh"
+
+database:test-facture-client:
+  extends: .database-operation
+  script:
+    - . "$CI_PROJECT_DIR/scripts/ci/database/test-facture-client.sh"
+
 database:test-schema:
   extends: .database-operation
   script:

@@ -114,6 +114,7 @@ scripts/ci/backend/
   build-image.sh
   publish-gitops.sh
   publish-gitops/
+    check-invoice-schema.sh    Read-only migration 015 release prerequisite
     prepare.sh
     render-and-validate.sh
     publish.sh
@@ -169,9 +170,14 @@ their identical manual rules, runner selection, dependency and resource lock.
   informative groups through `src/ai/matching/split_validation.py` and record
   `runtime-group-v2` plus dataset/split fingerprints in their evidence. Compare
   independent runs only when those identities match; a seed is not a dataset snapshot.
-- All 29 database-stage operations remain manual and blocking
+- All 33 database-stage operations are manual and blocking
   (`allow_failure: false`). Migration ordering is still an operational concern;
   a common resource group serializes jobs but does not pick the migration order.
+- Client invoice migration 015 and SQL test 018 have dedicated jobs using the
+  same database template. Backend GitOps publication checks migration 015 and
+  `facture_client` table presence before writing GitOps. If the schema is absent,
+  run `database:migrate-015`, then `database:test-facture-client`, and retry
+  publication. This guard reads the database; it does not apply migrations.
 - Docker-tagged runners handle containerized checks/builds. Shell-tagged jobs
   interact with Kubernetes and the separate GitOps/DAG repositories.
 - `lab-gitops/main` publishers share a lock; individual MLOps workloads keep
@@ -268,3 +274,10 @@ pipeline. Do not run publication/migration scripts locally as a substitute.
 7. Update this map when entrypoints or conventions change. Treat root scratch
    files, ignored local environments and credentials as local context, not new
    application architecture.
+
+## 7. Client invoice increment
+
+See [GAP-BUS-003](../10-BUSINESS/GAP-BUS-003-FACTURE-CLIENT.md) for the layer map,
+receipt prerequisite, authorization, audit and live verification handoff.
+It is implemented and locally tested; the user owns commit/push and lab checks.
+Do not confuse the local PostgreSQL verification with deployed runtime evidence.

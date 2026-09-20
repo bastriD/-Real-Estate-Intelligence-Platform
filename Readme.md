@@ -113,6 +113,7 @@ Prometheus instrumentation, pipeline metrics, Grafana dashboards, and alert defi
 Start with the [documentation index](docs/README.md), then use these implementation references:
 
 - [Application architecture](docs/20-APPLICATION/01-Application-Architecture.md)
+- [Client invoice implementation and pending deployment checks](docs/10-BUSINESS/GAP-BUS-003-FACTURE-CLIENT.md)
 - [Implemented data architecture](docs/40-DATA/ARCHITECTURE-DATA-IMPLEMENTEE.md)
 - [Deterministic matching baseline](docs/50-AI/11-Matching-Baseline-Implementation.md)
 - [Labelled dataset strategy](docs/50-AI/12-Labelled-Dataset-Strategy.md)

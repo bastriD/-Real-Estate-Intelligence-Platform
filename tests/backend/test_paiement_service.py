@@ -420,7 +420,7 @@ def test_attendu_can_be_cancelled():
     )
 
 
-def test_no_entitlement_can_only_be_cancelled():
+def test_no_entitlement_can_record_company_fee_receipt():
     paiement = make_paiement(
         statut="ATTENDU",
         droit_remuneration=False,
@@ -430,17 +430,26 @@ def test_no_entitlement_can_only_be_cancelled():
         paiement=paiement
     )
 
-    with pytest.raises(
-        PaiementTransitionError
-    ):
-        service.transition(
-            10,
-            statut_cible="RECU",
-            utilisateur="admin@example.com",
-            date_reception_honoraires=(
-                date(2026, 9, 5)
-            ),
-        )
+    result = service.transition(
+        10, statut_cible="RECU", utilisateur="admin@example.com",
+        date_reception_honoraires=date(2026, 9, 5),
+    )
+    assert result.statut == "RECU"
+    assert result.date_reception_honoraires == date(2026, 9, 5)
+    assert result.droit_remuneration is False
+    service.audit.log_change.assert_called_once()
+
+
+@pytest.mark.parametrize("source,target", [
+    ("RECU", "VERIFIE"), ("VERIFIE", "PROGRAMME"), ("PROGRAMME", "PAYE"),
+])
+def test_no_entitlement_still_blocks_hunter_payment_stages(source, target):
+    paiement = make_paiement(statut=source, droit_remuneration=False)
+    service, session = make_service(paiement=paiement)
+    with pytest.raises(PaiementTransitionError):
+        service.transition(10, statut_cible=target, utilisateur="admin@example.com")
+    assert paiement.statut == source
+    session.commit.assert_not_called()
 
 
 def test_no_entitlement_can_be_cancelled():

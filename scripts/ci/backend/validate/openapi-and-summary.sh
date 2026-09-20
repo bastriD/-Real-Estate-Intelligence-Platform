@@ -28,6 +28,8 @@ required_routes = {
     "/api/v1/ready",
     "/api/v1/auth/login",
     "/api/v1/ventes",
+    "/api/v1/factures-clients",
+    "/api/v1/factures-clients/{invoice_id}",
     "/api/v1/remunerations/ventes/{vente_id}/calcul",
     "/api/v1/remunerations/ventes/{vente_id}",
     "/api/v1/remunerations/{paiement_id}",
