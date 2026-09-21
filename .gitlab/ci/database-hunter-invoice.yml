@@ -1,0 +1,10 @@
+# Uses the shared manual database runner and resource lock from database.yml.
+database:migrate-016:
+  extends: .database-operation
+  script:
+    - . "$CI_PROJECT_DIR/scripts/ci/database/migrate-016.sh"
+
+database:test-facture-chasseur:
+  extends: .database-operation
+  script:
+    - . "$CI_PROJECT_DIR/scripts/ci/database/test-facture-chasseur.sh"

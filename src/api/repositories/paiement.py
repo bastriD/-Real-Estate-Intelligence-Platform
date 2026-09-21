@@ -2,11 +2,26 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from src.api.db.models.paiement import Paiement
+from src.api.db.models.facture_chasseur import FactureChasseur
 
 
 class PaiementRepository:
     def __init__(self, db: Session):
         self.db = db
+
+    def has_conforming_invoice(self, payment_id: int) -> bool:
+        # Use current persisted financial lineage, not just an invoice status.
+        statement = select(FactureChasseur.id_facture_chasseur).join(
+            Paiement, Paiement.id_paiement == FactureChasseur.id_paiement,
+        ).where(
+            Paiement.id_paiement == payment_id,
+            Paiement.droit_remuneration.is_(True),
+            Paiement.date_reception_honoraires.is_not(None),
+            FactureChasseur.statut == "CONFORME",
+            FactureChasseur.id_chasseur == Paiement.id_chasseur_beneficiaire,
+            FactureChasseur.montant == Paiement.montant_chasseur,
+        ).limit(1)
+        return self.db.scalar(statement) is not None
 
     def get_by_id(
         self,

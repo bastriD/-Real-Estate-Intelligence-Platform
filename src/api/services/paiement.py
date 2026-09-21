@@ -110,6 +110,7 @@ class PaiementService:
         motif_annulation: (
             str | None
         ) = None,
+        commit: bool = True,
     ) -> Paiement:
         statut_cible = (
             statut_cible
@@ -153,6 +154,12 @@ class PaiementService:
                 motif_annulation
             ),
         )
+
+        if statut_cible in {"VERIFIE", "PROGRAMME", "PAYE"}:
+            if not self.repository.has_conforming_invoice(paiement_id):
+                raise PaiementTransitionError(
+                    "A conforming hunter invoice matching the payment is required"
+                )
 
         ancienne_valeur = (
             self._paiement_snapshot(
@@ -226,7 +233,11 @@ class PaiementService:
                 },
             )
 
-            self.session.commit()
+            if commit:
+                self.session.commit()
+            else:
+                # The invoice service owns the enclosing invoice/payment/audit transaction.
+                self.session.flush()
 
             self.session.refresh(
                 paiement

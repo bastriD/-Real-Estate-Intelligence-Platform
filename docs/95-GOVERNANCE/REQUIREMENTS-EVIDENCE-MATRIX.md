@@ -1357,7 +1357,17 @@ client invoice exists.
 
 ## GAP-BUS-004 --- Hunter Invoice Verification
 
-**Status:** MISSING
+**Status:** IMPLEMENTED IN REPOSITORY / LOCAL TESTS PASS / DATABASE AND RUNTIME VERIFICATION PENDING (2026-09-21)
+
+See [the implementation and handoff](../10-BUSINESS/GAP-BUS-004-FACTURE-CHASSEUR.md).
+Migration 016 adds structured hunter invoice submissions, preserved rejection
+versions and explicit ADMIN verification. Conformity checks use the existing
+payment beneficiary and remuneration snapshot; accepted review atomically
+programs the existing payment lifecycle. Direct payment advancement requires
+a matching conforming invoice. PDF/document upload, autonomous verification,
+notification delivery and immediate performance refresh are not claimed.
+
+The following describes the original gap addressed by that implementation:
 
 The hunter remuneration workflow requires evidence of the hunter
 invoice/document and its verification.

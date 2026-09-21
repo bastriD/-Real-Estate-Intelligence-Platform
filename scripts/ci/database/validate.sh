@@ -15,6 +15,11 @@ test -f database/migrations/012_chasseur_entry_date_backfill.sql
 test -f database/migrations/013_demande_client_ownership.sql
 test -f database/migrations/014_offre_workflow.sql
 test -f database/migrations/015_facture_client.sql
+test -f database/migrations/016_facture_chasseur.sql
+test -f database/tests/019_facture_chasseur.sql
+grep -q 'CREATE TABLE real_estate.facture_chasseur' database/migrations/016_facture_chasseur.sql
+grep -q '^COMMIT;' database/migrations/016_facture_chasseur.sql
+grep -q '^ROLLBACK;' database/tests/019_facture_chasseur.sql
 test -f database/tests/017_offre_workflow.sql
 test -f database/tests/018_facture_client.sql
 grep -q 'CREATE TABLE real_estate.facture_client' database/migrations/015_facture_client.sql

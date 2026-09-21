@@ -7,10 +7,13 @@ INVOICE_SCHEMA_READY="$(
       "SELECT CASE WHEN
          (SELECT COUNT(*) FROM migration_control.schema_version WHERE version = '015') = 1
          AND to_regclass('real_estate.facture_client') IS NOT NULL
+         AND (SELECT COUNT(*) FROM migration_control.schema_version WHERE version = '016') = 1
+         AND to_regclass('real_estate.facture_chasseur') IS NOT NULL
        THEN 'yes' ELSE 'no' END;"
 )"
 if [ "$INVOICE_SCHEMA_READY" != "yes" ]; then
-  echo "ERROR: migration 015 is required before backend GitOps publication."
+  echo "ERROR: migrations 015 and 016 are required before backend GitOps publication."
   echo "Run database:migrate-015 and database:test-facture-client, then retry publication."
+  echo "Also run database:migrate-016 and database:test-facture-chasseur before retrying."
   exit 1
 fi

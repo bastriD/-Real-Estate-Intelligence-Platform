@@ -1,6 +1,6 @@
 # Repository and CI map for the next agent
 
-Verified against the working tree on 2026-09-20. This describes the current
+Verified against the working tree on 2026-09-21. This describes the current
 implementation, not a proposed directory reorganization. Start with
 [AGENTS.md](../../AGENTS.md) and [the project README](../../Readme.md).
 
@@ -78,6 +78,7 @@ entrypoints. The implementation is in shell scripts, not large inline YAML.
 | `rules.yml` | Shared AI and governance rule templates | Configuration only |
 | `pipeline-checks.yml` | `pipeline:validate` | `tests/ci/test_pipeline.py` |
 | `database.yml` | SQL validation, manual migrations and operational tests | `database/*.sh` |
+| `database-hunter-invoice.yml` | Migration 016 and hunter invoice assertions; shared database template | `database/migrate-016.sh`, `database/test-facture-chasseur.sh` |
 | `warehouse.yml` | Warehouse validation and migration 003 | `warehouse/*.sh` |
 | `backend.yml` | Backend validation, image build, GitOps publication | `backend/*.sh` and phase directories |
 | `backend-tests.yml` | Backend/data test selection and coverage | `backend/tests.sh`, `backend/tests/` |
@@ -114,7 +115,7 @@ scripts/ci/backend/
   build-image.sh
   publish-gitops.sh
   publish-gitops/
-    check-invoice-schema.sh    Read-only migration 015 release prerequisite
+    check-invoice-schema.sh    Read-only migrations 015/016 release prerequisite
     prepare.sh
     render-and-validate.sh
     publish.sh
@@ -170,7 +171,7 @@ their identical manual rules, runner selection, dependency and resource lock.
   informative groups through `src/ai/matching/split_validation.py` and record
   `runtime-group-v2` plus dataset/split fingerprints in their evidence. Compare
   independent runs only when those identities match; a seed is not a dataset snapshot.
-- All 33 database-stage operations are manual and blocking
+- All 35 database-stage operations are manual and blocking
   (`allow_failure: false`). Migration ordering is still an operational concern;
   a common resource group serializes jobs but does not pick the migration order.
 - Client invoice migration 015 and SQL test 018 have dedicated jobs using the
@@ -178,6 +179,12 @@ their identical manual rules, runner selection, dependency and resource lock.
   `facture_client` table presence before writing GitOps. If the schema is absent,
   run `database:migrate-015`, then `database:test-facture-client`, and retry
   publication. This guard reads the database; it does not apply migrations.
+- Hunter invoice migration 016 and SQL test 019 add two manual jobs through
+  `database-hunter-invoice.yml`, inheriting the same resource lock. Publication
+  also requires migration 016 and `facture_chasseur`; run `database:migrate-016`
+  and `database:test-facture-chasseur` before publishing this backend version.
+  See [GAP-BUS-004](../10-BUSINESS/GAP-BUS-004-FACTURE-CHASSEUR.md) for API,
+  legacy-payment handling, file ownership and pending runtime verification.
 - Docker-tagged runners handle containerized checks/builds. Shell-tagged jobs
   interact with Kubernetes and the separate GitOps/DAG repositories.
 - `lab-gitops/main` publishers share a lock; individual MLOps workloads keep

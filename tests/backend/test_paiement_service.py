@@ -49,6 +49,7 @@ def make_service(
     )
 
     service.repository = MagicMock()
+    service.repository.has_conforming_invoice.return_value = True
     service.audit = MagicMock()
 
     service.repository.get_by_id_for_update.return_value = (
