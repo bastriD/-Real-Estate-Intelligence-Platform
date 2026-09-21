@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from src.api.api.v1.endpoints.secteurs import router as secteurs_router
 from src.api.api.v1.endpoints.factures_chasseurs import router as factures_chasseurs_router
 from src.api.api.v1.endpoints.factures_clients import router as factures_clients_router
 
@@ -44,6 +45,7 @@ from src.api.api.v1.endpoints.visites import (
 
 
 api_router = APIRouter()
+api_router.include_router(secteurs_router)
 api_router.include_router(factures_chasseurs_router)
 api_router.include_router(factures_clients_router)
 

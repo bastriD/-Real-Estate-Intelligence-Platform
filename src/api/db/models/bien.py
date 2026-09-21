@@ -7,6 +7,7 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
     Integer,
+    Index,
     Numeric,
     String,
     Text,
@@ -20,7 +21,10 @@ from src.api.db.base import Base
 
 class Bien(Base):
     __tablename__ = "bien"
+    id_secteur: Mapped[int | None] = mapped_column(BigInteger, ForeignKey(
+        "real_estate.secteur.id_secteur", name="fk_bien_secteur", ondelete="RESTRICT"))
     __table_args__ = (
+        Index("idx_bien_secteur", "id_secteur", postgresql_where=text("id_secteur IS NOT NULL")),
         UniqueConstraint(
             "id_source",
             "reference_externe",

@@ -47,8 +47,10 @@ def load_demande_version(
             active,
             id_demande,
             source_recherche_ref,
-            ingestion_batch
-        FROM real_estate.demande_version
+            ingestion_batch,
+            ARRAY(SELECT ds.id_secteur FROM real_estate.demande_version_secteur ds
+                  WHERE ds.id_demande_version = dv.id_demande_version ORDER BY ds.id_secteur) AS secteur_ids
+        FROM real_estate.demande_version dv
         WHERE id_demande_version = %s
     """
 
@@ -76,7 +78,8 @@ def load_candidate_biens(
     - same city
     - same property type
     - price <= maximum budget
-    - surface >= minimum surface
+    - surface >= minimum surface, when specified
+    - any explicitly requested sector (unmapped properties are excluded)
 
     Optional criteria such as postcode, room count, bedroom count and
     DPE are intentionally not applied here. They are ranking signals.
@@ -85,8 +88,9 @@ def load_candidate_biens(
     type_bien = demande.get("type_bien")
     budget_max = demande.get("budget_max")
     surface_min = demande.get("surface_min")
+    sector_ids = demande.get("secteur_ids") or []
 
-    if not ville:
+    if not ville and not sector_ids:
         raise ValueError(
             "The demande version must contain a city before candidate retrieval."
         )
@@ -103,33 +107,30 @@ def load_candidate_biens(
             "before candidate retrieval."
         )
 
-    if surface_min is None:
-        raise ValueError(
-            "The demande version must contain a minimum surface "
-            "before candidate retrieval."
-        )
+    conditions = ["LOWER(TRIM(type_bien)) = LOWER(TRIM(%s))", "prix <= %s", "statut = 'ACTIF'"]
+    parameters = [type_bien, budget_max]
+    if ville:
+        conditions.append("LOWER(TRIM(ville)) = LOWER(TRIM(%s))")
+        parameters.append(ville)
+    if surface_min is not None:
+        conditions.append("surface >= %s")
+        parameters.append(surface_min)
+    if sector_ids:
+        conditions.append("id_secteur = ANY(%s)")
+        parameters.append(sector_ids)
 
     sql = f"""
         SELECT
             {BIEN_COLUMNS}
         FROM real_estate.bien
-        WHERE LOWER(TRIM(ville)) = LOWER(TRIM(%s))
-          AND LOWER(TRIM(type_bien)) = LOWER(TRIM(%s))
-          AND prix <= %s
-          AND surface >= %s
-          AND statut = 'ACTIF'
+        WHERE {' AND '.join(conditions)}
         ORDER BY id_bien
     """
 
     with connection.cursor(row_factory=dict_row) as cursor:
         cursor.execute(
             sql,
-            (
-                ville,
-                type_bien,
-                budget_max,
-                surface_min,
-            ),
+            tuple(parameters),
         )
         rows = cursor.fetchall()
 

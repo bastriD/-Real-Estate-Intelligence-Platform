@@ -79,6 +79,7 @@ entrypoints. The implementation is in shell scripts, not large inline YAML.
 | `pipeline-checks.yml` | `pipeline:validate` | `tests/ci/test_pipeline.py` |
 | `database.yml` | SQL validation, manual migrations and operational tests | `database/*.sh` |
 | `database-hunter-invoice.yml` | Migration 016 and hunter invoice assertions; shared database template | `database/migrate-016.sh`, `database/test-facture-chasseur.sh` |
+| `database-search.yml` | Migration 017 and versioned search assertions; shared database template | `database/migrate-017.sh`, `database/test-demande-version-search.sh` |
 | `warehouse.yml` | Warehouse validation and migration 003 | `warehouse/*.sh` |
 | `backend.yml` | Backend validation, image build, GitOps publication | `backend/*.sh` and phase directories |
 | `backend-tests.yml` | Backend/data test selection and coverage | `backend/tests.sh`, `backend/tests/` |
@@ -171,7 +172,7 @@ their identical manual rules, runner selection, dependency and resource lock.
   informative groups through `src/ai/matching/split_validation.py` and record
   `runtime-group-v2` plus dataset/split fingerprints in their evidence. Compare
   independent runs only when those identities match; a seed is not a dataset snapshot.
-- All 35 database-stage operations are manual and blocking
+- All 37 database-stage operations are manual and blocking
   (`allow_failure: false`). Migration ordering is still an operational concern;
   a common resource group serializes jobs but does not pick the migration order.
 - Client invoice migration 015 and SQL test 018 have dedicated jobs using the
@@ -185,6 +186,12 @@ their identical manual rules, runner selection, dependency and resource lock.
   and `database:test-facture-chasseur` before publishing this backend version.
   See [GAP-BUS-004](../10-BUSINESS/GAP-BUS-004-FACTURE-CHASSEUR.md) for API,
   legacy-payment handling, file ownership and pending runtime verification.
+- Search enrichment migration 017 is required by the backend and shared matching
+  repository. Backend publication and all five matching workloads source the
+  read-only `scripts/ci/database/check-search-schema.sh` prerequisite. Run
+  `database:migrate-017`, then `database:test-demande-version-search` before
+  those workloads. [Search enrichment handoff](../10-BUSINESS/DEMANDE-VERSION-SEARCH-ENRICHMENT.md)
+  explains versioned sectors, explicit property assignment and matching policy.
 - Docker-tagged runners handle containerized checks/builds. Shell-tagged jobs
   interact with Kubernetes and the separate GitOps/DAG repositories.
 - `lab-gitops/main` publishers share a lock; individual MLOps workloads keep

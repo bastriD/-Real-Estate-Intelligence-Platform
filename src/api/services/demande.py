@@ -5,6 +5,8 @@ from sqlalchemy.orm import Session
 from src.api.db.models.chasseur import Chasseur
 from src.api.db.models.client import Client
 from src.api.db.models.demande import Demande, DemandeVersion
+from src.api.db.models.demande_version_secteur import DemandeVersionSecteur
+from src.api.db.models.secteur import Secteur
 from src.api.db.models.mandat import Mandat
 from src.api.repositories.demande import DemandeRepository
 from src.api.schemas.demande import (
@@ -106,6 +108,7 @@ class DemandeService:
         payload: DemandeCreate,
     ) -> tuple[Demande, DemandeVersion]:
         self._ensure_client_exists(payload.id_client)
+        self._validate_sectors(payload.secteur_ids, payload.ville)
 
         if payload.id_mandat is not None:
             self._ensure_mandat_matches_client(
@@ -144,6 +147,7 @@ class DemandeService:
 
             version = DemandeVersion(
                 numero_version=1,
+                secteur_links=[DemandeVersionSecteur(id_secteur=value) for value in payload.secteur_ids],
                 motif_modification=(
                     payload.motif_modification
                 ),
@@ -193,6 +197,9 @@ class DemandeService:
                 "Demande creation violates a "
                 "database constraint"
             ) from exc
+        except Exception:
+            self.session.rollback()
+            raise
 
     def create_revision(
         self,
@@ -205,6 +212,7 @@ class DemandeService:
             payload.auteur_client_id,
             payload.auteur_chasseur_id,
         )
+        self._validate_sectors(payload.secteur_ids, payload.ville)
 
         try:
             current = self.repository.get_current_version(
@@ -227,6 +235,7 @@ class DemandeService:
 
             new_version = DemandeVersion(
                 numero_version=new_version_number,
+                secteur_links=[DemandeVersionSecteur(id_secteur=value) for value in payload.secteur_ids],
                 motif_modification=(
                     payload.motif_modification
                 ),
@@ -280,6 +289,9 @@ class DemandeService:
                 "Demande revision violates a "
                 "database constraint"
             ) from exc
+        except Exception:
+            self.session.rollback()
+            raise
 
     def update_status(
         self,
@@ -348,6 +360,17 @@ class DemandeService:
                 "database constraint"
             ) from exc
 
+
+    def _validate_sectors(self, sector_ids: list[int], city: str | None) -> None:
+        if not sector_ids:
+            return
+        sectors = list(self.session.scalars(select(Secteur).where(
+            Secteur.id_secteur.in_(sector_ids), Secteur.actif.is_(True),
+        )).all())
+        if {sector.id_secteur for sector in sectors} != set(sector_ids):
+            raise DemandeValidationError("Every search sector must exist and be active")
+        if city and any(sector.ville.strip().casefold() != city.strip().casefold() for sector in sectors):
+            raise DemandeValidationError("Search sectors must belong to the requested city")
 
     def _ensure_client_exists(
         self,

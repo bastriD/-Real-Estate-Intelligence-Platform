@@ -24,6 +24,16 @@ class DPE(StrEnum):
 
 
 class DemandeVersionCriteria(BaseModel):
+    secteur_ids: list[int] = Field(default_factory=list, max_length=100)
+
+    @model_validator(mode="after")
+    def validate_sectors(self):
+        if any(value <= 0 for value in self.secteur_ids):
+            raise ValueError("secteur_ids must contain positive identifiers")
+        if len(set(self.secteur_ids)) != len(self.secteur_ids):
+            raise ValueError("secteur_ids must not contain duplicates")
+        return self
+
     ville: str | None = Field(default=None, max_length=120)
     code_postal: str | None = Field(default=None, max_length=20)
     type_bien: str | None = Field(default=None, max_length=50)
@@ -121,6 +131,7 @@ class DemandeMandatLink(BaseModel):
 
 class DemandeVersionRead(DemandeVersionCriteria):
     model_config = ConfigDict(from_attributes=True)
+    description_recherche_legacy: str | None = None
 
     id_demande_version: int
     numero_version: int

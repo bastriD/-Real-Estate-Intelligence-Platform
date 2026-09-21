@@ -1,0 +1,9 @@
+database:migrate-017:
+  extends: .database-operation
+  script:
+    - . "$CI_PROJECT_DIR/scripts/ci/database/migrate-017.sh"
+
+database:test-demande-version-search:
+  extends: .database-operation
+  script:
+    - . "$CI_PROJECT_DIR/scripts/ci/database/test-demande-version-search.sh"

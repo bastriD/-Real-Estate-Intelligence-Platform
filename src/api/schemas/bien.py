@@ -14,6 +14,7 @@ class BienStatut(StrEnum):
 
 class BienRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
+    id_secteur: int | None = None
 
     id_bien: int
     reference_externe: str

@@ -1,5 +1,5 @@
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 
 from src.api.db.models.demande import Demande, DemandeVersion
 from src.api.db.models.demande_affectation import DemandeAffectation
@@ -97,7 +97,7 @@ class DemandeRepository:
         *,
         for_update: bool = False,
     ) -> DemandeVersion | None:
-        statement = select(DemandeVersion).where(
+        statement = select(DemandeVersion).options(selectinload(DemandeVersion.secteur_links)).where(
             DemandeVersion.id_demande
             == demande_id,
             DemandeVersion.active.is_(True),
@@ -113,7 +113,7 @@ class DemandeRepository:
         demande_id: int,
     ) -> list[DemandeVersion]:
         statement = (
-            select(DemandeVersion)
+            select(DemandeVersion).options(selectinload(DemandeVersion.secteur_links))
             .where(
                 DemandeVersion.id_demande
                 == demande_id

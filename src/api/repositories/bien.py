@@ -5,6 +5,10 @@ from src.api.db.models.bien import Bien
 
 
 class BienRepository:
+    def get_for_update(self, bien_id: int) -> Bien | None:
+        return self.session.scalar(select(Bien).where(Bien.id_bien == bien_id)
+            .with_for_update().execution_options(populate_existing=True))
+
     def __init__(self, session: Session) -> None:
         self.session = session
 

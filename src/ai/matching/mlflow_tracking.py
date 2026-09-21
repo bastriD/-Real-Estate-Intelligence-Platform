@@ -105,6 +105,7 @@ def log_deterministic_evaluation(
         )
 
     parameters = {
+        "secteur_ids": json.dumps(demande.get("secteur_ids") or []),
         "ville": demande.get("ville"),
         "code_postal": demande.get("code_postal"),
         "type_bien": demande.get("type_bien"),

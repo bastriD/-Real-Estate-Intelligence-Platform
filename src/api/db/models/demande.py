@@ -15,9 +15,10 @@ from sqlalchemy import (
 )
 
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.api.db.base import Base
+from src.api.db.models.demande_version_secteur import DemandeVersionSecteur
 
 
 class Demande(Base):
@@ -77,6 +78,15 @@ class Demande(Base):
 
 class DemandeVersion(Base):
     __tablename__ = "demande_version"
+    secteur_links: Mapped[list[DemandeVersionSecteur]] = relationship(
+        cascade="all, delete-orphan", passive_deletes=True,
+        order_by=DemandeVersionSecteur.id_secteur,
+    )
+
+    @property
+    def secteur_ids(self) -> list[int]:
+        return [link.id_secteur for link in self.secteur_links]
+
     __table_args__ = (
         CheckConstraint(
             "numero_version > 0",

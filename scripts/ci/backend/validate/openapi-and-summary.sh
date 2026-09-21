@@ -31,6 +31,8 @@ required_routes = {
     "/api/v1/factures-clients",
     "/api/v1/factures-clients/{invoice_id}",
     "/api/v1/factures-chasseurs",
+    "/api/v1/secteurs",
+    "/api/v1/biens/{bien_id}/secteur",
     "/api/v1/factures-chasseurs/{invoice_id}",
     "/api/v1/factures-chasseurs/{invoice_id}/decision",
     "/api/v1/remunerations/ventes/{vente_id}/calcul",

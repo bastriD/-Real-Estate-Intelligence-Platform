@@ -1,4 +1,5 @@
 #!/bin/sh
+. "$CI_PROJECT_DIR/scripts/ci/database/check-search-schema.sh"
 # ai-model-comparison:compare / script. Sourced by GitLab; run from the project checkout.
 
 echo "=============================================="
