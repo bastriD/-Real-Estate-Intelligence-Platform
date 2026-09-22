@@ -1,166 +1,135 @@
 {
-  "metrics": [
+  "classifications": [
     {
-      "name": "marketListingsTotal",
-      "display_name": "Market Listings",
-      "description": "Total number of validated real-estate listings available in the analytical market dataset.",
-      "metric_type": "COUNT",
-      "unit": "COUNT",
-      "granularity": "DAY",
-      "expression_language": "SQL",
-      "expression": "COUNT(*)",
-      "source": "real-estate-postgresql.real_estate.analytics.mart_market_overview",
-      "owner": "RealEstateAnalytics",
-      "domain": "RealEstateIntelligence.RealEstateAnalytics",
-      "glossary_terms": [
-        "RealEstateBusinessGlossary.Annonce"
+      "name": "RealEstateDataLayer",
+      "display_name": "RealEstateDataLayer",
+      "description": "RealEstateDataLayer taxonomy for governed real-estate assets.",
+      "mutually_exclusive": true,
+      "tags": [
+        {
+          "name": "Legacy",
+          "display_name": "Legacy",
+          "description": "Legacy source data."
+        },
+        {
+          "name": "Raw",
+          "display_name": "Raw",
+          "description": "Untransformed source records."
+        },
+        {
+          "name": "Staging",
+          "display_name": "Staging",
+          "description": "Normalized ingestion records."
+        },
+        {
+          "name": "OLTP",
+          "display_name": "OLTP",
+          "description": "Operational business records."
+        },
+        {
+          "name": "Warehouse",
+          "display_name": "Warehouse",
+          "description": "Warehouse dimensions and facts."
+        },
+        {
+          "name": "Analytics",
+          "display_name": "Analytics",
+          "description": "dbt analytical models and marts."
+        }
       ]
     },
     {
-      "name": "averagePropertyPrice",
-      "display_name": "Average Property Price",
-      "description": "Average advertised price of properties represented in the analytical market dataset.",
-      "metric_type": "AVERAGE",
-      "unit": "EUR",
-      "granularity": "DAY",
-      "expression_language": "SQL",
-      "expression": "AVG(prix)",
-      "source": "real-estate-postgresql.real_estate.analytics.mart_market_overview",
-      "owner": "RealEstateAnalytics",
-      "domain": "RealEstateIntelligence.RealEstateAnalytics",
-      "glossary_terms": [
-        "RealEstateBusinessGlossary.Bien",
-        "RealEstateBusinessGlossary.Prix"
+      "name": "RealEstateDataQuality",
+      "display_name": "RealEstateDataQuality",
+      "description": "RealEstateDataQuality taxonomy for governed real-estate assets.",
+      "mutually_exclusive": false,
+      "tags": [
+        {
+          "name": "CriticalDataset",
+          "display_name": "CriticalDataset",
+          "description": "Business-critical dataset requiring quality controls."
+        },
+        {
+          "name": "DerivedData",
+          "display_name": "DerivedData",
+          "description": "Dataset derived from upstream assets."
+        },
+        {
+          "name": "QualityControlled",
+          "display_name": "QualityControlled",
+          "description": "Asset covered by declared quality controls; not evidence of a current successful run."
+        },
+        {
+          "name": "SourceOfTruth",
+          "display_name": "SourceOfTruth",
+          "description": "Authoritative operational dataset."
+        }
       ]
     },
     {
-      "name": "averagePricePerM2",
-      "display_name": "Average Price per m²",
-      "description": "Average advertised property price per square metre across the analytical market dataset.",
-      "metric_type": "AVERAGE",
-      "unit": "EUR_PER_M2",
-      "granularity": "DAY",
-      "expression_language": "SQL",
-      "expression": "AVG(prix / NULLIF(surface, 0))",
-      "source": "real-estate-postgresql.real_estate.analytics.mart_market_overview",
-      "owner": "RealEstateAnalytics",
-      "domain": "RealEstateIntelligence.RealEstateAnalytics",
-      "glossary_terms": [
-        "RealEstateBusinessGlossary.Bien",
-        "RealEstateBusinessGlossary.PrixM2"
+      "name": "RealEstateDataSensitivity",
+      "display_name": "RealEstateDataSensitivity",
+      "description": "RealEstateDataSensitivity taxonomy for governed real-estate assets.",
+      "mutually_exclusive": true,
+      "tags": [
+        {
+          "name": "Public",
+          "display_name": "Public",
+          "description": "Data approved for public disclosure."
+        },
+        {
+          "name": "Internal",
+          "display_name": "Internal",
+          "description": "Data intended for internal use."
+        },
+        {
+          "name": "Confidential",
+          "display_name": "Confidential",
+          "description": "Confidential business or personal information."
+        },
+        {
+          "name": "Restricted",
+          "display_name": "Restricted",
+          "description": "Data requiring specifically restricted access."
+        }
       ]
     },
     {
-      "name": "averagePropertySurface",
-      "display_name": "Average Property Surface",
-      "description": "Average surface area of properties represented in the analytical market dataset.",
-      "metric_type": "AVERAGE",
-      "unit": "M2",
-      "granularity": "DAY",
-      "expression_language": "SQL",
-      "expression": "AVG(surface)",
-      "source": "real-estate-postgresql.real_estate.analytics.mart_market_overview",
-      "owner": "RealEstateAnalytics",
-      "domain": "RealEstateIntelligence.RealEstateAnalytics",
-      "glossary_terms": [
-        "RealEstateBusinessGlossary.Bien",
-        "RealEstateBusinessGlossary.Surface"
-      ]
-    },
-    {
-      "name": "activeMandates",
-      "display_name": "Active Mandates",
-      "description": "Number of real-estate search mandates currently considered active.",
-      "metric_type": "COUNT",
-      "unit": "COUNT",
-      "granularity": "DAY",
-      "expression_language": "SQL",
-      "expression": "COUNT(active mandates)",
-      "source": "real-estate-postgresql.real_estate.analytics.mart_mandat_performance",
-      "owner": "RealEstateAnalytics",
-      "domain": "RealEstateIntelligence.RealEstateAnalytics",
-      "glossary_terms": [
-        "RealEstateBusinessGlossary.Mandat"
-      ]
-    },
-    {
-      "name": "listingsByCity",
-      "display_name": "Listings by City",
-      "description": "Number of validated property listings grouped by city.",
-      "metric_type": "COUNT",
-      "unit": "COUNT",
-      "granularity": "DAY",
-      "expression_language": "SQL",
-      "expression": "COUNT(*) GROUP BY ville",
-      "source": "real-estate-postgresql.real_estate.analytics.mart_market_by_city",
-      "owner": "RealEstateAnalytics",
-      "domain": "RealEstateIntelligence.RealEstateAnalytics",
-      "glossary_terms": [
-        "RealEstateBusinessGlossary.Annonce",
-        "RealEstateBusinessGlossary.Secteur"
-      ],
-      "dimensions": [
-        "ville"
-      ]
-    },
-    {
-      "name": "listingsByDpe",
-      "display_name": "Listings by DPE",
-      "description": "Number of validated property listings grouped by energy performance classification.",
-      "metric_type": "COUNT",
-      "unit": "COUNT",
-      "granularity": "DAY",
-      "expression_language": "SQL",
-      "expression": "COUNT(*) GROUP BY dpe",
-      "source": "real-estate-postgresql.real_estate.analytics.mart_market_by_dpe",
-      "owner": "RealEstateAnalytics",
-      "domain": "RealEstateIntelligence.RealEstateAnalytics",
-      "glossary_terms": [
-        "RealEstateBusinessGlossary.Annonce",
-        "RealEstateBusinessGlossary.DPE"
-      ],
-      "dimensions": [
-        "dpe"
-      ]
-    },
-    {
-      "name": "listingsByPropertyType",
-      "display_name": "Listings by Property Type",
-      "description": "Number of validated property listings grouped by property type.",
-      "metric_type": "COUNT",
-      "unit": "COUNT",
-      "granularity": "DAY",
-      "expression_language": "SQL",
-      "expression": "COUNT(*) GROUP BY type_bien",
-      "source": "real-estate-postgresql.real_estate.analytics.mart_market_by_property_type",
-      "owner": "RealEstateAnalytics",
-      "domain": "RealEstateIntelligence.RealEstateAnalytics",
-      "glossary_terms": [
-        "RealEstateBusinessGlossary.Annonce",
-        "RealEstateBusinessGlossary.Bien"
-      ],
-      "dimensions": [
-        "type_bien"
-      ]
-    },
-    {
-      "name": "listingsBySource",
-      "display_name": "Listings by Source",
-      "description": "Number of validated property listings grouped by acquisition source.",
-      "metric_type": "COUNT",
-      "unit": "COUNT",
-      "granularity": "DAY",
-      "expression_language": "SQL",
-      "expression": "COUNT(*) GROUP BY source",
-      "source": "real-estate-postgresql.real_estate.analytics.mart_market_by_source",
-      "owner": "RealEstateAnalytics",
-      "domain": "RealEstateIntelligence.RealEstateAnalytics",
-      "glossary_terms": [
-        "RealEstateBusinessGlossary.Annonce",
-        "RealEstateBusinessGlossary.Source"
-      ],
-      "dimensions": [
-        "source"
+      "name": "RealEstatePrivacy",
+      "display_name": "RealEstatePrivacy",
+      "description": "RealEstatePrivacy taxonomy for governed real-estate assets.",
+      "mutually_exclusive": false,
+      "tags": [
+        {
+          "name": "PersonalData",
+          "display_name": "PersonalData",
+          "description": "Information relating to a person."
+        },
+        {
+          "name": "DirectIdentifier",
+          "display_name": "DirectIdentifier",
+          "description": "Information identifying a person directly."
+        },
+        {
+          "name": "IndirectIdentifier",
+          "display_name": "IndirectIdentifier",
+          "description": "Information that can identify a person when combined with other data."
+        },
+        {
+          "name": "FinancialData",
+          "display_name": "FinancialData",
+          "description": "Financial information associated with business transactions."
+        },
+        {
+          "name": "RequiresPseudonymisation",
+          "display_name": "RequiresPseudonymisation",
+          "description": "Pseudonymisation required for permitted downstream uses; a label does not implement it."
+        },
+        {
+          "name": "AIRestricted",
+          "display_name": "AIRestricted",
+          "description": "AI use requires explicit access controls and approval; this label does not enforce access."
+        }
       ]
     }
   ]

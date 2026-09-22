@@ -1,5 +1,7 @@
 # Real Estate Governance-as-Code
 
+Configuration preflight and KPI semantics: [validation guide](docs/VALIDATION.md).
+
 Sector ingestion metadata and dashboard alignment are documented in
 [Sector governance and observability](../docs/40-DATA/SECTOR-GOVERNANCE-OBSERVABILITY.md).
 

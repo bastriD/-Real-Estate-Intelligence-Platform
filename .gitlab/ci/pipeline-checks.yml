@@ -20,4 +20,6 @@ pipeline:validate:
         - tests/ci/**/*
         - pipelines/airflow/**/*
         - governance/**/*
+        - pipelines/dbt/**/*
+        - database/**/*
         - observability/**/*

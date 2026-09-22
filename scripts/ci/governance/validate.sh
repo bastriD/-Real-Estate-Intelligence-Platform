@@ -3,6 +3,7 @@
 
 echo "Validating Governance-as-Code files..."
 python -m py_compile governance/scripts/main.py
+python governance/scripts/validate_config.py --repository .
 python -m json.tool governance/docs/governance-config.json > /dev/null
 python -m json.tool governance/glossary/real_estate_glossary.json > /dev/null
 python -m json.tool governance/ownership/real_estate_ownership.json > /dev/null

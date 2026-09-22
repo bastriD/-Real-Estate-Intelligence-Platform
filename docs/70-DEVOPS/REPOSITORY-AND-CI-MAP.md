@@ -1,5 +1,9 @@
 # Repository and CI map for the next agent
 
+Governance preflight: `governance/scripts/validate_config.py` validates enabled
+definitions and references before publication. CI adds repository asset and dbt
+metric checks; see [the validation guide](../../governance/docs/VALIDATION.md).
+
 Verified against the working tree on 2026-09-21. This describes the current
 implementation, not a proposed directory reorganization. Start with
 [AGENTS.md](../../AGENTS.md) and [the project README](../../Readme.md).

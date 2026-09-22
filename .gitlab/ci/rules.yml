@@ -22,6 +22,8 @@
   rules:
     - changes:
         - governance/**/*
+        - pipelines/dbt/**/*
+        - database/**/*
         - deploy/openmetadata/**/*
         - .gitlab/ci/governance.yml
         - .gitlab/ci/openmetadata.yml

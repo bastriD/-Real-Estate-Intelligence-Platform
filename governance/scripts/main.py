@@ -3405,6 +3405,10 @@ class GovernanceEngine:
 def main() -> int:
 
     try:
+        from validate_config import validate
+
+        validate(BASE_DIR)
+
         config = load_json(
             CONFIG_FILE
         )
