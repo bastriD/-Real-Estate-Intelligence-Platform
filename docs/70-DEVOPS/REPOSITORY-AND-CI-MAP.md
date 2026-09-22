@@ -1,5 +1,9 @@
 # Repository and CI map for the next agent
 
+Notarial workflow: migration 019 adds notaries, deed dossiers and agency fee
+movements, with manual migration/reconciliation jobs (41 database jobs total).
+See [the API and rollout guide](../20-APPLICATION/NOTARIAL-WORKFLOW.md).
+
 Governance preflight: `governance/scripts/validate_config.py` validates enabled
 definitions and references before publication. CI adds repository asset and dbt
 metric checks; see [the validation guide](../../governance/docs/VALIDATION.md).

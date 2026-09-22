@@ -104,6 +104,42 @@
         "RealEstateBusinessGlossary.VersionDemande",
         "RealEstateBusinessGlossary.Secteur"
       ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.notaire",
+      "terms": [
+        "RealEstateBusinessGlossary.Notaire"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.dossier_notarial",
+      "terms": [
+        "RealEstateBusinessGlossary.EncaissementNotarial"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.mouvement_notarial",
+      "terms": [
+        "RealEstateBusinessGlossary.EncaissementNotarial"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.warehouse.fact_dossier_notarial",
+      "terms": [
+        "RealEstateBusinessGlossary.EncaissementNotarial"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.analytics.stg_dossier_notarial",
+      "terms": [
+        "RealEstateBusinessGlossary.EncaissementNotarial"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.analytics.mart_notarial_reconciliation",
+      "terms": [
+        "RealEstateBusinessGlossary.EncaissementNotarial"
+      ]
     }
   ],
   "column_assignments": [

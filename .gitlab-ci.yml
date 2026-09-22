@@ -18,6 +18,7 @@ include:
   - local: .gitlab/ci/database.yml
   - local: .gitlab/ci/database-hunter-invoice.yml
   - local: .gitlab/ci/database-search.yml
+  - local: .gitlab/ci/database-notarial.yml
   - local: .gitlab/ci/airflow.yml
   - local: .gitlab/ci/data-pipeline-image.yml
   - local: .gitlab/ci/warehouse.yml

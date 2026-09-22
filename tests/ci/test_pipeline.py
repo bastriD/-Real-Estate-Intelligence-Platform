@@ -209,7 +209,7 @@ def test_release_gates_and_artifact_handoffs():
 
 def test_database_manual_controls_are_preserved_and_serialized():
     operations = {name: job for name, job in JOBS.items() if job["stage"] == "database"}
-    assert len(operations) == 39
+    assert len(operations) == 41
     for job in operations.values():
         assert job["resource_group"] == "real-estate-database"
         assert job["rules"][0]["when"] == "manual"

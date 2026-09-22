@@ -40,7 +40,10 @@
         "real-estate-postgresql.real_estate.real_estate.paiement",
         "real-estate-postgresql.real_estate.real_estate.presentation",
         "real-estate-postgresql.real_estate.real_estate.visite",
-        "real-estate-postgresql.real_estate.real_estate.demande_version_secteur"
+        "real-estate-postgresql.real_estate.real_estate.demande_version_secteur",
+        "real-estate-postgresql.real_estate.real_estate.notaire",
+        "real-estate-postgresql.real_estate.real_estate.dossier_notarial",
+        "real-estate-postgresql.real_estate.real_estate.mouvement_notarial"
       ]
     },
     {

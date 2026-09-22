@@ -100,10 +100,28 @@
         "analytics.stg_dim_bien",
         "analytics.stg_fact_annonce",
         "analytics.mart_market_by_city",
-        "analytics.stg_demande_version_secteur"
+        "analytics.stg_demande_version_secteur",
+        "analytics.stg_dossier_notarial",
+        "analytics.mart_notarial_reconciliation"
       ],
       "checks": [
-        "sector_projection_reconciles.sql : absence de liens secteur manquants ou supplémentaires et projection des secteurs des biens conforme à l'OLTP"
+        "sector_projection_reconciles.sql : absence de liens secteur manquants ou supplémentaires et projection des secteurs des biens conforme à l'OLTP",
+        "notarial_reconciliation.sql : received <= collected <= expected agency fees"
+      ]
+    },
+    {
+      "id": "DQ-NOTARIAL",
+      "name": "Notarial reconciliation",
+      "layer": "real_estate",
+      "description": "Manual read-only verification of installed financial guards, collected/received balances and payment receipt justification.",
+      "execution": {
+        "orchestrator": "GitLab CI",
+        "job": "database:test-notarial",
+        "script": "database/tests/022_notarial_workflow.sql"
+      },
+      "checks": [
+        "received <= collected <= expected agency fees",
+        "company receipt date and amount match ledger before RECU"
       ]
     }
   ],
@@ -191,6 +209,18 @@
       ],
       "quality_domains": [
         "DQ-DBT"
+      ]
+    },
+    {
+      "id": "ASSET-DQ-NOTARIAL",
+      "entity": "real-estate-postgresql.real_estate.real_estate.mouvement_notarial",
+      "criticality": "high",
+      "tags": [
+        "RealEstateDataQuality.QualityControlled",
+        "RealEstateDataQuality.CriticalDataset"
+      ],
+      "quality_domains": [
+        "DQ-NOTARIAL"
       ]
     }
   ],

@@ -277,6 +277,54 @@
       "to": "real-estate-postgresql.real_estate.warehouse.dim_bien",
       "entity_type": "table",
       "description": "warehouse.dim_secteur supplies the explicit sector relationship or lookup used by warehouse.dim_bien. Missing property sectors remain unmapped; postal codes alone do not assign a sector."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.notaire",
+      "to": "real-estate-postgresql.real_estate.real_estate.dossier_notarial",
+      "entity_type": "table",
+      "description": "real_estate.notaire provides lineage or financial reconciliation inputs to real_estate.dossier_notarial."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.offre",
+      "to": "real-estate-postgresql.real_estate.real_estate.dossier_notarial",
+      "entity_type": "table",
+      "description": "real_estate.offre provides lineage or financial reconciliation inputs to real_estate.dossier_notarial."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.vente",
+      "to": "real-estate-postgresql.real_estate.real_estate.dossier_notarial",
+      "entity_type": "table",
+      "description": "real_estate.vente provides lineage or financial reconciliation inputs to real_estate.dossier_notarial."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.dossier_notarial",
+      "to": "real-estate-postgresql.real_estate.real_estate.mouvement_notarial",
+      "entity_type": "table",
+      "description": "real_estate.dossier_notarial provides lineage or financial reconciliation inputs to real_estate.mouvement_notarial."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.paiement",
+      "to": "real-estate-postgresql.real_estate.real_estate.mouvement_notarial",
+      "entity_type": "table",
+      "description": "real_estate.paiement provides lineage or financial reconciliation inputs to real_estate.mouvement_notarial."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.dossier_notarial",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_dossier_notarial",
+      "entity_type": "table",
+      "description": "real_estate.dossier_notarial provides lineage or financial reconciliation inputs to warehouse.fact_dossier_notarial."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.mouvement_notarial",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_dossier_notarial",
+      "entity_type": "table",
+      "description": "real_estate.mouvement_notarial provides lineage or financial reconciliation inputs to warehouse.fact_dossier_notarial."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.paiement",
+      "to": "real-estate-postgresql.real_estate.warehouse.fact_dossier_notarial",
+      "entity_type": "table",
+      "description": "real_estate.paiement provides lineage or financial reconciliation inputs to warehouse.fact_dossier_notarial."
     }
   ]
 }

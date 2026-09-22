@@ -26,6 +26,7 @@ database:validate:
         - .gitlab/ci/database.yml
         - .gitlab/ci/database-hunter-invoice.yml
         - .gitlab/ci/database-search.yml
+        - .gitlab/ci/database-notarial.yml
         - scripts/ci/database/**/*
 
 database:migrate-001:

@@ -18,6 +18,10 @@ test -f database/migrations/015_facture_client.sql
 test -f database/migrations/016_facture_chasseur.sql
 test -f database/migrations/017_demande_version_search_enrichment.sql
 test -f database/migrations/018_ingestion_sector_contract.sql
+test -f database/migrations/019_notarial_workflow.sql
+test -f database/tests/022_notarial_workflow.sql
+grep -q '^COMMIT;' database/migrations/019_notarial_workflow.sql
+grep -q '^ROLLBACK;' database/tests/022_notarial_workflow.sql
 test -f database/tests/021_ingestion_sectors.sql
 test -f database/tests/020_demande_version_search.sql
 grep -q '^COMMIT;' database/migrations/017_demande_version_search_enrichment.sql

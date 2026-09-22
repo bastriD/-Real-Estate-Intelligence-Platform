@@ -1,0 +1,9 @@
+database:migrate-019:
+  extends: .database-operation
+  script:
+    - . "$CI_PROJECT_DIR/scripts/ci/database/migrate-019.sh"
+
+database:test-notarial:
+  extends: .database-operation
+  script:
+    - . "$CI_PROJECT_DIR/scripts/ci/database/test-notarial.sh"

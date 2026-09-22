@@ -1,0 +1,13 @@
+version: 2
+models:
+  - name: stg_dossier_notarial
+    description: One snapshot row per notarial dossier; agency fees only.
+    columns:
+      - name: id_dossier_source
+        tests: [unique, not_null]
+      - name: id_notaire_source
+        tests: [not_null]
+      - name: montant_collecte
+        tests: [not_null]
+      - name: montant_recu
+        tests: [not_null]

@@ -107,6 +107,30 @@
     {
       "entity": "real-estate-postgresql.real_estate.analytics.stg_dim_bien",
       "description": "dbt property dimension view exposing secteur_key. Unknown is 0; use current non-placeholder properties for coverage counts."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.notaire",
+      "description": "Notarial professional contact, recorded by authorized administrators. Not a platform login or agency-fee beneficiary."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.dossier_notarial",
+      "description": "Accepted-offer dossier with appointment and immutable authentic-deed evidence linked to the existing completed sale. No historical authentication is fabricated."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.mouvement_notarial",
+      "description": "Append-only agency fee ledger: COLLECTE_NOTAIRE is money held on behalf of the company; RECEPTION_ENTREPRISE is actual company receipt. Partial transfers reconcile against the sale payment snapshot, excluding purchase price and notary own remuneration."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.warehouse.fact_dossier_notarial",
+      "description": "One current snapshot per dossier with preaggregated collected and received agency fees; contains no notary contact or deed document reference. Refresh follows warehouse loading."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.analytics.stg_dossier_notarial",
+      "description": "dbt projection of the notarial dossier financial snapshot."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.analytics.mart_notarial_reconciliation",
+      "description": "Aggregate notarial agency-fee totals and remaining balance held by notaries. Financial basis follows existing agency-fee snapshots; not a tax calculation."
     }
   ]
 }

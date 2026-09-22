@@ -9,6 +9,8 @@ sources:
     schema: warehouse
 
     tables:
+      - name: fact_dossier_notarial
+        description: Agency fees collected by notary versus actually received by the company.
       - name: dim_date
         description: Shared calendar dimension.
 
@@ -67,6 +69,10 @@ sources:
     schema: real_estate
 
     tables:
+      - name: dossier_notarial
+        description: Accepted offer, appointment and signed deed lineage.
+      - name: mouvement_notarial
+        description: Separate collection and company receipt of agency fees.
       - name: client
         description: >
           Operational customer master data for the real-estate hunting platform.

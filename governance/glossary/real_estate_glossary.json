@@ -163,6 +163,16 @@
       "name": "CodeSecteur",
       "display_name": "Code de secteur source",
       "description": "Identité géographique geo-v1 dérivée du pays, de la ville, du quartier et du code postal normalisés. Indépendante des identifiants de base; facultative et non assimilable à une anonymisation ni à un score de matching."
+    },
+    {
+      "name": "Notaire",
+      "display_name": "Notaire",
+      "description": "Acteur authentifiant la vente; collecte les honoraires agence pour le compte de l'entreprise. Cette collecte est distincte de l'encaissement entreprise et de la rémunération propre du notaire."
+    },
+    {
+      "name": "EncaissementNotarial",
+      "display_name": "Encaissement des honoraires via notaire",
+      "description": "Mouvements successifs de collecte notaire et réception entreprise, sur la même base financière que paiement.montant_honoraires. Une collecte ne déclenche pas la rémunération du chasseur."
     }
   ]
 }

@@ -31,6 +31,7 @@ COPY database/tests/006_oltp_data_quality.sql /app/database/tests/006_oltp_data_
 COPY database/tests/007_warehouse_data_quality.sql /app/database/tests/007_warehouse_data_quality.sql
 COPY database/olap/load_warehouse.py /app/database/olap/load_warehouse.py
 COPY database/olap/sector_projection.py /app/database/olap/sector_projection.py
+COPY database/olap/notarial_projection.py /app/database/olap/notarial_projection.py
 COPY database/tests/021_ingestion_sectors.sql /app/database/tests/021_ingestion_sectors.sql
 COPY pipelines/dbt /app/pipelines/dbt
 COPY observability/metrics /app/observability/metrics

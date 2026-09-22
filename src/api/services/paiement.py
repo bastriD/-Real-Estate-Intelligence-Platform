@@ -168,6 +168,8 @@ class PaiementService:
         )
 
         if statut_cible == "RECU":
+            if not self.repository.notarial_receipt_is_complete(paiement, date_reception_honoraires):
+                raise PaiementTransitionError("Full company receipt must be recorded in the notarial ledger first")
             paiement.date_reception_honoraires = (
                 date_reception_honoraires
             )

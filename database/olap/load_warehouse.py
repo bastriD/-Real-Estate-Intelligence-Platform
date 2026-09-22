@@ -5,8 +5,10 @@ from datetime import datetime, timezone
 import psycopg
 
 if __package__:
+    from .notarial_projection import load_notarial_projection
     from .sector_projection import load_sector_projection
 else:
+    from notarial_projection import load_notarial_projection
     from sector_projection import load_sector_projection
 
 
@@ -721,6 +723,8 @@ def main():
 
                 print("Loading fact_paiement...")
                 load_fact_paiement(cur)
+                print("Loading notarial agency-fee reconciliation...")
+                load_notarial_projection(cur)
 
                 print_counts(cur)
 

@@ -108,6 +108,7 @@ class VenteService:
         payload: VenteCreate,
         *,
         utilisateur: str = "system",
+        commit: bool = True,
     ) -> Vente:
         mandat = self._get_mandat(
             payload.id_mandat
@@ -256,7 +257,8 @@ class VenteService:
                 },
             )
 
-            self.session.commit()
+            if commit:
+                self.session.commit()
             self.session.refresh(
                 vente
             )

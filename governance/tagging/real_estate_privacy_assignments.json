@@ -290,6 +290,62 @@
         "RealEstatePrivacy.AIRestricted",
         "RealEstateDataSensitivity.Confidential"
       ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.notaire",
+      "column": "email",
+      "tags": [
+        "RealEstatePrivacy.PersonalData",
+        "RealEstatePrivacy.DirectIdentifier",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.notaire",
+      "column": "nom",
+      "tags": [
+        "RealEstatePrivacy.PersonalData",
+        "RealEstatePrivacy.DirectIdentifier",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.dossier_notarial",
+      "column": "reference_document",
+      "tags": [
+        "RealEstatePrivacy.IndirectIdentifier",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.dossier_notarial",
+      "column": "reference_acte",
+      "tags": [
+        "RealEstatePrivacy.IndirectIdentifier",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.mouvement_notarial",
+      "column": "reference",
+      "tags": [
+        "RealEstatePrivacy.FinancialData",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.mouvement_notarial",
+      "column": "montant",
+      "tags": [
+        "RealEstatePrivacy.FinancialData",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Confidential"
+      ]
     }
   ],
   "policies": {

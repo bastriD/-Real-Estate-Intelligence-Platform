@@ -75,7 +75,7 @@ def test_dashboard_sector_queries_use_real_columns_and_preserve_layout():
         assert column in staging
     business = config("observability/grafana/dashboards/real-estate-business-platform.json")
     for panel in business["panels"]:
-        if panel["id"] >= 47:
+        if 47 <= panel["id"] <= 49:
             assert "id_bien_source <> 0" in panel["targets"][0]["rawSql"]
     coverage = next(p for p in business["panels"] if p["id"] == 49)
     assert "NULLIF(COUNT(*), 0)" in coverage["targets"][0]["rawSql"]

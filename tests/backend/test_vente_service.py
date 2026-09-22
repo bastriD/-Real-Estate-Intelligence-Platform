@@ -479,7 +479,8 @@ def test_no_contractual_period_means_no_beneficiary():
     assert result is None
 
 
-def test_create_exclusive_sale_freezes_period_and_beneficiary():
+@pytest.mark.parametrize("commit", [True, False])
+def test_create_exclusive_sale_freezes_period_and_beneficiary(commit):
     service = build_service(
         type_mandat="EXCLUSIF"
     )
@@ -492,6 +493,7 @@ def test_create_exclusive_sale_freezes_period_and_beneficiary():
 
     result = service.create_vente(
         payload,
+        commit=commit,
         utilisateur=(
             "admin@example.com"
         ),
@@ -530,7 +532,7 @@ def test_create_exclusive_sale_freezes_period_and_beneficiary():
 
     assert (
         service.session.commits
-        == 1
+        == int(commit)
     )
 
     assert (
