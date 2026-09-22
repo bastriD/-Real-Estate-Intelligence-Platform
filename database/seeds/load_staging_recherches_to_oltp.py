@@ -39,6 +39,11 @@ from typing import Any
 
 import psycopg
 from dotenv import load_dotenv
+
+if __package__:
+    from .sector_contract import load_catalogue, resolve_sector, link_search_sector
+else:
+    from sector_contract import load_catalogue, resolve_sector, link_search_sector
 from psycopg.types.json import Jsonb
 
 
@@ -76,6 +81,7 @@ def fetch_staging_recherches(
     query = """
         SELECT
             staging_id,
+            secteur_code,
             raw_id,
             legacy_generated_id,
             reference,
@@ -557,8 +563,11 @@ def main() -> int:
             )
 
             created_or_updated = 0
+            catalogue = load_catalogue(connection) if any(row.get("secteur_code") for row in rows) else {}
 
             for row in rows:
+
+                sector_id = resolve_sector(row, catalogue)
 
                 id_demande = ensure_demande(
                     connection,
@@ -573,6 +582,8 @@ def main() -> int:
                         batch,
                     )
                 )
+
+                link_search_sector(connection, id_demande_version, sector_id)
 
                 print(
                     f"RECHERCHE {row['reference']} "

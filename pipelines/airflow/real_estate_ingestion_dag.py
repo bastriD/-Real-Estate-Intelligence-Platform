@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 
 from airflow import DAG
+from airflow.models.param import Param
 from airflow.operators.empty import EmptyOperator
 from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
 from airflow.utils.task_group import TaskGroup
@@ -114,6 +115,12 @@ with DAG(
     schedule=None,
     catchup=False,
     max_active_runs=1,
+    params={
+        "generation_mode": Param(
+            "standard", type="string", enum=["standard", "sector_test"],
+            description="Standard heterogeneous fixtures, or explicit sector integration fixtures.",
+        ),
+    },
     tags=[
         "real-estate",
         "data-engineering",
@@ -174,6 +181,13 @@ with DAG(
                 echo "============================================================"
                 echo "Ingestion batch: ${INGESTION_BATCH}"
 
+                case "$GENERATION_MODE" in
+                  standard|sector_test) ;;
+                  *) echo "ERROR: invalid generation mode"; exit 1 ;;
+                esac
+                echo "Generation mode: $GENERATION_MODE"
+                python /app/database/seeds/sector_contract.py --check-schema
+
                 # -------------------------------------------------------------
                 # IMPORTANT:
                 # The official generator is intentionally cumulative.
@@ -191,10 +205,15 @@ with DAG(
 
                 echo "Generating source dataset..."
 
+                set -- -r 5 --min-annonces 200 --max-annonces 200
+                if [ "$GENERATION_MODE" = "sector_test" ]; then
+                  python /app/database/seeds/sector_contract.py \
+                    /app/database/fixtures/annonces/secteurs.json
+                  set -- "$@" --secteurs-catalogue /app/database/fixtures/annonces/secteurs.json
+                fi
+
                 python /app/database/seeds/generer_annonces.py \
-                  -r 5 \
-                  --min-annonces 200 \
-                  --max-annonces 200
+                  "$@"
 
                 echo "Uploading generated dataset to MinIO..."
 
@@ -203,7 +222,8 @@ with DAG(
                 echo "Source generation and upload completed."
                 """
             ],
-            env_from=S3_ENV,
+            env_from=S3_AND_POSTGRES_ENV,
+            env_vars={"GENERATION_MODE": "{{ params.generation_mode }}"},
             get_logs=True,
             is_delete_operator_pod=True,
         )

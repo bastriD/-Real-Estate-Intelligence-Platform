@@ -4,6 +4,11 @@ Verified against the working tree on 2026-09-21. This describes the current
 implementation, not a proposed directory reorganization. Start with
 [AGENTS.md](../../AGENTS.md) and [the project README](../../Readme.md).
 
+Sector ingestion follow-up (2026-09-22): migration 018, two additional manual
+database jobs (39 total), standard generation by default, optional `sector_test`
+catalogue generation, and sector projection are documented in
+[the sector contract and rollout](../40-DATA/SECTOR-INGESTION-CONTRACT.md).
+
 ## 1. Repository layout
 
 ```text

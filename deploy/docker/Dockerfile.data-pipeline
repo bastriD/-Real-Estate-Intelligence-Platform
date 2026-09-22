@@ -18,6 +18,7 @@ RUN pip install --upgrade pip \
     && pip install -r /app/requirements.txt
 
 COPY database/seeds/generer_annonces.py /app/database/seeds/generer_annonces.py
+COPY database/seeds/sector_contract.py /app/database/seeds/sector_contract.py
 COPY database/seeds/load_raw_generated_data.py /app/database/seeds/load_raw_generated_data.py
 COPY database/seeds/upload_generated_to_s3.py /app/database/seeds/upload_generated_to_s3.py
 COPY database/seeds/download_generated_from_s3.py /app/database/seeds/download_generated_from_s3.py
@@ -29,6 +30,8 @@ COPY database/seeds/load_staging_to_oltp.py /app/database/seeds/load_staging_to_
 COPY database/tests/006_oltp_data_quality.sql /app/database/tests/006_oltp_data_quality.sql
 COPY database/tests/007_warehouse_data_quality.sql /app/database/tests/007_warehouse_data_quality.sql
 COPY database/olap/load_warehouse.py /app/database/olap/load_warehouse.py
+COPY database/olap/sector_projection.py /app/database/olap/sector_projection.py
+COPY database/tests/021_ingestion_sectors.sql /app/database/tests/021_ingestion_sectors.sql
 COPY pipelines/dbt /app/pipelines/dbt
 COPY observability/metrics /app/observability/metrics
 RUN mkdir -p /app/database/fixtures/annonces/json

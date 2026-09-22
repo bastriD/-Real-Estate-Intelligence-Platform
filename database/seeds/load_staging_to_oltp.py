@@ -39,6 +39,11 @@ from typing import Any
 import psycopg
 from dotenv import load_dotenv
 
+if __package__:
+    from .sector_contract import load_catalogue, resolve_sector, assign_property_sectors
+else:
+    from sector_contract import load_catalogue, resolve_sector, assign_property_sectors
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
@@ -183,6 +188,7 @@ def fetch_staging_annonces(
     query = """
         SELECT
             staging_id,
+            secteur_code,
             raw_id,
             reference,
             type_bien,
@@ -303,9 +309,12 @@ def upsert_biens(
 
     prepared_rows: list[dict[str, Any]] = []
 
+    catalogue = load_catalogue(connection) if any(row.get("secteur_code") for row in rows) else {}
+
     for row in rows:
         prepared = dict(row)
         prepared["id_source"] = source_id
+        prepared["id_secteur"] = resolve_sector(row, catalogue)
 
         prepared_rows.append(
             prepared
@@ -316,6 +325,8 @@ def upsert_biens(
             query,
             prepared_rows,
         )
+
+    assign_property_sectors(connection, prepared_rows, source_id)
 
     count_query = """
         SELECT COUNT(*)

@@ -625,3 +625,6 @@ SELECT
     ) AS ingestion_batch,
 
     'OLTP data quality validated successfully' AS result;
+
+-- Inherits the current batch from the DAG's psql variables.
+\ir 021_ingestion_sectors.sql

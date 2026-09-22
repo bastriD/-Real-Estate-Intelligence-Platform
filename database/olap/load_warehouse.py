@@ -4,6 +4,11 @@ from datetime import datetime, timezone
 
 import psycopg
 
+if __package__:
+    from .sector_projection import load_sector_projection
+else:
+    from sector_projection import load_sector_projection
+
 
 def env(name: str) -> str:
     value = os.getenv(name)
@@ -695,6 +700,9 @@ def main():
 
                 print("Loading dim_demande_version...")
                 load_dim_demande_version(cur)
+
+                print("Loading property and search sectors...")
+                load_sector_projection(cur)
 
                 print("Loading fact_annonce...")
                 load_fact_annonce(cur)

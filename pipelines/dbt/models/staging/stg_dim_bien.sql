@@ -1,6 +1,7 @@
 select
     db.bien_key,
     db.id_bien_source,
+    db.secteur_key,
     db.id_source_source,
     db.reference_externe,
     db.titre,

@@ -21,6 +21,9 @@ sources:
       - name: dim_bien
         description: Historised property dimension.
 
+      - name: bridge_demande_version_secteur
+        description: Acceptable sector alternatives for each search version, independent of mandates.
+
       - name: dim_client
         description: Pseudonymised customer analytical dimension.
 
@@ -246,6 +249,9 @@ sources:
 
           - name: auteur_systeme
             description: Indicates whether the version was created automatically by the system.
+
+      - name: demande_version_secteur
+        description: Canonical sector alternatives attached to an operational search version.
 
       - name: bien
         description: >

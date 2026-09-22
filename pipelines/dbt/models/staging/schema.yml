@@ -58,6 +58,13 @@ models:
       Staging dbt model exposing the historised warehouse property dimension.
 
     columns:
+      - name: secteur_key
+        description: Current property sector; zero denotes unresolved geography.
+        tests:
+          - not_null
+          - relationships:
+              to: source('warehouse', 'dim_secteur')
+              field: secteur_key
       - name: bien_key
         description: Warehouse surrogate property key.
         tests:
@@ -83,3 +90,19 @@ models:
         description: Indicates the current SCD member.
         tests:
           - not_null
+
+  - name: stg_demande_version_secteur
+    description: Versioned search-sector alternatives without expanding market fact grain.
+    columns:
+      - name: demande_version_key
+        tests:
+          - not_null
+          - relationships:
+              to: source('warehouse', 'dim_demande_version')
+              field: demande_version_key
+      - name: secteur_key
+        tests:
+          - not_null
+          - relationships:
+              to: source('warehouse', 'dim_secteur')
+              field: secteur_key

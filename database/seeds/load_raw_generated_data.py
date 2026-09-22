@@ -67,6 +67,7 @@ RECHERCHES_COLUMNS = [
     "nb_pieces_min",
     "nb_chambres_min",
     "dpe_max",
+    "secteur_code",
 ]
 
 
@@ -104,6 +105,7 @@ ANNONCES_MAPPING = {
     "charges_mensuelles": "charges_mensuelles",
     "vue": "vue",
     "jardin": "jardin",
+    "secteur_code": "secteur_code",
 }
 
 
@@ -229,13 +231,14 @@ def load_recherches(
             nb_pieces_min,
             nb_chambres_min,
             dpe_max,
+            secteur_code,
             source_file,
             ingestion_batch
         )
         VALUES (
             %s, %s, %s, %s, %s, %s,
             %s, %s, %s, %s, %s, %s,
-            %s, %s
+            %s, %s, %s
         )
     """
 

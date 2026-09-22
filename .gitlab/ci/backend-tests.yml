@@ -34,6 +34,7 @@ backend:tests:
         - tests/data/**/*
         - tests/ai/**/*
         - database/seeds/**/*
+        - database/olap/**/*
         - requirements-backend.txt
         - requirements-backend-test.txt
         - requirements-ai.txt

@@ -7,3 +7,13 @@ database:test-demande-version-search:
   extends: .database-operation
   script:
     - . "$CI_PROJECT_DIR/scripts/ci/database/test-demande-version-search.sh"
+
+database:migrate-018:
+  extends: .database-operation
+  script:
+    - . "$CI_PROJECT_DIR/scripts/ci/database/migrate-018.sh"
+
+database:test-ingestion-sectors:
+  extends: .database-operation
+  script:
+    - . "$CI_PROJECT_DIR/scripts/ci/database/test-ingestion-sectors.sh"

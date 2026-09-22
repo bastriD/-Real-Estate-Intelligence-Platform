@@ -679,6 +679,7 @@ def fetch_raw_recherches(
     query = """
         SELECT
             raw_id,
+            secteur_code,
             id,
             reference,
             date_creation,
@@ -722,6 +723,7 @@ def fetch_raw_annonces(
     query = """
         SELECT
             raw_id,
+            secteur_code,
             id,
             reference,
             recherche_ref,
@@ -864,6 +866,7 @@ def transform_recherche(
 
     return {
         "raw_id": raw["raw_id"],
+        "secteur_code": clean_text(raw.get("secteur_code")),
         "legacy_generated_id": legacy_generated_id,
         "reference": reference,
         "date_creation": parse_date(
@@ -1003,6 +1006,7 @@ def transform_annonce(
 
     return {
         "raw_id": raw["raw_id"],
+        "secteur_code": clean_text(raw.get("secteur_code")),
 
         "source_uuid": parse_uuid(
             raw["id"],
@@ -1181,6 +1185,7 @@ def upsert_recherches(
     query = """
         INSERT INTO staging.recherches (
             raw_id,
+            secteur_code,
             legacy_generated_id,
             reference,
             date_creation,
@@ -1200,6 +1205,7 @@ def upsert_recherches(
         )
         VALUES (
             %(raw_id)s,
+            %(secteur_code)s,
             %(legacy_generated_id)s,
             %(reference)s,
             %(date_creation)s,
@@ -1220,6 +1226,7 @@ def upsert_recherches(
 
         ON CONFLICT (raw_id)
         DO UPDATE SET
+            secteur_code = EXCLUDED.secteur_code,
             legacy_generated_id = EXCLUDED.legacy_generated_id,
             reference = EXCLUDED.reference,
             date_creation = EXCLUDED.date_creation,
@@ -1275,6 +1282,7 @@ def upsert_annonces(
     query = """
         INSERT INTO staging.annonces (
             raw_id,
+            secteur_code,
             source_uuid,
             reference,
             recherche_ref,
@@ -1314,6 +1322,7 @@ def upsert_annonces(
         )
         VALUES (
             %(raw_id)s,
+            %(secteur_code)s,
             %(source_uuid)s,
             %(reference)s,
             %(recherche_ref)s,
@@ -1354,6 +1363,7 @@ def upsert_annonces(
 
         ON CONFLICT (raw_id)
         DO UPDATE SET
+            secteur_code = EXCLUDED.secteur_code,
             source_uuid = EXCLUDED.source_uuid,
             reference = EXCLUDED.reference,
             recherche_ref = EXCLUDED.recherche_ref,

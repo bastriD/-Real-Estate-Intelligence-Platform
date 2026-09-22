@@ -37,6 +37,11 @@ import string
 import uuid
 from datetime import datetime, timedelta
 
+if __package__:
+    from .sector_contract import index_catalogue
+else:
+    from sector_contract import index_catalogue
+
 # ---------------------------------------------------------------------------
 # Référentiels de données
 # ---------------------------------------------------------------------------
@@ -151,8 +156,12 @@ def generer_reference_recherche():
     return "REC-" + "".join(random.choices(string.ascii_uppercase + string.digits, k=8))
 
 
-def generer_recherche(id_recherche):
-    ville, cp, _, _ = random.choice(VILLES)
+def generer_recherche(id_recherche, secteurs=None):
+    secteur = random.choice(secteurs) if secteurs else None
+    if secteur:
+        ville, cp = secteur["ville"], secteur["code_postal"]
+    else:
+        ville, cp, _, _ = random.choice(VILLES)
     type_bien = random.choice(TYPES_BIEN)
 
     recherche = {
@@ -165,6 +174,10 @@ def generer_recherche(id_recherche):
         "budget_max": generer_montant(type_bien),
         "surface_min": random.randint(15, 250),
     }
+
+    if secteur:
+        recherche["secteur_code"] = secteur["secteur_code"]
+        recherche["quartier"] = secteur["quartier"]
 
     if type_bien != "Terrain":
         if maybe(0.7):
@@ -228,7 +241,6 @@ def generer_annonce_correspondante(recherche):
     """
     ville = recherche["ville"]
     cp = recherche["code_postal"]
-    _, _, lat, lon = VILLES_PAR_NOM[ville]
     type_bien = recherche["type_bien"]
 
     surface_min = recherche.get("surface_min", 15)
@@ -251,6 +263,10 @@ def generer_annonce_correspondante(recherche):
         "code_postal": cp,
         "date_publication": formatteur(d),
     }
+
+    if recherche.get("secteur_code"):
+        annonce["secteur_code"] = recherche["secteur_code"]
+        annonce["quartier"] = recherche.get("quartier")
 
     annonce["prix"] = f"{prix} €" if maybe(0.15) else prix
     if maybe(0.2):
@@ -292,7 +308,8 @@ def generer_annonce_correspondante(recherche):
     if maybe(0.5):
         annonce["adresse"] = f"{random.randint(1, 200)} {random.choice(RUES)}"
 
-    if maybe(0.5):
+    if not recherche.get("secteur_code") and maybe(0.5):
+        _, _, lat, lon = VILLES_PAR_NOM[ville]
         annonce["latitude"] = round(lat + random.uniform(-0.05, 0.05), 6)
         annonce["longitude"] = round(lon + random.uniform(-0.05, 0.05), 6)
 
@@ -399,7 +416,18 @@ def main():
                          help="Nombre minimum d'annonces générées par recherche (défaut : 1).")
     parser.add_argument("--max-annonces", type=int, default=1000,
                          help="Nombre maximum d'annonces générées par recherche (défaut : 4).")
+    parser.add_argument("--secteurs-catalogue",
+                        help="Catalogue canonique exporté; obligatoire dans le DAG, optionnel en mode historique.")
     args = parser.parse_args()
+
+    secteurs = None
+    if args.secteurs_catalogue:
+        with open(args.secteurs_catalogue, encoding="utf-8") as stream:
+            secteurs = list(index_catalogue(json.load(stream)).values())
+        if not secteurs:
+            raise ValueError("Le catalogue de secteurs est vide")
+    else:
+        print("Mode historique sans secteur : utiliser --secteurs-catalogue pour la géographie précise.")
 
     racine = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     dossier_fixtures = os.path.join(racine, "fixtures", "annonces")
@@ -419,7 +447,7 @@ def main():
     nouvelles_annonces = []
 
     for i in range(args.nombre_recherches):
-        recherche = generer_recherche(id_suivant + i)
+        recherche = generer_recherche(id_suivant + i, secteurs)
         nouvelles_recherches.append(recherche)
 
         nb_annonces = random.randint(args.min_annonces, args.max_annonces)
