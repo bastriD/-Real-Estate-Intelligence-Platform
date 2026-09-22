@@ -1,5 +1,8 @@
 # Real Estate Governance-as-Code
 
+Sector ingestion metadata and dashboard alignment are documented in
+[Sector governance and observability](../docs/40-DATA/SECTOR-GOVERNANCE-OBSERVABILITY.md).
+
 ## Enterprise Real Estate Intelligence Platform
 
 **Project:** Chasse Immobilière — Diginamic Fil Rouge  

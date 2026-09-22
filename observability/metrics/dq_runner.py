@@ -27,7 +27,7 @@ PUSHGATEWAY_JOB = os.getenv(
 CHECK_COUNTS = {
     "raw": 10,
     "staging": 18,
-    "oltp": 14,
+    "oltp": 16,  # Includes the two sector reconciliation assertions in 021.
     "warehouse": 13,
 }
 

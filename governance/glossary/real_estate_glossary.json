@@ -42,7 +42,7 @@
     {
       "name": "Demande",
       "display_name": "Demande de recherche",
-      "description": "Expression structurée des critères immobiliers d'un client pour un mandat donné."
+      "description": "Recherche immobilière pouvant précéder un mandat; critères et secteurs acceptables historisés par version."
     },
     {
       "name": "VersionDemande",
@@ -67,7 +67,7 @@
     {
       "name": "Secteur",
       "display_name": "Secteur géographique",
-      "description": "Zone géographique utilisée pour définir ou analyser un périmètre de recherche immobilière."
+      "description": "Géographie canonique des biens et des alternatives de recherche, distincte de la couverture d'un mandat. Un code postal seul ne prouve pas le quartier; une affectation inconnue reste inconnue."
     },
     {
       "name": "Presentation",
@@ -158,6 +158,11 @@
       "name": "Analytics",
       "display_name": "Couche Analytics",
       "description": "Couche contenant les modèles analytiques et marts produits notamment avec dbt."
+    },
+    {
+      "name": "CodeSecteur",
+      "display_name": "Code de secteur source",
+      "description": "Identité géographique geo-v1 dérivée du pays, de la ville, du quartier et du code postal normalisés. Indépendante des identifiants de base; facultative et non assimilable à une anonymisation ni à un score de matching."
     }
   ]
 }

@@ -32,7 +32,6 @@
       "entity_type": "table",
       "description": "Validated generated listings from staging.annonces are upserted into operational real_estate.bien through database/seeds/load_staging_to_oltp.py."
     },
-
     {
       "from": "real-estate-postgresql.real_estate.real_estate.source",
       "to": "real-estate-postgresql.real_estate.warehouse.dim_source",
@@ -75,7 +74,6 @@
       "entity_type": "table",
       "description": "Property geographical attributes are used to populate warehouse.dim_localisation by database/olap/load_warehouse.py::load_dim_localisation."
     },
-
     {
       "from": "real-estate-postgresql.real_estate.real_estate.bien",
       "to": "real-estate-postgresql.real_estate.warehouse.fact_annonce",
@@ -100,7 +98,6 @@
       "entity_type": "table",
       "description": "warehouse.dim_localisation supplies the geographical surrogate key used by warehouse.fact_annonce."
     },
-
     {
       "from": "real-estate-postgresql.real_estate.real_estate.mandat",
       "to": "real-estate-postgresql.real_estate.warehouse.fact_mandat",
@@ -119,7 +116,6 @@
       "entity_type": "table",
       "description": "warehouse.dim_chasseur supplies the hunter surrogate key used by warehouse.fact_mandat."
     },
-
     {
       "from": "real-estate-postgresql.real_estate.real_estate.mandat_secteur",
       "to": "real-estate-postgresql.real_estate.warehouse.bridge_mandat_secteur",
@@ -138,7 +134,6 @@
       "entity_type": "table",
       "description": "warehouse.dim_secteur supplies the sector surrogate key used by warehouse.bridge_mandat_secteur."
     },
-
     {
       "from": "real-estate-postgresql.real_estate.real_estate.demande_version",
       "to": "real-estate-postgresql.real_estate.real_estate.presentation",
@@ -151,7 +146,6 @@
       "entity_type": "table",
       "description": "Eligible operational properties are filtered, scored and ranked by the production recommendation workflow, and selected Top-N properties are persisted as real_estate.presentation records through src/api/services/recommendation.py."
     },
-
     {
       "from": "real-estate-postgresql.real_estate.real_estate.presentation",
       "to": "real-estate-postgresql.real_estate.warehouse.fact_presentation",
@@ -206,7 +200,6 @@
       "entity_type": "table",
       "description": "Warehouse hunter dimension optionally supplies the hunter surrogate key; UNKNOWN key 0 is used when no mandate/hunter exists."
     },
-
     {
       "from": "real-estate-postgresql.real_estate.real_estate.paiement",
       "to": "real-estate-postgresql.real_estate.warehouse.fact_paiement",
@@ -236,6 +229,54 @@
       "to": "real-estate-postgresql.real_estate.warehouse.fact_paiement",
       "entity_type": "table",
       "description": "warehouse.dim_chasseur supplies the hunter surrogate key used by warehouse.fact_paiement."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.staging.recherches",
+      "to": "real-estate-postgresql.real_estate.real_estate.demande_version_secteur",
+      "entity_type": "table",
+      "description": "staging.recherches supplies the explicit sector relationship or lookup used by real_estate.demande_version_secteur. Missing property sectors remain unmapped; postal codes alone do not assign a sector."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.demande_version",
+      "to": "real-estate-postgresql.real_estate.real_estate.demande_version_secteur",
+      "entity_type": "table",
+      "description": "real_estate.demande_version supplies the explicit sector relationship or lookup used by real_estate.demande_version_secteur. Missing property sectors remain unmapped; postal codes alone do not assign a sector."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.secteur",
+      "to": "real-estate-postgresql.real_estate.real_estate.demande_version_secteur",
+      "entity_type": "table",
+      "description": "real_estate.secteur supplies the explicit sector relationship or lookup used by real_estate.demande_version_secteur. Missing property sectors remain unmapped; postal codes alone do not assign a sector."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.secteur",
+      "to": "real-estate-postgresql.real_estate.real_estate.bien",
+      "entity_type": "table",
+      "description": "real_estate.secteur supplies the explicit sector relationship or lookup used by real_estate.bien. Missing property sectors remain unmapped; postal codes alone do not assign a sector."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.real_estate.demande_version_secteur",
+      "to": "real-estate-postgresql.real_estate.warehouse.bridge_demande_version_secteur",
+      "entity_type": "table",
+      "description": "real_estate.demande_version_secteur supplies the explicit sector relationship or lookup used by warehouse.bridge_demande_version_secteur. Missing property sectors remain unmapped; postal codes alone do not assign a sector."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.warehouse.dim_demande_version",
+      "to": "real-estate-postgresql.real_estate.warehouse.bridge_demande_version_secteur",
+      "entity_type": "table",
+      "description": "warehouse.dim_demande_version supplies the explicit sector relationship or lookup used by warehouse.bridge_demande_version_secteur. Missing property sectors remain unmapped; postal codes alone do not assign a sector."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.warehouse.dim_secteur",
+      "to": "real-estate-postgresql.real_estate.warehouse.bridge_demande_version_secteur",
+      "entity_type": "table",
+      "description": "warehouse.dim_secteur supplies the explicit sector relationship or lookup used by warehouse.bridge_demande_version_secteur. Missing property sectors remain unmapped; postal codes alone do not assign a sector."
+    },
+    {
+      "from": "real-estate-postgresql.real_estate.warehouse.dim_secteur",
+      "to": "real-estate-postgresql.real_estate.warehouse.dim_bien",
+      "entity_type": "table",
+      "description": "warehouse.dim_secteur supplies the explicit sector relationship or lookup used by warehouse.dim_bien. Missing property sectors remain unmapped; postal codes alone do not assign a sector."
     }
   ]
 }

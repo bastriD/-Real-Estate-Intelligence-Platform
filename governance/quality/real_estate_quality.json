@@ -5,7 +5,6 @@
     "description": "Référentiel de gouvernance reliant les actifs OpenMetadata aux contrôles de qualité réellement exécutés par les pipelines Airflow, SQL et dbt.",
     "version": "1.3.0"
   },
-
   "quality_domains": [
     {
       "id": "DQ-RAW",
@@ -63,7 +62,9 @@
         "unicité des références externes de biens",
         "présence des relations métier obligatoires",
         "cohérence entre staging valide et biens chargés",
-        "absence de doublons anormaux"
+        "absence de doublons anormaux",
+        "021_ingestion_sectors.sql : chaque recherche avec secteur_code possède exactement le secteur explicite attendu",
+        "021_ingestion_sectors.sql : annonces codées cohérentes avec le secteur, la ville et le code postal de leur recherche"
       ]
     },
     {
@@ -95,19 +96,17 @@
         "task": "dbt_test",
         "tool": "dbt"
       },
-      "validated_result": {
-        "tests_total": 19,
-        "tests_passed": 19,
-        "tests_failed": 0
-      },
       "models": [
         "analytics.stg_dim_bien",
         "analytics.stg_fact_annonce",
-        "analytics.mart_market_by_city"
+        "analytics.mart_market_by_city",
+        "analytics.stg_demande_version_secteur"
+      ],
+      "checks": [
+        "sector_projection_reconciles.sql : absence de liens secteur manquants ou supplémentaires et projection des secteurs des biens conforme à l'OLTP"
       ]
     }
   ],
-
   "asset_rules": [
     {
       "id": "ASSET-DQ-001",
@@ -170,9 +169,31 @@
       "quality_domains": [
         "DQ-DBT"
       ]
+    },
+    {
+      "id": "ASSET-DQ-006",
+      "entity": "real-estate-postgresql.real_estate.real_estate.demande_version_secteur",
+      "criticality": "medium",
+      "tags": [
+        "RealEstateDataQuality.QualityControlled"
+      ],
+      "quality_domains": [
+        "DQ-OLTP"
+      ]
+    },
+    {
+      "id": "ASSET-DQ-007",
+      "entity": "real-estate-postgresql.real_estate.analytics.stg_demande_version_secteur",
+      "criticality": "medium",
+      "tags": [
+        "RealEstateDataQuality.QualityControlled",
+        "RealEstateDataQuality.DerivedData"
+      ],
+      "quality_domains": [
+        "DQ-DBT"
+      ]
     }
   ],
-
   "lineage_requirements": [
     {
       "entity": "real-estate-postgresql.real_estate.staging.recherches",
@@ -201,10 +222,10 @@
     {
       "entity": "real-estate-postgresql.real_estate.real_estate.bien",
       "required_upstream": [
-        "real-estate-postgresql.real_estate.staging.annonces"
+        "real-estate-postgresql.real_estate.staging.annonces",
+        "real-estate-postgresql.real_estate.real_estate.secteur"
       ]
     },
-
     {
       "entity": "real-estate-postgresql.real_estate.real_estate.presentation",
       "required_upstream": [
@@ -212,7 +233,6 @@
         "real-estate-postgresql.real_estate.real_estate.bien"
       ]
     },
-
     {
       "entity": "real-estate-postgresql.real_estate.warehouse.dim_source",
       "required_upstream": [
@@ -246,7 +266,8 @@
     {
       "entity": "real-estate-postgresql.real_estate.warehouse.dim_bien",
       "required_upstream": [
-        "real-estate-postgresql.real_estate.real_estate.bien"
+        "real-estate-postgresql.real_estate.real_estate.bien",
+        "real-estate-postgresql.real_estate.warehouse.dim_secteur"
       ]
     },
     {
@@ -255,7 +276,6 @@
         "real-estate-postgresql.real_estate.real_estate.bien"
       ]
     },
-
     {
       "entity": "real-estate-postgresql.real_estate.warehouse.fact_annonce",
       "required_upstream": [
@@ -281,7 +301,6 @@
         "real-estate-postgresql.real_estate.warehouse.dim_secteur"
       ]
     },
-
     {
       "entity": "real-estate-postgresql.real_estate.warehouse.fact_paiement",
       "required_upstream": [
@@ -292,7 +311,6 @@
         "real-estate-postgresql.real_estate.warehouse.dim_chasseur"
       ]
     },
-
     {
       "entity": "real-estate-postgresql.real_estate.analytics.stg_fact_annonce",
       "required_upstream": [
@@ -319,9 +337,30 @@
         "real-estate-postgresql.real_estate.warehouse.dim_client",
         "real-estate-postgresql.real_estate.warehouse.dim_chasseur"
       ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.demande_version_secteur",
+      "required_upstream": [
+        "real-estate-postgresql.real_estate.staging.recherches",
+        "real-estate-postgresql.real_estate.real_estate.demande_version",
+        "real-estate-postgresql.real_estate.real_estate.secteur"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.warehouse.bridge_demande_version_secteur",
+      "required_upstream": [
+        "real-estate-postgresql.real_estate.real_estate.demande_version_secteur",
+        "real-estate-postgresql.real_estate.warehouse.dim_demande_version",
+        "real-estate-postgresql.real_estate.warehouse.dim_secteur"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.analytics.stg_demande_version_secteur",
+      "required_upstream": [
+        "real-estate-postgresql.real_estate.warehouse.bridge_demande_version_secteur"
+      ]
     }
   ],
-
   "policies": {
     "pipeline_failure_on_quality_error": true,
     "quality_checks_must_be_traceable": true,

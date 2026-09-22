@@ -5,7 +5,6 @@
     "description": "Règles déclaratives de classification RGPD, sensibilité et restriction IA appliquées aux colonnes de la plateforme immobilière.",
     "version": "1.0.0"
   },
-
   "column_assignments": [
     {
       "entity": "real-estate-postgresql.real_estate.real_estate.client",
@@ -79,7 +78,6 @@
         "RealEstateDataSensitivity.Confidential"
       ]
     },
-
     {
       "entity": "real-estate-postgresql.real_estate.real_estate.chasseur",
       "column": "id_chasseur",
@@ -135,7 +133,6 @@
         "RealEstateDataSensitivity.Restricted"
       ]
     },
-
     {
       "entity": "real-estate-postgresql.real_estate.real_estate.demande_version",
       "column": "budget_min",
@@ -174,7 +171,6 @@
         "RealEstateDataSensitivity.Restricted"
       ]
     },
-
     {
       "entity": "real-estate-postgresql.real_estate.real_estate.paiement",
       "column": "montant_achat",
@@ -199,7 +195,6 @@
         "RealEstateDataSensitivity.Confidential"
       ]
     },
-
     {
       "entity": "real-estate-postgresql.real_estate.real_estate.document",
       "column": "chemin_stockage",
@@ -222,7 +217,6 @@
         "RealEstatePrivacy.AIRestricted"
       ]
     },
-
     {
       "entity": "real-estate-postgresql.real_estate.warehouse.dim_client",
       "column": "id_client_source",
@@ -243,7 +237,6 @@
         "RealEstateDataSensitivity.Restricted"
       ]
     },
-
     {
       "entity": "real-estate-postgresql.real_estate.warehouse.fact_paiement",
       "column": "montant_achat",
@@ -267,9 +260,38 @@
         "RealEstatePrivacy.FinancialData",
         "RealEstateDataSensitivity.Confidential"
       ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.demande_version_secteur",
+      "column": "id_demande_version",
+      "tags": [
+        "RealEstatePrivacy.IndirectIdentifier",
+        "RealEstatePrivacy.RequiresPseudonymisation",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.warehouse.bridge_demande_version_secteur",
+      "column": "demande_version_key",
+      "tags": [
+        "RealEstatePrivacy.IndirectIdentifier",
+        "RealEstatePrivacy.RequiresPseudonymisation",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Confidential"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.analytics.stg_demande_version_secteur",
+      "column": "demande_version_key",
+      "tags": [
+        "RealEstatePrivacy.IndirectIdentifier",
+        "RealEstatePrivacy.RequiresPseudonymisation",
+        "RealEstatePrivacy.AIRestricted",
+        "RealEstateDataSensitivity.Confidential"
+      ]
     }
   ],
-
   "policies": {
     "preserve_existing_tags": true,
     "missing_assets_are_reported": true,

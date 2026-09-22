@@ -5,7 +5,6 @@
     "description": "Règles déclaratives reliant les concepts du glossaire métier aux actifs et colonnes OpenMetadata de la plateforme immobilière.",
     "version": "1.0.0"
   },
-
   "table_assignments": [
     {
       "entity": "real-estate-postgresql.real_estate.real_estate.client",
@@ -84,9 +83,29 @@
       "terms": [
         "RealEstateBusinessGlossary.BaremeCommission"
       ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.demande_version_secteur",
+      "terms": [
+        "RealEstateBusinessGlossary.VersionDemande",
+        "RealEstateBusinessGlossary.Secteur"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.warehouse.bridge_demande_version_secteur",
+      "terms": [
+        "RealEstateBusinessGlossary.VersionDemande",
+        "RealEstateBusinessGlossary.Secteur"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.analytics.stg_demande_version_secteur",
+      "terms": [
+        "RealEstateBusinessGlossary.VersionDemande",
+        "RealEstateBusinessGlossary.Secteur"
+      ]
     }
   ],
-
   "column_assignments": [
     {
       "entity": "real-estate-postgresql.real_estate.analytics.mart_market_by_city",
@@ -122,9 +141,78 @@
       "terms": [
         "RealEstateBusinessGlossary.Surface"
       ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.raw.annonces",
+      "column": "secteur_code",
+      "terms": [
+        "RealEstateBusinessGlossary.CodeSecteur"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.raw.recherches",
+      "column": "secteur_code",
+      "terms": [
+        "RealEstateBusinessGlossary.CodeSecteur"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.staging.annonces",
+      "column": "secteur_code",
+      "terms": [
+        "RealEstateBusinessGlossary.CodeSecteur"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.staging.recherches",
+      "column": "secteur_code",
+      "terms": [
+        "RealEstateBusinessGlossary.CodeSecteur"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.bien",
+      "column": "id_secteur",
+      "terms": [
+        "RealEstateBusinessGlossary.Secteur"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.demande_version_secteur",
+      "column": "id_secteur",
+      "terms": [
+        "RealEstateBusinessGlossary.Secteur"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.warehouse.dim_bien",
+      "column": "secteur_key",
+      "terms": [
+        "RealEstateBusinessGlossary.Secteur"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.warehouse.bridge_demande_version_secteur",
+      "column": "secteur_key",
+      "terms": [
+        "RealEstateBusinessGlossary.Secteur"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.analytics.stg_dim_bien",
+      "column": "secteur_key",
+      "terms": [
+        "RealEstateBusinessGlossary.Secteur"
+      ]
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.analytics.stg_demande_version_secteur",
+      "column": "secteur_key",
+      "terms": [
+        "RealEstateBusinessGlossary.Secteur"
+      ]
     }
   ],
-
   "policies": {
     "preserve_existing_tags": true,
     "preserve_existing_glossary_terms": true,

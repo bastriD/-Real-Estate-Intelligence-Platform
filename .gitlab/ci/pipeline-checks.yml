@@ -19,3 +19,5 @@ pipeline:validate:
         - scripts/ci/**/*
         - tests/ci/**/*
         - pipelines/airflow/**/*
+        - governance/**/*
+        - observability/**/*

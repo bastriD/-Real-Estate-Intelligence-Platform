@@ -2,19 +2,19 @@
   "table_descriptions": [
     {
       "entity": "real-estate-postgresql.real_estate.raw.recherches",
-      "description": "RAW ingestion table storing property search criteria exactly as received from source files. Source values are preserved as text to tolerate heterogeneous formats and avoid premature coercion. Each record retains ingestion metadata through source_file, ingestion_batch and ingested_at."
+      "description": "RAW ingestion table storing property search criteria exactly as received from source files. Source values are preserved as text to tolerate heterogeneous formats and avoid premature coercion. Each record retains ingestion metadata through source_file, ingestion_batch and ingested_at. Optional secteur_code carries explicit geographic evidence. Standard generation has no sector code; sector_test uses a catalogue. Presence of a code is not proof of a 100% matching score or of the DAG generation mode. OLTP loaders validate supplied codes against active sectors."
     },
     {
       "entity": "real-estate-postgresql.real_estate.raw.annonces",
-      "description": "RAW ingestion table storing property listings exactly as received from source files. Business attributes, contact information, property characteristics and source values are preserved without premature normalization, together with source_file, ingestion_batch and ingested_at metadata for traceability."
+      "description": "RAW ingestion table storing property listings exactly as received from source files. Business attributes, contact information, property characteristics and source values are preserved without premature normalization, together with source_file, ingestion_batch and ingested_at metadata for traceability. Optional secteur_code carries explicit geographic evidence. Standard generation has no sector code; sector_test uses a catalogue. Presence of a code is not proof of a 100% matching score or of the DAG generation mode. OLTP loaders validate supplied codes against active sectors."
     },
     {
       "entity": "real-estate-postgresql.real_estate.staging.recherches",
-      "description": "Normalized STAGING table for property search criteria. RAW source values are converted to typed PostgreSQL fields, while validation results are preserved through quality_valid and quality_errors. Source lineage remains traceable through raw_id, ingestion_batch and source_file."
+      "description": "Normalized STAGING table for property search criteria. RAW source values are converted to typed PostgreSQL fields, while validation results are preserved through quality_valid and quality_errors. Source lineage remains traceable through raw_id, ingestion_batch and source_file. Optional secteur_code carries explicit geographic evidence. Standard generation has no sector code; sector_test uses a catalogue. Presence of a code is not proof of a 100% matching score or of the DAG generation mode. OLTP loaders validate supplied codes against active sectors."
     },
     {
       "entity": "real-estate-postgresql.real_estate.staging.annonces",
-      "description": "Normalized STAGING table for property listings. RAW values are parsed into typed PostgreSQL fields including prices, surfaces, dates, booleans, geographic coordinates and structured JSON data. Parsing and validation issues are retained through quality_valid and quality_errors, with full traceability to the RAW record and ingestion batch."
+      "description": "Normalized STAGING table for property listings. RAW values are parsed into typed PostgreSQL fields including prices, surfaces, dates, booleans, geographic coordinates and structured JSON data. Parsing and validation issues are retained through quality_valid and quality_errors, with full traceability to the RAW record and ingestion batch. Optional secteur_code carries explicit geographic evidence. Standard generation has no sector code; sector_test uses a catalogue. Presence of a code is not proof of a 100% matching score or of the DAG generation mode. OLTP loaders validate supplied codes against active sectors."
     },
     {
       "entity": "real-estate-postgresql.real_estate.staging.v_annonces_invalides",
@@ -34,7 +34,7 @@
     },
     {
       "entity": "real-estate-postgresql.real_estate.real_estate.secteur",
-      "description": "Reference table defining geographic sectors targeted by mandates. A sector is identified by country, city, optional district and postal code and can be activated or deactivated."
+      "description": "Canonical geography shared by mandates, search-version alternatives and property assignments. A postcode alone does not identify a neighbourhood; unknown property sectors remain NULL."
     },
     {
       "entity": "real-estate-postgresql.real_estate.real_estate.source",
@@ -50,7 +50,7 @@
     },
     {
       "entity": "real-estate-postgresql.real_estate.real_estate.demande",
-      "description": "Operational table representing a property-search request attached to a mandate. It stores the request reference, creation date and lifecycle status, while detailed search criteria are versioned separately in demande_version."
+      "description": "Customer-owned property search, possibly before a mandate. Generated searches are explicitly synthetic; versioned criteria and sector alternatives belong to demande_version."
     },
     {
       "entity": "real-estate-postgresql.real_estate.real_estate.demande_version",
@@ -58,7 +58,7 @@
     },
     {
       "entity": "real-estate-postgresql.real_estate.real_estate.bien",
-      "description": "Canonical operational table for properties collected by the platform. It stores source provenance, external reference, location, price, surface, property characteristics, publication and collection dates, and operational availability status."
+      "description": "Operational property with source provenance and optional id_secteur. An explicit source sector is resolved independently of customer preferences; location changes invalidate old mappings. Unmapped properties are excluded only when matching requires precise sectors."
     },
     {
       "entity": "real-estate-postgresql.real_estate.real_estate.presentation",
@@ -87,6 +87,26 @@
     {
       "entity": "real-estate-postgresql.real_estate.real_estate.audit_log",
       "description": "Technical audit-trail table for INSERT, UPDATE and DELETE events affecting operational data. It records event time, schema, table, record identifier, user, previous and new values, and contextual metadata for governance, security and operational auditing."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.real_estate.demande_version_secteur",
+      "description": "Alternative acceptable sectors for each search version, independent of mandate coverage. Multiple sectors mean OR. Generated sector_test searches currently specify one sector; standard searches can have none."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.warehouse.dim_bien",
+      "description": "Property dimension with current sector projection in secteur_key: 0 means unmapped, not a wildcard. Sector projection is refreshed by database/olap/sector_projection.py; it is not historical geographic reconstruction."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.warehouse.bridge_demande_version_secteur",
+      "description": "Version-sector alternatives projected from operational geography. Load reconciles additions and removals; joining this bridge can multiply rows, so do not use it to count unique properties without controlling grain."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.analytics.stg_demande_version_secteur",
+      "description": "dbt view of warehouse search-version sector alternatives, with referential and operational/warehouse reconciliation tests."
+    },
+    {
+      "entity": "real-estate-postgresql.real_estate.analytics.stg_dim_bien",
+      "description": "dbt property dimension view exposing secteur_key. Unknown is 0; use current non-placeholder properties for coverage counts."
     }
   ]
 }

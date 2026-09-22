@@ -162,6 +162,40 @@
         "RealEstateBusinessGlossary.Annonce",
         "RealEstateBusinessGlossary.Source"
       ]
+    },
+    {
+      "name": "propertiesWithSector",
+      "display_name": "Properties with explicit sector",
+      "description": "Current property dimension rows, excluding the unknown property member. Missing sectors are valid for standard generation; this measures coverage, not matching quality or generation mode.",
+      "metric_type": "COUNT",
+      "unit": "COUNT",
+      "granularity": "DAY",
+      "expression_language": "SQL",
+      "expression": "COUNT(*) FILTER (WHERE is_current AND id_bien_source <> 0 AND secteur_key <> 0)",
+      "source": "real-estate-postgresql.real_estate.warehouse.dim_bien",
+      "owner": "RealEstateAnalytics",
+      "domain": "RealEstateIntelligence.RealEstateAnalytics",
+      "glossary_terms": [
+        "RealEstateBusinessGlossary.Bien",
+        "RealEstateBusinessGlossary.Secteur"
+      ]
+    },
+    {
+      "name": "propertiesWithoutSector",
+      "display_name": "Properties without explicit sector",
+      "description": "Current property dimension rows, excluding the unknown property member. Missing sectors are valid for standard generation; this measures coverage, not matching quality or generation mode.",
+      "metric_type": "COUNT",
+      "unit": "COUNT",
+      "granularity": "DAY",
+      "expression_language": "SQL",
+      "expression": "COUNT(*) FILTER (WHERE is_current AND id_bien_source <> 0 AND secteur_key = 0)",
+      "source": "real-estate-postgresql.real_estate.warehouse.dim_bien",
+      "owner": "RealEstateAnalytics",
+      "domain": "RealEstateIntelligence.RealEstateAnalytics",
+      "glossary_terms": [
+        "RealEstateBusinessGlossary.Bien",
+        "RealEstateBusinessGlossary.Secteur"
+      ]
     }
   ]
 }

@@ -39,7 +39,8 @@
         "real-estate-postgresql.real_estate.real_estate.document",
         "real-estate-postgresql.real_estate.real_estate.paiement",
         "real-estate-postgresql.real_estate.real_estate.presentation",
-        "real-estate-postgresql.real_estate.real_estate.visite"
+        "real-estate-postgresql.real_estate.real_estate.visite",
+        "real-estate-postgresql.real_estate.real_estate.demande_version_secteur"
       ]
     },
     {
