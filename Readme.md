@@ -1,166 +1,342 @@
-# 🏠 Real Estate Intelligence Platform
+# Real Estate Intelligence Platform
 
-An enterprise-grade **Data & AI platform for real-estate property search**, designed to support the complete journey between a property buyer and a real-estate hunter — from the initial search request to property matching, purchase, invoicing, remuneration and analytics.
+Enterprise Data & AI platform for a real-estate property-search company.
 
-The project combines **Software Engineering, Data Engineering, AI/MLOps, Data Governance, DevOps, Security and Observability** in a cloud-native architecture deployed on Kubernetes.
+The project implements the business lifecycle of a real-estate hunter platform, from the initial client search request to property matching, visits, purchase offers, notarial transactions, invoicing, hunter remuneration, analytics and performance monitoring.
 
-Developed as part of the **Diginamic Data & IA — RNCP40573** program.
+It was developed as part of the **Diginamic Data & IA — RNCP40573** program and combines application development, Data Engineering, Data Architecture, MLOps, Data Governance, Security, Observability, DevOps and GitOps within a Kubernetes-based platform.
 
----
+The objective is not to demonstrate isolated technologies, but to build a coherent information system where business operations, data pipelines, analytical models, AI experiments and platform operations remain traceable and observable.
 
-## 🎯 Project Overview
+## Project scope
 
-Finding a property is more complex than simply filtering real-estate listings.
-
-A buyer defines a project involving multiple criteria:
-
-* location;
-* budget;
-* property type;
-* surface;
-* number of rooms and bedrooms;
-* energy performance;
-* personal preferences;
-* additional flexible requirements.
-
-A real-estate hunter then assists the buyer throughout the search and acquisition process.
-
-The platform digitalizes and structures this complete workflow while providing a foundation for intelligent property recommendations and future AI-assisted services.
-
----
-
-## 💼 Business Workflow
-
-The platform models the complete real-estate hunting lifecycle:
+The platform addresses the complete property-search lifecycle:
 
 ```text
-Buyer
-  │
-  ▼
+Client
+  |
+  v
 Search Request
-  │
-  ▼
+  |
+  v
 Hunter Assignment
-  │
-  ▼
+  |
+  v
 Search Criteria Refinement
-  │
-  ▼
-Search Mandate
-  │
-  ▼
+  |
+  v
+Mandate
+  |
+  v
 Property Ingestion
-  │
-  ▼
-Matching & Recommendations
-  │
-  ▼
-Property Selection
-  │
-  ▼
-Visits & Hunter Assessment
-  │
-  ▼
+  |
+  v
+Matching and Selection
+  |
+  v
+Client Feedback
+  |
+  v
+Visit and Hunter Assessment
+  |
+  v
 Purchase Offer
-  │
-  ▼
+  |
+  v
 Seller Decision
-  │
-  ▼
+  |
+  v
 Notarial Process
-  │
-  ▼
-Authentic Deed & Sale
-  │
-  ▼
+  |
+  v
+Authentic Deed and Sale
+  |
+  v
 Company Fees
-  │
-  ▼
+  |
+  v
 Client Invoice
-  │
-  ▼
+  |
+  v
 Hunter Remuneration
-  │
-  ▼
-Analytics & Performance
+  |
+  v
+Performance and Analytics
 ```
 
-The system maintains traceability across this lifecycle so that important business decisions and state transitions remain auditable.
+The application is supported by a Data Platform responsible for ingestion, transformation, analytical modelling, Data Quality, metadata governance, ML experimentation and operational observability.
 
----
+## Functional scope
 
-# ✨ Functional Scope
+The functional baseline contains 11 Gherkin feature files covering business rules and user journeys.
 
-The project is based on the functional scenarios defined by the Fil Rouge StarterPack.
+| ID | Area                                 | Scope     |
+| -- | ------------------------------------ | --------- |
+| 00 | Mandate and remuneration rules       | Current   |
+| 01 | Client request and account           | Current   |
+| 02 | Property search and visits           | Current   |
+| 03 | Purchase offer and signature         | Current   |
+| 04 | Hunter request handling              | Current   |
+| 05 | Daily property selection             | Current   |
+| 06 | Hunter assessment and purchase offer | Current   |
+| 07 | Hunter remuneration and performance  | Current   |
+| 08 | AI assistance for the client         | Future AI |
+| 09 | AI assistance for the hunter         | Future AI |
+| 10 | Hunter remuneration calculation      | Current   |
 
-The functional specification currently contains **11 Gherkin feature files (`00–10`)**.
+The current implementation concentrates on the deterministic operational workflow defined by `00–07` and `10`.
 
-### Current Business Journey
+Features `08` and `09` define the future AI-assisted evolution of the platform and are deliberately separated from functionality already implemented and validated.
 
-| Area                | Capabilities                                                 |
-| ------------------- | ------------------------------------------------------------ |
-| Search request      | Creation and versioning of buyer requirements                |
-| Hunter assignment   | Assignment, acceptance and refusal                           |
-| Buyer account       | Identity and role-based access                               |
-| Search mandate      | Exclusive/non-exclusive mandates and renewals                |
-| Search criteria     | Structured and versioned property requirements               |
-| Geographic search   | Sector-based search and targeting                            |
-| Property ingestion  | Automated ingestion and transformation                       |
-| Matching            | Property eligibility and deterministic ranking               |
-| Recommendations     | Property selections associated with buyer searches           |
-| Visits              | Property visit lifecycle                                     |
-| Purchase offers     | Submission, revision, acceptance and refusal                 |
-| Notarial workflow   | Notary, appointment, authentic deed and transaction tracking |
-| Sale                | Final transaction recording                                  |
-| Company fees        | Deterministic calculation and financial tracking             |
-| Client invoicing    | Invoice lifecycle after transaction                          |
-| Hunter remuneration | Commission calculation and invoice workflow                  |
-| Audit               | Traceability of sensitive business operations                |
+## Architecture
 
-Some user-facing workflow elements are still being consolidated, particularly notifications, appointments, client feedback and richer property assessment workflows.
+The platform follows an API-first, data-centric and cloud-native architecture.
 
----
+```text
+                             Users / API Clients
+                                    |
+                                    v
+                            +---------------+
+                            |    FastAPI    |
+                            | Business API  |
+                            +-------+-------+
+                                    |
+                    +---------------+---------------+
+                    |                               |
+                    v                               v
+             Business Services              Matching Engine
+                    |                               |
+                    +---------------+---------------+
+                                    |
+                                    v
+                            PostgreSQL OLTP
+                                    |
+             +----------------------+----------------------+
+             |                      |                      |
+             v                      v                      v
+          Airflow                Warehouse             Audit
+             |                      |
+             v                      v
+       Data Pipelines          dbt / Analytics
+             |
+             +----------------------+
+             |
+             v
+       Data Quality / Lineage
+             |
+             v
+         OpenMetadata
 
-# 🤖 AI-Assisted Target Journey
 
-The project distinguishes between the **current operational workflow** and the **future AI-assisted workflow**.
+                  ML / AI Experimentation
+                           |
+                           v
+                         MLflow
+                           |
+                           v
+                         MinIO
 
-Future capabilities defined by the functional specification include:
 
-### Buyer AI Assistance
+                    Platform Delivery
+                           |
+              GitLab CI / Container Registry
+                           |
+                           v
+                    GitOps Repository
+                           |
+                           v
+                         Argo CD
+                           |
+                           v
+                       Kubernetes
 
-* real-time project feasibility indicators;
-* market-aware search refinement;
-* personalized recommendations;
-* learning from accepted and rejected properties;
-* personalized post-purchase services.
 
-### Real-Estate Hunter AI Assistance
+                       Observability
+                           |
+          +----------------+----------------+
+          |                |                |
+          v                v                v
+      Prometheus          Loki             Tempo
+          |                |                |
+          +----------------+----------------+
+                           |
+                           v
+                    OpenTelemetry
+                           |
+                           v
+                        Grafana
+```
 
-* automated feasibility reports;
-* assisted criteria refinement;
-* property deduplication;
-* intelligent ranking;
-* negotiation-price estimation;
-* learning from buyer feedback;
-* assisted property-assessment writing;
-* purchase-offer suggestions;
-* automated document verification;
-* mandate-renewal recommendations.
+The architecture separates four concerns:
 
-The architecture is intentionally designed so these capabilities can be progressively introduced without replacing deterministic business rules that require strict auditability.
+* operational business processing;
+* Data Engineering and analytics;
+* AI/MLOps experimentation;
+* platform engineering and operations.
 
----
+PostgreSQL `real_estate` remains the operational source of truth. Warehouse and analytical models are derived from operational data and are not used to modify transactional business state.
 
-# 🧠 Property Matching
+## Application layer
 
-The platform currently uses a **deterministic and explainable matching baseline**.
+The business application is implemented with:
 
-A buyer's search criteria are transformed into structured features and compared with available properties.
+* Python 3.12;
+* FastAPI;
+* Pydantic;
+* SQLAlchemy;
+* PostgreSQL;
+* JWT authentication;
+* Argon2id password hashing;
+* Prometheus instrumentation.
 
-Current matching dimensions include:
+The API covers the main business domains:
 
-| Feature            | Weight |
+```text
+Authentication
+Clients
+Search Requests
+Hunter Assignments
+Mandates
+Properties
+Recommendations
+Presentations
+Visits
+Purchase Offers
+Sales
+Notarial Transactions
+Client Invoices
+Hunter Remuneration
+Hunter Invoices
+```
+
+Application roles include:
+
+```text
+ADMIN
+CHASSEUR
+CLIENT
+SERVICE
+```
+
+Authentication, role-based access control, resource ownership and audit logging are implemented at application level.
+
+## Data architecture
+
+The platform separates ingestion, operational and analytical data responsibilities.
+
+```text
+Data Sources
+    |
+    v
+   RAW
+    |
+    v
+ STAGING
+    |
+    v
+Operational Model
+    |
+    +--------------------+
+    |                    |
+    v                    v
+Matching             Warehouse
+                         |
+                         v
+                      Analytics
+                         |
+                         v
+                  Reporting / KPIs
+```
+
+The main logical schemas are:
+
+```text
+Fil_Rouge_Depart
+raw
+staging
+real_estate
+warehouse
+analytics
+migration_control
+```
+
+The `real_estate` schema contains the operational business model.
+
+The `warehouse` and `analytics` layers provide analytical representations of operational events for reporting, performance analysis and future Data Science use cases.
+
+## Versioned property search
+
+A client's search criteria can evolve during the property-search process.
+
+The platform therefore preserves versions of the search rather than overwriting the original request.
+
+This provides traceability between:
+
+```text
+Search Request
+      |
+      v
+Search Version
+      |
+      v
+Structured Criteria
+      |
+      v
+Target Sectors
+      |
+      v
+Matching
+      |
+      v
+Recommended Properties
+```
+
+Search criteria include budget, property type, surface, rooms, bedrooms, energy performance and geographical requirements.
+
+Geographical targeting uses canonical sectors rather than deriving business geography only from postal codes.
+
+This historical information also provides a foundation for future learning from search evolution and client decisions.
+
+## Data ingestion
+
+Apache Airflow orchestrates property-data ingestion.
+
+The pipeline follows the general architecture:
+
+```text
+Source
+  |
+  v
+RAW
+  |
+  v
+Validation
+  |
+  v
+STAGING
+  |
+  v
+Normalization
+  |
+  v
+Operational Property
+  |
+  +-----------------> Matching
+  |
+  +-----------------> Warehouse
+```
+
+The ingestion architecture preserves source lineage and geographical information through the transformation process.
+
+Controlled synthetic data is used for development and validation. It must not be interpreted as real market data.
+
+## Property matching
+
+The current recommendation system uses a deterministic and explainable matching baseline.
+
+Current dimensions are:
+
+| Criterion          | Weight |
 | ------------------ | -----: |
 | Location           |    30% |
 | Budget             |    30% |
@@ -170,483 +346,421 @@ Current matching dimensions include:
 | Bedrooms           |     7% |
 | Energy performance |     6% |
 
-Budget and geographical eligibility can also act as filtering constraints before ranking.
+Budget acts as a hard eligibility criterion.
 
-This baseline provides:
+Geographical filtering supports structured sector information.
 
-* reproducible recommendations;
-* explainable scores;
-* measurable evaluation;
-* a reference against which future ML models can be compared.
+The deterministic baseline provides a reproducible reference against which future Machine Learning approaches can be evaluated.
 
-The deterministic baseline is intentionally kept separate from future trained ML models.
+## MLflow and MLOps
 
----
+MLflow provides experiment tracking for matching and future Machine Learning work.
 
-# 🧪 Machine Learning & MLOps
-
-The project includes an MLOps foundation built around **MLflow**.
-
-It supports:
+The MLOps foundation supports:
 
 * experiment tracking;
+* parameters and metrics;
 * dataset evaluation;
-* model/baseline comparison;
-* metrics logging;
-* artifact storage;
+* baseline/model comparison;
+* artifact management;
 * reproducible experiments.
+
+MinIO is used for artifact storage.
 
 Synthetic labelled datasets are currently used to validate the matching and evaluation pipeline.
 
-Synthetic evaluation results are treated as **technical validation**, not as evidence of real-world predictive performance.
+Results obtained from controlled synthetic datasets are treated as technical validation and not as evidence of real-world predictive performance.
 
-Future work will introduce more representative datasets and compare trained models against the deterministic baseline before any production promotion.
+A future trained model must demonstrate measurable improvement over the deterministic baseline before being considered for production use.
 
----
+## Mandate lifecycle
 
-# 🏗️ Architecture
+The platform supports exclusive and non-exclusive mandates.
 
-The platform follows a modular, API-first and cloud-native architecture.
-
-```text
-                        Users / Applications
-                                │
-                                ▼
-                         ┌─────────────┐
-                         │   FastAPI   │
-                         │ Business API│
-                         └──────┬──────┘
-                                │
-                  ┌─────────────┴─────────────┐
-                  │                           │
-                  ▼                           ▼
-          Business Services            Matching Engine
-                  │                           │
-                  └─────────────┬─────────────┘
-                                │
-                                ▼
-                         PostgreSQL OLTP
-                                │
-             ┌──────────────────┼──────────────────┐
-             │                  │                  │
-             ▼                  ▼                  ▼
-          Airflow            Warehouse        OpenMetadata
-             │                  │                  │
-             ▼                  ▼                  ▼
-        Data Pipelines      Analytics        Governance
-             │
-             ▼
-          MLflow
-             │
-             ▼
-      ML / AI Experiments
-
-
-        GitLab CI/CD → GitOps → Argo CD → Kubernetes
-
-                         │
-                         ▼
-              Prometheus / Grafana
-                Loki / Tempo / OTEL
-```
-
----
-
-# 🗄️ Data Architecture
-
-The platform separates operational, ingestion and analytical responsibilities.
+Mandates have an explicit contractual lifecycle:
 
 ```text
-External / Generated Sources
-            │
-            ▼
-           RAW
-            │
-            ▼
-         STAGING
-            │
-            ▼
-      Operational Model
-           OLTP
-            │
-            ▼
-        Warehouse
-            │
-            ▼
-         Analytics
-            │
-            ▼
-      BI / AI / Reporting
+Mandate
+   |
+   v
+Initial Period
+   |
+   +------> Expiration
+   |
+   +------> Renewal
+                |
+                v
+          New Mandate Period
 ```
 
-Main logical data areas include:
+A standard mandate period lasts six months.
 
-* operational real-estate data;
-* raw ingestion;
-* staging transformations;
-* analytical warehouse;
-* analytics marts;
-* migration tracking.
+Historical periods are preserved for operational traceability and analytics.
 
-The **OLTP model remains the operational source of truth**, while the warehouse contains analytical representations of business events.
+## Offer and transaction lifecycle
 
----
-
-# 🔄 Versioned Search Requirements
-
-Property searches evolve over time.
-
-Instead of overwriting the original request, the platform keeps **versioned search requirements**.
-
-This makes it possible to understand:
-
-* what the buyer initially requested;
-* how the search evolved;
-* which criteria were changed;
-* which version generated a recommendation;
-* which properties were proposed under which requirements.
-
-Structured geographical sectors are also attached to search versions.
-
-This provides both business traceability and valuable historical data for future ML models.
-
----
-
-# 🏘️ Property Data Pipeline
-
-Property data is processed through an automated ingestion architecture.
+The operational model supports purchase offers and their state transitions.
 
 ```text
-Property Sources
-      │
-      ▼
-     RAW
-      │
-      ▼
-   Validation
-      │
-      ▼
-   STAGING
-      │
-      ▼
-Normalization
-      │
-      ▼
-     BIEN
-      │
-      ├────────► Matching
-      │
-      └────────► Warehouse
+Property Presentation
+        |
+        v
+Purchase Offer
+        |
+        +--------> Refused
+        |
+        +--------> Revised
+        |
+        +--------> Accepted
+                        |
+                        v
+                 Notarial Process
+                        |
+                        v
+                 Authentic Deed
+                        |
+                        v
+                       Sale
 ```
 
-**Apache Airflow** orchestrates ingestion and transformation workflows.
+Offer revisions and decisions remain auditable.
 
-The ingestion system also preserves lineage information required for Data Quality and governance.
+## Notarial workflow
 
----
+The notarial process is explicitly represented instead of being reduced to a sale date.
 
-# 💰 Mandates and Remuneration
+```text
+Accepted Offer
+      |
+      v
+Notarial Dossier
+      |
+      v
+Signing Appointment
+      |
+      v
+Authentic Deed
+      |
+      v
+Sale
+      |
+      v
+Notary Collects Company Fees
+      |
+      v
+Company Receives Funds
+```
 
-The business model supports both:
+The model deliberately distinguishes:
 
-* exclusive mandates;
-* non-exclusive mandates.
+```text
+COLLECTE_NOTAIRE
+```
 
-Mandates have a contractual lifecycle and can be renewed while preserving their historical periods.
+from:
+
+```text
+RECEPTION_ENTREPRISE
+```
+
+Collection by the notary on behalf of the company does not mean that the company has already received the funds.
+
+This distinction allows financial state to remain explicit and auditable.
+
+## Invoicing and hunter remuneration
+
+After the transaction, the platform handles both client invoicing and hunter remuneration.
+
+```text
+Sale
+  |
+  v
+Company Fees
+  |
+  v
+Client Invoice
+  |
+  v
+Company Receives Funds
+  |
+  v
+Hunter Remuneration Eligibility
+  |
+  v
+Hunter Invoice
+  |
+  v
+Invoice Verification
+  |
+  v
+Payment Scheduling
+  |
+  v
+Payment
+```
 
 Hunter remuneration is calculated deterministically.
 
 The calculation considers:
 
-* right to remuneration;
+* entitlement to remuneration;
 * company fees;
-* purchase amount bracket;
-* mandate characteristics;
-* hunter performance;
+* purchase-price bracket;
+* hunter-specific commission scale where applicable;
 * seniority;
-* historical performance indicators.
+* performance indicators;
+* minimum and maximum commission boundaries.
 
-The calculation remains auditable and is frozen using the business conditions applicable at the authentic-deed date.
+The remuneration base is the company's fees rather than the property purchase price.
 
-This ensures that historical remuneration remains reproducible even when future commission scales change.
+Calculation inputs are frozen at the authentic-deed date so historical remuneration remains reproducible when commission scales or performance indicators subsequently change.
 
----
+## Data Warehouse and analytics
 
-# ⚖️ Notarial Transaction Workflow
+Operational data is transformed into analytical models used to analyse:
 
-The platform models the final real-estate transaction through an explicit notarial workflow.
+* mandates;
+* mandate periods;
+* property searches;
+* recommendations;
+* transactions;
+* notarial processes;
+* payments;
+* hunter performance.
 
-```text
-Accepted Offer
-      │
-      ▼
-Notarial Dossier
-      │
-      ▼
-Signing Appointment
-      │
-      ▼
-Authentic Deed
-      │
-      ▼
-Sale
-      │
-      ▼
-Company Fees Collected
-      │
-      ▼
-Company Receives Funds
-```
+The analytical layer is deliberately separated from the OLTP model.
 
-A deliberate distinction is maintained between:
+Fact tables preserve explicit business grains, while dimensions provide reusable analytical context.
 
-**fees collected by the notary on behalf of the company**
+## Data Quality
 
-and
+Data Quality is integrated throughout the Data Platform.
 
-**funds actually received by the company**.
-
-This allows the financial lifecycle to remain explicit and auditable.
-
----
-
-# 📊 Analytics & Data Warehouse
-
-Operational events are transformed into analytical models for:
-
-* mandate analysis;
-* hunter performance;
-* search performance;
-* recommendation analysis;
-* transaction monitoring;
-* financial analysis;
-* notarial process analysis.
-
-The warehouse is designed separately from the transactional model so operational and analytical workloads retain appropriate data grains.
-
----
-
-# 🧹 Data Quality
-
-Data Quality is treated as a platform capability rather than an isolated validation step.
-
-Controls cover:
+Controls address:
 
 * completeness;
-* consistency;
 * validity;
+* consistency;
 * uniqueness;
 * referential integrity;
 * business-rule compliance;
 * financial reconciliation;
 * pipeline integrity;
+* analytical reconciliation;
 * ML dataset quality.
 
-Particular attention is given to:
+Important project-specific controls include:
 
-* search geography;
-* mandate validity;
-* transaction chronology;
-* notarial events;
-* financial reconciliation;
-* OLTP/warehouse reconciliation;
-* AI dataset leakage.
+```text
+Search criteria integrity
+Sector consistency
+Mandate chronology
+Offer and transaction chronology
+Notarial chronology
+Company-fee reconciliation
+Invoice/payment reconciliation
+OLTP-to-Warehouse reconciliation
+ML ground-truth isolation
+```
 
----
+Data Quality results are intended to become observable platform signals rather than remaining isolated test outputs.
 
-# 🧭 Data Governance
+## Data Governance
 
-**OpenMetadata** provides the governance foundation.
+OpenMetadata provides the metadata and governance layer.
 
-The governance architecture supports:
+It is used to support:
 
 * technical metadata;
+* data discovery;
 * ownership;
 * lineage;
 * business terminology;
-* data discovery;
 * Data Quality visibility;
 * documentation of critical data assets.
 
-Governance is progressively enriched as new operational, analytical and AI assets are introduced.
+The objective is to maintain traceability from source data through ingestion, operational storage, warehouse transformations and analytical or AI consumption.
 
----
+## Observability
 
-# 🔐 Security
+Observability is a first-class architectural capability of the platform.
+
+It covers both technical infrastructure and business/data workflows.
+
+The stack includes:
+
+| Component     | Responsibility                                |
+| ------------- | --------------------------------------------- |
+| Prometheus    | Metrics collection and time-series monitoring |
+| Grafana       | Dashboards and operational visualization      |
+| Loki          | Centralized logs                              |
+| Promtail      | Log collection                                |
+| Tempo         | Distributed tracing                           |
+| OpenTelemetry | Telemetry instrumentation and collection      |
+| Pushgateway   | Metrics from batch and short-lived workloads  |
+
+The FastAPI backend exposes Prometheus metrics directly.
+
+Business-oriented metrics currently cover the recommendation workflow, including:
+
+```text
+Recommendation request volume
+Recommendation failures
+Request duration
+Eligible property counts
+Selected property counts
+Created presentations
+Existing presentations
+```
+
+This allows monitoring to go beyond CPU and memory and provide visibility into actual application behaviour.
+
+The observability architecture follows three principal signals:
+
+```text
+Metrics
+   |
+   +---- Prometheus
+   |
+   v
+Grafana
+
+Logs
+   |
+   +---- Promtail
+   |
+   v
+Loki
+   |
+   v
+Grafana
+
+Traces
+   |
+   +---- OpenTelemetry
+   |
+   v
+Tempo
+   |
+   v
+Grafana
+```
+
+Data pipelines and batch processes can also expose operational metrics through Prometheus and Pushgateway.
+
+The objective is to correlate:
+
+```text
+Infrastructure state
+        +
+Application behaviour
+        +
+Business metrics
+        +
+Data pipeline execution
+```
+
+within a common operational view.
+
+Dashboards and observability configuration are managed as code and deployed through the platform delivery process.
+
+## Security and auditability
 
 Security is integrated into the application architecture.
 
 Implemented controls include:
 
 * authenticated application identities;
-* password hashing with Argon2id;
+* Argon2id password hashing;
 * JWT authentication;
-* role-based access control;
+* role-based authorization;
 * resource ownership controls;
-* audit logging;
+* business audit logging;
 * non-root application containers;
-* secret separation from application source code.
+* separation of secrets from source code.
 
-Main application roles include:
+Sensitive state transitions are designed to retain:
 
 ```text
-ADMIN
-CHASSEUR
-CLIENT
-SERVICE
+Who
+What
+When
+Business object
+Previous state
+New state
+Context
 ```
 
-Sensitive business operations are designed to remain attributable and auditable.
+This is particularly important for mandates, offers, notarial transactions, invoicing and payments.
 
----
+## CI/CD and GitOps
 
-# 📈 Observability
-
-The platform integrates:
-
-* **Prometheus** — metrics;
-* **Grafana** — dashboards;
-* **Loki** — logs;
-* **Tempo** — distributed traces;
-* **OpenTelemetry** — telemetry collection.
-
-Application-specific metrics monitor areas such as:
-
-* recommendation requests;
-* matching latency;
-* failures;
-* eligible properties;
-* selected properties;
-* business workflow activity.
-
-Observability configuration is deployed alongside the platform through GitOps.
-
----
-
-# 🚀 DevOps & GitOps
-
-The platform follows an automated delivery model.
+The delivery architecture follows GitOps principles.
 
 ```text
-Developer
-    │
-    ▼
-Git Repository
-    │
-    ▼
+Source Code
+    |
+    v
 GitLab CI
-    │
-    ├── Tests
-    ├── Validation
-    ├── Security / Quality checks
-    └── Container Build
-              │
-              ▼
-        Container Registry
-              │
-              ▼
-        GitOps Repository
-              │
-              ▼
-           Argo CD
-              │
-              ▼
-          Kubernetes
+    |
+    +---- Tests
+    |
+    +---- Validation
+    |
+    +---- Container Build
+    |
+    v
+Container Registry
+    |
+    v
+GitOps Repository
+    |
+    v
+Argo CD
+    |
+    v
+Kubernetes
 ```
 
-Permanent Kubernetes deployments are controlled through **GitOps** rather than manual cluster modifications.
+Git remains the source of truth for permanent platform changes.
 
----
+Argo CD continuously reconciles the desired configuration with the Kubernetes environment.
 
-# ☸️ Kubernetes Platform
+## Business continuity
 
-The application runs on a highly available Kubernetes platform.
+The platform includes continuity and disaster-recovery mechanisms covering:
 
-The platform hosts separate services for:
-
-* application workloads;
-* PostgreSQL;
-* Airflow;
-* MLflow;
-* metadata governance;
-* monitoring;
-* logging;
-* tracing;
-* GitOps delivery.
-
-The infrastructure is designed to demonstrate realistic platform-engineering practices while remaining suitable for a training and portfolio environment.
-
----
-
-# ♻️ Business Continuity & Disaster Recovery
-
-The project includes PCA/PRA practices covering:
-
-* PostgreSQL backups;
-* automated backup scheduling;
-* recovery procedures;
+* PostgreSQL backup;
+* automated backup execution;
+* restoration procedures;
 * GitOps-based infrastructure reconstruction;
-* recovery documentation;
-* RPO/RTO analysis.
+* RPO/RTO analysis;
+* recovery documentation.
 
-Backup availability alone is not considered sufficient: recovery procedures are part of the validation strategy.
+Recovery validation is considered part of the platform lifecycle; the existence of a backup alone is not considered sufficient evidence of recoverability.
 
----
+## Technology stack
 
-# 🧰 Technology Stack
+| Area                       | Technologies                          |
+| -------------------------- | ------------------------------------- |
+| Backend                    | Python, FastAPI, Pydantic, SQLAlchemy |
+| Database                   | PostgreSQL                            |
+| Data Engineering           | Airflow, dbt, MinIO                   |
+| Matching / ML              | Python, scikit-learn, MLflow          |
+| Governance                 | OpenMetadata                          |
+| Containerization           | Docker                                |
+| Orchestration              | Kubernetes                            |
+| CI/CD                      | GitLab CI/CD                          |
+| GitOps                     | Argo CD                               |
+| Metrics                    | Prometheus                            |
+| Dashboards                 | Grafana                               |
+| Logging                    | Loki, Promtail                        |
+| Tracing                    | Tempo, OpenTelemetry                  |
+| Batch metrics              | Pushgateway                           |
+| Local AI experimentation   | Ollama                                |
+| Architecture documentation | PlantUML                              |
 
-### Backend
-
-* Python
-* FastAPI
-* Pydantic
-* SQLAlchemy
-* PostgreSQL
-* JWT
-* Argon2id
-
-### Data Engineering
-
-* PostgreSQL
-* Apache Airflow
-* dbt
-* MinIO
-
-### AI / MLOps
-
-* Python
-* scikit-learn
-* MLflow
-* deterministic recommendation engine
-* GPU-capable experimentation environment
-* Ollama for future local LLM experimentation
-
-### Data Governance
-
-* OpenMetadata
-* Data Quality controls
-* lineage and metadata management
-
-### DevOps / Platform
-
-* Docker
-* Kubernetes
-* GitLab CI/CD
-* GitLab Container Registry
-* Argo CD
-* GitOps
-
-### Observability
-
-* Prometheus
-* Grafana
-* Loki
-* Tempo
-* OpenTelemetry
-
----
-
-# 📁 Repository Structure
+## Repository structure
 
 ```text
 .
@@ -657,83 +771,142 @@ Backup availability alone is not considered sufficient: recovery procedures are 
 │
 ├── database/
 │   ├── migrations/           # Database evolution
-│   └── tests/                # SQL validation
+│   └── tests/                # SQL and data validation
 │
 ├── pipelines/
-│   ├── airflow/              # Data orchestration
+│   ├── airflow/              # Pipeline orchestration
 │   └── dbt/                  # Analytical transformations
 │
-├── governance/               # OpenMetadata / governance
+├── governance/               # Metadata and governance
 ├── observability/            # Metrics, dashboards and alerts
 ├── deploy/                   # Container and Kubernetes resources
 ├── scripts/                  # Automation and CI helpers
-├── tests/                    # Automated test suites
-├── docs/                     # Technical documentation
-└── evidence/                 # Runtime / competency evidence
+├── tests/                    # Automated tests
+├── docs/                     # Project documentation
+└── evidence/                 # Runtime and competency evidence
 ```
 
----
+## Future AI capabilities
 
-# 🧪 Testing Strategy
+The functional specification separates current operational functionality from future AI assistance.
 
-Testing covers several layers of the platform:
+Future client-side capabilities include:
+
+* search-project feasibility analysis;
+* market-aware criteria refinement;
+* preference learning;
+* personalized recommendations;
+* personalized post-purchase assistance.
+
+Future hunter-side capabilities include:
+
+* feasibility reports;
+* assisted search refinement;
+* property deduplication and ranking;
+* negotiation estimation;
+* learning from rejected properties;
+* assisted assessment drafting;
+* purchase-offer suggestions;
+* automated document verification;
+* mandate-renewal assistance.
+
+These capabilities will be introduced progressively and evaluated against deterministic baselines.
+
+AI is intended to assist the business workflow, not replace deterministic rules where reproducibility and auditability are required.
+
+## Project status
+
+The main platform foundations are operational:
 
 ```text
-Unit Tests
-     │
-     ▼
-Service / Business Tests
-     │
-     ▼
-API Tests
-     │
-     ▼
-Database Tests
-     │
-     ▼
-Data Pipeline Tests
-     │
-     ▼
-AI / Matching Tests
-     │
-     ▼
-Controlled End-to-End Validation
+Business API
+PostgreSQL OLTP
+Versioned search model
+Mandate lifecycle
+Property ingestion
+Deterministic matching
+MLflow experimentation
+Offer lifecycle
+Notarial workflow
+Client invoicing
+Hunter remuneration
+Data Warehouse
+Data Quality
+OpenMetadata
+Security / RBAC / Audit
+Observability
+CI/CD
+GitOps
+Kubernetes
+PCA / PRA
 ```
 
-Runtime evidence is kept separate from automated unit-test evidence.
+Current work focuses on completing and validating the remaining functional scenarios before expanding the future AI layer.
 
-A passing test demonstrates the tested behaviour; it does not automatically prove the state of a live deployment.
+Priority areas include:
 
----
+1. completion of the hunter payment and performance lifecycle;
+2. complete functional coverage of the current User Stories;
+3. notification and appointment workflows;
+4. richer client feedback and property prioritisation;
+5. hunter property assessments;
+6. OLTP/Warehouse reconciliation;
+7. Data Quality and governance consolidation;
+8. final security and recovery evidence;
+9. future AI and ML experimentation.
 
-# 🎓 RNCP40573
+## RNCP40573
 
-The project is designed to provide practical evidence across the **BC01–BC06 competency blocks**.
+The project is developed as part of the Diginamic Data & IA curriculum and is designed to provide practical evidence across **BC01–BC06**.
 
-Evidence is based on actual project artifacts rather than technology names alone:
+Evidence is maintained through the complete engineering chain:
 
 ```text
 Business Requirement
-        │
-        ▼
+        |
+        v
 Architecture Decision
-        │
-        ▼
+        |
+        v
 Implementation
-        │
-        ▼
+        |
+        v
 Automated Test
-        │
-        ▼
+        |
+        v
 Runtime Evidence
-        │
-        ▼
+        |
+        v
 Documentation
-        │
-        ▼
-RNCP Competency Evidence
+        |
+        v
+Competency Evidence
 ```
 
-This approach makes the project suitable both as an educational deliverable and as a professional technical portfolio.
+The objective is to demonstrate competencies through implemented and validated engineering work rather than through the presence of technologies alone.
 
---
+## Documentation
+
+Detailed technical documentation is maintained under `docs/`.
+
+It covers:
+
+```text
+Business requirements
+Application architecture
+Infrastructure architecture
+Data architecture
+Data Quality
+Data Governance
+AI and MLOps
+Security
+Observability
+DevOps and GitOps
+PCA / PRA
+Architecture Decision Records
+RNCP competency evidence
+```
+
+The README presents the overall project.
+
+Detailed implementation decisions, operational procedures and runtime evidence remain in their respective technical documents.
