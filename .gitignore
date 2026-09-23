@@ -15,3 +15,6 @@ htmlcov/
 venv/
 # Local environment / secrets
 .env
+txt.txt
+bject-skip 0-first 110
+new.txt
